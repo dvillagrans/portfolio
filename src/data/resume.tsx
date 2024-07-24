@@ -42,10 +42,10 @@ export const DATA = {
     "Vercel",
   ],
   navbar: [
-    { href: "/", icon: HomeIcon, label: "Home" },
-    { href: "/blog", icon: NotebookIcon, label: "Blog" },
-    { href: "#", icon: CodeIcon, label: "Projects" },
-    { href: "#", icon: PencilLine, label: "Notes" },
+    { href: "#", icon: HomeIcon, label: "Home" },
+    { href: "#skills", icon: NotebookIcon, label: "Skills" },
+    { href: "#projects", icon: CodeIcon, label: "Projects" },
+    { href: "#contact", icon: PencilLine, label: "Contact" },
   ],
   contact: {
     email: "diegovillasal@gmail.com",
@@ -67,7 +67,7 @@ export const DATA = {
       },
       X: {
         name: "X",
-        url: "https://dub.sh/dillion-twitter",
+        url: "#",
         icon: Icons.x,
 
         navbar: false,
