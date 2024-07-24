@@ -1,10 +1,14 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import Particles from "@/components/magicui/particles";
 
-const ParticlesDemo = ({ title, skills }) => {
+interface ParticlesDemoProps {
+  title: string;
+  skills: (string | undefined)[];
+}
+
+const ParticlesDemo: React.FC<ParticlesDemoProps> = ({ title, skills }) => {
   const { theme } = useTheme();
   const [color, setColor] = useState("#ffffff");
 

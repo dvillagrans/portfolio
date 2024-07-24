@@ -39,7 +39,7 @@ export const DATA = {
     "TypeScript", 
     "React", 
     "Astro", 
-    "Vercel"
+    "Vercel",
   ],
   navbar: [
     { href: "/", icon: HomeIcon, label: "Home" },
