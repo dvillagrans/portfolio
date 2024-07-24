@@ -2,7 +2,7 @@ import { Icons } from "@/components/icons";
 import { CodeIcon, HomeIcon, NotebookIcon, PencilLine } from "lucide-react";
 
 export const DATA = {
-  name: "Diego Villagran",
+  name: "Diego Villagran Salazar",
   initials: "DV",
   url: "https://dillion.io",
   location: "Mexico City, MX",
@@ -40,6 +40,7 @@ export const DATA = {
     "React", 
     "Astro", 
     "Vercel",
+    "googlecolab"
   ],
   navbar: [
     { href: "#", icon: HomeIcon, label: "Home" },
@@ -154,7 +155,32 @@ export const DATA = {
     },
       video: "",
     },
-    
+    {
+      title: "Dashboard Financial",
+      href: "#",
+      dates: "February 2024 -  March 2024",
+      active: false,
+      description:
+      "Creation of a dashboard for a financial company in Mexico, with the purpose of visualizing the company's financial data.",
+      technologies: [
+        "Excel",
+        "Macros",
+        "VBA",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src:"https://i.postimg.cc/P5n0R86g/Dasboard.png",
+      width: 600,
+      height: 400
+    },
+      video: "",
+    },
   ],
 
   work: [

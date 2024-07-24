@@ -27,7 +27,7 @@ const ParticlesDemo: React.FC<ParticlesDemoProps> = ({ title, skills }) => {
       <Particles
         className="absolute inset-0"
         quantity={50}
-        ease={80}
+        ease={100}
         color={color}
         refresh
       />

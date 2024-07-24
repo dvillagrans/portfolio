@@ -9,6 +9,7 @@ import Markdown from "react-markdown";
 import {IconCloudDemo} from "@/components/ui/cloud-icon";
 import ParticlesDemo from "@/components/ParticlesDemo";
 import ShinyButton from "@/components/magicui/shiny-button";
+import {MarqueeDemo} from "@/components/MarqueeDemo";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -34,7 +35,7 @@ export default function Page() {
                 delay={BLUR_FADE_DELAY}
                 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none"
                 yOffset={8}
-                text={`Hi, I'm ${DATA.name.split(" ")[0]} 👋`}
+                text={`Hi, I'm ${DATA.name} 👋`}
               />
               <BlurFadeText
                 className="max-w-[600px] md:text-xl"
@@ -146,8 +147,9 @@ export default function Page() {
       </section>
 
       <section id="certifications">
-    
-        <section/>
+      <h2 className="text-2xl font-bold">Certifications</h2>
+            <MarqueeDemo/>
+      <section/>
         
 
        </section>
