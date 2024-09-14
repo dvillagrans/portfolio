@@ -5,7 +5,7 @@ import { title } from "process";
 export const DATA = {
   name: "Diego Villagran Salazar",
   initials: "DV",
-  url: "https://dillion.io",
+  url: "https://portfolio-pi-vert-92.vercel.app/",
   location: "Mexico City, MX",
   locationLink: "",
   description:
@@ -94,7 +94,7 @@ export const DATA = {
   projects: [
     {
       title: "Prediction of passengers for mexican airlines",
-      href: "#",
+      href: "https://github.com/dvillagrans/Passenger-Volume-Prediction-in-Mexico",
       dates: "September 2023 - November 2023",
       active: true,
       description:
@@ -110,7 +110,7 @@ export const DATA = {
       links: [
         {
           type: "Source",
-          href: "#",
+          href: "https://github.com/dvillagrans/Passenger-Volume-Prediction-in-Mexico",
           icon: <Icons.github className="size-3" />,
         },
       ],
@@ -158,7 +158,7 @@ export const DATA = {
     },
     {
       title: "Dashboard Financial",
-      href: "#",
+      href: "https://github.com/dvillagrans/Dashboard-Financial",
       dates: "February 2024 -  March 2024",
       active: false,
       description:
@@ -171,7 +171,7 @@ export const DATA = {
       links: [
         {
           type: "Source",
-          href: "https://github.com/",
+          href: "https://github.com/dvillagrans/Dashboard-Financial",
           icon: <Icons.github className="size-3" />,
         },
       ],
@@ -184,7 +184,7 @@ export const DATA = {
     },
     {
       title: "Prediction of the price of houses in Mexico City",
-      href: "#",
+      href: "https://github.com/dvillagrans/Houses-Prices-Prediction",
       dates: "June 2024",
       active: false,
       description:
@@ -201,7 +201,7 @@ export const DATA = {
       links: [
         {
           type: "Source",
-          href: "#",
+          href: "https://github.com/dvillagrans/Houses-Prices-Prediction",
           icon: <Icons.github className="size-3" />,
         },
       ],
