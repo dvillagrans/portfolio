@@ -4,9 +4,11 @@ import Image from "next/image";
 
 const certificates = [
   {
-    img: "https://i.postimg.cc/fLhWvw6Z/LATAM-GCCF2022-Diego-Villagran-Salazar.png",
+    img: "/googlecloud.png", // Ruta corregida
   },
-  // Agrega más certificados según sea necesario
+  {
+    img: "/Curso_Oracle.jpg", // Ruta corregida
+  },
 ];
 
 const CertificateCard = ({ img }: { img: string }) => {
@@ -45,8 +47,8 @@ export function MarqueeDemo() {
           <CertificateCard key={index} img={certificate.img} />
         ))}
       </Marquee>
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white dark:from-background"></div>
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-white dark:from-background"></div>
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/5 bg-gradient-to-r from-white dark:from-background"></div>
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/5 bg-gradient-to-l from-white dark:from-background"></div>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { Icons } from "@/components/icons";
 import { CodeIcon, HomeIcon, NotebookIcon, PencilLine } from "lucide-react";
+import { title } from "process";
 
 export const DATA = {
   name: "Diego Villagran Salazar",
@@ -10,7 +11,7 @@ export const DATA = {
   description:
     "Data Scientist with a passion for solving complex problems. I have experience in developing machine learning models, data analysis, and data visualization.",
   summary:
-    "In the past 3 years, I have worked on a variety of proyects that have allowed me to develop my skills in data analysis, machine learning, and data visualization. I have experience working with Python, SQL, and Power BI. I am currently looking for new opportunities to continue growing as a data scientist.",
+    "I am a developer and data scientist with experience in predictive projects, large-scale data analysis, algorithm optimization, and creating scalable solutions. I specialize in transforming complex data into actionable insights for business decision-making. My goal is to continue growing at the intersection of technology and data, adding value through innovative solutions.",
   avatarUrl: "/me.jpg",
   skills: [
     "Python", 
@@ -94,7 +95,7 @@ export const DATA = {
     {
       title: "Prediction of passengers for mexican airlines",
       href: "#",
-      dates: "September 2024 - November 2024",
+      dates: "September 2023 - November 2023",
       active: true,
       description:
         "Analisys of the number of passengers that mexican airlines have had in the last 36 years, and prediction of the number of passengers for the next 5 years.",
@@ -123,7 +124,7 @@ export const DATA = {
     {
       title: "Melari Spa",
       href: "https://melarispa.com",
-      dates: "September 2024 -  July 2024",
+      dates: "September 2023 -  July 2024",
       active: true,
       description:
       "Creation of a website for a spa in Mexico City, with the purpose of increasing the number of clients and the visibility of the spa.",
@@ -181,20 +182,51 @@ export const DATA = {
     },
       video: "",
     },
+    {
+      title: "Prediction of the price of houses in Mexico City",
+      href: "#",
+      dates: "June 2024",
+      active: false,
+      description:
+        "Analisys of the price of houses in Mexico City, and prediction of the price of houses for the next 5 years.",
+      technologies: [
+        "Python",
+        "Pandas",
+        "Numpy",
+        "Matplotlib",
+        "Seaborn",
+        "Scikit-learn",
+        "Random Forest",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "#",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src:"/output_houses.png",
+      width: 600,
+      height: 400
+    },
+      video: "",
+
+      }
   ],
 
   work: [
     {
-      company: "Atomic Finance",
-      href: "https://atomic.finance",
-      badges: [],
+      company: "Spa & Wellness",
+      href: "https://www.melarispa.com/",
+      badges: ["Freelance", "Remote", "Part-time" ],
       location: "Remote",
-      title: "Bitcoin Protocol Engineer",
-      logoUrl: "/atomic.png",
-      start: "May 2021",
-      end: "Oct 2022",
+      title: "Web Developer",
+      logoUrl: "/melari.png",
+      start: "Nov 2023",
+      end: "July 2024",
       description:
-        "Implemented the Bitcoin discreet log contract (DLC) protocol specifications as an open source Typescript SDK. Dockerized all microservices and setup production kubernetes cluster. Architected a data lake using AWS S3 and Athena for historical backtesting of bitcoin trading strategies. Built a mobile app using react native and typescript.",
+        "Creation of a website for a spa in Mexico City, with the purpose of increasing the number of clients and the visibility of the spa.",
     },
 
   ],
@@ -204,8 +236,8 @@ export const DATA = {
       href: "https://www.escom.ipn.mx/",
       degree: "Data Science",
       logoUrl: "/escom.png",
-      start: "2021",
-      end: "Expected 2025",
+      start: "2022",
+      end: "Expected 2026",
     },
     {
       school: "Centro de Estudios Cientificos y Tecnologicos No. 9 Juan de Dios Batiz",

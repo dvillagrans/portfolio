@@ -159,7 +159,7 @@ export default function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
             <h2 className="text-xl font-bold">Work Experience</h2>
           </BlurFade>
-      {/* 
+      
 
           {DATA.work.map((work, id) => (
             <BlurFade
@@ -179,7 +179,6 @@ export default function Page() {
               />
             </BlurFade>
           ))}
-        */}
 
         </div>
       </section>
