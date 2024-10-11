@@ -4,11 +4,21 @@ import Image from "next/image";
 
 const certificates = [
   {
-    img: "/googlecloud.png", // Ruta corregida
+    img: "/googlecloud.png", 
   },
   {
-    img: "/Curso_Oracle.jpg", // Ruta corregida
+    img: "/Curso_Oracle.jpg", 
   },
+  {
+    img: "/Certificado - Curso de GitHub Actitions.jpg",
+  },
+  {
+    img: "/docker_page-0001.jpg",
+  },
+  {
+    img: "/Udemy_DC.jpg",
+  },
+  
 ];
 
 const CertificateCard = ({ img }: { img: string }) => {
