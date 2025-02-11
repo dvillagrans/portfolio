@@ -44,9 +44,9 @@ export const DATA = {
     "googlecolab"
   ],
   navbar: [
-    { href: "#", icon: HomeIcon, label: "Home" },
+    { href: "/", icon: HomeIcon, label: "Home" },
     { href: "#skills", icon: NotebookIcon, label: "Skills" },
-    { href: "#projects", icon: CodeIcon, label: "Projects" },
+    { href: "/projects", icon: CodeIcon, label: "Projects" },
     { href: "#contact", icon: PencilLine, label: "Contact" },
   ],
   contact: {

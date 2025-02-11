@@ -141,7 +141,7 @@ export default function Page() {
             ))}
           </div>
           <div className="flex justify-center">
-          <ShinyButton text="View More" href="#" />
+          <ShinyButton text="View More" href="projects" />
           </div>
         </div>
       </section>
