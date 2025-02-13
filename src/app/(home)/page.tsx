@@ -1,3 +1,4 @@
+"use client";
 import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { ProjectCard } from "@/components/project-card";
@@ -10,6 +11,8 @@ import {IconCloudDemo} from "@/components/ui/cloud-icon";
 import ParticlesDemo from "@/components/ParticlesDemo";
 import ShinyButton from "@/components/magicui/shiny-button";
 import {MarqueeDemo} from "@/components/MarqueeDemo";
+import { useState } from "react";
+import { ProjectDialog } from "@/components/project-dialog";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -25,6 +28,8 @@ const skillCategories = [
 
 
 export default function Page() {
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+
   return (
     <main className="flex flex-col min-h-[100dvh] space-y-10 max-w-2xl">
       <section id="hero">
@@ -110,7 +115,7 @@ export default function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 11}>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-              <h2 className="text-2xl font-bold">My Proyects</h2>
+              <h2 className="text-2xl font-bold">My Projects</h2>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                   Check out my latest work
                 </h2>
@@ -126,17 +131,17 @@ export default function Page() {
                 key={project.title}
                 delay={BLUR_FADE_DELAY * 12 + id * 0.05}
               >
-                <ProjectCard
-                  href={project.href}
-                  key={project.title}
-                  title={project.title}
-                  description={project.description}
-                  dates={project.dates}
-                  tags={project.technologies}
-                  image={project.image}
-                  video={project.video}
-                  links={project.links}
-                />
+                <div onClick={() => setSelectedProject(project)} className="cursor-pointer">
+                  <ProjectCard
+                    key={project.title}
+                    title={project.title}
+                    description={project.description}
+                    dates={project.dates}
+                    tags={project.technologies}
+                    image={project.image}
+                    video={project.video}
+                  />
+                </div>
               </BlurFade>
             ))}
           </div>
@@ -145,6 +150,15 @@ export default function Page() {
           </div>
         </div>
       </section>
+
+      {/* Diálogo de proyecto */}
+      {selectedProject && (
+        <ProjectDialog
+          isOpen={!!selectedProject}
+          onClose={() => setSelectedProject(null)}
+          project={selectedProject}
+        />
+      )}
 
       <section id="certifications">
       <h2 className="text-2xl font-bold">Certifications</h2>

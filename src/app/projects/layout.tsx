@@ -1,3 +1,5 @@
+import Navbar from "@/components/navbar";
+
 export default function ProjectsLayout({
   children,
 }: {
@@ -6,6 +8,7 @@ export default function ProjectsLayout({
   return (
     <div className="min-h-screen w-full">
       {children}
+      <Navbar />
     </div>
   );
 }

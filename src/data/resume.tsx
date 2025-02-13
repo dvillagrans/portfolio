@@ -12,7 +12,7 @@ export const DATA = {
     "Data Scientist with a passion for solving complex problems. I have experience in developing machine learning models, data analysis, and data visualization.",
   summary:
     "I am a developer and data scientist with experience in predictive projects, large-scale data analysis, algorithm optimization, and creating scalable solutions. I specialize in transforming complex data into actionable insights for business decision-making. My goal is to continue growing at the intersection of technology and data, adding value through innovative solutions.",
-  avatarUrl: "/me.jpg",
+  avatarUrl: "/img/me.webp",
   skills: [
     "Python", 
     "Pandas",
@@ -76,7 +76,7 @@ export const DATA = {
       },
       Youtube: {
         name: "Youtube",
-        url: "https://dub.sh/dillion-youtube",
+        url: "#",
         icon: Icons.youtube,
         navbar: false,
       },
@@ -119,7 +119,7 @@ export const DATA = {
         width: 600,
         height: 400
       },
-      video: "",
+      video: "../../public/videos/airlines.mp4",
     },
     {
       title: "Melari Spa",
@@ -206,7 +206,7 @@ export const DATA = {
         },
       ],
       image: {
-        src:"/output_houses.png",
+        src:"/img/output-houses.webp",
       width: 600,
       height: 400
     },
@@ -235,7 +235,7 @@ export const DATA = {
       school: "Escuela Superior de Computo",
       href: "https://www.escom.ipn.mx/",
       degree: "Data Science",
-      logoUrl: "/escom.png",
+      logoUrl: "/img/escom.webp",
       start: "2022",
       end: "Expected 2026",
     },
@@ -243,7 +243,7 @@ export const DATA = {
       school: "Centro de Estudios Cientificos y Tecnologicos No. 9 Juan de Dios Batiz",
       href: "https://www.cecyt9.ipn.mx/",
       degree: "Technician in Programming",
-      logoUrl: "/batiz.png",
+      logoUrl: "/img/batiz.webp",
       start: "2019",
       end: "2022",
     },

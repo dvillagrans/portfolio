@@ -1,131 +1,85 @@
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
-import Link from "next/link";
-import Markdown from "react-markdown";
+import { motion } from "framer-motion";
 
-interface Props {
+interface ProjectCardProps {
   title: string;
-  href?: string;
   description: string;
   dates: string;
   tags: readonly string[];
-  link?: string;
   image?: {
     src: string;
-    width: number;
-    height: number;
+    width?: number;
+    height?: number;
   };
   video?: string;
-  links?: readonly {
-    icon: React.ReactNode;
-    type: string;
-    href: string;
-  }[];
-  className?: string;
+  onClick?: () => void;
+  href?: string;
 }
 
 export function ProjectCard({
   title,
-  href,
   description,
   dates,
   tags,
-  link,
   image,
-  video,
-  links,
-  className,
-}: Props) {
+  onClick,
+}: ProjectCardProps) {
   return (
-    <Card
-      className={
-        "group flex flex-col overflow-hidden border hover:shadow-xl transition-all duration-500 ease-out h-full hover:border-primary/20"
-      }
+    <Card 
+      className="group overflow-hidden border border-primary/10 bg-gradient-to-b from-background/50 to-background/80 backdrop-blur-xl transition-all hover:border-primary/30 hover:shadow-lg"
+      onClick={onClick}
     >
-      <Link
-        href={href || "#"}
-        className={cn("block relative overflow-hidden", className)}
-      >
-        {video && (
-          <div className="relative h-72 w-full overflow-hidden">
-            <video
-              src={video}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="pointer-events-none h-full w-full object-cover object-center transform transition-transform duration-700 ease-out group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          </div>
-        )}
+      {/* Contenedor de imagen con overlay y efecto hover */}
+      <div className="relative aspect-video overflow-hidden">
         {image && (
-          <div className="relative aspect-[16/10] w-full overflow-hidden">
+          <>
             <Image
-              src={image}
+              src={image.src}
               alt={title}
-              fill
-              className="object-cover object-center transform transition-transform duration-700 ease-out group-hover:scale-110"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw"
-              priority={true}
-              quality={100}
+              width={image.width || 1200}
+              height={image.height || 630}
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          </>
         )}
-      </Link>
-      <CardHeader className="px-6 pt-6">
-        <div className="space-y-2">
-          <CardTitle className="text-lg font-semibold transition-colors group-hover:text-primary">{title}</CardTitle>
-          <time className="font-sans text-sm text-muted-foreground">{dates}</time>
-          <div className="hidden font-sans text-sm underline print:visible">
-            {link?.replace("https://", "").replace("www.", "").replace("/", "")}
-          </div>
-          <Markdown className="prose prose-sm max-w-full text-pretty font-sans text-muted-foreground dark:prose-invert">
-            {description}
-          </Markdown>
+      </div>
+
+      <CardContent className="space-y-4 p-6">
+        {/* Título y fecha */}
+        <div>
+          <h3 className="font-bold text-xl group-hover:text-primary transition-colors">
+            {title}
+          </h3>
+          <p className="text-sm text-muted-foreground">{dates}</p>
         </div>
-      </CardHeader>
-      <CardContent className="mt-auto flex flex-col px-6">
-        {tags && tags.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {tags?.map((tag) => (
-              <Badge
-                className="px-2 py-0.5 text-[12px] transition-colors hover:bg-primary hover:text-primary-foreground"
-                variant="secondary"
-                key={tag}
-              >
-                {tag}
-              </Badge>
-            ))}
-          </div>
-        )}
+
+        {/* Descripción */}
+        <p className="text-muted-foreground line-clamp-2">{description}</p>
+
+        {/* Tags */}
+        <div className="flex flex-wrap gap-2">
+          {tags.slice(0, 4).map((tag) => (
+            <Badge key={tag} variant="secondary" className="bg-primary/10">
+              {tag}
+            </Badge>
+          ))}
+          {tags.length > 4 && (
+            <Badge variant="secondary" className="bg-primary/5">
+              +{tags.length - 4}
+            </Badge>
+          )}
+        </div>
+
+        {/* Indicador de "Click para ver más" */}
+        <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+          <Badge variant="secondary" className="bg-primary text-primary-foreground">
+            Click para ver más
+          </Badge>
+        </div>
       </CardContent>
-      <CardFooter className="px-6 pb-6">
-        {links && links.length > 0 && (
-          <div className="flex flex-row flex-wrap items-start gap-2">
-            {links?.map((link, idx) => (
-              <Link href={link?.href} key={idx} target="_blank">
-                <Badge 
-                  key={idx} 
-                  className="flex gap-2 px-3 py-1.5 text-[12px] transition-all hover:bg-primary hover:text-primary-foreground"
-                >
-                  {link.icon}
-                  {link.type}
-                </Badge>
-              </Link>
-            ))}
-          </div>
-        )}
-      </CardFooter>
     </Card>
   );
 }
