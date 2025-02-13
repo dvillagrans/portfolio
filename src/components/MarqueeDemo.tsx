@@ -5,19 +5,19 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const certificates = [
   {
-    img: "/googlecloud.png", 
+    img: "/img/googlecloud.webp", 
   },
   {
-    img: "/Curso_Oracle.jpg", 
+    img: "/img/Curso_Oracle.webp", 
   },
   {
-    img: "/Certificado - Curso de GitHub Actitions.jpg",
+    img: "/img/CursoGitHubActitions.webp",
   },
   {
-    img: "/docker_page-0001.jpg",
+    img: "/img/docker.webp",
   },
   {
-    img: "/Udemy_DC.jpg",
+    img: "/img/Udemy_DC.webp",
   },
   
 ];
