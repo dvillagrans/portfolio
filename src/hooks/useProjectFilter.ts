@@ -14,7 +14,7 @@ interface Project {
         width: number;
         height: number;
     };
-    video?: string;
+    video?: string;  // Añadimos la propiedad video como opcional
     links?: Array<{
         type: string;
         href: string;

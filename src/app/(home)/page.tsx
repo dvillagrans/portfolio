@@ -26,6 +26,25 @@ const skillCategories = [
 
 ];
 
+interface Project {
+  readonly title: string;
+  readonly href: string;
+  readonly dates: string;
+  readonly active?: boolean;
+  readonly description: string;
+  readonly technologies: readonly string[];
+  readonly links?: readonly {
+    readonly type: string;
+    readonly href: string;
+    readonly icon: React.ReactNode;
+  }[];
+  readonly image?: {
+    readonly src: string;
+    readonly width?: number;
+    readonly height?: number;
+  };
+  readonly video?: string;  // Añadimos la propiedad video como opcional
+}
 
 export default function Page() {
   const [selectedProject, setSelectedProject] = useState<any>(null);
@@ -115,18 +134,18 @@ export default function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 11}>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-              <h2 className="text-2xl font-bold">My Projects</h2>
+                <h2 className="text-2xl font-bold">My Projects</h2>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                   Check out my latest work
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  I&apos;ve worked on a variety of projects, from web projects to machine learning models. Here are a few of my favorites.
+                  Here are some of my featured projects. View all projects to see more.
                 </p>
               </div>
             </div>
           </BlurFade>
           <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 w-full max-w-4xl">
-            {DATA.projects.map((project, id) => (
+            {DATA.projects.slice(0, 4).map((project, id) => (
               <BlurFade
                 key={project.title}
                 delay={BLUR_FADE_DELAY * 12 + id * 0.05}
@@ -139,14 +158,13 @@ export default function Page() {
                     dates={project.dates}
                     tags={project.technologies}
                     image={project.image}
-                    video={project.video}
                   />
                 </div>
               </BlurFade>
             ))}
           </div>
           <div className="flex justify-center">
-          <ShinyButton text="View More" href="projects" />
+            <ShinyButton text={`View All Projects (${DATA.projects.length})`} href="projects" />
           </div>
         </div>
       </section>

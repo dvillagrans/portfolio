@@ -19,6 +19,9 @@ const certificates = [
   {
     img: "/img/Udemy_DC.webp",
   },
+  {
+    img: "/img/Coursera.webp",
+  }
   
 ];
 

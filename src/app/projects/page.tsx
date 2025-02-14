@@ -12,9 +12,10 @@ interface project {
   githubUrl?: string;
   projectUrl?: string;
   links?: { [key: string]: string };
-  image?: string;
+  image?: string | { src: string; alt: string };
   video?: string;
   href?: string;
+  active?: boolean;
 }
 import { ArrowLeft, SlidersHorizontal } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -139,7 +140,6 @@ export default function ProjectsPage() {
                     dates={project.dates}
                     tags={project.technologies}
                     image={project.image}
-                    video={project.video}
                   />
                 </motion.div>
               ))}

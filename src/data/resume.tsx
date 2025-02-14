@@ -119,7 +119,7 @@ export const DATA = {
         width: 600,
         height: 400
       },
-      video: "../../public/videos/airlines.mp4",
+      video: "/videos/airlines.mp4",
     },
     {
       title: "Melari Spa",
@@ -212,7 +212,113 @@ export const DATA = {
     },
       video: "",
 
+      },
+      {
+        title: "Dashboard of the selling of video games",
+        href: "",
+        dates: "Jan 2025",
+        active: false,
+        description:
+          "Creation of a dashboard for a company that sells video games, ",
+        technologies: [
+          "Power BI",
+          "Excel",
+        ],
+        links: [
+          {
+            type: "Source",
+            href: "",
+            icon: <Icons.github className="size-3" />,
+          },
+        ],
+        image: {
+          src:"/img/dash-videojuegos.webp",
       }
+    },
+    {
+      title: "Portfolio",
+      href: "https://portfolio-pi-vert-92.vercel.app/",
+      dates: "July 2024",
+      active: true,
+      description:
+        "Creation of a portfolio to show my projects and skills.",
+      technologies: [
+        "Next.js",
+        "TypeScript",
+        "TailwindCSS",
+        "Vercel",
+      ],
+      links: [
+        {
+          type: "Website",
+          href: "https://portfolio-pi-vert-92.vercel.app/",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/portfolio",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src:"/img/portfolio.webp",
+    },
+    video: "",
+  },
+  {
+    title: "Code Master",
+    href: "https://codemaster-two.vercel.app",
+    dates: "Nov 2024 - Current",
+    active : true,
+    description:
+      "Creation of a platform to learn programming languages.",
+    technologies: [
+      "Astro",
+      "TypeScript",
+      "TailwindCSS",
+      "Vercel",
+      "Django"
+    ],
+    links: [
+      {
+        type: "Website",
+        href: "https://codemaster-two.vercel.app",
+        icon: <Icons.globe className="size-3" />,
+      },
+      {
+        type: "Source",
+        href: "https://github.com/dvillagrans/Code-Master",
+        icon: <Icons.github className="size-3" />,
+      },
+    ],
+    image: {
+      src:"/img/codemaster.webp",
+  },
+  video: "",
+  },
+  {
+    title : "Dashboard of India Air Queality",
+    href: "",
+    dates: "Dec 2025",
+    active: false,
+    description:
+      "Creation of a dashboard for the air quality in India.",
+    technologies: [
+      "Power BI",
+      "Excel",
+    ],
+    links: [
+      {
+        type: "Source",
+        href: "",
+        icon: <Icons.github className="size-3" />,
+      },
+    ],
+    image: {
+      src:"/img/dash-airquality.webp",
+  },
+    video: "",
+  },
   ],
 
   work: [
