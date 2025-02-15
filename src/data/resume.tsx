@@ -319,7 +319,57 @@ export const DATA = {
   },
     video: "",
   },
-  ],
+  {
+    title: "Dashboard of Population by Continent",
+    href: "",
+    dates: "Feb 2025",
+    active: false,
+    description:
+      "Developed interactive Dashboard with Power BI to analyze population by continent.",
+    technologies: [
+      "Power BI",
+      "Data Modeling",
+      "Data Visualization",
+      "Interactive Visualizations"
+    ],
+    links: [
+      {
+        type: "Source",
+        href: "",
+        icon: <Icons.github className="size-3" />,
+      },
+    ],
+    image: {
+      src:"/img/dash-population.webp",
+  },
+    video: "",
+  },
+  {
+    title: "Dashboard of life expectancy by country and infant mortality",
+    href: "",
+    dates: "Feb 2025",
+    active: false,
+    description:
+      "Developed interactive Dashboard with Power BI to analyze life expectancy by country and infant mortality.",
+    technologies: [
+      "Power BI",
+      "Data Modeling",
+      "Data Visualization",
+      "Interactive Visualizations"
+    ],
+    links: [
+      {
+        type: "Source",
+        href: "",
+        icon: <Icons.github className="size-3" />,
+      },
+    ],
+    image: {
+      src:"/img/dash-esperanzavida-mortalidad.webp",
+  },
+  video: "",
+},
+],
 
   work: [
     {
