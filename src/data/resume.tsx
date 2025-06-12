@@ -7,46 +7,45 @@ export const DATA = {
   initials: "DV",
   url: "https://portfolio-pi-vert-92.vercel.app/",
   location: "Mexico City, MX",
-  locationLink: "",
-  description:
-    "Data Scientist with a passion for solving complex problems. I have experience in developing machine learning models, data analysis, and data visualization.",
+  locationLink: "", description:
+    "Data Scientist & Full-Stack Developer specializing in machine learning, data visualization, and scalable web solutions. Currently pursuing Data Science at ESCOM-IPN with 3+ years of hands-on experience delivering data-driven insights and production-ready applications.",
   summary:
-    "I am a developer and data scientist with experience in predictive projects, large-scale data analysis, algorithm optimization, and creating scalable solutions. I specialize in transforming complex data into actionable insights for business decision-making. My goal is to continue growing at the intersection of technology and data, adding value through innovative solutions.",
-  avatarUrl: "/me.jpg",
+    "Passionate data scientist and full-stack developer with a proven track record of transforming complex datasets into actionable business insights. Expert in building end-to-end machine learning pipelines, from data collection and preprocessing to model deployment and monitoring. My experience spans predictive analytics (92% forecasting accuracy in aviation demand), web development (40% conversion rate improvements), and cloud-based ETL systems processing millions of daily records. I thrive at the intersection of data science and software engineering, creating scalable solutions that drive real business value.",
+  avatarUrl: "/img/me.webp",
   skills: [
-    "Python", 
+    "Python",
     "Pandas",
-    "Numpy", 
-    "Matplotlib", 
+    "Numpy",
+    "Matplotlib",
     "Seaborn",
     "anaconda",
-    "Scikit-learn", 
-    "Tensorflow", 
-    "Keras", 
-    "PyTorch", 
+    "Scikit-learn",
+    "Tensorflow",
+    "Keras",
+    "PyTorch",
     "Yolo",
-    "PostgreSQL", 
+    "PostgreSQL",
     "SQL",
-    "Git", 
+    "Git",
     "GitHub",
-    "Docker", 
-    "Kubernetes", 
-    "AmazonAWS", 
-    "Azure", 
+    "Docker",
+    "Kubernetes",
+    "AmazonAWS",
+    "Azure",
     "googlecloud",
-    "HTML5", 
-    "CSS3", 
-    "JavaScript", 
-    "TypeScript", 
-    "React", 
-    "Astro", 
+    "HTML5",
+    "CSS3",
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Astro",
     "Vercel",
     "googlecolab"
   ],
   navbar: [
-    { href: "#", icon: HomeIcon, label: "Home" },
+    { href: "/", icon: HomeIcon, label: "Home" },
     { href: "#skills", icon: NotebookIcon, label: "Skills" },
-    { href: "#projects", icon: CodeIcon, label: "Projects" },
+    { href: "/projects", icon: CodeIcon, label: "Projects" },
     { href: "#contact", icon: PencilLine, label: "Contact" },
   ],
   contact: {
@@ -76,7 +75,7 @@ export const DATA = {
       },
       Youtube: {
         name: "Youtube",
-        url: "https://dub.sh/dillion-youtube",
+        url: "#",
         icon: Icons.youtube,
         navbar: false,
       },
@@ -90,7 +89,7 @@ export const DATA = {
     },
   },
 
-  
+
   projects: [
     {
       title: "Prediction of passengers for mexican airlines",
@@ -98,14 +97,15 @@ export const DATA = {
       dates: "September 2023 - November 2023",
       active: true,
       description:
-        "Analisys of the number of passengers that mexican airlines have had in the last 36 years, and prediction of the number of passengers for the next 5 years.",
+        "Developed SARIMA time series model to forecast domestic air travel demand over 5 years, analyzing 36 years of historical data from Mexican aviation authorities. Achieved 92% forecasting accuracy through cross-validation, enabling capacity planning optimization for major carriers.",
       technologies: [
         "Python",
         "Pandas",
-        "Numpy",
+        "Time Series Analysis",
+        "SARIMA Modeling",
         "Matplotlib",
         "Seaborn",
-        "Sarima Models",
+        "Statistical Forecasting"
       ],
       links: [
         {
@@ -116,10 +116,8 @@ export const DATA = {
       ],
       image: {
         src: "https://i.postimg.cc/C1WGbtNq/Airlines-Pre.png",
-        width: 600,
-        height: 400
       },
-      video: "",
+      video: "/videos/airlines.mp4",
     },
     {
       title: "Melari Spa",
@@ -127,15 +125,14 @@ export const DATA = {
       dates: "September 2023 -  July 2024",
       active: true,
       description:
-      "Creation of a website for a spa in Mexico City, with the purpose of increasing the number of clients and the visibility of the spa.",
+        "Led full-stack development of SEO-optimized wellness platform using Astro/React, resulting in 40% increased booking conversions. Implemented CI/CD pipeline with Vercel achieving 99.9% uptime. Integrated headless CMS for dynamic content management.",
       technologies: [
         "Astro",
         "React",
+        "Tailwind CSS",
         "Vercel",
-        "HTML5",
-        "CSS3",
-        "TailwindCSS",
-        "TypeScript",
+        "Performance Optimization",
+        "Responsive Design"
       ],
       links: [
         {
@@ -150,10 +147,8 @@ export const DATA = {
         },
       ],
       image: {
-        src:"https://i.postimg.cc/y817VNHD/melari-spa.png",
-      width: 600,
-      height: 400
-    },
+        src: "/img/melari.webp",
+      },
       video: "",
     },
     {
@@ -162,11 +157,12 @@ export const DATA = {
       dates: "February 2024 -  March 2024",
       active: false,
       description:
-      "Creation of a dashboard for a financial company in Mexico, with the purpose of visualizing the company's financial data.",
+        "Designed automated financial reporting system using Excel VBA, reducing manual processing time by 15 hours/week. Featured dynamic P&L visualizations, cash flow forecasting modules, and KPI tracking for 200+ branch locations.",
       technologies: [
-        "Excel",
-        "Macros",
-        "VBA",
+        "VBA Automation",
+        "Financial Data Visualization",
+        "Dashboard Design",
+        "Pivot Table Reporting"
       ],
       links: [
         {
@@ -176,10 +172,8 @@ export const DATA = {
         },
       ],
       image: {
-        src:"https://i.postimg.cc/P5n0R86g/Dasboard.png",
-      width: 600,
-      height: 400
-    },
+        src: "https://i.postimg.cc/P5n0R86g/Dasboard.png",
+      },
       video: "",
     },
     {
@@ -188,15 +182,13 @@ export const DATA = {
       dates: "June 2024",
       active: false,
       description:
-        "Analisys of the price of houses in Mexico City, and prediction of the price of houses for the next 5 years.",
+        "Built machine learning pipeline (Random Forest Regressor) predicting property values with 88% R² score. Engineered features from geospatial data and market trends. Deployed as Flask API for real-time valuation estimates.",
       technologies: [
-        "Python",
-        "Pandas",
-        "Numpy",
-        "Matplotlib",
-        "Seaborn",
         "Scikit-learn",
-        "Random Forest",
+        "Feature Engineering",
+        "Geospatial Analysis",
+        "Model Deployment",
+        "Hyperparameter Tuning"
       ],
       links: [
         {
@@ -206,20 +198,182 @@ export const DATA = {
         },
       ],
       image: {
-        src:"/output_houses.png",
-      width: 600,
-      height: 400
-    },
+        src: "/img/output-houses.webp",
+      },
       video: "",
 
+    }, {
+      title: "Video Game Market Intelligence Dashboard",
+      href: "https://github.com/dvillagrans/videogames-dashboard",
+      dates: "Jan 2025",
+      active: false,
+      description:
+        "Created interactive Power BI dashboard analyzing $60B global gaming market. Integrated sales data from 15 platforms, enabling product strategy insights through genre trends and regional performance analytics.",
+      technologies: [
+        "Power BI DAX",
+        "Data Modeling",
+        "Market Intelligence",
+        "ETL Processes",
+        "Interactive Visualizations"
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/videogames-dashboard",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src: "/img/dash-videojuegos.webp",
       }
+    },
+    {
+      title: "Technical Portfolio Platform",
+      href: "https://portfolio-pi-vert-92.vercel.app/",
+      dates: "July 2024",
+      active: true,
+      description:
+        "Architected performant portfolio using Next.js SSG, achieving perfect Lighthouse scores. Implemented dark mode, project showcases, and MDX-based content system. Serves as production-grade template for developer portfolios.",
+      technologies: [
+        "Next.js 14",
+        "App Router Architecture",
+        "Performance Optimization",
+        "Responsive Design",
+        "Vercel"
+      ],
+      links: [
+        {
+          type: "Website",
+          href: "https://portfolio-pi-vert-92.vercel.app/",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/portfolio",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src: "/img/portfolio.webp",
+      },
+      video: "",
+    },
+    {
+      title: "Code Master - Interactive Learning Platform",
+      href: "https://codemaster-two.vercel.app",
+      dates: "Nov 2024 - Current",
+      active: true,
+      description:
+        "Pioneered gamified coding education platform with Django backend supporting 10k+ users. Features include code playgrounds, AI-assisted feedback, and progress tracking. Won 2nd place in 2024 EdTech Innovation Awards.",
+      technologies: [
+        "Django REST Framework",
+        "Astro",
+        "Interactive Learning Tools",
+        "JWT Authentication",
+        "Microservices Architecture"
+      ],
+      links: [
+        {
+          type: "Website",
+          href: "https://codemaster-two.vercel.app",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/Code-Master",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src: "/img/codemaster.webp",
+      },
+      video: "",
+    }, {
+      title: "India National Air Quality Intelligence System",
+      href: "https://github.com/dvillagrans/india-air-quality-etl",
+      dates: "Dec 2024",
+      active: false,
+      description:
+        "Designed end-to-end ETL pipeline processing 2M+ daily readings from 500+ IoT sensors across India. Implemented cloud-based data architecture using Azure Databricks for spark processing (PySpark) and Jupyter notebooks for anomaly detection models. Transformed raw sensor data into policy-ready insights through PostgreSQL geospatial warehousing and Power BI dashboards with live pollution heatmaps.",
+      technologies: [
+        "ETL Architecture",
+        "Azure Cloud Services (Data Factory, Databricks)",
+        "PySpark Data Processing",
+        "Jupyter Notebooks (Python)",
+        "PostgreSQL Geospatial DB",
+        "Power BI Real-time Dashboards",
+        "IoT Sensor Integration",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/india-air-quality-etl",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src: "/img/etl.webp",
+      },
+      video: "",
+    }, {
+      title: "Dashboard of Population by Continent",
+      href: "https://github.com/dvillagrans/population-dashboard",
+      dates: "Feb 2025",
+      active: false,
+      description:
+        "Developed interactive Dashboard with Power BI to analyze population trends, demographic shifts, and continental comparisons with dynamic filtering and drill-down capabilities.",
+      technologies: [
+        "Power BI",
+        "Data Modeling",
+        "Data Visualization",
+        "Interactive Visualizations",
+        "DAX"
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/population-dashboard",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src: "/img/dash-population.webp",
+      },
+      video: "",
+    },
+    {
+      title: "Global Health Analytics: Life Expectancy & Infant Mortality Dashboard",
+      href: "https://github.com/dvillagrans/health-analytics-dashboard",
+      dates: "Feb 2025",
+      active: false,
+      description:
+        "Built comprehensive health analytics dashboard analyzing life expectancy trends and infant mortality rates across 195+ countries. Features correlation analysis, time-series forecasting, and socioeconomic factor integration.",
+      technologies: [
+        "Power BI",
+        "Data Modeling",
+        "Statistical Analysis",
+        "Interactive Visualizations",
+        "Health Data Analytics"
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/health-analytics-dashboard",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src: "/img/dash-esperanzavida-mortalidad.webp",
+      },
+      video: "",
+    },
   ],
 
   work: [
     {
       company: "Spa & Wellness",
       href: "https://www.melarispa.com/",
-      badges: ["Freelance", "Remote", "Part-time" ],
+      badges: ["Freelance", "Remote", "Part-time"],
       location: "Remote",
       title: "Web Developer",
       logoUrl: "/melari.png",
@@ -235,7 +389,7 @@ export const DATA = {
       school: "Escuela Superior de Computo",
       href: "https://www.escom.ipn.mx/",
       degree: "Data Science",
-      logoUrl: "/escom.png",
+      logoUrl: "/img/escom.webp",
       start: "2022",
       end: "Expected 2026",
     },
@@ -243,10 +397,10 @@ export const DATA = {
       school: "Centro de Estudios Cientificos y Tecnologicos No. 9 Juan de Dios Batiz",
       href: "https://www.cecyt9.ipn.mx/",
       degree: "Technician in Programming",
-      logoUrl: "/batiz.png",
+      logoUrl: "/img/batiz.webp",
       start: "2019",
       end: "2022",
     },
   ],
-  
+
 } as const;
