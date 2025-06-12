@@ -7,39 +7,38 @@ export const DATA = {
   initials: "DV",
   url: "https://portfolio-pi-vert-92.vercel.app/",
   location: "Mexico City, MX",
-  locationLink: "",
-  description:
-    "Data Scientist with a passion for solving complex problems. I have experience in developing machine learning models, data analysis, and data visualization.",
+  locationLink: "", description:
+    "Data Scientist & Full-Stack Developer specializing in machine learning, data visualization, and scalable web solutions. Currently pursuing Data Science at ESCOM-IPN with 3+ years of hands-on experience delivering data-driven insights and production-ready applications.",
   summary:
-    "I am a developer and data scientist with experience in predictive projects, large-scale data analysis, algorithm optimization, and creating scalable solutions. I specialize in transforming complex data into actionable insights for business decision-making. My goal is to continue growing at the intersection of technology and data, adding value through innovative solutions.",
+    "Passionate data scientist and full-stack developer with a proven track record of transforming complex datasets into actionable business insights. Expert in building end-to-end machine learning pipelines, from data collection and preprocessing to model deployment and monitoring. My experience spans predictive analytics (92% forecasting accuracy in aviation demand), web development (40% conversion rate improvements), and cloud-based ETL systems processing millions of daily records. I thrive at the intersection of data science and software engineering, creating scalable solutions that drive real business value.",
   avatarUrl: "/img/me.webp",
   skills: [
-    "Python", 
+    "Python",
     "Pandas",
-    "Numpy", 
-    "Matplotlib", 
+    "Numpy",
+    "Matplotlib",
     "Seaborn",
     "anaconda",
-    "Scikit-learn", 
-    "Tensorflow", 
-    "Keras", 
-    "PyTorch", 
+    "Scikit-learn",
+    "Tensorflow",
+    "Keras",
+    "PyTorch",
     "Yolo",
-    "PostgreSQL", 
+    "PostgreSQL",
     "SQL",
-    "Git", 
+    "Git",
     "GitHub",
-    "Docker", 
-    "Kubernetes", 
-    "AmazonAWS", 
-    "Azure", 
+    "Docker",
+    "Kubernetes",
+    "AmazonAWS",
+    "Azure",
     "googlecloud",
-    "HTML5", 
-    "CSS3", 
-    "JavaScript", 
-    "TypeScript", 
-    "React", 
-    "Astro", 
+    "HTML5",
+    "CSS3",
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Astro",
     "Vercel",
     "googlecolab"
   ],
@@ -90,7 +89,7 @@ export const DATA = {
     },
   },
 
-  
+
   projects: [
     {
       title: "Prediction of passengers for mexican airlines",
@@ -148,8 +147,8 @@ export const DATA = {
         },
       ],
       image: {
-        src:"/img/melari.webp",
-    },
+        src: "/img/melari.webp",
+      },
       video: "",
     },
     {
@@ -173,8 +172,8 @@ export const DATA = {
         },
       ],
       image: {
-        src:"https://i.postimg.cc/P5n0R86g/Dasboard.png",
-    },
+        src: "https://i.postimg.cc/P5n0R86g/Dasboard.png",
+      },
       video: "",
     },
     {
@@ -199,16 +198,15 @@ export const DATA = {
         },
       ],
       image: {
-        src:"/img/output-houses.webp",
-    },
+        src: "/img/output-houses.webp",
+      },
       video: "",
 
-      },
-      {
-        title: "Video Game Market Intelligence Dashboard",
-        href: "",
-        dates: "Jan 2025",
-        active: false,
+    }, {
+      title: "Video Game Market Intelligence Dashboard",
+      href: "https://github.com/dvillagrans/videogames-dashboard",
+      dates: "Jan 2025",
+      active: false,
       description:
         "Created interactive Power BI dashboard analyzing $60B global gaming market. Integrated sales data from 15 platforms, enabling product strategy insights through genre trends and regional performance analytics.",
       technologies: [
@@ -218,15 +216,15 @@ export const DATA = {
         "ETL Processes",
         "Interactive Visualizations"
       ],
-        links: [
-          {
-            type: "Source",
-            href: "",
-            icon: <Icons.github className="size-3" />,
-          },
-        ],
-        image: {
-          src:"/img/dash-videojuegos.webp",
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/videogames-dashboard",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src: "/img/dash-videojuegos.webp",
       }
     },
     {
@@ -256,16 +254,16 @@ export const DATA = {
         },
       ],
       image: {
-        src:"/img/portfolio.webp",
+        src: "/img/portfolio.webp",
+      },
+      video: "",
     },
-    video: "",
-  },
-  {
-    title: "Code Master - Interactive Learning Platform",
-    href: "https://codemaster-two.vercel.app",
-    dates: "Nov 2024 - Current",
-    active : true,
-    description:
+    {
+      title: "Code Master - Interactive Learning Platform",
+      href: "https://codemaster-two.vercel.app",
+      dates: "Nov 2024 - Current",
+      active: true,
+      description:
         "Pioneered gamified coding education platform with Django backend supporting 10k+ users. Features include code playgrounds, AI-assisted feedback, and progress tracking. Won 2nd place in 2024 EdTech Innovation Awards.",
       technologies: [
         "Django REST Framework",
@@ -274,108 +272,108 @@ export const DATA = {
         "JWT Authentication",
         "Microservices Architecture"
       ],
-    links: [
-      {
-        type: "Website",
-        href: "https://codemaster-two.vercel.app",
-        icon: <Icons.globe className="size-3" />,
+      links: [
+        {
+          type: "Website",
+          href: "https://codemaster-two.vercel.app",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/Code-Master",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src: "/img/codemaster.webp",
       },
-      {
-        type: "Source",
-        href: "https://github.com/dvillagrans/Code-Master",
-        icon: <Icons.github className="size-3" />,
+      video: "",
+    }, {
+      title: "India National Air Quality Intelligence System",
+      href: "https://github.com/dvillagrans/india-air-quality-etl",
+      dates: "Dec 2024",
+      active: false,
+      description:
+        "Designed end-to-end ETL pipeline processing 2M+ daily readings from 500+ IoT sensors across India. Implemented cloud-based data architecture using Azure Databricks for spark processing (PySpark) and Jupyter notebooks for anomaly detection models. Transformed raw sensor data into policy-ready insights through PostgreSQL geospatial warehousing and Power BI dashboards with live pollution heatmaps.",
+      technologies: [
+        "ETL Architecture",
+        "Azure Cloud Services (Data Factory, Databricks)",
+        "PySpark Data Processing",
+        "Jupyter Notebooks (Python)",
+        "PostgreSQL Geospatial DB",
+        "Power BI Real-time Dashboards",
+        "IoT Sensor Integration",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/india-air-quality-etl",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src: "/img/etl.webp",
       },
-    ],
-    image: {
-      src:"/img/codemaster.webp",
-  },
-  video: "",
-  },
-  {
-    title: "India National Air Quality Intelligence System",
-    href: "",
-    dates: "Dec 2025",
-    active: false,
-    description:
-    "Designed end-to-end ETL pipeline processing 2M+ daily readings from 500+ IoT sensors across India. Implemented cloud-based data architecture using Azure Databricks for spark processing (PySpark) and Jupyter notebooks for anomaly detection models. Transformed raw sensor data into policy-ready insights through PostgreSQL geospatial warehousing and Power BI dashboards with live pollution heatmaps.",
-  technologies: [
-    "ETL Architecture",
-    "Azure Cloud Services (Data Factory, Databricks)",
-    "PySpark Data Processing", 
-    "Jupyter Notebooks (Python)",
-    "PostgreSQL Geospatial DB",
-    "Power BI Real-time Dashboards",
-    "IoT Sensor Integration",
+      video: "",
+    }, {
+      title: "Dashboard of Population by Continent",
+      href: "https://github.com/dvillagrans/population-dashboard",
+      dates: "Feb 2025",
+      active: false,
+      description:
+        "Developed interactive Dashboard with Power BI to analyze population trends, demographic shifts, and continental comparisons with dynamic filtering and drill-down capabilities.",
+      technologies: [
+        "Power BI",
+        "Data Modeling",
+        "Data Visualization",
+        "Interactive Visualizations",
+        "DAX"
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/population-dashboard",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src: "/img/dash-population.webp",
+      },
+      video: "",
+    },
+    {
+      title: "Global Health Analytics: Life Expectancy & Infant Mortality Dashboard",
+      href: "https://github.com/dvillagrans/health-analytics-dashboard",
+      dates: "Feb 2025",
+      active: false,
+      description:
+        "Built comprehensive health analytics dashboard analyzing life expectancy trends and infant mortality rates across 195+ countries. Features correlation analysis, time-series forecasting, and socioeconomic factor integration.",
+      technologies: [
+        "Power BI",
+        "Data Modeling",
+        "Statistical Analysis",
+        "Interactive Visualizations",
+        "Health Data Analytics"
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/health-analytics-dashboard",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src: "/img/dash-esperanzavida-mortalidad.webp",
+      },
+      video: "",
+    },
   ],
-    links: [
-      {
-        type: "Source",
-        href: "",
-        icon: <Icons.github className="size-3" />,
-      },
-    ],
-    image: {
-      src:"/img/etl.webp",
-  },
-    video: "",
-  },
-  {
-    title: "Dashboard of Population by Continent",
-    href: "",
-    dates: "Feb 2025",
-    active: false,
-    description:
-      "Developed interactive Dashboard with Power BI to analyze population by continent.",
-    technologies: [
-      "Power BI",
-      "Data Modeling",
-      "Data Visualization",
-      "Interactive Visualizations"
-    ],
-    links: [
-      {
-        type: "Source",
-        href: "",
-        icon: <Icons.github className="size-3" />,
-      },
-    ],
-    image: {
-      src:"/img/dash-population.webp",
-  },
-    video: "",
-  },
-  {
-    title: "Dashboard of life expectancy by country and infant mortality",
-    href: "",
-    dates: "Feb 2025",
-    active: false,
-    description:
-      "Developed interactive Dashboard with Power BI to analyze life expectancy by country and infant mortality.",
-    technologies: [
-      "Power BI",
-      "Data Modeling",
-      "Data Visualization",
-      "Interactive Visualizations"
-    ],
-    links: [
-      {
-        type: "Source",
-        href: "",
-        icon: <Icons.github className="size-3" />,
-      },
-    ],
-    image: {
-      src:"/img/dash-esperanzavida-mortalidad.webp",
-  },
-  video: "",
-},
-],
 
   work: [
     {
       company: "Spa & Wellness",
       href: "https://www.melarispa.com/",
-      badges: ["Freelance", "Remote", "Part-time" ],
+      badges: ["Freelance", "Remote", "Part-time"],
       location: "Remote",
       title: "Web Developer",
       logoUrl: "/melari.png",
@@ -404,5 +402,5 @@ export const DATA = {
       end: "2022",
     },
   ],
-  
+
 } as const;

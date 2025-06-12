@@ -7,23 +7,22 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DATA } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
-import {IconCloudDemo} from "@/components/ui/cloud-icon";
+import { IconCloudDemo } from "@/components/ui/cloud-icon";
 import ParticlesDemo from "@/components/ParticlesDemo";
 import ShinyButton from "@/components/magicui/shiny-button";
-import {MarqueeDemo} from "@/components/MarqueeDemo";
+import { MarqueeDemo } from "@/components/MarqueeDemo";
 import { useState } from "react";
 import { ProjectDialog } from "@/components/project-dialog";
 
 const BLUR_FADE_DELAY = 0.04;
 
 const skillCategories = [
-  { title: "Data Science", skills: ["Python", "Pandas", "Numpy", , "Matplotlib", "Seaborn"] },
-  {title: "Machine Learning", skills: ["Scikit-learn", "Tensorflow", "Keras", "PyTorch", "Yolo"]},
+  { title: "Data Science", skills: ["Python", "Pandas", "Numpy", "Matplotlib", "Seaborn"] },
+  { title: "Machine Learning", skills: ["Scikit-learn", "Tensorflow", "Keras", "PyTorch", "Yolo"] },
   { title: "Databases", skills: ["PostgreSQL", "SQL"] },
   { title: "Version Control", skills: ["Git", "GitHub"] },
   { title: "Cloud & DevOps", skills: ["Docker", "Kubernetes", "AWS", "Azure", "Google Cloud"] },
   { title: "Web Development", skills: ["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Astro", "Vercel"] },
-
 ];
 
 interface Project {
@@ -66,27 +65,51 @@ export default function Page() {
                 delay={BLUR_FADE_DELAY}
                 text={DATA.description}
               />
-            </div>
-            <BlurFade delay={BLUR_FADE_DELAY}>
-              <Avatar className="size-28 border">
+            </div>            <BlurFade delay={BLUR_FADE_DELAY}>
+              <Avatar className="size-28 sm:size-32 border">
                 <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
                 <AvatarFallback>{DATA.initials}</AvatarFallback>
               </Avatar>
             </BlurFade>
           </div>
         </div>
-      </section>
-      <section id="about">
+      </section>      <section id="about">
         <BlurFade delay={BLUR_FADE_DELAY * 3}>
           <h2 className="text-2xl font-bold">About</h2>
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 4}>
-        <Markdown className="prose max-w-auto md:text-base text-pretty font-sans text-base text-muted-foreground dark:prose-invert">
+          <Markdown className="prose max-w-auto md:text-base text-pretty font-sans text-base text-muted-foreground dark:prose-invert">
             {DATA.summary}
-        </Markdown>
+          </Markdown>
         </BlurFade>
       </section>
-      
+
+      <section id="work">
+        <div className="flex min-h-0 flex-col gap-y-3">
+          <BlurFade delay={BLUR_FADE_DELAY * 5}>
+            <h2 className="text-2xl font-bold">Work Experience</h2>
+          </BlurFade>
+          {DATA.work.map((work, id) => (
+            <BlurFade
+              key={work.company}
+              delay={BLUR_FADE_DELAY * 6 + id * 0.05}
+            >
+              <ResumeCard
+                key={work.company}
+                logoUrl={work.logoUrl}
+                altText={work.company}
+                title={work.company}
+                subtitle={work.title}
+                href={work.href}
+                badges={work.badges}
+                period={`${work.start} - ${work.end ?? "Present"}`}
+                description={work.description}
+              />
+            </BlurFade>
+          ))}
+        </div>
+      </section>
+
       <section id="education">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 7}>
@@ -121,7 +144,7 @@ export default function Page() {
               <BlurFade key={category.title} delay={BLUR_FADE_DELAY * (10 + index)}>
                 <ParticlesDemo title={category.title} skills={category.skills} />
               </BlurFade>
-            ))}          
+            ))}
           </div>
           <IconCloudDemo />
 
@@ -176,68 +199,41 @@ export default function Page() {
           onClose={() => setSelectedProject(null)}
           project={selectedProject}
         />
-      )}
-
-      <section id="certifications">
-      <h2 className="text-2xl font-bold">Certifications</h2>
-            <MarqueeDemo/>
-      <section/>
-        
-
-       </section>
-
-      <section id="work">
-        <div className="flex min-h-0 flex-col gap-y-3">
-          <BlurFade delay={BLUR_FADE_DELAY * 5}>
-            <h2 className="text-xl font-bold">Work Experience</h2>
-          </BlurFade>
-      
-
-          {DATA.work.map((work, id) => (
-            <BlurFade
-              key={work.company}
-              delay={BLUR_FADE_DELAY * 6 + id * 0.05}
-            >
-              <ResumeCard
-                key={work.company}
-                logoUrl={work.logoUrl}
-                altText={work.company}
-                title={work.company}
-                subtitle={work.title}
-                href={work.href}
-                badges={work.badges}
-                period={`${work.start} - ${work.end ?? "Present"}`}
-                description={work.description}
-              />
-            </BlurFade>
-          ))}
-
-        </div>
+      )}      <section id="certifications">
+        <h2 className="text-2xl font-bold">Certifications</h2>
+        <MarqueeDemo />
       </section>
-      
       <section id="contact">
         <div className="grid items-center justify-center gap-4 px-4 text-center md:px-6 w-full py-12">
           <BlurFade delay={BLUR_FADE_DELAY * 16}>
             <div className="space-y-3">
-            <h2 className="text-xl font-bold"> Contact  </h2>
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                Get in Touch
-              </h2>
+              <h2 className="text-2xl font-bold">Let's Build Something Amazing Together</h2>
+              <h3 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                Ready to Transform Data into Impact?
+              </h3>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Want to chat? Just shoot me a message{" "}
+                I'm currently open to new opportunities in data science, machine learning, and full-stack development.
+                Whether you need predictive analytics, web solutions, or data visualization dashboards, let's discuss how I can help drive your business forward.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6">
                 <Link
                   href={DATA.contact.social.LinkedIn.url}
-                  className="text-blue-500 hover:underline"
+                  className="inline-flex items-center px-6 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors font-medium"
                 >
-                  here
-                </Link>{" "}
-                and I&apos;ll respond as soon.
-              </p>
+                  Connect on LinkedIn
+                </Link>
+                <Link
+                  href={`mailto:${DATA.contact.email}`}
+                  className="inline-flex items-center px-6 py-3 rounded-lg border border-primary hover:bg-primary hover:text-primary-foreground transition-colors font-medium"
+                >
+                  Send Email
+                </Link>
+              </div>
             </div>
           </BlurFade>
         </div>
       </section>
-      
+
     </main>
   );
 }
