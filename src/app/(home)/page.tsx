@@ -134,111 +134,168 @@ export default function Page() {
           </BlurFade>
         </div>
       </div>
-    </section>      <section id="work">
-        <div className="flex min-h-0 flex-col gap-y-3">
+    </section>      <section id="work" className="space-y-6">
+        <div className="flex min-h-0 flex-col gap-y-4">
           <BlurFade delay={BLUR_FADE_DELAY * 6}>
-            <h2 className="text-2xl font-bold">Work Experience</h2>
-          </BlurFade>
-          {DATA.work.map((work, id) => (
-            <BlurFade
-              key={work.company}
-              delay={BLUR_FADE_DELAY * 6 + id * 0.05}
-            >
-              <ResumeCard
-                key={work.company}
-                logoUrl={work.logoUrl}
-                altText={work.company}
-                title={work.company}
-                subtitle={work.title}
-                href={work.href}
-                badges={work.badges}
-                period={`${work.start} - ${work.end ?? "Present"}`}
-                description={work.description}
-              />
-            </BlurFade>
-          ))}
-        </div>
-      </section>
-
-      <section id="education">
-        <div className="flex min-h-0 flex-col gap-y-3">
-          <BlurFade delay={BLUR_FADE_DELAY * 7}>
-            <h2 className="text-2xl font-bold">Education</h2>
-          </BlurFade>
-          {DATA.education.map((education, id) => (
-            <BlurFade
-              key={education.school}
-              delay={BLUR_FADE_DELAY * 8 + id * 0.05}
-            >
-              <ResumeCard
-                key={education.school}
-                href={education.href}
-                logoUrl={education.logoUrl}
-                altText={education.school}
-                title={education.school}
-                subtitle={education.degree}
-                period={`${education.start} - ${education.end}`}
-              />
-            </BlurFade>
-          ))}
-        </div>
-      </section>
-
-      <section id="skills">
-        <div className="flex min-h-0 flex-col gap-y-3 items-center">
-          <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <h2 className="text-2xl font-bold mb-6">Skills</h2>
-          </BlurFade>
-          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 w-full max-w-4xl">
-            {skillCategories.map((category, index) => (
-              <BlurFade key={category.title} delay={BLUR_FADE_DELAY * (10 + index)}>
-                <ParticlesDemo title={category.title} skills={category.skills} />
-              </BlurFade>
-            ))}
-          </div>
-          <IconCloudDemo />
-
-        </div>
-      </section>
-
-
-      <section id="projects">
-        <div className="space-y-12 w-full">
-          <BlurFade delay={BLUR_FADE_DELAY * 11}>
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-2xl font-bold">My Projects</h2>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  Check out my latest work
-                </h2>
-                <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Here are some of my featured projects. View all projects to see more.
-                </p>
+            <div className="flex items-center gap-3">
+              <h2 className="text-2xl font-bold tracking-tight">Work Experience</h2>
+              <div className="h-px bg-gradient-to-r from-border to-transparent flex-1"></div>
+              <div className="text-sm text-muted-foreground font-medium bg-primary/10 px-3 py-1 rounded-full">
+                {DATA.work.length} Experiences
               </div>
             </div>
           </BlurFade>
-          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 w-full max-w-4xl">
-            {DATA.projects.slice(0, 4).map((project, id) => (
+          <div className="grid gap-4">
+            {DATA.work.map((work, id) => (
               <BlurFade
-                key={project.title}
-                delay={BLUR_FADE_DELAY * 12 + id * 0.05}
+                key={work.company}
+                delay={BLUR_FADE_DELAY * 7 + id * 0.1}
               >
-                <div onClick={() => setSelectedProject(project)} className="cursor-pointer">
-                  <ProjectCard
-                    key={project.title}
-                    title={project.title}
-                    description={project.description}
-                    dates={project.dates}
-                    tags={project.technologies}
-                    image={project.image}
+                <div className="group relative">
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/20 via-blue-500/20 to-purple-500/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                  <ResumeCard
+                    key={work.company}
+                    logoUrl={work.logoUrl}
+                    altText={work.company}
+                    title={work.company}
+                    subtitle={work.title}
+                    href={work.href}
+                    badges={work.badges}
+                    period={`${work.start} - ${work.end ?? "Present"}`}
+                    description={work.description}
                   />
                 </div>
               </BlurFade>
             ))}
           </div>
-          <div className="flex justify-center">
-            <ShinyButton text={`View All Projects (${DATA.projects.length})`} href="projects" />
+        </div>
+      </section>      <section id="education" className="space-y-6">
+        <div className="flex min-h-0 flex-col gap-y-4">
+          <BlurFade delay={BLUR_FADE_DELAY * 8}>
+            <div className="flex items-center gap-3">
+              <h2 className="text-2xl font-bold tracking-tight">Education</h2>
+              <div className="h-px bg-gradient-to-r from-border to-transparent flex-1"></div>
+              <div className="text-sm text-muted-foreground font-medium bg-blue-500/10 px-3 py-1 rounded-full">
+                {DATA.education.length} Degrees
+              </div>
+            </div>
+          </BlurFade>
+          <div className="grid gap-4">
+            {DATA.education.map((education, id) => (
+              <BlurFade
+                key={education.school}
+                delay={BLUR_FADE_DELAY * 9 + id * 0.1}
+              >
+                <div className="group relative">
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-green-500/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                  <ResumeCard
+                    key={education.school}
+                    href={education.href}
+                    logoUrl={education.logoUrl}
+                    altText={education.school}
+                    title={education.school}
+                    subtitle={education.degree}
+                    period={`${education.start} - ${education.end}`}
+                  />
+                </div>
+              </BlurFade>
+            ))}
           </div>
+        </div>
+      </section>      <section id="skills" className="space-y-8">
+        <div className="flex min-h-0 flex-col gap-y-6 items-center">
+          <BlurFade delay={BLUR_FADE_DELAY * 10}>
+            <div className="text-center space-y-2">
+              <div className="flex items-center justify-center gap-3">
+                <div className="h-px bg-gradient-to-r from-transparent to-border flex-1 max-w-20"></div>
+                <h2 className="text-2xl font-bold tracking-tight">Technical Skills</h2>
+                <div className="h-px bg-gradient-to-r from-border to-transparent flex-1 max-w-20"></div>
+              </div>
+              <p className="text-muted-foreground max-w-2xl text-center">
+                A comprehensive toolkit spanning data science, machine learning, and full-stack development
+              </p>
+            </div>
+          </BlurFade>
+
+          {/* Skill Categories Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
+            {skillCategories.map((category, index) => (
+              <BlurFade key={category.title} delay={BLUR_FADE_DELAY * (11 + index * 0.2)}>
+                <div className="group relative">
+                  <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/20 via-blue-500/20 to-purple-500/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                  <div className="relative">
+                    <ParticlesDemo title={category.title} skills={category.skills} />
+                  </div>
+                </div>
+              </BlurFade>
+            ))}
+          </div>          {/* Icon Cloud */}
+          <BlurFade delay={BLUR_FADE_DELAY * 14}>
+            <div className="max-w-md mx-auto scale-75 sm:scale-90">
+              <IconCloudDemo />
+            </div>
+          </BlurFade>
+        </div>
+      </section>      <section id="projects" className="space-y-8">
+        <div className="space-y-8 w-full">
+          <BlurFade delay={BLUR_FADE_DELAY * 15}>
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-3">
+                <div className="flex items-center justify-center gap-3">
+                  <div className="h-px bg-gradient-to-r from-transparent to-border flex-1 max-w-20"></div>
+                  <h2 className="text-2xl font-bold tracking-tight">Featured Projects</h2>
+                  <div className="h-px bg-gradient-to-r from-border to-transparent flex-1 max-w-20"></div>
+                </div>
+                <h3 className="text-3xl font-bold tracking-tighter sm:text-4xl bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
+                  Check out my latest work
+                </h3>
+                <p className="text-muted-foreground md:text-lg max-w-2xl">
+                  From data science pipelines to full-stack applications. Each project showcases different aspects of my technical expertise.
+                </p>
+                <div className="flex items-center justify-center gap-2 pt-2">
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                  <span className="text-sm text-muted-foreground font-medium">{DATA.projects.length} total projects</span>
+                </div>
+              </div>
+            </div>
+          </BlurFade>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl mx-auto">
+            {DATA.projects.slice(0, 4).map((project, id) => (
+              <BlurFade
+                key={project.title}
+                delay={BLUR_FADE_DELAY * 16 + id * 0.15}
+              >
+                <div
+                  onClick={() => setSelectedProject(project)}
+                  className="cursor-pointer group relative"
+                >
+                  <div className="absolute -inset-1 bg-gradient-to-br from-primary/20 via-blue-500/20 to-purple-500/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                  <div className="relative transform group-hover:scale-[1.02] transition duration-300">
+                    <ProjectCard
+                      key={project.title}
+                      title={project.title}
+                      description={project.description}
+                      dates={project.dates}
+                      tags={project.technologies}
+                      image={project.image}
+                    />
+                  </div>
+                </div>
+              </BlurFade>
+            ))}
+          </div>
+
+          <BlurFade delay={BLUR_FADE_DELAY * 18}>
+            <div className="flex justify-center pt-4">
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-primary via-blue-500 to-purple-500 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-500"></div>
+                <div className="relative">
+                  <ShinyButton text={`View All Projects (${DATA.projects.length})`} href="projects" />
+                </div>
+              </div>
+            </div>
+          </BlurFade>
         </div>
       </section>
 
@@ -249,34 +306,87 @@ export default function Page() {
           onClose={() => setSelectedProject(null)}
           project={selectedProject}
         />
-      )}      <section id="certifications">
-        <h2 className="text-2xl font-bold">Certifications</h2>
-        <MarqueeDemo />
-      </section>
-      <section id="contact">
-        <div className="grid items-center justify-center gap-4 px-4 text-center md:px-6 w-full py-12">
-          <BlurFade delay={BLUR_FADE_DELAY * 16}>
-            <div className="space-y-3">
-              <h2 className="text-2xl font-bold">Let&rsquo;s Build Something Amazing Together</h2>
-              <h3 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                Ready to Transform Data into Impact?
-              </h3>              <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                I&rsquo;m currently open to new opportunities in data science, machine learning, and full-stack development.
-                Whether you need predictive analytics, web solutions, or data visualization dashboards, let&rsquo;s discuss how I can help drive your business forward.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6">
-                <Link
-                  href={DATA.contact.social.LinkedIn.url}
-                  className="inline-flex items-center px-6 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors font-medium"
-                >
-                  Connect on LinkedIn
-                </Link>
-                <Link
-                  href={`mailto:${DATA.contact.email}`}
-                  className="inline-flex items-center px-6 py-3 rounded-lg border border-primary hover:bg-primary hover:text-primary-foreground transition-colors font-medium"
-                >
-                  Send Email
-                </Link>
+      )}      <section id="certifications" className="space-y-6">
+        <BlurFade delay={BLUR_FADE_DELAY * 19}>
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-bold tracking-tight">Certifications</h2>
+            <div className="h-px bg-gradient-to-r from-border to-transparent flex-1"></div>
+            <div className="text-sm text-muted-foreground font-medium bg-orange-500/10 px-3 py-1 rounded-full">
+              Professional Growth
+            </div>
+          </div>
+        </BlurFade>        <BlurFade delay={BLUR_FADE_DELAY * 19.5}>
+          <div className="scale-90 sm:scale-95">
+            <MarqueeDemo />
+          </div>
+        </BlurFade>
+      </section><section id="contact" className="py-16">
+        <div className="grid items-center justify-center gap-8 px-4 text-center md:px-6 w-full">
+          <BlurFade delay={BLUR_FADE_DELAY * 20}>
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <div className="flex items-center justify-center gap-3">
+                  <div className="h-px bg-gradient-to-r from-transparent to-border flex-1 max-w-20"></div>
+                  <h2 className="text-2xl font-bold tracking-tight">Let&rsquo;s Connect</h2>
+                  <div className="h-px bg-gradient-to-r from-border to-transparent flex-1 max-w-20"></div>
+                </div>
+                <h3 className="text-3xl font-bold tracking-tighter sm:text-4xl bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
+                  Ready to Transform Data into Impact?
+                </h3>
+                <p className="mx-auto max-w-[600px] text-muted-foreground md:text-lg leading-relaxed">
+                  I&rsquo;m currently open to new opportunities in data science, machine learning, and full-stack development.
+                  Whether you need predictive analytics, web solutions, or data visualization dashboards, let&rsquo;s discuss how I can help drive your business forward.
+                </p>
+              </div>
+
+              {/* Status and Location */}
+              <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
+                <div className="flex items-center gap-2 px-3 py-2 bg-green-500/10 text-green-500 rounded-full border border-green-500/20">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <span className="font-medium">Available for work</span>
+                </div>
+                <div className="flex items-center gap-2 px-3 py-2 bg-blue-500/10 text-blue-500 rounded-full border border-blue-500/20">
+                  <span className="font-medium">📍 Mexico City, MX</span>
+                </div>
+                <div className="flex items-center gap-2 px-3 py-2 bg-purple-500/10 text-purple-500 rounded-full border border-purple-500/20">
+                  <span className="font-medium">🎓 Data Science Student</span>
+                </div>
+              </div>
+
+              {/* Contact Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-500"></div>
+                  <Link
+                    href={DATA.contact.social.LinkedIn.url}
+                    className="relative inline-flex items-center px-8 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:scale-105"
+                  >
+                    <span className="mr-2">💼</span>
+                    Connect on LinkedIn
+                  </Link>
+                </div>
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-primary to-primary/80 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-500"></div>
+                  <Link
+                    href={`mailto:${DATA.contact.email}`}
+                    className="relative inline-flex items-center px-8 py-3 rounded-lg border-2 border-primary bg-background hover:bg-primary hover:text-primary-foreground transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:scale-105"
+                  >
+                    <span className="mr-2">✉️</span>
+                    Send Email
+                  </Link>
+                </div>
+              </div>
+
+              {/* Additional Contact Info */}
+              <div className="pt-6 border-t border-border/50">
+                <p className="text-sm text-muted-foreground mb-4">
+                  Preferred communication methods
+                </p>
+                <div className="flex flex-wrap justify-center gap-3 text-sm">
+                  <span className="px-3 py-1 bg-muted rounded-full">📧 Email responses within 24h</span>
+                  <span className="px-3 py-1 bg-muted rounded-full">💬 LinkedIn for professional inquiries</span>
+                  <span className="px-3 py-1 bg-muted rounded-full">🤝 Open to remote & hybrid opportunities</span>
+                </div>
               </div>
             </div>
           </BlurFade>

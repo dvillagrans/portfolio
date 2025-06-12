@@ -5,10 +5,10 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const certificates = [
   {
-    img: "/img/googlecloud.webp", 
+    img: "/img/googlecloud.webp",
   },
   {
-    img: "/img/Curso_Oracle.webp", 
+    img: "/img/Curso_Oracle.webp",
   },
   {
     img: "/img/CursoGitHubActitions.webp",
@@ -22,12 +22,12 @@ const certificates = [
   {
     img: "/img/Coursera.webp",
   }
-  
+
 ];
 
 const CertificateCard = ({ img }: { img: string }) => {
   return (
-    <div className="w-[650px] px-4"> {/* Ajustado a 650px */}
+    <div className="w-[400px] px-3"> {/* Reducido de 650px a 400px */}
       <figure
         className={cn(
           "relative cursor-pointer overflow-hidden rounded-xl border",
@@ -37,7 +37,7 @@ const CertificateCard = ({ img }: { img: string }) => {
           "dark:border-gray-50/[.1] dark:bg-gray-50/[.10]"
         )}
       >
-        <AspectRatio ratio={16/9}>
+        <AspectRatio ratio={16 / 9}>
           <Image
             className={cn(
               "h-full w-full object-cover",
@@ -49,7 +49,7 @@ const CertificateCard = ({ img }: { img: string }) => {
             alt="Certificate"
             src={img}
             fill
-            sizes="(max-width: 650px) 100vw, 650px" // Ajustado al nuevo tamaño
+            sizes="(max-width: 400px) 100vw, 400px" // Ajustado al nuevo tamaño
           />
         </AspectRatio>
       </figure>
@@ -59,7 +59,7 @@ const CertificateCard = ({ img }: { img: string }) => {
 
 export function MarqueeDemo() {
   return (
-    <div className="relative flex h-[650px] w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-transparent"> {/* Ajustado a 650px */}
+    <div className="relative flex h-[400px] w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-transparent"> {/* Reducido de 650px a 400px */}
       <Marquee pauseOnHover className="[--duration:33s]">
         {certificates.map((certificate, index) => (
           <CertificateCard key={index} img={certificate.img} />
