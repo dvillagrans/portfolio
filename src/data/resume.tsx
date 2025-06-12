@@ -1,6 +1,5 @@
 import { Icons } from "@/components/icons";
 import { CodeIcon, HomeIcon, NotebookIcon, PencilLine } from "lucide-react";
-import { title } from "process";
 
 export const DATA = {
   name: "Diego Villagran Salazar",
