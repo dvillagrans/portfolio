@@ -49,44 +49,95 @@ export default function Page() {
   const [selectedProject, setSelectedProject] = useState<any>(null);
 
   return (
-    <main className="flex flex-col min-h-[100dvh] space-y-10 max-w-2xl">
-      <section id="hero">
-        <div className="mx-auto w-full  space-y-8">
-          <div className="gap-2 flex justify-between">
-            <div className="flex-col flex flex-1 space-y-1.5">
-              <BlurFadeText
-                delay={BLUR_FADE_DELAY}
-                className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none"
-                yOffset={8}
-                text={`Hi, I'm ${DATA.name} 👋`}
-              />
-              <BlurFadeText
-                className="max-w-[600px] md:text-xl"
-                delay={BLUR_FADE_DELAY}
-                text={DATA.description}
-              />
-            </div>            <BlurFade delay={BLUR_FADE_DELAY}>
-              <Avatar className="size-28 sm:size-32 border">
-                <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
-                <AvatarFallback>{DATA.initials}</AvatarFallback>
-              </Avatar>
+    <main className="flex flex-col min-h-[100dvh] space-y-10 max-w-2xl">      <section id="hero" className="relative py-8 space-y-8">
+      <div className="mx-auto w-full">
+        {/* Header with title and avatar */}
+        <div className="gap-6 flex justify-between items-start mb-8">
+          <div className="flex-col flex flex-1 space-y-4">
+            <BlurFadeText
+              delay={BLUR_FADE_DELAY}
+              className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent"
+              yOffset={8}
+              text={`Hi, I'm ${DATA.name.split(' ')[0]} 👋`}
+            />
+            <BlurFade delay={BLUR_FADE_DELAY * 1.5}>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span className="text-sm text-muted-foreground font-medium">Available for work</span>
+              </div>
+            </BlurFade>
+            <BlurFade delay={BLUR_FADE_DELAY * 2}>
+              <div className="flex flex-wrap gap-2 pt-2">
+                <div className="px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium border border-primary/20 hover:bg-primary/15 transition-colors">
+                  🔬 Data Scientist
+                </div>
+                <div className="px-3 py-1.5 bg-blue-500/10 text-blue-500 rounded-full text-sm font-medium border border-blue-500/20 hover:bg-blue-500/15 transition-colors">
+                  💻 Full-Stack Dev
+                </div>
+                <div className="px-3 py-1.5 bg-purple-500/10 text-purple-500 rounded-full text-sm font-medium border border-purple-500/20 hover:bg-purple-500/15 transition-colors">
+                  🤖 ML Engineer
+                </div>
+              </div>
             </BlurFade>
           </div>
+          <BlurFade delay={BLUR_FADE_DELAY}>
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary via-blue-500 to-purple-500 rounded-full blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+              <Avatar className="relative size-28 sm:size-32 border-2 border-background shadow-xl ring-2 ring-background">
+                <AvatarImage alt={DATA.name} src={DATA.avatarUrl} className="object-cover" />
+                <AvatarFallback className="text-xl font-bold bg-gradient-to-br from-primary to-blue-500 text-primary-foreground">{DATA.initials}</AvatarFallback>
+              </Avatar>
+            </div>
+          </BlurFade>
         </div>
-      </section>      <section id="about">
-        <BlurFade delay={BLUR_FADE_DELAY * 3}>
-          <h2 className="text-2xl font-bold">About</h2>
-        </BlurFade>
-        <BlurFade delay={BLUR_FADE_DELAY * 4}>
-          <Markdown className="prose max-w-auto md:text-base text-pretty font-sans text-base text-muted-foreground dark:prose-invert">
-            {DATA.summary}
-          </Markdown>
-        </BlurFade>
-      </section>
 
-      <section id="work">
-        <div className="flex min-h-0 flex-col gap-y-3">
+        {/* Description and achievements in one cohesive block */}
+        <div className="space-y-6">
+          <BlurFadeText
+            className="max-w-[580px] text-lg md:text-xl text-muted-foreground leading-relaxed"
+            delay={BLUR_FADE_DELAY * 3}
+            text="Passionate about turning complex data into actionable business insights. I specialize in building end-to-end machine learning pipelines and scalable web applications that drive real value."
+          />
+
+          <BlurFade delay={BLUR_FADE_DELAY * 4}>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-4">
+              <div className="text-center space-y-1 p-3 rounded-lg bg-green-500/5 border border-green-500/10">
+                <div className="text-2xl font-bold text-green-500">92%</div>
+                <div className="text-xs text-muted-foreground">Forecasting Accuracy</div>
+              </div>
+              <div className="text-center space-y-1 p-3 rounded-lg bg-blue-500/5 border border-blue-500/10">
+                <div className="text-2xl font-bold text-blue-500">40%</div>
+                <div className="text-xs text-muted-foreground">Conversion Improvements</div>
+              </div>
+              <div className="text-center space-y-1 p-3 rounded-lg bg-purple-500/5 border border-purple-500/10">
+                <div className="text-2xl font-bold text-purple-500">3+</div>
+                <div className="text-xs text-muted-foreground">Years Experience</div>
+              </div>
+              <div className="text-center space-y-1 p-3 rounded-lg bg-orange-500/5 border border-orange-500/10">
+                <div className="text-2xl font-bold text-orange-500">1M+</div>
+                <div className="text-xs text-muted-foreground">Daily Records</div>
+              </div>
+            </div>
+          </BlurFade>
+
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
+            <div className="flex items-start gap-3 p-4 rounded-lg bg-primary/5 border border-primary/10">
+              <div className="w-1 h-16 bg-gradient-to-b from-primary to-purple-500 rounded-full flex-shrink-0 mt-1"></div>
+              <div className="space-y-1">
+                <p className="text-sm text-muted-foreground italic leading-relaxed">
+                  "I thrive at the intersection of data science and software engineering, creating solutions that bridge complex algorithms with user-friendly applications."
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Currently pursuing Data Science at <span className="font-medium text-foreground">ESCOM-IPN</span>
+                </p>
+              </div>
+            </div>
+          </BlurFade>
+        </div>
+      </div>
+    </section>      <section id="work">
+        <div className="flex min-h-0 flex-col gap-y-3">
+          <BlurFade delay={BLUR_FADE_DELAY * 6}>
             <h2 className="text-2xl font-bold">Work Experience</h2>
           </BlurFade>
           {DATA.work.map((work, id) => (
