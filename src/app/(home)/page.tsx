@@ -123,10 +123,9 @@ export default function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
             <div className="flex items-start gap-3 p-4 rounded-lg bg-primary/5 border border-primary/10">
               <div className="w-1 h-16 bg-gradient-to-b from-primary to-purple-500 rounded-full flex-shrink-0 mt-1"></div>
-              <div className="space-y-1">
-                <p className="text-sm text-muted-foreground italic leading-relaxed">
-                  "I thrive at the intersection of data science and software engineering, creating solutions that bridge complex algorithms with user-friendly applications."
-                </p>
+              <div className="space-y-1">                <p className="text-sm text-muted-foreground italic leading-relaxed">
+                &ldquo;I thrive at the intersection of data science and software engineering, creating solutions that bridge complex algorithms with user-friendly applications.&rdquo;
+              </p>
                 <p className="text-xs text-muted-foreground">
                   Currently pursuing Data Science at <span className="font-medium text-foreground">ESCOM-IPN</span>
                 </p>
@@ -258,13 +257,12 @@ export default function Page() {
         <div className="grid items-center justify-center gap-4 px-4 text-center md:px-6 w-full py-12">
           <BlurFade delay={BLUR_FADE_DELAY * 16}>
             <div className="space-y-3">
-              <h2 className="text-2xl font-bold">Let's Build Something Amazing Together</h2>
+              <h2 className="text-2xl font-bold">Let&rsquo;s Build Something Amazing Together</h2>
               <h3 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                 Ready to Transform Data into Impact?
-              </h3>
-              <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                I'm currently open to new opportunities in data science, machine learning, and full-stack development.
-                Whether you need predictive analytics, web solutions, or data visualization dashboards, let's discuss how I can help drive your business forward.
+              </h3>              <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                I&rsquo;m currently open to new opportunities in data science, machine learning, and full-stack development.
+                Whether you need predictive analytics, web solutions, or data visualization dashboards, let&rsquo;s discuss how I can help drive your business forward.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6">
                 <Link
