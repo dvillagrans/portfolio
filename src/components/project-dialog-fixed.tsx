@@ -398,8 +398,9 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
   return (
     <AnimatePresence>
       {isOpen && (
-        <Dialog open={isOpen} onOpenChange={onClose}>          <DialogContent 
-            className="max-w-4xl max-h-[85vh] p-0 rounded-2xl overflow-hidden border-none shadow-[0_0_50px_10px_rgba(0,0,0,0.15)] dark:shadow-primary/5"
+        <Dialog open={isOpen} onOpenChange={onClose}>
+          <DialogContent 
+            className="max-w-6xl max-h-[90vh] p-0 rounded-2xl overflow-hidden border-none shadow-[0_0_50px_10px_rgba(0,0,0,0.15)] dark:shadow-primary/5"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
@@ -419,7 +420,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
             <ScrollArea className="h-[90vh]">
               {/* Hero Banner con parallax */}
               <motion.div 
-                className="relative h-[30vh] md:h-[40vh] overflow-hidden"
+                className="relative h-[40vh] md:h-[50vh] overflow-hidden"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: imageLoaded ? 1 : 0 }}
                 transition={{ duration: 0.5 }}
@@ -475,7 +476,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                 )}
                 
                 {/* Información del proyecto en el hero */}
-                <div className="absolute bottom-0 left-0 w-full p-5 md:p-8 z-10">
+                <div className="absolute bottom-0 left-0 w-full p-6 md:p-10 z-10">
                   <motion.div
                     variants={staggerContainer}
                     initial="hidden"
@@ -498,10 +499,11 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                         {project.dates}
                       </TagPill>
                     </motion.div>
-                      {/* Título con efecto de máscara */}
+                    
+                    {/* Título con efecto de máscara */}
                     <motion.h1 
                       variants={staggerItem}
-                      className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter"
+                      className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter"
                     >
                       <span className="bg-gradient-to-r from-white via-white/95 to-white/80 bg-clip-text text-transparent drop-shadow-sm">
                         {project.title}
@@ -510,8 +512,9 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                   </motion.div>
                 </div>
               </motion.div>
-                <motion.div 
-                className="px-5 py-6 md:p-8"
+              
+              <motion.div 
+                className="px-6 py-8 md:p-10"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}

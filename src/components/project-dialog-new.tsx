@@ -14,32 +14,25 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
   CardContent,
-  CardFooter,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { 
-  CalendarDays, 
+  Calendar, 
   Layers, 
   Link as LinkIcon, 
   ExternalLink,
   Globe,
   Github,
   PlayCircle,
-  Code,
   X,
-  Calendar,
   ArrowUpRight,
-  ChevronRight,
   Check,
-  AlertCircle,
   FileCode,
   Rocket,
   Sparkles,
@@ -48,12 +41,11 @@ import {
   BarChart,
   Trophy,
   CheckCircle,
-  Lightbulb,
-  Zap,
   Star,
   Gauge,
 } from "lucide-react";
 
+// Definición de tipos
 interface ProjectDialogProps {
   isOpen: boolean;
   onClose: () => void;
@@ -72,9 +64,8 @@ interface ProjectDialogProps {
     links?: Array<{
       type: string;
       href: string;
-      icon: React.ReactNode;
+      icon?: React.ReactNode;
     }>;
-    // Para mostrar métricas de impacto en una nueva pestaña
     impact?: {
       metrics?: Array<{
         value: string;
@@ -88,7 +79,6 @@ interface ProjectDialogProps {
         role?: string;
       };
     };
-    // Detalles técnicos adicionales para la pestaña de descripción
     technicalDetails?: {
       architecture?: string;
       challenges?: string[];
@@ -98,7 +88,7 @@ interface ProjectDialogProps {
   };
 }
 
-// Animaciones avanzadas
+// Animaciones
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
@@ -121,62 +111,6 @@ const staggerItem = {
     opacity: 1,
     y: 0,
     transition: { type: "spring", stiffness: 100, damping: 10 }
-  }
-};
-
-const scaleUp = {
-  hidden: { scale: 0.95, opacity: 0 },
-  visible: { 
-    scale: 1, 
-    opacity: 1,
-    transition: { 
-      duration: 0.5, 
-      ease: [0.22, 1, 0.36, 1] 
-    } 
-  }
-};
-
-// Animación de aparición desde abajo con rebote
-const slideUp = {
-  hidden: { y: 60, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { 
-      type: "spring",
-      stiffness: 150,
-      damping: 15,
-      mass: 1
-    }
-  }
-};
-
-// Animación de desplazamiento 3D para cards
-const tiltCard = {
-  rest: { 
-    scale: 1,
-    boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-  },
-  hover: { 
-    scale: 1.02,
-    boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
-    transition: { 
-      type: "spring", 
-      stiffness: 400, 
-      damping: 17
-    }
-  }
-};
-
-// Animación de revelado tipo telón
-const curtainReveal = {
-  initial: { clipPath: 'inset(0 100% 0 0)' },
-  animate: { 
-    clipPath: 'inset(0 0% 0 0)',
-    transition: { 
-      duration: 0.8, 
-      ease: [0.645, 0.045, 0.355, 1.000] 
-    }
   }
 };
 
@@ -315,7 +249,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, [onClose]);
-
+  
   // Helper function para iconos de tecnologías
   const getTechIcon = (tech: string) => {
     const techLower = tech.toLowerCase();
@@ -358,26 +292,6 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
     }
   };
 
-  // Helper function para obtener el color de fondo según el tipo de enlace
-  const getLinkStyle = (type: string) => {
-    const baseStyle = "relative overflow-hidden group flex items-center gap-3 px-5 py-3 rounded-lg transition-all duration-300";
-    const hoverEffect = "hover:shadow-lg hover:shadow-primary/20 hover:translate-y-[-2px]";
-    
-    switch (type.toLowerCase()) {
-      case 'github':
-        return `${baseStyle} ${hoverEffect} bg-neutral-900 text-white`;
-      case 'website':
-      case 'live':
-        return `${baseStyle} ${hoverEffect} bg-blue-600 text-white`;
-      case 'demo':
-        return `${baseStyle} ${hoverEffect} bg-green-600 text-white`;
-      case 'source':
-        return `${baseStyle} ${hoverEffect} bg-purple-600 text-white`;
-      default:
-        return `${baseStyle} ${hoverEffect} bg-primary text-primary-foreground`;
-    }
-  };
-
   // Helper function para obtener el color de gradiente según el tipo de enlace
   const getLinkColor = (type: string) => {    
     switch (type.toLowerCase()) {
@@ -394,12 +308,13 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
         return 'from-primary/90 to-primary text-primary-foreground';
     }
   };
-  
+
   return (
     <AnimatePresence>
       {isOpen && (
-        <Dialog open={isOpen} onOpenChange={onClose}>          <DialogContent 
-            className="max-w-4xl max-h-[85vh] p-0 rounded-2xl overflow-hidden border-none shadow-[0_0_50px_10px_rgba(0,0,0,0.15)] dark:shadow-primary/5"
+        <Dialog open={isOpen} onOpenChange={onClose}>
+          <DialogContent 
+            className="max-w-6xl max-h-[90vh] p-0 rounded-2xl overflow-hidden border-none shadow-[0_0_50px_10px_rgba(0,0,0,0.15)] dark:shadow-primary/5"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
@@ -419,7 +334,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
             <ScrollArea className="h-[90vh]">
               {/* Hero Banner con parallax */}
               <motion.div 
-                className="relative h-[30vh] md:h-[40vh] overflow-hidden"
+                className="relative h-[40vh] md:h-[50vh] overflow-hidden"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: imageLoaded ? 1 : 0 }}
                 transition={{ duration: 0.5 }}
@@ -475,7 +390,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                 )}
                 
                 {/* Información del proyecto en el hero */}
-                <div className="absolute bottom-0 left-0 w-full p-5 md:p-8 z-10">
+                <div className="absolute bottom-0 left-0 w-full p-6 md:p-10 z-10">
                   <motion.div
                     variants={staggerContainer}
                     initial="hidden"
@@ -498,10 +413,11 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                         {project.dates}
                       </TagPill>
                     </motion.div>
-                      {/* Título con efecto de máscara */}
+                    
+                    {/* Título con efecto de máscara */}
                     <motion.h1 
                       variants={staggerItem}
-                      className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter"
+                      className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter"
                     >
                       <span className="bg-gradient-to-r from-white via-white/95 to-white/80 bg-clip-text text-transparent drop-shadow-sm">
                         {project.title}
@@ -510,8 +426,9 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                   </motion.div>
                 </div>
               </motion.div>
-                <motion.div 
-                className="px-5 py-6 md:p-8"
+              
+              <motion.div 
+                className="px-6 py-8 md:p-10"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
@@ -596,6 +513,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                           >
                             <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/20 to-background opacity-0 group-hover:opacity-100 rounded-md blur transition duration-300"></div>
                             <Badge 
+                              key={tech} 
                               variant="secondary" 
                               className="relative w-full h-full px-4 py-2 flex items-center justify-center text-sm bg-gradient-to-r from-muted to-muted/60 hover:from-muted/80 transition-colors cursor-default border border-border/50"
                             >
@@ -637,10 +555,13 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                               <Link
                                 href={link.href}
                                 target="_blank"
+                                rel="noopener noreferrer"
                                 className={`relative inline-flex items-center gap-2 px-4 py-3 rounded-lg 
                                   transition-all shadow-md hover:shadow-lg bg-gradient-to-r ${getLinkColor(link.type)}`}
                               >
-                                <span className="flex items-center justify-center w-5 h-5">{getLinkIcon(link.type)}</span>
+                                <span className="flex items-center justify-center w-5 h-5">
+                                  {link.icon || getLinkIcon(link.type)}
+                                </span>
                                 <span className="font-medium">{link.type}</span>
                                 <motion.span
                                   initial={{ opacity: 0, x: -5 }}
@@ -681,7 +602,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                     >
                       <Tilt3DCard>
                         <Card className="overflow-hidden border-0 shadow-xl">
-                          <CardContent className="p-0">                        
+                          <CardContent className="p-0">
                             {project.video ? (
                               <div className="relative aspect-video">
                                 <video 
@@ -873,9 +794,10 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                             <CardContent className="p-6">
                               <div className="absolute top-0 right-0 opacity-5 text-primary">
                                 <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M10 11L8 13H5C4.44772 13 4 12.5523 4 12V8C4 7.44772 4.44772 7 5 7H9C9.55228 7 10 7.44772 10 8V11ZM19 11L17 13H14C13.4477 13 13 12.5523 13 12V8C13 7.44772 13.4477 7 14 7H18C18.5523 7 19 7.44772 19 8V11Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                  <path d="M10 11L8 13H5C4.44772 13 4 12.5523 4 12V8C4 7.44772 4.44772 7 5 7H9C9.55228 7 10 7.44772 10 8V11ZM19 11L17 13H14C13.4477 13 13 12.5523 13 12V8C13 7.44772 13.4477 7 14 7H18C18.5523 7 19 7.44772 19 8V11Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                                 </svg>
                               </div>
+                              
                               <div className="mb-3 text-lg italic text-foreground/90">
                                 &ldquo;{project.impact.testimonial.quote}&rdquo;
                               </div>
