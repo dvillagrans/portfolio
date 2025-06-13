@@ -1,57 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  motion, 
-  AnimatePresence, 
-  useMotionValue, 
-  useSpring, 
-  useTransform, 
-  useInView 
-} from 'framer-motion';
-import {
-  Dialog,
-  DialogContent,
-  DialogClose,
-} from "@/components/ui/dialog";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useInView } from 'framer-motion';
+import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { 
-  CalendarDays, 
-  Layers, 
-  Link as LinkIcon, 
-  ExternalLink,
-  Globe,
-  Github,
-  PlayCircle,
-  Code,
-  X,
-  Calendar,
-  ArrowUpRight,
-  ChevronRight,
-  Check,
-  AlertCircle,
-  FileCode,
-  Rocket,
-  Sparkles,
-  Users,
-  Terminal,
-  BarChart,
-  Trophy,
-  CheckCircle,
-  Lightbulb,
-  Zap,
-  Star,
-  Gauge,
+  Calendar, Layers, Link as LinkIcon, ExternalLink,
+  Globe, Github, PlayCircle, X, ArrowUpRight,
+  Check, FileCode, Rocket, Sparkles,
+  Users, Terminal, BarChart, Trophy,
+  CheckCircle, Star, Gauge
 } from "lucide-react";
 
 interface ProjectDialogProps {
@@ -72,9 +34,8 @@ interface ProjectDialogProps {
     links?: Array<{
       type: string;
       href: string;
-      icon: React.ReactNode;
+      icon?: React.ReactNode;
     }>;
-    // Para mostrar métricas de impacto en una nueva pestaña
     impact?: {
       metrics?: Array<{
         value: string;
@@ -88,20 +49,13 @@ interface ProjectDialogProps {
         role?: string;
       };
     };
-    // Detalles técnicos adicionales para la pestaña de descripción
-    technicalDetails?: {
-      architecture?: string;
-      challenges?: string[];
-      solutions?: string[];
-      futureImprovements?: string[];
-    };
   };
 }
 
-// Animaciones avanzadas
+// Animaciones
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
 };
 
 const staggerContainer = {
@@ -124,63 +78,7 @@ const staggerItem = {
   }
 };
 
-const scaleUp = {
-  hidden: { scale: 0.95, opacity: 0 },
-  visible: { 
-    scale: 1, 
-    opacity: 1,
-    transition: { 
-      duration: 0.5, 
-      ease: [0.22, 1, 0.36, 1] 
-    } 
-  }
-};
-
-// Animación de aparición desde abajo con rebote
-const slideUp = {
-  hidden: { y: 60, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { 
-      type: "spring",
-      stiffness: 150,
-      damping: 15,
-      mass: 1
-    }
-  }
-};
-
-// Animación de desplazamiento 3D para cards
-const tiltCard = {
-  rest: { 
-    scale: 1,
-    boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-  },
-  hover: { 
-    scale: 1.02,
-    boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
-    transition: { 
-      type: "spring", 
-      stiffness: 400, 
-      damping: 17
-    }
-  }
-};
-
-// Animación de revelado tipo telón
-const curtainReveal = {
-  initial: { clipPath: 'inset(0 100% 0 0)' },
-  animate: { 
-    clipPath: 'inset(0 0% 0 0)',
-    transition: { 
-      duration: 0.8, 
-      ease: [0.645, 0.045, 0.355, 1.000] 
-    }
-  }
-};
-
-// Componentes de UI reutilizables
+// Componente: TagPill
 const TagPill = ({ children, color = "default" }: { children: React.ReactNode; color?: string }) => {
   const colorClasses: Record<string, string> = {
     default: "bg-primary/10 text-primary border-primary/20",
@@ -189,8 +87,6 @@ const TagPill = ({ children, color = "default" }: { children: React.ReactNode; c
     purple: "bg-purple-500/10 text-purple-500 border-purple-500/20",
     amber: "bg-amber-500/10 text-amber-500 border-amber-500/20",
     red: "bg-red-500/10 text-red-500 border-red-500/20",
-    cyan: "bg-cyan-500/10 text-cyan-500 border-cyan-500/20",
-    pink: "bg-pink-500/10 text-pink-500 border-pink-500/20",
   };
 
   return (
@@ -203,7 +99,7 @@ const TagPill = ({ children, color = "default" }: { children: React.ReactNode; c
   );
 };
 
-// Componente de tarjeta con efecto 3D
+// Componente: Tilt3DCard
 const Tilt3DCard = ({ children, className }: { children: React.ReactNode; className?: string }) => {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
@@ -249,7 +145,7 @@ const Tilt3DCard = ({ children, className }: { children: React.ReactNode; classN
   );
 };
 
-// Componente de métrica animada
+// Componente: AnimatedMetric
 const AnimatedMetric = ({ value, label, icon, delay = 0 }: { 
   value: string;
   label: string;
@@ -315,7 +211,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, [onClose]);
-
+  
   // Helper function para iconos de tecnologías
   const getTechIcon = (tech: string) => {
     const techLower = tech.toLowerCase();
@@ -324,18 +220,10 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
     if (techLower.includes('javascript') || techLower.includes('js')) return <span className="text-yellow-400">🟨</span>;
     if (techLower.includes('typescript') || techLower.includes('ts')) return <span className="text-blue-500">🔷</span>;
     if (techLower.includes('api')) return <span>🔌</span>;
-    if (techLower.includes('ai') || techLower.includes('ml') || techLower.includes('inteligencia')) return <span>🤖</span>;
-    if (techLower.includes('cloud') || techLower.includes('nube')) return <span>☁️</span>;
-    if (techLower.includes('data') || techLower.includes('datos')) return <span>📊</span>;
+    if (techLower.includes('ai') || techLower.includes('ml')) return <span>🤖</span>;
+    if (techLower.includes('cloud')) return <span>☁️</span>;
+    if (techLower.includes('data')) return <span>📊</span>;
     if (techLower.includes('node')) return <span className="text-green-500">🟢</span>;
-    if (techLower.includes('aws')) return <span>🔶</span>;
-    if (techLower.includes('azure')) return <span className="text-blue-600">🔷</span>;
-    if (techLower.includes('docker') || techLower.includes('container')) return <span className="text-blue-400">🐳</span>;
-    if (techLower.includes('firebase')) return <span className="text-yellow-500">🔥</span>;
-    if (techLower.includes('mongo')) return <span className="text-green-600">🍃</span>;
-    if (techLower.includes('sql')) return <span className="text-blue-300">💾</span>;
-    if (techLower.includes('graphql')) return <span className="text-pink-500">⬢</span>;
-    if (techLower.includes('next')) return <span>⚡</span>;
     return <span>🔧</span>;
   };
 
@@ -358,26 +246,6 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
     }
   };
 
-  // Helper function para obtener el color de fondo según el tipo de enlace
-  const getLinkStyle = (type: string) => {
-    const baseStyle = "relative overflow-hidden group flex items-center gap-3 px-5 py-3 rounded-lg transition-all duration-300";
-    const hoverEffect = "hover:shadow-lg hover:shadow-primary/20 hover:translate-y-[-2px]";
-    
-    switch (type.toLowerCase()) {
-      case 'github':
-        return `${baseStyle} ${hoverEffect} bg-neutral-900 text-white`;
-      case 'website':
-      case 'live':
-        return `${baseStyle} ${hoverEffect} bg-blue-600 text-white`;
-      case 'demo':
-        return `${baseStyle} ${hoverEffect} bg-green-600 text-white`;
-      case 'source':
-        return `${baseStyle} ${hoverEffect} bg-purple-600 text-white`;
-      default:
-        return `${baseStyle} ${hoverEffect} bg-primary text-primary-foreground`;
-    }
-  };
-
   // Helper function para obtener el color de gradiente según el tipo de enlace
   const getLinkColor = (type: string) => {    
     switch (type.toLowerCase()) {
@@ -394,12 +262,13 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
         return 'from-primary/90 to-primary text-primary-foreground';
     }
   };
-  
+
   return (
     <AnimatePresence>
       {isOpen && (
-        <Dialog open={isOpen} onOpenChange={onClose}>          <DialogContent 
-            className="max-w-4xl max-h-[85vh] p-0 rounded-2xl overflow-hidden border-none shadow-[0_0_50px_10px_rgba(0,0,0,0.15)] dark:shadow-primary/5"
+        <Dialog open={isOpen} onOpenChange={onClose}>
+          <DialogContent 
+            className="max-w-6xl max-h-[90vh] p-0 rounded-2xl overflow-hidden border-none shadow-[0_0_50px_10px_rgba(0,0,0,0.15)] dark:shadow-primary/5"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
@@ -419,14 +288,14 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
             <ScrollArea className="h-[90vh]">
               {/* Hero Banner con parallax */}
               <motion.div 
-                className="relative h-[30vh] md:h-[40vh] overflow-hidden"
+                className="relative h-[40vh] md:h-[50vh] overflow-hidden"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: imageLoaded ? 1 : 0 }}
                 transition={{ duration: 0.5 }}
               >
                 {project.image && (
                   <motion.div
-                    className="absolute inset-0 scale-[1.05]" // Escala para evitar bordes blancos durante animación
+                    className="absolute inset-0 scale-[1.05]"
                     style={{ x: moveX, y: moveY }}
                     transition={{ type: "spring", stiffness: 50, damping: 30 }}
                   >
@@ -439,14 +308,14 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                       priority
                       onLoad={() => setImageLoaded(true)}
                     />
-                    {/* Overlay de gradiente con partículas */}
+                    {/* Overlay de gradiente */}
                     <motion.div 
                       className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"
                       initial={{ opacity: 0.7 }}
                       animate={{ opacity: 0.85 }}
                       transition={{ duration: 0.8 }}
                     >
-                      {/* Efecto de partículas flotantes */}
+                      {/* Partículas flotantes */}
                       <div className="absolute inset-0 overflow-hidden">
                         {Array.from({ length: 6 }).map((_, i) => (
                           <motion.div
@@ -475,7 +344,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                 )}
                 
                 {/* Información del proyecto en el hero */}
-                <div className="absolute bottom-0 left-0 w-full p-5 md:p-8 z-10">
+                <div className="absolute bottom-0 left-0 w-full p-6 md:p-10 z-10">
                   <motion.div
                     variants={staggerContainer}
                     initial="hidden"
@@ -498,10 +367,11 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                         {project.dates}
                       </TagPill>
                     </motion.div>
-                      {/* Título con efecto de máscara */}
+                    
+                    {/* Título con efecto de máscara */}
                     <motion.h1 
                       variants={staggerItem}
-                      className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter"
+                      className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter"
                     >
                       <span className="bg-gradient-to-r from-white via-white/95 to-white/80 bg-clip-text text-transparent drop-shadow-sm">
                         {project.title}
@@ -510,8 +380,9 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                   </motion.div>
                 </div>
               </motion.div>
-                <motion.div 
-                className="px-5 py-6 md:p-8"
+              
+              <motion.div 
+                className="px-6 py-8 md:p-10"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
@@ -558,7 +429,6 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                       initial="hidden"
                       animate="visible"
                       variants={fadeIn}
-                      transition={{ duration: 0.4 }}
                     >
                       <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-background to-muted/30">
                         <CardContent className="pt-6">
@@ -573,7 +443,6 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                       initial="hidden"
                       animate="visible"
                       variants={fadeIn}
-                      transition={{ duration: 0.5 }}
                       className="space-y-4"
                     >
                       <div className="flex items-center gap-2">
@@ -612,7 +481,6 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                         initial="hidden"
                         animate="visible"
                         variants={fadeIn}
-                        transition={{ duration: 0.6 }}
                         className="space-y-4"
                       >
                         <div className="flex items-center gap-2">
@@ -628,7 +496,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                               key={link.type}
                               initial={{ opacity: 0, scale: 0.8 }}
                               animate={{ opacity: 1, scale: 1 }}
-                              transition={{ delay: 0.3 + (index * 0.1), type: "spring", stiffness: 200, damping: 15 }}
+                              transition={{ delay: 0.3 + (index * 0.1) }}
                               whileHover={{ scale: 1.05, y: -2 }}
                               whileTap={{ scale: 0.95 }}
                               className="relative group"
@@ -637,10 +505,13 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                               <Link
                                 href={link.href}
                                 target="_blank"
+                                rel="noopener noreferrer"
                                 className={`relative inline-flex items-center gap-2 px-4 py-3 rounded-lg 
                                   transition-all shadow-md hover:shadow-lg bg-gradient-to-r ${getLinkColor(link.type)}`}
                               >
-                                <span className="flex items-center justify-center w-5 h-5">{getLinkIcon(link.type)}</span>
+                                <span className="flex items-center justify-center w-5 h-5">
+                                  {link.icon || getLinkIcon(link.type)}
+                                </span>
                                 <span className="font-medium">{link.type}</span>
                                 <motion.span
                                   initial={{ opacity: 0, x: -5 }}
@@ -677,11 +548,10 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                       initial="hidden"
                       animate="visible"
                       variants={fadeIn}
-                      transition={{ duration: 0.4 }}
                     >
                       <Tilt3DCard>
                         <Card className="overflow-hidden border-0 shadow-xl">
-                          <CardContent className="p-0">                        
+                          <CardContent className="p-0">
                             {project.video ? (
                               <div className="relative aspect-video">
                                 <video 
@@ -690,27 +560,16 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                                   className="w-full h-full object-cover"
                                   poster={project.image?.src}
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
-                                  <motion.div
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    whileHover={{ opacity: 1, scale: 1 }}
-                                    className="flex items-center justify-center rounded-full bg-background/80 p-4 backdrop-blur-md shadow-lg"
-                                  >
-                                    <PlayCircle className="w-8 h-8 text-primary" />
-                                  </motion.div>
-                                </div>
                               </div>
                             ) : project.image && (
                               <div className="relative aspect-video overflow-hidden">
-                                <div className="absolute inset-0">
-                                  <Image 
-                                    src={project.image.src}
-                                    alt={project.title}
-                                    fill
-                                    className="object-cover object-center"
-                                    sizes="(max-width: 768px) 100vw, 70vw"
-                                  />
-                                </div>
+                                <Image 
+                                  src={project.image.src}
+                                  alt={project.title}
+                                  fill
+                                  className="object-cover object-center"
+                                  sizes="(max-width: 768px) 100vw, 70vw"
+                                />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end justify-center pb-8">
                                   <motion.span 
                                     initial={{ y: 20, opacity: 0 }}
@@ -749,16 +608,9 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                     </motion.div>
                   </TabsContent>
                   
-                  {/* Nueva pestaña de Impacto */}
                   <TabsContent value="impact" className="space-y-8">
-                    <motion.div
-                      initial="hidden"
-                      animate="visible"
-                      variants={staggerContainer}
-                      transition={{ delayChildren: 0.2 }}
-                    >
-                      {/* Métricas destacadas con animación */}
-                      <motion.div variants={staggerItem} className="mb-8">
+                    <div className="space-y-8">
+                      <div className="mb-8">
                         <div className="flex items-center gap-2 mb-4">
                           <div className="p-1.5 rounded-md bg-primary/10">
                             <BarChart className="w-5 h-5 text-primary" />
@@ -767,7 +619,6 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                         </div>
                         
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          {/* Métricas por defecto si no hay personalizadas */}
                           {!project.impact?.metrics ? (
                             <>
                               <AnimatedMetric 
@@ -790,7 +641,6 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                               />
                             </>
                           ) : (
-                            // Métricas personalizadas del proyecto
                             project.impact.metrics.map((metric, index) => (
                               <AnimatedMetric 
                                 key={metric.label}
@@ -802,10 +652,9 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                             ))
                           )}
                         </div>
-                      </motion.div>
+                      </div>
                       
-                      {/* Puntos destacados o logros */}
-                      <motion.div variants={staggerItem} className="mb-8">
+                      <div className="mb-8">
                         <Tilt3DCard className="overflow-hidden">
                           <Card className="border-0 shadow-lg bg-gradient-to-br from-background via-background to-primary/5">
                             <CardContent className="p-6">
@@ -829,7 +678,6 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                                     </motion.li>
                                   ))
                                 ) : (
-                                  // Datos de ejemplo
                                   <>
                                     <motion.li 
                                       initial={{ opacity: 0, x: -10 }}
@@ -864,18 +712,18 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                             </CardContent>
                           </Card>
                         </Tilt3DCard>
-                      </motion.div>
+                      </div>
                       
-                      {/* Testimonio o feedback */}
                       {project.impact?.testimonial && (
-                        <motion.div variants={staggerItem} className="mb-4">
+                        <div className="mb-4">
                           <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-0 shadow-lg relative overflow-hidden">
                             <CardContent className="p-6">
                               <div className="absolute top-0 right-0 opacity-5 text-primary">
                                 <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M10 11L8 13H5C4.44772 13 4 12.5523 4 12V8C4 7.44772 4.44772 7 5 7H9C9.55228 7 10 7.44772 10 8V11ZM19 11L17 13H14C13.4477 13 13 12.5523 13 12V8C13 7.44772 13.4477 7 14 7H18C18.5523 7 19 7.44772 19 8V11Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                  <path d="M10 11L8 13H5C4.44772 13 4 12.5523 4 12V8C4 7.44772 4.44772 7 5 7H9C9.55228 7 10 7.44772 10 8V11ZM19 11L17 13H14C13.4477 13 13 12.5523 13 12V8C13 7.44772 13.4477 7 14 7H18C18.5523 7 19 7.44772 19 8V11Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                                 </svg>
                               </div>
+                              
                               <div className="mb-3 text-lg italic text-foreground/90">
                                 &ldquo;{project.impact.testimonial.quote}&rdquo;
                               </div>
@@ -892,11 +740,10 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                               </div>
                             </CardContent>
                           </Card>
-                        </motion.div>
+                        </div>
                       )}
                       
-                      {/* Nota informativa */}
-                      <motion.div variants={staggerItem} className="mt-8">
+                      <div className="mt-8">
                         <div className="p-4 rounded-lg border border-blue-500/20 bg-blue-500/5 flex items-start gap-2">
                           <div className="p-1 rounded-full bg-blue-500/20 text-blue-500 mt-0.5">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -907,8 +754,8 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                             Esta sección muestra métricas e impacto del proyecto. Los datos presentados están basados en resultados reales o estimaciones aproximadas.
                           </p>
                         </div>
-                      </motion.div>
-                    </motion.div>
+                      </div>
+                    </div>
                   </TabsContent>
                 </Tabs>
               </motion.div>
