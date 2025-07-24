@@ -25,6 +25,7 @@
 
 ### 📧 **Contact & Interaction**
 - Interactive contact form with validation
+- Telegram Bot integration for instant notifications
 - Toast notifications for user feedback
 - Social media integration
 - Email integration ready
@@ -77,6 +78,38 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the portfolio.
+
+### 🤖 Telegram Bot Configuration
+
+The contact form is integrated with Telegram Bot API for instant notifications. Follow these steps to set it up:
+
+#### 1. Create a Telegram Bot
+```bash
+# 1. Open Telegram and search for @BotFather
+# 2. Send /newbot command
+# 3. Follow the instructions to create your bot
+# 4. Copy the bot token provided
+```
+
+#### 2. Get Your Chat ID
+```bash
+# 1. Send a message to your bot
+# 2. Visit: https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates
+# 3. Look for "chat":{"id":NUMBER} in the response
+# 4. Use that number as your chat ID
+```
+
+#### 3. Configure Environment Variables
+Update your `.env.local` file:
+```bash
+TELEGRAM_BOT_TOKEN=your_actual_bot_token_here
+TELEGRAM_CHAT_ID=your_actual_chat_id_here
+```
+
+#### 4. Test the Integration
+- Start your development server: `pnpm dev`
+- Fill out the contact form
+- Check your Telegram for the notification message
 
 ### Build for Production
 
