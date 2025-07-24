@@ -13,6 +13,7 @@ import ShinyButton from "@/components/magicui/shiny-button";
 import { MarqueeDemo } from "@/components/MarqueeDemo";
 import { useState, useEffect } from "react";
 import { ProjectDialog } from "@/components/project-dialog";
+import { ContactForm } from "@/components/contact-form";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -496,9 +497,9 @@ export default function Page() {
         </section>
       </ScrollReveal>      <ScrollReveal animation="fade-in-up" delay={600}>
         <section id="contact" className="py-16">
-          <div className="grid items-center justify-center gap-8 px-4 text-center md:px-6 w-full">
+          <div className="space-y-12 w-full max-w-4xl mx-auto">
             <BlurFade delay={BLUR_FADE_DELAY * 20}>
-              <div className="space-y-6">
+              <div className="text-center space-y-6">
                 <div className="space-y-3">
                   <div className="flex items-center justify-center gap-3">
                     <div className="h-px bg-gradient-to-r from-transparent to-border flex-1 max-w-20"></div>
@@ -527,36 +528,47 @@ export default function Page() {
                     <span className="font-medium group-hover:animate-pulse">🎓 Data Science Student</span>
                   </div>
                 </div>
+              </div>
+            </BlurFade>
 
-                {/* Contact Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+            {/* Contact Form */}
+            <BlurFade delay={BLUR_FADE_DELAY * 21}>
+              <ContactForm />
+            </BlurFade>
+
+            {/* Alternative Contact Methods */}
+            <BlurFade delay={BLUR_FADE_DELAY * 22}>
+              <div className="text-center space-y-6">
+                <div className="flex items-center justify-center gap-3">
+                  <div className="h-px bg-gradient-to-r from-transparent to-border flex-1 max-w-32"></div>
+                  <span className="text-sm text-muted-foreground font-medium">Or connect directly</span>
+                  <div className="h-px bg-gradient-to-r from-border to-transparent flex-1 max-w-32"></div>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                   <div className="relative group">
                     <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg blur opacity-25 group-hover:opacity-75 group-hover:animate-pulse transition duration-500"></div>
                     <Link
                       href={DATA.contact.social.LinkedIn.url}
-                      className="relative inline-flex items-center px-8 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
+                      className="relative inline-flex items-center px-6 py-2.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
                     >
                       <span className="mr-2 group-hover:animate-bounce">💼</span>
-                      Connect on LinkedIn
+                      LinkedIn
                     </Link>
                   </div>
                   <div className="relative group">
                     <div className="absolute -inset-1 bg-gradient-to-r from-primary to-primary/80 rounded-lg blur opacity-25 group-hover:opacity-75 group-hover:animate-pulse transition duration-500"></div>
                     <Link
                       href={`mailto:${DATA.contact.email}`}
-                      className="relative inline-flex items-center px-8 py-3 rounded-lg border-2 border-primary bg-background hover:bg-primary hover:text-primary-foreground transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
+                      className="relative inline-flex items-center px-6 py-2.5 rounded-lg border-2 border-primary bg-background hover:bg-primary hover:text-primary-foreground transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
                     >
                       <span className="mr-2 group-hover:animate-bounce">✉️</span>
-                      Send Email
+                      Email
                     </Link>
                   </div>
                 </div>
 
-                {/* Additional Contact Info */}
-                <div className="pt-6 border-t border-border/50">
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Preferred communication methods
-                  </p>
+                <div className="pt-4">
                   <div className="flex flex-wrap justify-center gap-3 text-sm">
                     <span className="px-3 py-1 bg-muted rounded-full hover:bg-muted/80 transition-colors cursor-default">📧 Email responses within 24h</span>
                     <span className="px-3 py-1 bg-muted rounded-full hover:bg-muted/80 transition-colors cursor-default">💬 LinkedIn for professional inquiries</span>

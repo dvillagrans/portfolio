@@ -375,7 +375,7 @@ export const DATA = {
       badges: ["Freelance", "Remote", "Part-time"],
       location: "Remote",
       title: "Web Developer",
-      logoUrl: "/melari.png",
+      logoUrl: "/img/melari.webp",
       start: "Nov 2023",
       end: "July 2024",
       description:

@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { trackProjectView } from "@/components/analytics";
 
 interface ProjectCardProps {
   title: string;
@@ -26,10 +27,14 @@ export function ProjectCard({
   image,
   onClick,
 }: ProjectCardProps) {
+  const handleProjectClick = () => {
+    trackProjectView(title);
+    onClick?.();
+  };
   return (
     <Card 
       className="group overflow-hidden border border-primary/10 bg-gradient-to-b from-background/50 to-background/80 backdrop-blur-xl transition-all hover:border-primary/30 hover:shadow-lg"
-      onClick={onClick}
+      onClick={handleProjectClick}
     >
       {/* Contenedor de imagen con overlay y efecto hover */}
       <div className="relative aspect-video overflow-hidden">
