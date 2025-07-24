@@ -1,21 +1,39 @@
-# 🚀 Diego Villagran - Data Scientist & Full-Stack Developer Portfolio
+# Portfolio - Diego Villagran
 
-A modern, responsive portfolio website showcasing my work in data science, machine learning, and web development. Built with Next.js 14, TypeScript, and Tailwind CSS.
-
-## 🌟 Live Demo
-
-[**View Portfolio →**](https://www.dvillagrans.dev/)
+🚀 **Modern Portfolio Website** built with cutting-edge technologies and optimized for performance, SEO, and user experience.
 
 ## ✨ Features
 
-- **🎨 Modern Design**: Clean, professional interface with dark/light mode support
-- **📱 Fully Responsive**: Optimized for all devices and screen sizes
-- **⚡ Performance Optimized**: Built with Next.js 14 App Router for lightning-fast loading
-- **🎭 Smooth Animations**: Framer Motion animations with blur fade effects
-- **📊 Interactive Components**: Dynamic project showcases and skill visualizations
-- **🔍 Project Filtering**: Advanced filtering system for project exploration
-- **📝 MDX Blog Support**: Ready for technical articles and case studies
-- **🌐 SEO Optimized**: Meta tags, structured data, and sitemap included
+### 🎨 **Design & UX**
+- Modern, responsive design with dark/light theme support
+- Smooth animations and micro-interactions using Framer Motion
+- Interactive components with hover effects and transitions
+- Mobile-first responsive design
+
+### 🔧 **Technical Features**
+- **Next.js 14** with App Router and Server Components
+- **TypeScript** for type safety
+- **Tailwind CSS** for styling with custom animations
+- **Magic UI** components for enhanced interactions
+- **Optimized Performance** with image optimization and lazy loading
+
+### 📈 **SEO & Analytics**
+- Complete SEO optimization with meta tags, Open Graph, and Twitter Cards
+- Structured data and sitemap generation
+- Google Analytics integration ready
+- Performance monitoring and tracking
+
+### 📧 **Contact & Interaction**
+- Interactive contact form with validation
+- Toast notifications for user feedback
+- Social media integration
+- Email integration ready
+
+### 🛠 **Developer Experience**
+- TypeScript for better development experience
+- ESLint and Prettier configuration
+- Component-based architecture
+- Reusable UI components
 
 ## 🛠️ Tech Stack
 

@@ -1,8 +1,10 @@
 import Navbar from "@/components/navbar";
+import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "sonner";
+import { ScrollToTop } from "@/components/scroll-to-top";
 import { DATA } from "@/data/resume";
-import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
@@ -19,13 +21,39 @@ export const metadata: Metadata = {
     template: `%s | ${DATA.name}`,
   },
   description: DATA.description,
+  keywords: [
+    "Data Scientist",
+    "Full-Stack Developer",
+    "Machine Learning",
+    "Python",
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Portfolio",
+    "Diego Villagran",
+    "ESCOM",
+    "Mexico",
+    "Data Analysis",
+    "Web Development"
+  ],
+  authors: [{ name: DATA.name, url: DATA.url }],
+  creator: DATA.name,
+  publisher: DATA.name,
   openGraph: {
-    title: `${DATA.name}`,
+    title: `${DATA.name} - Data Scientist & Full-Stack Developer`,
     description: DATA.description,
     url: DATA.url,
     siteName: `${DATA.name}`,
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: `${DATA.url}/img/me.webp`,
+        width: 1200,
+        height: 630,
+        alt: `${DATA.name} - Professional Photo`,
+      },
+    ],
   },
   robots: {
     index: true,
@@ -39,12 +67,18 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: `${DATA.name}`,
+    title: `${DATA.name} - Data Scientist & Full-Stack Developer`,
+    description: DATA.description,
     card: "summary_large_image",
+    images: [`${DATA.url}/img/me.webp`],
+    creator: "@dvillagrans",
   },
   verification: {
     google: "",
     yandex: "",
+  },
+  alternates: {
+    canonical: DATA.url,
   },
 };
 
@@ -61,9 +95,12 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="light">
+        <ThemeProvider attribute="class" defaultTheme="dark">
           <TooltipProvider delayDuration={0}>
             {children}
+            <Navbar />
+            <ScrollToTop />
+            <Toaster richColors position="top-right" />
           </TooltipProvider>
         </ThemeProvider>
       </body>
