@@ -38,8 +38,6 @@ const createFormSchema = (t: (key: string) => string) => z.object({
   }),
 });
 
-type FormData = z.infer<typeof formSchema>;
-
 interface FormStatus {
   type: 'idle' | 'loading' | 'success' | 'error';
   message?: string;
@@ -50,6 +48,7 @@ export function ContactForm() {
   const { t } = useI18n();
   
   const formSchema = createFormSchema(t);
+  type FormData = z.infer<typeof formSchema>;
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
