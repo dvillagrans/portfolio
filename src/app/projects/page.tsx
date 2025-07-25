@@ -2,6 +2,8 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { ProjectCard } from "@/components/project-card";
+import { ProjectGridSkeleton } from "@/components/project-card-skeleton";
+import { StaggerContainer, StaggerItem, EnhancedCard } from "@/components/page-transition";
 import Link from "next/link";
 import { ArrowLeft, Search, Filter, X, Sparkles, Github, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -132,7 +134,16 @@ export default function ProjectsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [showFilters, setShowFilters] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const scrollY = useScrollParallax();
+
+  // Simular carga inicial
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -182,7 +193,9 @@ export default function ProjectsPage() {
               animationDelay: '1.5s',
               transform: `translateY(${scrollY * 0.12}px)`
             }}
-          ></div>          {/* Navegación superior mejorada */}
+          ></div>
+          
+          {/* Navegación superior mejorada */}
           <div className="flex justify-start items-center mb-8">
             <BlurFade delay={BLUR_FADE_DELAY}>
               <Link
@@ -193,7 +206,9 @@ export default function ProjectsPage() {
                 <span>Volver</span>
               </Link>
             </BlurFade>
-          </div>{/* Cabecera mejorada con efectos visuales */}
+          </div>
+          
+          {/* Cabecera mejorada con efectos visuales */}
           <div className="space-y-4 relative">
             {/* Efecto de luz difuminada detrás del título */}
             <div className="absolute -top-2 -left-5 w-32 h-32 bg-gradient-to-br from-primary/30 via-blue-500/20 to-transparent rounded-full blur-2xl opacity-60 -z-10"></div>
@@ -221,7 +236,9 @@ export default function ProjectsPage() {
             </BlurFade>
           </div>
         </div>
-      </section>      {/* Barra de búsqueda y filtros mejorada */}
+      </section>
+      
+      {/* Barra de búsqueda y filtros mejorada */}
       <ScrollReveal animation="fade-in-up" delay={300}>
         <div className="space-y-4 relative">
           {/* Efecto de luz difuminada */}
@@ -249,7 +266,9 @@ export default function ProjectsPage() {
                   <X className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
                 </button>
               )}
-            </div>            {/* Botón de filtros mejorado con diseño más creativo */}
+            </div>
+            
+            {/* Botón de filtros mejorado con diseño más creativo */}
             <div className="relative group">
               <div className="absolute -inset-0.5 rounded-xl bg-gradient-to-r from-primary/30 via-blue-500/30 to-purple-500/30 opacity-0 blur transition-all duration-300 group-hover:opacity-100 -z-10"></div>
               <button
@@ -298,7 +317,9 @@ export default function ProjectsPage() {
                   }`}></div>
               </button>
             </div>
-          </div>          {/* Panel de filtros desplegable mejorado con diseño más creativo */}
+          </div>
+          
+          {/* Panel de filtros desplegable mejorado con diseño más creativo */}
           <AnimatePresence>
             {showFilters && (
               <motion.div
@@ -432,47 +453,43 @@ export default function ProjectsPage() {
               </BlurFade>
             </div>
           ) : (
-            <AnimatePresence mode="wait">              <motion.div
-              className="grid gap-6 lg:gap-7 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-              layout
-            >
-              {filteredProjectsBySearch.map((project, index) => (
-                <motion.div
-                  key={project.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ delay: index * 0.05, duration: 0.4 }}
-                  onClick={() => setSelectedProject(project)}
-                  className="cursor-pointer group relative"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  {/* Efecto de brillo mejorado */}
-                  <div className="absolute -inset-1.5 bg-gradient-to-br from-primary/30 via-blue-500/20 to-purple-500/30 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition duration-300 group-hover:duration-200"></div>
+            isLoading ? (
+              <ProjectGridSkeleton count={6} />
+            ) : (
+              <AnimatePresence mode="wait">
+                <StaggerContainer className="grid gap-6 lg:gap-7 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                  {filteredProjectsBySearch.map((project, index) => (
+                    <StaggerItem key={project.title} index={index}>
+                      <EnhancedCard
+                        onClick={() => setSelectedProject(project)}
+                        className="cursor-pointer group relative h-full"
+                      >
+                        {/* Efecto de brillo mejorado */}
+                        <div className="absolute -inset-1.5 bg-gradient-to-br from-primary/30 via-blue-500/20 to-purple-500/30 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition duration-300 group-hover:duration-200"></div>
 
-                  {/* Contenido del proyecto */}
-                  <div className="relative bg-background/70 backdrop-blur-sm transform group-hover:scale-[1.01] transition duration-300 rounded-lg overflow-hidden border border-border/50 group-hover:border-primary/30 shadow-sm group-hover:shadow-md">
-                    <ProjectCard
-                      key={project.title}
-                      title={project.title}
-                      description={project.description}
-                      dates={project.dates}
-                      tags={project.technologies}
-                      image={project.image}
-                    />
+                        {/* Contenido del proyecto */}
+                        <div className="relative bg-background/70 backdrop-blur-sm h-full rounded-lg overflow-hidden border border-border/50 group-hover:border-primary/30 shadow-sm group-hover:shadow-md">
+                          <ProjectCard
+                            title={project.title}
+                            description={project.description}
+                            dates={project.dates}
+                            tags={project.technologies}
+                            image={project.image}
+                          />
 
-                    {/* Indicador de clic */}
-                    <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition duration-300">
-                      <div className="p-1.5 rounded-full bg-background/80 border border-border/50 text-primary backdrop-blur-sm">
-                        <ExternalLink className="w-3 h-3" />
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-            </AnimatePresence>
+                          {/* Indicador de clic */}
+                          <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition duration-300">
+                            <div className="p-1.5 rounded-full bg-background/80 border border-border/50 text-primary backdrop-blur-sm">
+                              <ExternalLink className="w-3 h-3" />
+                            </div>
+                          </div>
+                        </div>
+                      </EnhancedCard>
+                    </StaggerItem>
+                  ))}
+                </StaggerContainer>
+              </AnimatePresence>
+            )
           )}
         </div>
       </ScrollReveal>      {/* Sección CTA mejorada con efectos visuales modernos */}

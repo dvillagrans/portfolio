@@ -2,6 +2,9 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { ProjectCard } from "@/components/project-card";
+import { ProjectGridSkeleton } from "@/components/project-card-skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
+import { StaggerContainer, StaggerItem, EnhancedCard } from "@/components/page-transition";
 import { ResumeCard } from "@/components/resume-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DATA } from "@/data/resume";
@@ -185,8 +188,17 @@ interface Project {
 
 export default function Page() {
   const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { displayText, isComplete } = useTypingEffect(`Hi, I'm ${DATA.name.split(' ')[0]} 👋`, 80);
   const scrollY = useScrollParallax();
+
+  // Simular carga inicial
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <main className="flex flex-col min-h-[100dvh] space-y-10 max-w-2xl">      <section id="hero" className="relative py-8 space-y-8 overflow-hidden">
@@ -309,29 +321,46 @@ export default function Page() {
                 </div>
               </div>
             </BlurFade>
-            <div className="grid gap-4">
-              {DATA.work.map((work, id) => (
-                <BlurFade
-                  key={work.company}
-                  delay={BLUR_FADE_DELAY * 7 + id * 0.1}
-                >
-                  <div className="group relative">
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/20 via-blue-500/20 to-purple-500/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                    <ResumeCard
-                      key={work.company}
-                      logoUrl={work.logoUrl}
-                      altText={work.company}
-                      title={work.company}
-                      subtitle={work.title}
-                      href={work.href}
-                      badges={work.badges}
-                      period={`${work.start} - ${work.end ?? "Present"}`}
-                      description={work.description}
-                    />
+            {isLoading ? (
+              <div className="grid gap-4">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="p-4 border rounded-lg space-y-3">
+                    <div className="flex items-center gap-3">
+                      <Skeleton className="h-12 w-12 rounded-full" />
+                      <div className="space-y-2 flex-1">
+                        <Skeleton className="h-4 w-32" />
+                        <Skeleton className="h-3 w-24" />
+                      </div>
+                    </div>
+                    <Skeleton className="h-16 w-full" />
                   </div>
-                </BlurFade>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid gap-4">
+                {DATA.work.map((work, id) => (
+                  <BlurFade
+                    key={work.company}
+                    delay={BLUR_FADE_DELAY * 7 + id * 0.1}
+                  >
+                    <div className="group relative">
+                      <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/20 via-blue-500/20 to-purple-500/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                      <ResumeCard
+                        key={work.company}
+                        logoUrl={work.logoUrl}
+                        altText={work.company}
+                        title={work.company}
+                        subtitle={work.title}
+                        href={work.href}
+                        badges={work.badges}
+                        period={`${work.start} - ${work.end ?? "Present"}`}
+                        description={work.description}
+                      />
+                    </div>
+                  </BlurFade>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       </ScrollReveal>      <ScrollReveal animation="slide-in-right" delay={200}>
@@ -346,27 +375,43 @@ export default function Page() {
                 </div>
               </div>
             </BlurFade>
-            <div className="grid gap-4">
-              {DATA.education.map((education, id) => (
-                <BlurFade
-                  key={education.school}
-                  delay={BLUR_FADE_DELAY * 9 + id * 0.1}
-                >
-                  <div className="group relative">
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-green-500/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                    <ResumeCard
-                      key={education.school}
-                      href={education.href}
-                      logoUrl={education.logoUrl}
-                      altText={education.school}
-                      title={education.school}
-                      subtitle={education.degree}
-                      period={`${education.start} - ${education.end}`}
-                    />
+            {isLoading ? (
+              <div className="grid gap-4">
+                {Array.from({ length: 2 }).map((_, i) => (
+                  <div key={i} className="p-4 border rounded-lg space-y-3">
+                    <div className="flex items-center gap-3">
+                      <Skeleton className="h-12 w-12 rounded-full" />
+                      <div className="space-y-2 flex-1">
+                        <Skeleton className="h-4 w-40" />
+                        <Skeleton className="h-3 w-32" />
+                      </div>
+                    </div>
                   </div>
-                </BlurFade>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid gap-4">
+                {DATA.education.map((education, id) => (
+                  <BlurFade
+                    key={education.school}
+                    delay={BLUR_FADE_DELAY * 9 + id * 0.1}
+                  >
+                    <div className="group relative">
+                      <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-green-500/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                      <ResumeCard
+                        key={education.school}
+                        href={education.href}
+                        logoUrl={education.logoUrl}
+                        altText={education.school}
+                        title={education.school}
+                        subtitle={education.degree}
+                        period={`${education.start} - ${education.end}`}
+                      />
+                    </div>
+                  </BlurFade>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       </ScrollReveal>      <ScrollReveal animation="fade-in-up" delay={300}>
@@ -430,31 +475,31 @@ export default function Page() {
               </div>
             </BlurFade>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl mx-auto">
-              {DATA.projects.slice(0, 4).map((project, id) => (
-                <BlurFade
-                  key={project.title}
-                  delay={BLUR_FADE_DELAY * 16 + id * 0.15}
-                >
-                  <div
-                    onClick={() => setSelectedProject(project)}
-                    className="cursor-pointer group relative"
-                  >
-                    <div className="absolute -inset-1 bg-gradient-to-br from-primary/20 via-blue-500/20 to-purple-500/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                    <div className="relative transform group-hover:scale-[1.02] transition duration-300">
-                      <ProjectCard
-                        key={project.title}
-                        title={project.title}
-                        description={project.description}
-                        dates={project.dates}
-                        tags={project.technologies}
-                        image={project.image}
-                      />
-                    </div>
-                  </div>
-                </BlurFade>
-              ))}
-            </div>
+            {isLoading ? (
+              <ProjectGridSkeleton count={4} className="grid-cols-1 md:grid-cols-2" />
+            ) : (
+              <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl mx-auto">
+                {DATA.projects.slice(0, 4).map((project, id) => (
+                  <StaggerItem key={project.title} index={id}>
+                    <EnhancedCard
+                      onClick={() => setSelectedProject(project)}
+                      className="cursor-pointer group relative h-full"
+                    >
+                      <div className="absolute -inset-1 bg-gradient-to-br from-primary/20 via-blue-500/20 to-purple-500/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                      <div className="relative h-full">
+                        <ProjectCard
+                          title={project.title}
+                          description={project.description}
+                          dates={project.dates}
+                          tags={project.technologies}
+                          image={project.image}
+                        />
+                      </div>
+                    </EnhancedCard>
+                  </StaggerItem>
+                ))}
+              </StaggerContainer>
+            )}
 
             <BlurFade delay={BLUR_FADE_DELAY * 18}>
               <div className="flex justify-center pt-4">
