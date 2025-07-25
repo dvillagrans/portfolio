@@ -4,6 +4,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "sonner";
 import { ScrollToTop } from "@/components/scroll-to-top";
+import { PageTransition } from "@/components/page-transition";
+import { OfflineIndicator } from "@/components/offline-indicator";
+import { ServiceWorkerProvider } from "@/components/service-worker-provider";
 import { DATA } from "@/data/resume";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
@@ -80,6 +83,15 @@ export const metadata: Metadata = {
   alternates: {
     canonical: DATA.url,
   },
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: DATA.name,
+  },
+  formatDetection: {
+    telephone: false,
+  },
 };
 
 export default function RootLayout({
@@ -89,20 +101,32 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="theme-color" content="#000000" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content={DATA.name} />
+        <link rel="apple-touch-icon" href="/icon-192.png" />
+      </head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
           fontSans.variable
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark">
-          <TooltipProvider delayDuration={0}>
-            {children}
-            <Navbar />
-            <ScrollToTop />
-            <Toaster richColors position="top-right" />
-          </TooltipProvider>
-        </ThemeProvider>
+        <ServiceWorkerProvider>
+          <ThemeProvider attribute="class" defaultTheme="dark">
+            <TooltipProvider delayDuration={0}>
+              <PageTransition>
+                {children}
+              </PageTransition>
+              <Navbar />
+              <ScrollToTop />
+              <OfflineIndicator />
+              <Toaster richColors position="top-right" />
+            </TooltipProvider>
+          </ThemeProvider>
+        </ServiceWorkerProvider>
       </body>
     </html>
   );
