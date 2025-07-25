@@ -110,7 +110,7 @@ export function useProjectFilter() {
                 getCategoryForTechnology(tech) === activeFilter
             )
         );
-    }, [activeFilter]);
+    }, [activeFilter, getCategoryForTechnology]);
 
     // Obtener categorías únicas basadas en las tecnologías de los proyectos
     const categories = useMemo(() => {
@@ -127,7 +127,7 @@ export function useProjectFilter() {
         });
 
         return Array.from(usedCategories);
-    }, []);
+    }, [getCategoryForTechnology]);
 
     return {
         filteredProjects,

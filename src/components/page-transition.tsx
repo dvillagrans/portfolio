@@ -99,10 +99,11 @@ export function StaggerItem({ children, className }: { children: ReactNode, clas
 }
 
 // Animación de hover mejorada para tarjetas
-export function EnhancedCard({ children, className }: { children: ReactNode, className?: string }) {
+export function EnhancedCard({ children, className, onClick }: { children: ReactNode, className?: string, onClick?: () => void }) {
   return (
     <motion.div
       className={className}
+      onClick={onClick}
       whileHover={{
         y: -8,
         scale: 1.02,
