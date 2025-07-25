@@ -459,7 +459,7 @@ export default function ProjectsPage() {
               <AnimatePresence mode="wait">
                 <StaggerContainer className="grid gap-6 lg:gap-7 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                   {filteredProjectsBySearch.map((project, index) => (
-                    <StaggerItem key={project.title} index={index}>
+                    <StaggerItem key={project.title}>
                       <EnhancedCard
                         onClick={() => setSelectedProject(project)}
                         className="cursor-pointer group relative h-full"
