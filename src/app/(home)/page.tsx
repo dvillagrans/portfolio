@@ -476,11 +476,13 @@ export default function Page() {
             </BlurFade>
 
             {isLoading ? (
-              <ProjectGridSkeleton count={4} className="grid-cols-1 md:grid-cols-2" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <ProjectGridSkeleton count={4} />
+              </div>
             ) : (
               <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl mx-auto">
                 {DATA.projects.slice(0, 4).map((project, id) => (
-                  <StaggerItem key={project.title} index={id}>
+                  <StaggerItem key={project.title} className="stagger-item">
                     <EnhancedCard
                       onClick={() => setSelectedProject(project)}
                       className="cursor-pointer group relative h-full"

@@ -23,16 +23,16 @@ import { motion } from "framer-motion";
 
 const formSchema = z.object({
   name: z.string().min(2, {
-    message: "El nombre debe tener al menos 2 caracteres.",
+    message: "Name must be at least 2 characters.",
   }),
   email: z.string().email({
-    message: "Por favor ingresa un email válido.",
+    message: "Please enter a valid email address.",
   }),
   subject: z.string().min(5, {
-    message: "El asunto debe tener al menos 5 caracteres.",
+    message: "Subject must be at least 5 characters.",
   }),
   message: z.string().min(10, {
-    message: "El mensaje debe tener al menos 10 caracteres.",
+    message: "Message must be at least 10 characters.",
   }),
 });
 
@@ -73,15 +73,15 @@ export function ContactForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Error al enviar el mensaje');
+        throw new Error(data.error || 'Error sending message');
       }
       
       setStatus({ 
         type: 'success', 
-        message: 'Mensaje enviado correctamente. Te responderé pronto!' 
+        message: 'Message sent successfully. I\'ll get back to you soon!' 
       });
       
-      toast.success('Mensaje enviado correctamente');
+      toast.success('Message sent successfully');
       
       // Track successful submission
       trackContactForm('success');
@@ -90,7 +90,7 @@ export function ContactForm() {
       form.reset();
       
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Error al enviar el mensaje. Por favor, intenta de nuevo.';
+      const errorMessage = error instanceof Error ? error.message : 'Error sending message. Please try again.';
       
       setStatus({ 
         type: 'error', 
@@ -131,7 +131,7 @@ export function ContactForm() {
                   <Mail className="h-5 w-5 text-primary" />
                 </div>
                 <span className="bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
-                  Contáctame
+                  Contact Me
                 </span>
                 <Sparkles className="h-4 w-4 text-primary animate-pulse" />
               </CardTitle>
@@ -142,7 +142,7 @@ export function ContactForm() {
               transition={{ delay: 0.3, duration: 0.5 }}
             >
               <CardDescription className="text-base leading-relaxed">
-                ¿Tienes un proyecto en mente? ¡Me encantaría escuchar de ti y colaborar juntos!
+                Have a project in mind? I'd love to hear from you and collaborate together!
               </CardDescription>
             </motion.div>
           </CardHeader>
@@ -162,13 +162,13 @@ export function ContactForm() {
                     render={({ field }) => (
                       <FormItem className="group">
                         <FormLabel className="text-sm font-medium flex items-center gap-2">
-                          Nombre *
+                          Name *
                           <div className="w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
                         </FormLabel>
                         <FormControl>
                           <div className="relative">
                             <Input
-                              placeholder="Tu nombre"
+                              placeholder="Your name"
                               {...field}
                               disabled={status.type === 'loading'}
                               className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 hover:border-primary/50"
@@ -192,7 +192,7 @@ export function ContactForm() {
                         <FormControl>
                           <Input
                             type="email"
-                            placeholder="tu@email.com"
+                            placeholder="your@email.com"
                             {...field}
                             disabled={status.type === 'loading'}
                             className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 hover:border-primary/50"
@@ -215,12 +215,12 @@ export function ContactForm() {
                     render={({ field }) => (
                       <FormItem className="group">
                         <FormLabel className="text-sm font-medium flex items-center gap-2">
-                          Asunto *
+                          Subject *
                           <div className="w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="¿De qué quieres hablar?"
+                            placeholder="What would you like to talk about?"
                             {...field}
                             disabled={status.type === 'loading'}
                             className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 hover:border-primary/50"
@@ -243,12 +243,12 @@ export function ContactForm() {
                     render={({ field }) => (
                       <FormItem className="group">
                         <FormLabel className="text-sm font-medium flex items-center gap-2">
-                          Mensaje *
+                          Message *
                           <div className="w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
                         </FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Cuéntame sobre tu proyecto o idea..."
+                            placeholder="Tell me about your project or idea..."
                             {...field}
                             disabled={status.type === 'loading'}
                             rows={5}
@@ -300,12 +300,12 @@ export function ContactForm() {
                     {status.type === 'loading' ? (
                       <>
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                        <span>Enviando...</span>
+                        <span>Sending...</span>
                       </>
                     ) : (
                       <>
                         <Send className="h-4 w-4 mr-2 transition-transform group-hover:translate-x-1" />
-                        <span>Enviar Mensaje</span>
+                        <span>Send Message</span>
                         <Sparkles className="h-4 w-4 ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </>
                     )}
