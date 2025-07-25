@@ -20,19 +20,21 @@ import { Mail, Send, CheckCircle, AlertCircle, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { trackContactForm } from "@/components/analytics";
 import { motion } from "framer-motion";
+import { useI18n } from "@/contexts/i18n-context";
 
-const formSchema = z.object({
+// We'll create the schema inside the component to access translations
+const createFormSchema = (t: (key: string) => string) => z.object({
   name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+    message: t('validation.name.min'),
   }),
   email: z.string().email({
-    message: "Please enter a valid email address.",
+    message: t('validation.email.invalid'),
   }),
   subject: z.string().min(5, {
-    message: "Subject must be at least 5 characters.",
+    message: t('validation.subject.min'),
   }),
   message: z.string().min(10, {
-    message: "Message must be at least 10 characters.",
+    message: t('validation.message.min'),
   }),
 });
 
@@ -45,6 +47,9 @@ interface FormStatus {
 
 export function ContactForm() {
   const [status, setStatus] = useState<FormStatus>({ type: 'idle' });
+  const { t } = useI18n();
+  
+  const formSchema = createFormSchema(t);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -78,10 +83,10 @@ export function ContactForm() {
       
       setStatus({ 
         type: 'success', 
-        message: 'Message sent successfully. I\'ll get back to you soon!' 
+        message: t('contact.success')
       });
       
-      toast.success('Message sent successfully');
+      toast.success(t('contact.success'));
       
       // Track successful submission
       trackContactForm('success');
@@ -97,7 +102,7 @@ export function ContactForm() {
         message: errorMessage
       });
       
-      toast.error(errorMessage);
+      toast.error(t('contact.error'));
       
       // Track error
       trackContactForm('error');
@@ -131,7 +136,7 @@ export function ContactForm() {
                   <Mail className="h-5 w-5 text-primary" />
                 </div>
                 <span className="bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
-                  Contact Me
+                  {t('contact.title')}
                 </span>
                 <Sparkles className="h-4 w-4 text-primary animate-pulse" />
               </CardTitle>
@@ -142,7 +147,7 @@ export function ContactForm() {
               transition={{ delay: 0.3, duration: 0.5 }}
             >
               <CardDescription className="text-base leading-relaxed">
-                Have a project in mind? I'd love to hear from you and collaborate together!
+                {t('contact.description')}
               </CardDescription>
             </motion.div>
           </CardHeader>
@@ -162,13 +167,13 @@ export function ContactForm() {
                     render={({ field }) => (
                       <FormItem className="group">
                         <FormLabel className="text-sm font-medium flex items-center gap-2">
-                          Name *
+                          {t('contact.name')} *
                           <div className="w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
                         </FormLabel>
                         <FormControl>
                           <div className="relative">
                             <Input
-                              placeholder="Your name"
+                              placeholder={t('contact.name.placeholder')}
                               {...field}
                               disabled={status.type === 'loading'}
                               className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 hover:border-primary/50"
@@ -186,13 +191,13 @@ export function ContactForm() {
                     render={({ field }) => (
                       <FormItem className="group">
                         <FormLabel className="text-sm font-medium flex items-center gap-2">
-                          Email *
+                          {t('contact.email')} *
                           <div className="w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="email"
-                            placeholder="your@email.com"
+                            placeholder={t('contact.email.placeholder')}
                             {...field}
                             disabled={status.type === 'loading'}
                             className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 hover:border-primary/50"
@@ -215,12 +220,12 @@ export function ContactForm() {
                     render={({ field }) => (
                       <FormItem className="group">
                         <FormLabel className="text-sm font-medium flex items-center gap-2">
-                          Subject *
+                          {t('contact.subject')} *
                           <div className="w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="What would you like to talk about?"
+                            placeholder={t('contact.subject.placeholder')}
                             {...field}
                             disabled={status.type === 'loading'}
                             className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 hover:border-primary/50"
@@ -243,12 +248,12 @@ export function ContactForm() {
                     render={({ field }) => (
                       <FormItem className="group">
                         <FormLabel className="text-sm font-medium flex items-center gap-2">
-                          Message *
+                          {t('contact.message')} *
                           <div className="w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
                         </FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Tell me about your project or idea..."
+                            placeholder={t('contact.message.placeholder')}
                             {...field}
                             disabled={status.type === 'loading'}
                             rows={5}
@@ -300,12 +305,12 @@ export function ContactForm() {
                     {status.type === 'loading' ? (
                       <>
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                        <span>Sending...</span>
+                        <span>{t('contact.sending')}</span>
                       </>
                     ) : (
                       <>
                         <Send className="h-4 w-4 mr-2 transition-transform group-hover:translate-x-1" />
-                        <span>Send Message</span>
+                        <span>{t('contact.send')}</span>
                         <Sparkles className="h-4 w-4 ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </>
                     )}
