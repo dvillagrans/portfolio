@@ -175,9 +175,14 @@ const Particles: React.FC<ParticlesProps> = ({
       const circle = circleParams();
       drawCircle(circle);
     }
-  }, [quantity, circleParams, drawCircle, clearContext]);
+  }, [clearContext, quantity, circleParams, drawCircle]);
 
-  const animate = useCallback(() => {
+  const initCanvas = useCallback(() => {
+    resizeCanvas();
+    drawParticles();
+  }, [resizeCanvas, drawParticles]);
+
+  const animate = useCallback(function animateFunction() {
     clearContext();
     circles.current.forEach((circle: Circle, i: number) => {
       // Handle the alpha value
@@ -225,13 +230,8 @@ const Particles: React.FC<ParticlesProps> = ({
         // update the circle position
       }
     });
-    window.requestAnimationFrame(animate);
-  }, [vx, vy, staticity, ease, circleParams, drawCircle, clearContext]);
-
-  const initCanvas = useCallback(() => {
-    resizeCanvas();
-    drawParticles();
-  }, [drawParticles, resizeCanvas]);
+    window.requestAnimationFrame(animateFunction);
+  }, [clearContext, vx, vy, staticity, ease, drawCircle, circleParams]);
 
   const onMouseMove = useCallback(() => {
     if (canvasRef.current) {
@@ -258,7 +258,7 @@ const Particles: React.FC<ParticlesProps> = ({
     return () => {
       window.removeEventListener("resize", initCanvas);
     };
-  }, [color, animate, initCanvas]);
+  }, [color, initCanvas, animate]);
 
   useEffect(() => {
     onMouseMove();

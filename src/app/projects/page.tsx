@@ -12,6 +12,7 @@ import { DATA } from "@/data/resume";
 import { useProjectFilter } from "../../hooks/useProjectFilter";
 import { ProjectDialog } from "@/components/project-dialog";
 import ShinyButton from "@/components/magicui/shiny-button";
+import { useI18n } from "@/contexts/i18n-context";
 
 // Constantes para el efecto de desvanecimiento
 const BLUR_FADE_DELAY = 0.04;
@@ -130,6 +131,7 @@ const ScrollReveal = ({
 };
 
 export default function ProjectsPage() {
+  const { t } = useI18n();
   const { activeFilter, setActiveFilter, filteredProjects, categories, categoryNames } = useProjectFilter();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProject, setSelectedProject] = useState<any>(null);
@@ -203,7 +205,7 @@ export default function ProjectsPage() {
                 className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-full bg-background/50 border border-border/50 hover:bg-background/80 hover:border-primary/30 transition-all group shadow-sm backdrop-blur-sm"
               >
                 <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1.5" />
-                <span>Volver</span>
+                <span>{t('common.back')}</span>
               </Link>
             </BlurFade>
           </div>
@@ -215,22 +217,22 @@ export default function ProjectsPage() {
 
             <BlurFade delay={BLUR_FADE_DELAY * 2}>
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
-                Mis proyectos
+                {t('projects.title')}
               </h1>
             </BlurFade>
 
             <BlurFadeText
               className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-[520px]"
               delay={BLUR_FADE_DELAY * 3}
-              text="Una colección de mi trabajo en ciencia de datos, desarrollo web y aprendizaje automático. Cada proyecto refleja mi pasión por crear soluciones efectivas."
+              text={t('projects.description')}
             />
 
             <BlurFade delay={BLUR_FADE_DELAY * 3.5}>
               <div className="flex items-center gap-2 mt-3">
                 <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
                 <span className="text-sm text-muted-foreground font-medium">
-                  {filteredProjects.length} proyectos en total
-                  {activeFilter !== 'all' && ` • Filtrando por: ${categoryNames[activeFilter] || activeFilter}`}
+                  {filteredProjects.length} {t('projects.total')}
+                  {activeFilter !== 'all' && ` • ${t('projects.filtering')}: ${categoryNames[activeFilter] || activeFilter}`}
                 </span>
               </div>
             </BlurFade>
@@ -253,7 +255,7 @@ export default function ProjectsPage() {
               </div>
               <input
                 type="text"
-                placeholder="Buscar proyectos por nombre o tecnología..."
+                placeholder={t('projects.search.placeholder')}
                 value={searchQuery}
                 onChange={handleSearch}
                 className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-background/60 backdrop-blur-sm border border-border/50 text-sm placeholder:text-muted-foreground/60 focus:border-primary/40 focus:ring-2 focus:ring-primary/20 transition-all shadow-sm group-hover:border-primary/30"
@@ -290,7 +292,7 @@ export default function ProjectsPage() {
 
                 {/* Texto con animación */}
                 <span className="relative font-medium">
-                  {showFilters ? "Ocultar filtros" : "Mostrar filtros"}
+                  {showFilters ? t('projects.filters.hide') : t('projects.filters.show')}
                 </span>
 
                 {/* Badge del filtro activo */}
@@ -336,7 +338,7 @@ export default function ProjectsPage() {
                       <div className="p-1.5 bg-primary/10 rounded-lg">
                         <Filter className="w-4 h-4 text-primary" />
                       </div>
-                      <span className="text-sm font-medium text-foreground">Filtrar por categoría</span>
+                      <span className="text-sm font-medium text-foreground">{t('projects.filters.category')}</span>
                     </div>
                     <div className="text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded-full">
                       {categories.length} categorías
@@ -401,7 +403,7 @@ export default function ProjectsPage() {
                   <div className="mt-4 pt-3 border-t border-border/30">
                     <div className="flex items-center justify-between text-xs text-muted-foreground">
                       <span>
-                        Mostrando {filteredProjectsBySearch.length} de {DATA.projects.length} proyectos
+                        {t('projects.filters.showing')} {filteredProjectsBySearch.length} {t('projects.filters.of')} {DATA.projects.length} {t('projects.total')}
                       </span>
                       {activeFilter !== 'all' && (
                         <motion.button
@@ -410,7 +412,7 @@ export default function ProjectsPage() {
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
-                          Limpiar filtros
+                          {t('projects.filters.clear')}
                         </motion.button>
                       )}
                     </div>
@@ -434,10 +436,10 @@ export default function ProjectsPage() {
                     <Search className="w-8 h-8 text-muted-foreground" />
                   </div>
                   <h3 className="text-xl font-semibold bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
-                    No se encontraron proyectos
+                    {t('projects.search.notfound')}
                   </h3>
                   <p className="text-muted-foreground max-w-md">
-                    No se encontraron proyectos que coincidan con &ldquo;{searchQuery}&rdquo;
+                    {t('projects.search.notfoundDesc')} &ldquo;{searchQuery}&rdquo;
                     {activeFilter !== 'all' && ` en la categoría &ldquo;${activeFilter}&rdquo;`}.
                   </p>
                   <div className="mt-4 relative group">
@@ -446,7 +448,7 @@ export default function ProjectsPage() {
                       onClick={handleClearSearch}
                       className="relative px-4 py-2 rounded-full bg-background/60 backdrop-blur-sm border border-border/50 hover:border-primary/40 text-sm font-medium text-foreground transition-all shadow-sm"
                     >
-                      Limpiar búsqueda
+                      {t('projects.search.clear')}
                     </button>
                   </div>
                 </div>
@@ -522,7 +524,7 @@ export default function ProjectsPage() {
               {/* Título con efectos visuales */}
               <BlurFade delay={0.1}>
                 <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mt-4 bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
-                  ¿Creamos algo increíble juntos?
+                  {t('projects.cta.title')}
                 </h2>
               </BlurFade>
 
@@ -530,7 +532,7 @@ export default function ProjectsPage() {
               <BlurFadeText
                 className="text-muted-foreground max-w-xl mx-auto text-base md:text-lg"
                 delay={0.2}
-                text="¿Interesado en colaborar o quieres discutir un proyecto? Siempre estoy abierto a nuevas oportunidades y desafíos."
+                text={t('projects.cta.description')}
               />                {/* Botones de contacto con efectos visuales mejorados */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 pb-2">
                 {/* Botón LinkedIn */}
@@ -541,7 +543,7 @@ export default function ProjectsPage() {
                     className="relative inline-flex items-center px-5 py-2.5 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-95 text-sm"
                   >
                     <span className="mr-2">💼</span>
-                    Conecta en LinkedIn
+                    {t('projects.cta.linkedin')}
                   </Link>
                 </div>
 
@@ -553,7 +555,7 @@ export default function ProjectsPage() {
                     className="relative inline-flex items-center px-5 py-2.5 rounded-xl bg-neutral-800 text-white hover:bg-neutral-900 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-95 text-sm"
                   >
                     <Github className="w-4 h-4 mr-2" />
-                    Ver GitHub
+                    {t('projects.cta.github')}
                   </Link>
                 </div>
 
@@ -565,7 +567,7 @@ export default function ProjectsPage() {
                     className="relative inline-flex items-center px-5 py-2.5 rounded-xl border border-primary bg-background hover:bg-primary hover:text-primary-foreground transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-95 text-sm"
                   >
                     <span className="mr-2">✉️</span>
-                    Enviar Email
+                    {t('projects.cta.email')}
                   </Link>
                 </div>
               </div>
