@@ -15,6 +15,7 @@ import {
   Users, Terminal, BarChart, Trophy,
   CheckCircle, Star, Gauge
 } from "lucide-react";
+import { useI18n } from "@/contexts/i18n-context";
 
 interface ProjectDialogProps {
   isOpen: boolean;
@@ -174,6 +175,7 @@ const AnimatedMetric = ({ value, label, icon, delay = 0 }: {
 };
 
 export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) {
+  const { t } = useI18n();
   const [activeTab, setActiveTab] = useState("overview");
   const [imageLoaded, setImageLoaded] = useState(false);
   
@@ -359,7 +361,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                           </span>
-                          Proyecto Activo
+                          {t('projects.activeProject')}
                         </TagPill>
                       )}
                       <TagPill color="blue">
@@ -660,7 +662,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                             <CardContent className="p-6">
                               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                                 <Sparkles className="w-5 h-5 text-primary" />
-                                <span>Logros Destacados</span>
+                                <span>{t('projects.achievements')}</span>
                               </h3>
                               
                               <ul className="space-y-3">
@@ -686,7 +688,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                                       className="flex items-start gap-2"
                                     >
                                       <Check className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                                      <span className="text-foreground/90">Proyecto completado cumpliendo todos los requisitos solicitados.</span>
+                                      <span className="text-foreground/90">{t('projects.completedRequirements')}</span>
                                     </motion.li>
                                     <motion.li 
                                       initial={{ opacity: 0, x: -10 }}
@@ -751,7 +753,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                             </svg>
                           </div>
                           <p className="text-sm text-muted-foreground">
-                            Esta sección muestra métricas e impacto del proyecto. Los datos presentados están basados en resultados reales o estimaciones aproximadas.
+                            {t('projects.metricsDisclaimer')}
                           </p>
                         </div>
                       </div>

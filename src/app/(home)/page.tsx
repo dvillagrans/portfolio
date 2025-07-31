@@ -11,12 +11,13 @@ import { DATA } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
 import { IconCloudDemo } from "@/components/ui/cloud-icon";
-import ParticlesDemo from "@/components/ParticlesDemo";
+// import ParticlesDemo from "@/components/ParticlesDemo";
 import ShinyButton from "@/components/magicui/shiny-button";
 import { MarqueeDemo } from "@/components/MarqueeDemo";
 import { useState, useEffect } from "react";
 import { ProjectDialog } from "@/components/project-dialog";
 import { ContactForm } from "@/components/contact-form";
+import { useI18n } from "@/contexts/i18n-context";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -157,14 +158,7 @@ const ScrollReveal = ({
   );
 };
 
-const skillCategories = [
-  { title: "Data Science", skills: ["Python", "Pandas", "Numpy", "Matplotlib", "Seaborn"] },
-  { title: "Machine Learning", skills: ["Scikit-learn", "Tensorflow", "Keras", "PyTorch", "Yolo"] },
-  { title: "Databases", skills: ["PostgreSQL", "SQL"] },
-  { title: "Version Control", skills: ["Git", "GitHub"] },
-  { title: "Cloud & DevOps", skills: ["Docker", "Kubernetes", "AWS", "Azure", "Google Cloud"] },
-  { title: "Web Development", skills: ["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Astro", "Vercel"] },
-];
+// Moved skillCategories inside component to access translations
 
 interface Project {
   readonly title: string;
@@ -187,10 +181,20 @@ interface Project {
 }
 
 export default function Page() {
+  const { t } = useI18n();
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { displayText, isComplete } = useTypingEffect(`Hi, I'm ${DATA.name.split(' ')[0]} 👋`, 80);
+  const { displayText, isComplete } = useTypingEffect(t('hero.greeting'), 80);
   const scrollY = useScrollParallax();
+
+  const skillCategories = [
+    { title: t('skills.categories.datascience'), skills: ["Python", "Pandas", "Numpy", "Matplotlib", "Seaborn"] },
+    { title: t('skills.categories.ml'), skills: ["Scikit-learn", "Tensorflow", "Keras", "PyTorch", "Yolo"] },
+    { title: t('skills.categories.databases'), skills: ["PostgreSQL", "SQL"] },
+    { title: t('skills.categories.versioncontrol'), skills: ["Git", "GitHub"] },
+    { title: t('skills.categories.cloud'), skills: ["Docker", "Kubernetes", "AWS", "Azure", "Google Cloud"] },
+    { title: t('skills.categories.web'), skills: ["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Astro", "Vercel"] },
+  ];
 
   // Simular carga inicial
   useEffect(() => {
@@ -235,18 +239,18 @@ export default function Page() {
             <BlurFade delay={BLUR_FADE_DELAY * 1.5}>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-sm text-muted-foreground font-medium">Available for work</span>
+                <span className="text-sm text-muted-foreground font-medium">{t('status.available')}</span>
               </div>
             </BlurFade>              <BlurFade delay={BLUR_FADE_DELAY * 2}>
               <div className="flex flex-wrap gap-2 pt-2">
                 <div className="group px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium border border-primary/20 hover:bg-primary/15 hover:border-primary/30 hover:scale-105 transition-all duration-300 cursor-default">
-                  <span className="group-hover:animate-pulse">🔬</span> Data Scientist
+                  <span className="group-hover:animate-pulse">🔬</span> {t('roles.datascientist')}
                 </div>
                 <div className="group px-3 py-1.5 bg-blue-500/10 text-blue-500 rounded-full text-sm font-medium border border-blue-500/20 hover:bg-blue-500/15 hover:border-blue-500/30 hover:scale-105 transition-all duration-300 cursor-default">
-                  <span className="group-hover:animate-pulse">💻</span> Full-Stack Dev
+                  <span className="group-hover:animate-pulse">💻</span> {t('roles.fullstack')}
                 </div>
                 <div className="group px-3 py-1.5 bg-purple-500/10 text-purple-500 rounded-full text-sm font-medium border border-purple-500/20 hover:bg-purple-500/15 hover:border-purple-500/30 hover:scale-105 transition-all duration-300 cursor-default">
-                  <span className="group-hover:animate-pulse">🤖</span> ML Engineer
+                  <span className="group-hover:animate-pulse">🤖</span> {t('roles.mlengineer')}
                 </div>
               </div>
             </BlurFade>
@@ -273,24 +277,24 @@ export default function Page() {
           <BlurFadeText
             className="max-w-[580px] text-lg md:text-xl text-muted-foreground leading-relaxed"
             delay={BLUR_FADE_DELAY * 3}
-            text="Passionate about turning complex data into actionable business insights. I specialize in building end-to-end machine learning pipelines and scalable web applications that drive real value."
+            text={t('hero.summary')}
           />            <BlurFade delay={BLUR_FADE_DELAY * 4}>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-4">
               <div className="group text-center space-y-1 p-3 rounded-lg bg-green-500/5 border border-green-500/10 hover:bg-green-500/10 hover:border-green-500/20 hover:scale-105 transition-all duration-300 cursor-default">
                 <div className="text-2xl font-bold text-green-500 group-hover:animate-pulse">92%</div>
-                <div className="text-xs text-muted-foreground group-hover:text-green-600 transition-colors">Forecasting Accuracy</div>
+                <div className="text-xs text-muted-foreground group-hover:text-green-600 transition-colors">{t('metrics.forecasting')}</div>
               </div>
               <div className="group text-center space-y-1 p-3 rounded-lg bg-blue-500/5 border border-blue-500/10 hover:bg-blue-500/10 hover:border-blue-500/20 hover:scale-105 transition-all duration-300 cursor-default">
                 <div className="text-2xl font-bold text-blue-500 group-hover:animate-pulse">40%</div>
-                <div className="text-xs text-muted-foreground group-hover:text-blue-600 transition-colors">Conversion Improvements</div>
+                <div className="text-xs text-muted-foreground group-hover:text-blue-600 transition-colors">{t('metrics.conversion')}</div>
               </div>
               <div className="group text-center space-y-1 p-3 rounded-lg bg-purple-500/5 border border-purple-500/10 hover:bg-purple-500/10 hover:border-purple-500/20 hover:scale-105 transition-all duration-300 cursor-default">
                 <div className="text-2xl font-bold text-purple-500 group-hover:animate-pulse">3+</div>
-                <div className="text-xs text-muted-foreground group-hover:text-purple-600 transition-colors">Years Experience</div>
+                <div className="text-xs text-muted-foreground group-hover:text-purple-600 transition-colors">{t('metrics.experience')}</div>
               </div>
               <div className="group text-center space-y-1 p-3 rounded-lg bg-orange-500/5 border border-orange-500/10 hover:bg-orange-500/10 hover:border-orange-500/20 hover:scale-105 transition-all duration-300 cursor-default">
                 <div className="text-2xl font-bold text-orange-500 group-hover:animate-pulse">1M+</div>
-                <div className="text-xs text-muted-foreground group-hover:text-orange-600 transition-colors">Daily Records</div>
+                <div className="text-xs text-muted-foreground group-hover:text-orange-600 transition-colors">{t('metrics.records')}</div>
               </div>
             </div>
           </BlurFade>
@@ -299,10 +303,10 @@ export default function Page() {
             <div className="flex items-start gap-3 p-4 rounded-lg bg-primary/5 border border-primary/10">
               <div className="w-1 h-16 bg-gradient-to-b from-primary to-purple-500 rounded-full flex-shrink-0 mt-1"></div>
               <div className="space-y-1">                <p className="text-sm text-muted-foreground italic leading-relaxed">
-                &ldquo;I thrive at the intersection of data science and software engineering, creating solutions that bridge complex algorithms with user-friendly applications.&rdquo;
+                &ldquo;{t('about.quote')}&rdquo;
               </p>
                 <p className="text-xs text-muted-foreground">
-                  Currently pursuing Data Science at <span className="font-medium text-foreground">ESCOM-IPN</span>
+                  {t('about.currentlyPursuing')}
                 </p>
               </div>
             </div>
@@ -314,10 +318,10 @@ export default function Page() {
           <div className="flex min-h-0 flex-col gap-y-4">
             <BlurFade delay={BLUR_FADE_DELAY * 6}>
               <div className="flex items-center gap-3">
-                <h2 className="text-2xl font-bold tracking-tight">Work Experience</h2>
+                <h2 className="text-2xl font-bold tracking-tight">{t('experience.work')}</h2>
                 <div className="h-px bg-gradient-to-r from-border to-transparent flex-1"></div>
                 <div className="text-sm text-muted-foreground font-medium bg-primary/10 px-3 py-1 rounded-full">
-                  {DATA.work.length} Experiences
+                  {DATA.work.length} {t('status.experiences')}
                 </div>
               </div>
             </BlurFade>
@@ -368,10 +372,10 @@ export default function Page() {
           <div className="flex min-h-0 flex-col gap-y-4">
             <BlurFade delay={BLUR_FADE_DELAY * 8}>
               <div className="flex items-center gap-3">
-                <h2 className="text-2xl font-bold tracking-tight">Education</h2>
+                <h2 className="text-2xl font-bold tracking-tight">{t('experience.education')}</h2>
                 <div className="h-px bg-gradient-to-r from-border to-transparent flex-1"></div>
                 <div className="text-sm text-muted-foreground font-medium bg-blue-500/10 px-3 py-1 rounded-full">
-                  {DATA.education.length} Degrees
+                  {DATA.education.length} {t('status.degrees')}
                 </div>
               </div>
             </BlurFade>
@@ -421,11 +425,11 @@ export default function Page() {
               <div className="text-center space-y-2">
                 <div className="flex items-center justify-center gap-3">
                   <div className="h-px bg-gradient-to-r from-transparent to-border flex-1 max-w-20"></div>
-                  <h2 className="text-2xl font-bold tracking-tight">Technical Skills</h2>
+                  <h2 className="text-2xl font-bold tracking-tight">{t('skills.title')}</h2>
                   <div className="h-px bg-gradient-to-r from-border to-transparent flex-1 max-w-20"></div>
                 </div>
                 <p className="text-muted-foreground max-w-2xl text-center">
-                  A comprehensive toolkit spanning data science, machine learning, and full-stack development
+                  {t('skills.description')}
                 </p>
               </div>
             </BlurFade>
@@ -437,7 +441,16 @@ export default function Page() {
                   <div className="group relative">
                     <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/20 via-blue-500/20 to-purple-500/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
                     <div className="relative">
-                      <ParticlesDemo title={category.title} skills={category.skills} />
+                      {/* Temporarily disabled due to initialization error */}
+                      {/* <ParticlesDemo title={category.title} skills={category.skills} /> */}
+                      <div className="flex h-[280px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
+                        <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-3xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10 mb-2">
+                          {category.title}
+                        </span>
+                        <span className="text-base text-center text-muted-foreground">
+                          {category.skills.join(", ")}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </BlurFade>
@@ -458,18 +471,18 @@ export default function Page() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-center gap-3">
                     <div className="h-px bg-gradient-to-r from-transparent to-border flex-1 max-w-20"></div>
-                    <h2 className="text-2xl font-bold tracking-tight">Featured Projects</h2>
+                    <h2 className="text-2xl font-bold tracking-tight">{t('projects.title')}</h2>
                     <div className="h-px bg-gradient-to-r from-border to-transparent flex-1 max-w-20"></div>
                   </div>
                   <h3 className="text-3xl font-bold tracking-tighter sm:text-4xl bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
-                    Check out my latest work
+                    {t('projects.subtitle')}
                   </h3>
                   <p className="text-muted-foreground md:text-lg max-w-2xl">
-                    From data science pipelines to full-stack applications. Each project showcases different aspects of my technical expertise.
+                    {t('projects.description')}
                   </p>
                   <div className="flex items-center justify-center gap-2 pt-2">
                     <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                    <span className="text-sm text-muted-foreground font-medium">{DATA.projects.length} total projects</span>
+                    <span className="text-sm text-muted-foreground font-medium">{DATA.projects.length} {t('projects.totalProjects')}</span>
                   </div>
                 </div>
               </div>
@@ -508,7 +521,7 @@ export default function Page() {
                 <div className="relative group">
                   <div className="absolute -inset-1 bg-gradient-to-r from-primary via-blue-500 to-purple-500 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-500"></div>
                   <div className="relative">
-                    <ShinyButton text={`View All Projects (${DATA.projects.length})`} href="projects" />
+                    <ShinyButton text={`${t('projects.viewall')} (${DATA.projects.length})`} href="projects" />
                   </div>
                 </div>
               </div>
@@ -528,10 +541,10 @@ export default function Page() {
         <section id="certifications" className="space-y-6">
           <BlurFade delay={BLUR_FADE_DELAY * 19}>
             <div className="flex items-center gap-3">
-              <h2 className="text-2xl font-bold tracking-tight">Certifications</h2>
+              <h2 className="text-2xl font-bold tracking-tight">{t('status.certifications')}</h2>
               <div className="h-px bg-gradient-to-r from-border to-transparent flex-1"></div>
               <div className="text-sm text-muted-foreground font-medium bg-orange-500/10 px-3 py-1 rounded-full">
-                Professional Growth
+                {t('status.certifications')}
               </div>
             </div>
           </BlurFade>
@@ -550,15 +563,14 @@ export default function Page() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-center gap-3">
                     <div className="h-px bg-gradient-to-r from-transparent to-border flex-1 max-w-20"></div>
-                    <h2 className="text-2xl font-bold tracking-tight">Let&rsquo;s Connect</h2>
+                    <h2 className="text-2xl font-bold tracking-tight">{t('contact.title')}</h2>
                     <div className="h-px bg-gradient-to-r from-border to-transparent flex-1 max-w-20"></div>
                   </div>
                   <h3 className="text-3xl font-bold tracking-tighter sm:text-4xl bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
-                    Ready to Transform Data into Impact?
+                    {t('contact.hero.title')}
                   </h3>
                   <p className="mx-auto max-w-[600px] text-muted-foreground md:text-lg leading-relaxed">
-                    I&rsquo;m currently open to new opportunities in data science, machine learning, and full-stack development.
-                    Whether you need predictive analytics, web solutions, or data visualization dashboards, let&rsquo;s discuss how I can help drive your business forward.
+                    {t('contact.hero.description')}
                   </p>
                 </div>
 
@@ -566,13 +578,13 @@ export default function Page() {
                 <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
                   <div className="group flex items-center gap-2 px-3 py-2 bg-green-500/10 text-green-500 rounded-full border border-green-500/20 hover:bg-green-500/15 hover:border-green-500/30 hover:scale-105 transition-all duration-300 cursor-default">
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse group-hover:animate-bounce"></div>
-                    <span className="font-medium">Available for work</span>
+                    <span className="font-medium">{t('contact.status.available')}</span>
                   </div>
                   <div className="group flex items-center gap-2 px-3 py-2 bg-blue-500/10 text-blue-500 rounded-full border border-blue-500/20 hover:bg-blue-500/15 hover:border-blue-500/30 hover:scale-105 transition-all duration-300 cursor-default">
-                    <span className="font-medium group-hover:animate-pulse">📍 Mexico City, MX</span>
+                    <span className="font-medium group-hover:animate-pulse">📍 {t('contact.status.location')}</span>
                   </div>
                   <div className="group flex items-center gap-2 px-3 py-2 bg-purple-500/10 text-purple-500 rounded-full border border-purple-500/20 hover:bg-purple-500/15 hover:border-purple-500/30 hover:scale-105 transition-all duration-300 cursor-default">
-                    <span className="font-medium group-hover:animate-pulse">🎓 Data Science Student</span>
+                    <span className="font-medium group-hover:animate-pulse">🎓 {t('contact.status.student')}</span>
                   </div>
                 </div>
               </div>
@@ -588,7 +600,7 @@ export default function Page() {
               <div className="text-center space-y-6">
                 <div className="flex items-center justify-center gap-3">
                   <div className="h-px bg-gradient-to-r from-transparent to-border flex-1 max-w-32"></div>
-                  <span className="text-sm text-muted-foreground font-medium">Or connect directly</span>
+                  <span className="text-sm text-muted-foreground font-medium">{t('contact.alternative.title')}</span>
                   <div className="h-px bg-gradient-to-r from-border to-transparent flex-1 max-w-32"></div>
                 </div>
                 
@@ -617,9 +629,9 @@ export default function Page() {
 
                 <div className="pt-4">
                   <div className="flex flex-wrap justify-center gap-3 text-sm">
-                    <span className="px-3 py-1 bg-muted rounded-full hover:bg-muted/80 transition-colors cursor-default">📧 Email responses within 24h</span>
-                    <span className="px-3 py-1 bg-muted rounded-full hover:bg-muted/80 transition-colors cursor-default">💬 LinkedIn for professional inquiries</span>
-                    <span className="px-3 py-1 bg-muted rounded-full hover:bg-muted/80 transition-colors cursor-default">🤝 Open to remote & hybrid opportunities</span>
+                    <span className="px-3 py-1 bg-muted rounded-full hover:bg-muted/80 transition-colors cursor-default">📧 {t('contact.response.time')}</span>
+                    <span className="px-3 py-1 bg-muted rounded-full hover:bg-muted/80 transition-colors cursor-default">💬 {t('contact.linkedin.note')}</span>
+                    <span className="px-3 py-1 bg-muted rounded-full hover:bg-muted/80 transition-colors cursor-default">🤝 {t('contact.remote.note')}</span>
                   </div>
                 </div>
               </div>
