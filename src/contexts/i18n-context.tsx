@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
@@ -12,7 +12,6 @@ interface I18nContextType {
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
 
-// Translations object
 const translations = {
   en: {
     // Navigation
@@ -26,7 +25,7 @@ const translations = {
     // Hero Section
     'hero.greeting': 'Hi, I\'m Diego 👋',
     'hero.title': 'Data Scientist & Full-Stack Developer',
-    'hero.description': 'Data Scientist & Full-Stack Developer specializing in machine learning, data visualization, and scalable web solutions. Currently pursuing Data Science at ESCOM-IPN with 3+ years of hands-on experience delivering data-driven insights and production-ready applications.',
+    'hero.description': 'Data Scientist and Full-Stack Developer specializing in machine learning, data visualization, and scalable web solutions. Currently studying Data Science at ESCOM-IPN with 3+ years of hands-on experience delivering data-driven insights and production-ready applications.',
     'hero.summary': 'Passionate data scientist and full-stack developer with a proven track record of transforming complex datasets into actionable business insights. Expert in building end-to-end machine learning pipelines, from data collection and preprocessing to model deployment and monitoring.',
     'hero.cta.projects': 'View Projects',
     'hero.cta.contact': 'Get in Touch',
@@ -51,7 +50,7 @@ const translations = {
     'projects.description': 'Some of my recent work',
     'projects.viewall': 'View All Projects',
     'projects.totalProjects': 'total projects',
-    'projects.total': 'projects in total',
+    'projects.total': 'total projects',
     'projects.filtering': 'Filtering by',
     'projects.search.placeholder': 'Search projects by name or technology...',
     'projects.search.clear': 'Clear search',
@@ -63,7 +62,7 @@ const translations = {
     'projects.filters.clear': 'Clear filters',
     'projects.filters.showing': 'Showing',
     'projects.filters.of': 'of',
-    'projects.cta.title': 'Let\'s create something amazing together?',
+    'projects.cta.title': 'Let\'s build something amazing together?',
     'projects.cta.description': 'Interested in collaborating or want to discuss a project? I\'m always open to new opportunities and challenges.',
     'projects.cta.linkedin': 'Connect on LinkedIn',
     'projects.cta.github': 'View GitHub',
@@ -71,7 +70,7 @@ const translations = {
     'projects.viewproject': 'View Project',
     'projects.viewcode': 'View Code',
     'projects.technologies': 'Technologies',
-    'projects.links': 'Links',
+    'projects.links': 'Project Links',
     'projects.active': 'Active',
     'projects.inactive': 'Completed',
     'projects.activeProject': 'Active Project',
@@ -80,6 +79,30 @@ const translations = {
     'projects.additionalFeatures': 'Implementation of additional features that improve user experience.',
     'projects.metricsDisclaimer': 'This section shows project metrics and impact. The data presented is based on real results or approximate estimates.',
     'projects.clickLinks': 'Click on the links to visit the project site or code repository.',
+    'projects.card.clickToView': 'Click to view more',
+    'projects.description': 'Description',
+    'projects.preview': 'Preview',
+    'projects.impact': 'Impact',
+    'projects.metricsResults': 'Metrics and Results',
+    'projects.completionRate': 'Completion Rate',
+    'projects.clientRating': 'Client Rating',
+    'projects.qualityGrade': 'Quality Grade',
+    'projects.playVideo': 'Play the video to see a project demonstration.',
+    'projects.previewDescription': 'Project preview. For more details, check the links in the description tab.',
+    'projects.optimizedCode': 'Optimized code for maximum performance and scalability.',
+    
+    // Project Descriptions
+    'projects.descriptions.sarima': 'Developed SARIMA time series model to forecast domestic air travel demand over 5 years, analyzing 36 years of historical data from Mexican aviation authorities. Achieved 92% forecasting accuracy through cross-validation, enabling capacity planning optimization for major carriers.',
+    'projects.descriptions.melari': 'Led full-stack development of SEO-optimized wellness platform using Astro/React, resulting in 40% increased booking conversions. Implemented CI/CD pipeline with Vercel achieving 99.9% uptime. Integrated headless CMS for dynamic content management.',
+    'projects.descriptions.financial': 'Designed automated financial reporting system using Excel VBA, reducing manual processing time by 15 hours/week. Featured dynamic P&L visualizations, cash flow forecasting modules, and KPI tracking for 200+ branch locations.',
+    'projects.descriptions.houses': 'Built machine learning pipeline (Random Forest Regressor) predicting property values with 88% R² score. Engineered features from geospatial data and market trends. Deployed as Flask API for real-time valuation estimates.',
+    'projects.descriptions.videogames': 'Created interactive Power BI dashboard analyzing $60B global gaming market. Integrated sales data from 15 platforms, enabling product strategy insights through genre trends and regional performance analytics.',
+    'projects.descriptions.portfolio': 'Architected performant portfolio using Next.js SSG, achieving perfect Lighthouse scores. Implemented dark mode, project showcases, and MDX-based content system. Serves as production-grade template for developer portfolios.',
+    'projects.descriptions.codemaster': 'Pioneered gamified coding education platform with Django backend supporting 10k+ users. Features include code playgrounds, AI-assisted feedback, and progress tracking. Won 2nd place in 2024 EdTech Innovation Awards.',
+    'projects.descriptions.airquality': 'Engineered real-time ETL pipeline processing 2M+ daily air quality records from 500+ monitoring stations. Built geospatial analytics dashboard with PySpark, reducing data processing time by 75% and enabling predictive pollution modeling.',
+    'projects.descriptions.population': 'Developed comprehensive demographic analytics dashboard tracking population trends across 7 continents. Integrated multiple data sources with automated ETL processes, featuring interactive visualizations and trend forecasting capabilities.',
+    'projects.descriptions.health': 'Built comprehensive health analytics dashboard analyzing life expectancy trends and infant mortality rates across 195+ countries. Features correlation analysis, time-series forecasting, and socioeconomic factor integration.',
+    'projects.descriptions.default': 'Innovative project showcasing technical expertise and problem-solving capabilities.',
     
     // Experience Section
     'experience.title': 'Experience',
@@ -209,7 +232,7 @@ const translations = {
     'projects.viewproject': 'Ver Proyecto',
     'projects.viewcode': 'Ver Código',
     'projects.technologies': 'Tecnologías',
-    'projects.links': 'Enlaces',
+    'projects.links': 'Enlaces del proyecto',
     'projects.active': 'Activo',
     'projects.inactive': 'Completado',
     'projects.activeProject': 'Proyecto Activo',
@@ -218,6 +241,30 @@ const translations = {
     'projects.additionalFeatures': 'Implementación de características adicionales que mejoran la experiencia de usuario.',
     'projects.metricsDisclaimer': 'Esta sección muestra métricas e impacto del proyecto. Los datos presentados están basados en resultados reales o estimaciones aproximadas.',
     'projects.clickLinks': 'Haz clic en los enlaces para visitar el sitio del proyecto o el repositorio de código.',
+    'projects.card.clickToView': 'Click para ver más',
+    'projects.description': 'Descripción',
+    'projects.preview': 'Vista Previa',
+    'projects.impact': 'Impacto',
+    'projects.metricsResults': 'Métricas y Resultados',
+    'projects.completionRate': 'Tasa de Finalización',
+    'projects.clientRating': 'Evaluación del Cliente',
+    'projects.qualityGrade': 'Calificación de Calidad',
+    'projects.playVideo': 'Reproducir el video para ver una demostración del proyecto.',
+    'projects.previewDescription': 'Vista previa del proyecto. Para más detalles, consulta los enlaces en la pestaña de descripción.',
+    'projects.optimizedCode': 'Código optimizado para máximo rendimiento y escalabilidad.',
+    
+    // Project Descriptions
+    'projects.descriptions.sarima': 'Desarrollé un modelo de series temporales SARIMA para pronosticar la demanda de viajes aéreos domésticos durante 5 años, analizando 36 años de datos históricos de las autoridades de aviación mexicanas. Logré una precisión de pronóstico del 92% mediante validación cruzada, permitiendo la optimización de la planificación de capacidad para las principales aerolíneas.',
+    'projects.descriptions.melari': 'Lideré el desarrollo full-stack de una plataforma de bienestar optimizada para SEO usando Astro/React, resultando en un 40% de aumento en las conversiones de reservas. Implementé un pipeline CI/CD con Vercel logrando 99.9% de tiempo de actividad. Integré CMS headless para gestión dinámica de contenido.',
+    'projects.descriptions.financial': 'Diseñé un sistema automatizado de reportes financieros usando Excel VBA, reduciendo el tiempo de procesamiento manual en 15 horas/semana. Incluye visualizaciones dinámicas de P&L, módulos de pronóstico de flujo de efectivo y seguimiento de KPIs para más de 200 ubicaciones de sucursales.',
+    'projects.descriptions.houses': 'Construí un pipeline de machine learning (Random Forest Regressor) prediciendo valores de propiedades con un puntaje R² del 88%. Ingenié características a partir de datos geoespaciales y tendencias del mercado. Desplegué como API Flask para estimaciones de valuación en tiempo real.',
+    'projects.descriptions.videogames': 'Creé un dashboard interactivo de Power BI analizando el mercado global de videojuegos de $60B. Integré datos de ventas de 15 plataformas, habilitando insights de estrategia de producto a través de tendencias de género y análisis de rendimiento regional.',
+    'projects.descriptions.portfolio': 'Arquitecturé un portafolio de alto rendimiento usando Next.js SSG, logrando puntajes perfectos de Lighthouse. Implementé modo oscuro, showcases de proyectos y sistema de contenido basado en MDX. Sirve como plantilla de grado de producción para portafolios de desarrolladores.',
+    'projects.descriptions.codemaster': 'Pionero en plataforma de educación de programación gamificada con backend Django soportando más de 10k usuarios. Incluye playgrounds de código, retroalimentación asistida por IA y seguimiento de progreso. Ganó 2do lugar en los Premios de Innovación EdTech 2024.',
+    'projects.descriptions.airquality': 'Ingenié un pipeline ETL en tiempo real procesando más de 2M de registros diarios de calidad del aire de más de 500 estaciones de monitoreo. Construí dashboard de análisis geoespacial con PySpark, reduciendo el tiempo de procesamiento de datos en 75% y habilitando modelado predictivo de contaminación.',
+    'projects.descriptions.population': 'Desarrollé un dashboard integral de análisis demográfico rastreando tendencias poblacionales a través de 7 continentes. Integré múltiples fuentes de datos con procesos ETL automatizados, presentando visualizaciones interactivas y capacidades de pronóstico de tendencias.',
+    'projects.descriptions.health': 'Construí un dashboard integral de análisis de salud analizando tendencias de esperanza de vida y tasas de mortalidad infantil en más de 195 países. Incluye análisis de correlación, pronóstico de series temporales e integración de factores socioeconómicos.',
+    'projects.descriptions.default': 'Proyecto innovador que demuestra experiencia técnica y capacidades de resolución de problemas.',
     
     // Experience Section
     'experience.title': 'Experiencia',

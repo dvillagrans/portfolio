@@ -3,10 +3,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { trackProjectView } from "@/components/analytics";
+import { useI18n } from "@/contexts/i18n-context";
 
 interface ProjectCardProps {
   title: string;
-  description: string;
+  description?: string;
+  descriptionKey?: string;
   dates: string;
   tags: readonly string[];
   image?: {
@@ -22,11 +24,16 @@ interface ProjectCardProps {
 export function ProjectCard({
   title,
   description,
+  descriptionKey,
   dates,
   tags,
   image,
   onClick,
 }: ProjectCardProps) {
+  const { t } = useI18n();
+  
+  const displayDescription = descriptionKey ? t(descriptionKey) : description;
+  
   const handleProjectClick = () => {
     trackProjectView(title);
     onClick?.();
@@ -62,7 +69,7 @@ export function ProjectCard({
         </div>
 
         {/* Descripción */}
-        <p className="text-muted-foreground line-clamp-2">{description}</p>
+        <p className="text-muted-foreground line-clamp-2">{displayDescription}</p>
 
         {/* Tags */}
         <div className="flex flex-wrap gap-2">
@@ -81,7 +88,7 @@ export function ProjectCard({
         {/* Indicador de "Click para ver más" */}
         <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
           <Badge variant="secondary" className="bg-primary text-primary-foreground">
-            Click para ver más
+            {t('projects.card.clickToView')}
           </Badge>
         </div>
       </CardContent>

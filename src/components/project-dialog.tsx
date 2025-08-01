@@ -11,6 +11,7 @@ import {
   Dialog,
   DialogContent,
   DialogClose,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -400,11 +401,13 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
   return (
     <AnimatePresence>
       {isOpen && (
-        <Dialog open={isOpen} onOpenChange={onClose}>          <DialogContent 
+        <Dialog open={isOpen} onOpenChange={onClose}>
+          <DialogContent 
             className="max-w-4xl max-h-[85vh] p-0 rounded-2xl overflow-hidden border-none shadow-[0_0_50px_10px_rgba(0,0,0,0.15)] dark:shadow-primary/5"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
+            <DialogTitle className="sr-only">{project.title}</DialogTitle>
             {/* Botón de cerrar */}
             <motion.div 
               className="absolute top-5 right-5 z-50"
@@ -531,7 +534,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                       >
                         <span className="flex items-center gap-2 px-2">
                           <Layers className="w-4 h-4" />
-                          <span className="font-medium">Descripción</span>
+                          <span className="font-medium">{t('projects.description')}</span>
                         </span>
                       </TabsTrigger>
                       <TabsTrigger 
@@ -540,7 +543,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                       >
                         <span className="flex items-center gap-2 px-2">
                           <PlayCircle className="w-4 h-4" />
-                          <span className="font-medium">Vista Previa</span>
+                          <span className="font-medium">{t('projects.preview')}</span>
                         </span>
                       </TabsTrigger>
                       <TabsTrigger 
@@ -549,7 +552,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                       >
                         <span className="flex items-center gap-2 px-2">
                           <BarChart className="w-4 h-4" />
-                          <span className="font-medium">Impacto</span>
+                          <span className="font-medium">{t('projects.impact')}</span>
                         </span>
                       </TabsTrigger>
                     </TabsList>
@@ -582,7 +585,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                         <div className="p-1.5 rounded-md bg-primary/10">
                           <Layers className="w-5 h-5 text-primary" />
                         </div>
-                        <h3 className="text-lg font-semibold">Tecnologías</h3>
+                        <h3 className="text-lg font-semibold">{t('projects.technologies')}</h3>
                       </div>
                       
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -621,7 +624,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                           <div className="p-1.5 rounded-md bg-primary/10">
                             <LinkIcon className="w-5 h-5 text-primary" />
                           </div>
-                          <h3 className="text-lg font-semibold">Enlaces del proyecto</h3>
+                          <h3 className="text-lg font-semibold">{t('projects.links')}</h3>
                         </div>
                         
                         <div className="flex flex-wrap gap-3">
@@ -666,7 +669,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                               </svg>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                              Haz clic en los enlaces para visitar el sitio del proyecto o el repositorio de código.
+                              {t('projects.clickLinks')}
                             </p>
                           </div>
                         </div>
@@ -735,14 +738,14 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                             <>
                               <PlayCircle className="w-4 h-4 text-primary" />
                               <p className="text-sm text-muted-foreground">
-                                Reproducir el video para ver una demostración del proyecto.
+                                {t('projects.playVideo')}
                               </p>
                             </>
                           ) : (
                             <>
                               <Sparkles className="w-4 h-4 text-primary" />
                               <p className="text-sm text-muted-foreground">
-                                Vista previa del proyecto. Para más detalles, consulta los enlaces en la pestaña de descripción.
+                                {t('projects.previewDescription')}
                               </p>
                             </>
                           )}
@@ -765,7 +768,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                           <div className="p-1.5 rounded-md bg-primary/10">
                             <BarChart className="w-5 h-5 text-primary" />
                           </div>
-                          <h3 className="text-lg font-semibold">Métricas y Resultados</h3>
+                          <h3 className="text-lg font-semibold">{t('projects.metricsResults')}</h3>
                         </div>
                         
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -774,19 +777,19 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                             <>
                               <AnimatedMetric 
                                 value="100%" 
-                                label="Tasa de Finalización"
+                                label={t('projects.completionRate')}
                                 icon={<CheckCircle className="w-6 h-6" />}
                                 delay={0.1}
                               />
                               <AnimatedMetric 
                                 value="5 de 5" 
-                                label="Evaluación del Cliente" 
+                                label={t('projects.clientRating')} 
                                 icon={<Star className="w-6 h-6" />}
                                 delay={0.2}
                               />
                               <AnimatedMetric 
                                 value="A+" 
-                                label="Calificación de Calidad" 
+                                label={t('projects.qualityGrade')} 
                                 icon={<Gauge className="w-6 h-6" />}
                                 delay={0.3}
                               />
@@ -858,7 +861,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                                       className="flex items-start gap-2"
                                     >
                                       <Check className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                                      <span className="text-foreground/90">Código optimizado para máximo rendimiento y escalabilidad.</span>
+                                      <span className="text-foreground/90">{t('projects.optimizedCode')}</span>
                                     </motion.li>
                                   </>
                                 )}
@@ -906,7 +909,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                             </svg>
                           </div>
                           <p className="text-sm text-muted-foreground">
-                            Esta sección muestra métricas e impacto del proyecto. Los datos presentados están basados en resultados reales o estimaciones aproximadas.
+                            {t('projects.metricsDisclaimer')}
                           </p>
                         </div>
                       </motion.div>
