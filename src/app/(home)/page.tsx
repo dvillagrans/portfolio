@@ -180,6 +180,20 @@ interface Project {
   readonly video?: string;  // Añadimos la propiedad video como opcional
 }
 
+// Helper function to get project description translation key
+const getProjectDescriptionKey = (title: string): string => {
+  const keyMap: { [key: string]: string } = {
+    "Aviation": "projects.descriptions.sarima",
+    "Melari Spa": "projects.descriptions.melari",
+    "Dashboard Financial": "projects.descriptions.financial",
+    "Prediction of the price of houses in Mexico City": "projects.descriptions.houses",
+    "Video Game Market Intelligence Dashboard": "projects.descriptions.videogames",
+    "Technical Portfolio Platform": "projects.descriptions.portfolio",
+    "Code Master": "projects.descriptions.codemaster"
+  };
+  return keyMap[title] || "projects.descriptions.default";
+};
+
 export default function Page() {
   const { t } = useI18n();
   const [selectedProject, setSelectedProject] = useState<any>(null);
@@ -504,7 +518,7 @@ export default function Page() {
                       <div className="relative h-full">
                         <ProjectCard
                           title={project.title}
-                          description={project.description}
+                          descriptionKey={getProjectDescriptionKey(project.title)}
                           dates={project.dates}
                           tags={project.technologies}
                           image={project.image}

@@ -130,6 +130,20 @@ const ScrollReveal = ({
   );
 };
 
+// Helper function to get project description translation key
+const getProjectDescriptionKey = (title: string): string => {
+  const keyMap: { [key: string]: string } = {
+    "Aviation": "projects.descriptions.sarima",
+    "Melari Spa": "projects.descriptions.melari",
+    "Dashboard Financial": "projects.descriptions.financial",
+    "Prediction of the price of houses in Mexico City": "projects.descriptions.houses",
+    "Video Game Market Intelligence Dashboard": "projects.descriptions.videogames",
+    "Technical Portfolio Platform": "projects.descriptions.portfolio",
+    "Code Master": "projects.descriptions.codemaster"
+  };
+  return keyMap[title] || "projects.descriptions.default";
+};
+
 export default function ProjectsPage() {
   const { t } = useI18n();
   const { activeFilter, setActiveFilter, filteredProjects, categories, categoryNames } = useProjectFilter();
@@ -473,7 +487,7 @@ export default function ProjectsPage() {
                         <div className="relative bg-background/70 backdrop-blur-sm h-full rounded-lg overflow-hidden border border-border/50 group-hover:border-primary/30 shadow-sm group-hover:shadow-md">
                           <ProjectCard
                             title={project.title}
-                            description={project.description}
+                            descriptionKey={getProjectDescriptionKey(project.title)}
                             dates={project.dates}
                             tags={project.technologies}
                             image={project.image}
