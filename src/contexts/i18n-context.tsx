@@ -47,7 +47,6 @@ const translations = {
     // Projects Section
     'projects.title': 'Featured Projects',
     'projects.subtitle': 'Check out my latest work',
-    'projects.description': 'Some of my recent work',
     'projects.viewall': 'View All Projects',
     'projects.totalProjects': 'total projects',
     'projects.total': 'total projects',
@@ -209,7 +208,6 @@ const translations = {
     // Projects Section
     'projects.title': 'Proyectos Destacados',
     'projects.subtitle': 'Echa un vistazo a mi último trabajo',
-    'projects.description': 'Algunos de mis trabajos recientes',
     'projects.viewall': 'Ver Todos los Proyectos',
     'projects.totalProjects': 'proyectos en total',
     'projects.total': 'proyectos en total',
