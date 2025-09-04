@@ -1,21 +1,40 @@
-# 🚀 Diego Villagran - Data Scientist & Full-Stack Developer Portfolio
+# Portfolio - Diego Villagran
 
-A modern, responsive portfolio website showcasing my work in data science, machine learning, and web development. Built with Next.js 14, TypeScript, and Tailwind CSS.
-
-## 🌟 Live Demo
-
-[**View Portfolio →**](https://portfolio-pi-vert-92.vercel.app/)
+🚀 **Modern Portfolio Website** built with cutting-edge technologies and optimized for performance, SEO, and user experience.
 
 ## ✨ Features
 
-- **🎨 Modern Design**: Clean, professional interface with dark/light mode support
-- **📱 Fully Responsive**: Optimized for all devices and screen sizes
-- **⚡ Performance Optimized**: Built with Next.js 14 App Router for lightning-fast loading
-- **🎭 Smooth Animations**: Framer Motion animations with blur fade effects
-- **📊 Interactive Components**: Dynamic project showcases and skill visualizations
-- **🔍 Project Filtering**: Advanced filtering system for project exploration
-- **📝 MDX Blog Support**: Ready for technical articles and case studies
-- **🌐 SEO Optimized**: Meta tags, structured data, and sitemap included
+### 🎨 **Design & UX**
+- Modern, responsive design with dark/light theme support
+- Smooth animations and micro-interactions using Framer Motion
+- Interactive components with hover effects and transitions
+- Mobile-first responsive design
+
+### 🔧 **Technical Features**
+- **Next.js 14** with App Router and Server Components
+- **TypeScript** for type safety
+- **Tailwind CSS** for styling with custom animations
+- **Magic UI** components for enhanced interactions
+- **Optimized Performance** with image optimization and lazy loading
+
+### 📈 **SEO & Analytics**
+- Complete SEO optimization with meta tags, Open Graph, and Twitter Cards
+- Structured data and sitemap generation
+- Google Analytics integration ready
+- Performance monitoring and tracking
+
+### 📧 **Contact & Interaction**
+- Interactive contact form with validation
+- Telegram Bot integration for instant notifications
+- Toast notifications for user feedback
+- Social media integration
+- Email integration ready
+
+### 🛠 **Developer Experience**
+- TypeScript for better development experience
+- ESLint and Prettier configuration
+- Component-based architecture
+- Reusable UI components
 
 ## 🛠️ Tech Stack
 
@@ -59,6 +78,38 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the portfolio.
+
+### 🤖 Telegram Bot Configuration
+
+The contact form is integrated with Telegram Bot API for instant notifications. Follow these steps to set it up:
+
+#### 1. Create a Telegram Bot
+```bash
+# 1. Open Telegram and search for @BotFather
+# 2. Send /newbot command
+# 3. Follow the instructions to create your bot
+# 4. Copy the bot token provided
+```
+
+#### 2. Get Your Chat ID
+```bash
+# 1. Send a message to your bot
+# 2. Visit: https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates
+# 3. Look for "chat":{"id":NUMBER} in the response
+# 4. Use that number as your chat ID
+```
+
+#### 3. Configure Environment Variables
+Update your `.env.local` file:
+```bash
+TELEGRAM_BOT_TOKEN=your_actual_bot_token_here
+TELEGRAM_CHAT_ID=your_actual_chat_id_here
+```
+
+#### 4. Test the Integration
+- Start your development server: `pnpm dev`
+- Fill out the contact form
+- Check your Telegram for the notification message
 
 ### Build for Production
 

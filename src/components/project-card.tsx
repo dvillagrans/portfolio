@@ -2,10 +2,13 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { trackProjectView } from "@/components/analytics";
+import { useI18n } from "@/contexts/i18n-context";
 
 interface ProjectCardProps {
   title: string;
-  description: string;
+  description?: string;
+  descriptionKey?: string;
   dates: string;
   tags: readonly string[];
   image?: {
@@ -21,26 +24,43 @@ interface ProjectCardProps {
 export function ProjectCard({
   title,
   description,
+  descriptionKey,
   dates,
   tags,
   image,
   onClick,
 }: ProjectCardProps) {
+  const { t } = useI18n();
+  
+  const displayDescription = descriptionKey ? t(descriptionKey) : description;
+  
+  const handleProjectClick = () => {
+    trackProjectView(title);
+    onClick?.();
+  };
   return (
     <Card 
       className="group overflow-hidden border border-primary/10 bg-gradient-to-b from-background/50 to-background/80 backdrop-blur-xl transition-all hover:border-primary/30 hover:shadow-lg"
-      onClick={onClick}
+      onClick={handleProjectClick}
     >
       {/* Contenedor de imagen con overlay y efecto hover */}
       <div className="relative aspect-video overflow-hidden">
         {image && (
           <>
             <Image
-              src={image.src}
+              src={(() => {
+                const baseName = image.src.replace('/img/', '').replace('.webp', '');
+                const optimizedImages = ['dash-videojuegos', 'portfolio', 'codemaster', 'etl', 'dash-population', 'dash-esperanzavida-mortalidad', 'output-houses'];
+                if (optimizedImages.includes(baseName)) {
+                  return `/img/optimized/${baseName}-640.webp`;
+                }
+                return image.src;
+              })()}
               alt={title}
               width={image.width || 1200}
               height={image.height || 630}
               className="object-cover transition-transform duration-300 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           </>
@@ -57,7 +77,7 @@ export function ProjectCard({
         </div>
 
         {/* Descripción */}
-        <p className="text-muted-foreground line-clamp-2">{description}</p>
+        <p className="text-muted-foreground line-clamp-2">{displayDescription}</p>
 
         {/* Tags */}
         <div className="flex flex-wrap gap-2">
@@ -76,7 +96,7 @@ export function ProjectCard({
         {/* Indicador de "Click para ver más" */}
         <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
           <Badge variant="secondary" className="bg-primary text-primary-foreground">
-            Click para ver más
+            {t('projects.card.clickToView')}
           </Badge>
         </div>
       </CardContent>

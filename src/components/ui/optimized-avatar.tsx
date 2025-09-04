@@ -1,0 +1,90 @@
+"use client";
+
+import * as React from "react";
+import * as AvatarPrimitive from "@radix-ui/react-avatar";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
+
+const OptimizedAvatar = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <AvatarPrimitive.Root
+    ref={ref}
+    className={cn(
+      "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
+      className
+    )}
+    {...props}
+  />
+));
+OptimizedAvatar.displayName = AvatarPrimitive.Root.displayName;
+
+interface OptimizedAvatarImageProps {
+  src: string;
+  alt: string;
+  className?: string;
+  size?: number;
+  priority?: boolean;
+  sizes?: string;
+}
+
+const OptimizedAvatarImage = React.forwardRef<
+  HTMLDivElement,
+  OptimizedAvatarImageProps
+>(({ src, alt, className, size = 40, priority = false, sizes, ...props }, ref) => {
+  // Generar src optimizado para imágenes disponibles
+  const getOptimizedSrc = (originalSrc: string) => {
+    const baseName = originalSrc.replace('/img/', '').replace('.webp', '');
+    const optimizedPath = '/img/optimized';
+    
+    // Verificar si es una imagen que tenemos optimizada
+    const optimizedImages = ['me', 'melari', 'batiz', 'escom'];
+    if (optimizedImages.includes(baseName)) {
+      return `${optimizedPath}/${baseName}-${size}.webp`;
+    }
+    return originalSrc;
+  };
+  
+  const optimizedSrc = getOptimizedSrc(src);
+  
+  return (
+    <div
+      ref={ref}
+      className={cn("aspect-square h-full w-full relative", className)}
+      {...props}
+    >
+      <Image
+        src={optimizedSrc}
+        alt={alt}
+        fill
+        className="object-cover"
+        priority={priority}
+        sizes={sizes || `${size}px`}
+        quality={85}
+        onError={(e) => {
+          // Fallback a imagen original si la optimizada falla
+          e.currentTarget.src = src;
+        }}
+      />
+    </div>
+  );
+});
+OptimizedAvatarImage.displayName = "OptimizedAvatarImage";
+
+const OptimizedAvatarFallback = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Fallback>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
+>(({ className, ...props }, ref) => (
+  <AvatarPrimitive.Fallback
+    ref={ref}
+    className={cn(
+      "flex h-full w-full items-center justify-center rounded-full bg-muted",
+      className
+    )}
+    {...props}
+  />
+));
+OptimizedAvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
+
+export { OptimizedAvatar, OptimizedAvatarImage, OptimizedAvatarFallback }
