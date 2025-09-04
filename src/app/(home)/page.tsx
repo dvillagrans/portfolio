@@ -1,4 +1,5 @@
 "use client";
+import dynamic from 'next/dynamic';
 import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { ProjectCard } from "@/components/project-card";
@@ -10,14 +11,27 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DATA } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
-import { IconCloudDemo } from "@/components/ui/cloud-icon";
-// import ParticlesDemo from "@/components/ParticlesDemo";
 import ShinyButton from "@/components/magicui/shiny-button";
-import { MarqueeDemo } from "@/components/MarqueeDemo";
 import { useState, useEffect } from "react";
-import { ProjectDialog } from "@/components/project-dialog";
-import { ContactForm } from "@/components/contact-form";
 import { useI18n } from "@/contexts/i18n-context";
+
+// Lazy loading de componentes pesados
+const IconCloudDemo = dynamic(() => import("@/components/ui/cloud-icon").then(mod => ({ default: mod.IconCloudDemo })), {
+  loading: () => <div className="w-full h-48 animate-pulse bg-muted rounded-lg" />,
+  ssr: false
+});
+
+const MarqueeDemo = dynamic(() => import("@/components/MarqueeDemo").then(mod => ({ default: mod.MarqueeDemo })), {
+  loading: () => <div className="w-full h-32 animate-pulse bg-muted rounded-lg" />
+});
+
+const ProjectDialog = dynamic(() => import("@/components/project-dialog").then(mod => ({ default: mod.ProjectDialog })), {
+  loading: () => null
+});
+
+const ContactForm = dynamic(() => import("@/components/contact-form").then(mod => ({ default: mod.ContactForm })), {
+  loading: () => <div className="w-full h-96 animate-pulse bg-muted rounded-lg" />
+});
 
 const BLUR_FADE_DELAY = 0.04;
 

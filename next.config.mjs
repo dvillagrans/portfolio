@@ -2,20 +2,64 @@
 const nextConfig = {
   reactStrictMode: true,
   
-  // Optimizaciones de performance
+  // Optimizaciones de performance mejoradas
   experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion'],
+    optimizePackageImports: ['lucide-react', 'framer-motion', '@radix-ui/react-icons'],
+    gzipSize: true,
   },
   
-  // Configuración de imágenes mejorada
+  // Configuración de imágenes optimizada
   images: {
-    formats: ['image/webp', 'image/avif'],
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 60 * 60 * 24 * 365, // Cache por 1 año
     domains: ['i.postimg.cc'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   
-  // Configuración de headers para SEO y seguridad
+  // Webpack optimizations
+  webpack: (config, { dev, isServer }) => {
+    // Optimizaciones de bundle para producción
+    if (!dev && !isServer) {
+      config.optimization.splitChunks = {
+        ...config.optimization.splitChunks,
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 10,
+          },
+          react: {
+            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+            name: 'react',
+            chunks: 'all',
+            priority: 20,
+          },
+          framer: {
+            test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
+            name: 'framer',
+            chunks: 'all',
+            priority: 15,
+          },
+          common: {
+            minChunks: 2,
+            chunks: 'all',
+            enforce: true,
+            priority: 5,
+          }
+        }
+      };
+    }
+    
+    return config;
+  },
+  
+  // Headers de performance y caché
   async headers() {
     return [
       {
@@ -36,6 +80,24 @@ const nextConfig = {
           {
             key: 'X-DNS-Prefetch-Control',
             value: 'on',
+          },
+        ],
+      },
+      {
+        source: '/img/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/_next/static/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },
