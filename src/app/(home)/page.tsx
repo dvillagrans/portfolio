@@ -7,7 +7,7 @@ import { ProjectGridSkeleton } from "@/components/project-card-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StaggerContainer, StaggerItem, EnhancedCard } from "@/components/page-transition";
 import { ResumeCard } from "@/components/resume-card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { OptimizedAvatar, OptimizedAvatarFallback, OptimizedAvatarImage } from "@/components/ui/optimized-avatar";
 import { DATA } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
@@ -296,10 +296,17 @@ export default function Page() {
                   <div className="absolute bottom-0 left-1/2 w-1 h-1 bg-blue-500 rounded-full transform -translate-x-1/2"></div>
                 </div>
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary via-blue-500 to-purple-500 rounded-full blur opacity-25 group-hover:opacity-40 group-hover:animate-pulse transition duration-1000 group-hover:duration-200"></div>
-                <Avatar className="relative size-28 sm:size-32 border-2 border-background shadow-xl ring-2 ring-background hover:ring-4 hover:ring-primary/20 transition-all duration-300 hover:scale-105">
-                  <AvatarImage alt={DATA.name} src={DATA.avatarUrl} className="object-cover group-hover:scale-110 transition-transform duration-500" />
-                  <AvatarFallback className="text-xl font-bold bg-gradient-to-br from-primary to-blue-500 text-primary-foreground">{DATA.initials}</AvatarFallback>
-                </Avatar>
+                <OptimizedAvatar className="relative size-28 sm:size-32 border-2 border-background shadow-xl ring-2 ring-background hover:ring-4 hover:ring-primary/20 transition-all duration-300 hover:scale-105">
+                  <OptimizedAvatarImage 
+                    alt={DATA.name} 
+                    src={DATA.avatarUrl} 
+                    className="object-cover group-hover:scale-110 transition-transform duration-500" 
+                    size={128}
+                    priority={true}
+                    sizes="(max-width: 640px) 112px, 128px"
+                  />
+                  <OptimizedAvatarFallback className="text-xl font-bold bg-gradient-to-br from-primary to-blue-500 text-primary-foreground">{DATA.initials}</OptimizedAvatarFallback>
+                </OptimizedAvatar>
               </div>
             </FloatingElement>
           </BlurFade>

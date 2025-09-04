@@ -48,11 +48,27 @@ export function ProjectCard({
         {image && (
           <>
             <Image
-              src={image.src}
+              src={(() => {
+                const baseName = image.src.replace('/img/', '').replace('.webp', '');
+                const optimizedImages = ['dash-videojuegos', 'portfolio', 'codemaster', 'etl', 'dash-population', 'dash-esperanzavida-mortalidad', 'output-houses'];
+                if (optimizedImages.includes(baseName)) {
+                  return `/img/optimized/${baseName}-640.webp`;
+                }
+                return image.src;
+              })()}
               alt={title}
               width={image.width || 1200}
               height={image.height || 630}
               className="object-cover transition-transform duration-300 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              srcSet={(() => {
+                const baseName = image.src.replace('/img/', '').replace('.webp', '');
+                const optimizedImages = ['dash-videojuegos', 'portfolio', 'codemaster', 'etl', 'dash-population', 'dash-esperanzavida-mortalidad', 'output-houses'];
+                if (optimizedImages.includes(baseName)) {
+                  return `/img/optimized/${baseName}-320.webp 320w, /img/optimized/${baseName}-640.webp 640w, /img/optimized/${baseName}-1200.webp 1200w`;
+                }
+                return undefined;
+              })()}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           </>
