@@ -7,7 +7,6 @@ const nextConfig = {
   
   // Optimizaciones de performance mejoradas
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ['lucide-react', 'framer-motion', '@radix-ui/react-icons'],
     gzipSize: true,
   },
