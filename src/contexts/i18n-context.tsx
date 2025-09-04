@@ -339,19 +339,29 @@ const translations = {
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>('en');
+  const [isClient, setIsClient] = useState(false);
+
+  // Set client flag on mount
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Load language from localStorage on mount
   useEffect(() => {
+    if (!isClient) return;
+    
     const savedLanguage = localStorage.getItem('language') as Language;
     if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'es')) {
       setLanguage(savedLanguage);
     }
-  }, []);
+  }, [isClient]);
 
   // Save language to localStorage when it changes
   useEffect(() => {
+    if (!isClient) return;
+    
     localStorage.setItem('language', language);
-  }, [language]);
+  }, [language, isClient]);
 
   const t = (key: string): string => {
     return translations[language][key as keyof typeof translations[typeof language]] || key;
