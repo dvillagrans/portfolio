@@ -370,6 +370,18 @@ export const DATA = {
 
   work: [
     {
+      company: "Eyenet",
+      href: "https://eyenet.com",
+      badges: ["Internship", "Remote", "Full-time"],
+      location: "Remote",
+      title: "AI & Automation Intern",
+      logoUrl: "/img/eyenet.webp",
+      start: "April 2025",
+      end: "Present",
+      description:
+        "Designed and deployed end-to-end automation workflows using n8n and Python, reducing manual processing time by 70%. Implemented AI/ML deployment with OpenAI and Gemini APIs for document processing, achieving 60% reduction in data capture errors. Built production-ready Docker infrastructure with PostgreSQL databases, automated CI/CD pipelines, and Telegram alerting systems. Developed intelligent data processing pipelines using machine learning algorithms, improving accuracy by 45%. Architected scalable microservices architecture with Redis caching and MongoDB integration, handling 10,000+ daily transactions.",
+    },
+    {
       company: "Spa & Wellness",
       href: "https://www.melarispa.com/",
       badges: ["Freelance", "Remote", "Part-time"],
@@ -382,6 +394,18 @@ export const DATA = {
         "Creation of a website for a spa in Mexico City, with the purpose of increasing the number of clients and the visibility of the spa.",
     },
 
+  ],
+
+  certifications: [
+    {
+      name: "Python for Data Science, AI & Development",
+      issuer: "Coursera - IBM",
+      date: "2024",
+      credentialId: "ZGJQUCOZZ70M",
+      logo: "/img/coursera.webp",
+      href: "https://coursera.org/verify/ZGJQUCOZZ70M",
+      description: "Comprehensive course covering Python fundamentals for data science, artificial intelligence, and development applications.",
+    },
   ],
   education: [
     {
