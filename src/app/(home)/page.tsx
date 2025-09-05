@@ -7,12 +7,26 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DATA } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
-import { IconCloudDemo } from "@/components/ui/cloud-icon";
-import ParticlesDemo from "@/components/ParticlesDemo";
 import ShinyButton from "@/components/magicui/shiny-button";
-import { MarqueeDemo } from "@/components/MarqueeDemo";
 import { useState, useEffect } from "react";
 import { ProjectDialog } from "@/components/project-dialog";
+import dynamic from "next/dynamic";
+
+// Lazy load componentes pesados para reducir Total Blocking Time
+const ParticlesDemo = dynamic(() => import("@/components/ParticlesDemo"), {
+  ssr: false,
+  loading: () => <div className="h-32 animate-pulse bg-gray-200 rounded" />
+});
+
+const IconCloudDemo = dynamic(() => import("@/components/ui/cloud-icon").then(mod => ({ default: mod.IconCloudDemo })), {
+  ssr: false,
+  loading: () => <div className="h-64 animate-pulse bg-gray-200 rounded" />
+});
+
+const MarqueeDemo = dynamic(() => import("@/components/MarqueeDemo").then(mod => ({ default: mod.MarqueeDemo })), {
+  ssr: false,
+  loading: () => <div className="h-32 animate-pulse bg-gray-200 rounded" />
+});
 
 const BLUR_FADE_DELAY = 0.04;
 
