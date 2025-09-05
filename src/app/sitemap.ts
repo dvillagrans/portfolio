@@ -2,8 +2,8 @@ import { MetadataRoute } from 'next'
 import { DATA } from '@/data/resume'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = DATA.url;
-  const currentDate = new Date();
+  const baseUrl = DATA.url
+  const currentDate = new Date()
   
   const routes = [
     {
@@ -36,7 +36,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.5,
     }
-  ];
+  ]
 
   // Agregar proyectos individuales
   const projectRoutes = DATA.projects.map((project) => ({
@@ -44,7 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: currentDate,
     changeFrequency: 'monthly' as const,
     priority: 0.6,
-  }));
+  }))
 
-  return [...routes, ...projectRoutes];
+  return [...routes, ...projectRoutes]
 }

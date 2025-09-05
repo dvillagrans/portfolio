@@ -7,10 +7,14 @@ import { cn } from "@/lib/utils"
 
 const Separator = React.forwardRef<
   React.ElementRef<typeof SeparatorPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root>
+  React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root> & {
+    mouseX?: any;
+    magnification?: number;
+    distance?: number;
+  }
 >(
   (
-    { className, orientation = "horizontal", decorative = true, ...props },
+    { className, orientation = "horizontal", decorative = true, mouseX, magnification, distance, ...props },
     ref
   ) => (
     <SeparatorPrimitive.Root

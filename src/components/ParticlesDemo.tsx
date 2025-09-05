@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import Particles from "@/components/magicui/particles";
 
 interface ParticlesDemoProps {
   title: string;
@@ -24,13 +23,6 @@ const ParticlesDemo: React.FC<ParticlesDemoProps> = ({ title, skills }) => {
       <span className="text-base text-center text-muted-foreground">
         {skills.join(", ")}
       </span>
-      <Particles
-        className="absolute inset-0"
-        quantity={50}
-        ease={100}
-        color={color}
-        refresh
-      />
     </div>
   );
 };
