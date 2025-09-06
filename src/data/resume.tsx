@@ -98,19 +98,30 @@ export const DATA = {
       active: true,
       role: "Data Science",
       description:
-        "Comprehensive interactive dashboard built with Streamlit for analyzing Uber and Lyft trip patterns, revenue, and geographic distribution in NYC. Features machine learning models for fare prediction (R² > 0.85) and airport trip classification (92% accuracy), along with advanced visualizations including heat maps, 3D PyDeck maps, and real-time analytics across 8 specialized tabs covering peak hours, accessibility services, and competitive analysis.",
+        "Comprehensive interactive dashboard built with Streamlit for analyzing Uber and Lyft trip patterns, revenue, and geographic distribution in NYC. Features advanced visualizations including heat maps, 3D PyDeck maps, and real-time analytics across 8 specialized tabs covering peak hours, accessibility services, and competitive analysis. Developed machine learning models achieving **R² > 0.85** for fare prediction and **92% accuracy** for airport trip classification. Pipeline processes >1M NYC ride-hailing trips with production-ready analytics used by transportation analysts.",
       technologies: [
         "Streamlit",
         "Python",
         "Pandas",
         "Plotly",
-        "+7"
+        "Machine Learning",
+        "TensorFlow",
+        "Scikit-learn",
+        "Folium",
+        "PyDeck",
+        "Data Visualization",
+        "Geospatial Analysis"
       ],
       links: [
         {
           type: "Source",
           href: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard",
           icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "Demo",
+          href: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard#readme",
+          icon: <Icons.globe className="size-3" />,
         },
       ],
       image: {
