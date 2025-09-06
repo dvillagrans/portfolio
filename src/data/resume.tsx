@@ -429,6 +429,36 @@ export const DATA = {
       },
       video: "",
     },
+    {
+      title: "Métodos de Optimización No Lineal",
+      href: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal",
+      dates: "June 2025",
+      active: true,
+      description:
+        "Interactive Flask web application implementing and visualizing main non-linear optimization algorithms with modern dynamic interface. Features Line Search (Golden Section, Fibonacci, Armijo), Gradient Descent (Basic, Momentum, Adam), Newton Method variants, and constrained optimization methods with real-time convergence graphs and mathematical visualizations.",
+      technologies: [
+        "Flask",
+        "Python",
+        "NumPy",
+        "Chart.js",
+        "Bootstrap 5",
+        "MathJax",
+        "Non-linear Optimization",
+        "Mathematical Visualization",
+        "API REST"
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src: "/img/metodos-optimizacion-no-lineal.webp",
+      },
+      video: "",
+    },
   ],
 
   work: [
