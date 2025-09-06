@@ -3,13 +3,19 @@
 ## 1. Análisis de Métricas Actuales
 
 ### Métricas de Rendimiento
-- **First Contentful Paint (FCP)**: 0.3s ✅ (Excelente - < 1.8s)
-- **Largest Contentful Paint (LCP)**: 1.4s ✅ (Bueno - < 2.5s)
-- **Total Blocking Time (TBT)**: 410ms ❌ (Alto - debe ser < 200ms)
-- **Cumulative Layout Shift (CLS)**: 0.008 ✅ (Excelente - < 0.1)
-- **Speed Index**: 1.1s ✅ (Bueno - < 3.4s)
+
+* **First Contentful Paint (FCP)**: 0.3s ✅ (Excelente - < 1.8s)
+
+* **Largest Contentful Paint (LCP)**: 1.4s ✅ (Bueno - < 2.5s)
+
+* **Total Blocking Time (TBT)**: 410ms ❌ (Alto - debe ser < 200ms)
+
+* **Cumulative Layout Shift (CLS)**: 0.008 ✅ (Excelente - < 0.1)
+
+* **Speed Index**: 1.1s ✅ (Bueno - < 3.4s)
 
 ### Problemas Identificados
+
 1. **Total Blocking Time elevado (410ms)** - Principal problema
 2. Falta de structured data para SEO
 3. Metadatos incompletos (faltan keywords, author)
@@ -21,6 +27,7 @@
 ### 2.1 Reducción del Total Blocking Time
 
 #### Code Splitting Avanzado
+
 ```javascript
 // Implementar en next.config.mjs
 const nextConfig = {
@@ -41,6 +48,7 @@ const nextConfig = {
 ```
 
 #### Lazy Loading de Componentes
+
 ```javascript
 // Implementar en page.tsx
 import dynamic from 'next/dynamic';
@@ -62,6 +70,7 @@ const MarqueeDemo = dynamic(() => import('@/components/MarqueeDemo'), {
 ```
 
 #### Optimización de Animaciones
+
 ```javascript
 // Usar CSS transforms en lugar de JavaScript
 // Reemplazar animaciones JavaScript pesadas con CSS
@@ -79,6 +88,7 @@ const MarqueeDemo = dynamic(() => import('@/components/MarqueeDemo'), {
 ### 2.2 Optimización de Imágenes
 
 #### Configuración Next.js Image
+
 ```javascript
 // Usar Next.js Image component
 import Image from 'next/image';
@@ -95,6 +105,7 @@ import Image from 'next/image';
 ```
 
 #### Preload de Recursos Críticos
+
 ```javascript
 // Agregar en layout.tsx
 export default function RootLayout({ children }) {
@@ -115,6 +126,7 @@ export default function RootLayout({ children }) {
 ### 3.1 Metadatos Mejorados
 
 #### Layout.tsx Optimizado
+
 ```javascript
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
@@ -187,6 +199,7 @@ export const metadata: Metadata = {
 ### 3.2 Structured Data (JSON-LD)
 
 #### Componente StructuredData
+
 ```javascript
 // components/StructuredData.tsx
 export function StructuredData() {
@@ -371,18 +384,21 @@ const nextConfig = {
 ## 5. Plan de Implementación
 
 ### Fase 1: Optimizaciones Críticas (Semana 1)
+
 1. ✅ Implementar lazy loading en componentes pesados
 2. ✅ Optimizar configuración de Next.js
 3. ✅ Agregar preload de recursos críticos
 4. ✅ Implementar code splitting
 
 ### Fase 2: SEO Avanzado (Semana 2)
+
 1. ✅ Actualizar metadatos completos
 2. ✅ Implementar structured data
 3. ✅ Optimizar sitemap
 4. ✅ Agregar verificación de Google Search Console
 
 ### Fase 3: Optimizaciones Avanzadas (Semana 3)
+
 1. ✅ Optimizar service worker
 2. ✅ Implementar compresión avanzada
 3. ✅ Optimizar fuentes y recursos
@@ -391,21 +407,31 @@ const nextConfig = {
 ## 6. Métricas Objetivo
 
 ### Objetivos de Rendimiento
-- **Total Blocking Time**: < 200ms (reducir de 410ms)
-- **First Contentful Paint**: Mantener < 0.5s
-- **Largest Contentful Paint**: Mantener < 1.5s
-- **Speed Index**: Mantener < 1.2s
-- **Cumulative Layout Shift**: Mantener < 0.1
+
+* **Total Blocking Time**: < 200ms (reducir de 410ms)
+
+* **First Contentful Paint**: Mantener < 0.5s
+
+* **Largest Contentful Paint**: Mantener < 1.5s
+
+* **Speed Index**: Mantener < 1.2s
+
+* **Cumulative Layout Shift**: Mantener < 0.1
 
 ### Objetivos SEO
-- Google PageSpeed Score: > 90
-- Core Web Vitals: Todos en verde
-- Indexación completa en Google (verificar con Search Console)
-- Rich snippets funcionando correctamente
+
+* Google PageSpeed Score: > 90
+
+* Core Web Vitals: Todos en verde
+
+* Indexación completa en Google (verificar con Search Console)
+
+* Rich snippets funcionando correctamente
 
 ## 7. Herramientas de Monitoreo
 
 ### Herramientas Recomendadas
+
 1. **Google PageSpeed Insights** - Monitoreo mensual
 2. **Google Search Console** - Monitoreo semanal
 3. **Lighthouse CI** - Integración en CI/CD
@@ -413,7 +439,10 @@ const nextConfig = {
 5. **GTmetrix** - Análisis detallado
 
 ### Scripts de Monitoreo
+
 ```bash
 # performance_check.sh - Mejorado
 #!/bin/bash
 npx lighthouse https
+```
+

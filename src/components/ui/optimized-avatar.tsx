@@ -33,28 +33,20 @@ const OptimizedAvatarImage = React.forwardRef<
   HTMLDivElement,
   OptimizedAvatarImageProps
 >(({ src, alt, className, size = 40, priority = false, sizes, ...props }, ref) => {
-  // Generar srcSet para imágenes optimizadas si están disponibles
-  const generateSrcSet = (originalSrc: string) => {
+  // Generar src optimizado para imágenes disponibles
+  const getOptimizedSrc = (originalSrc: string) => {
     const baseName = originalSrc.replace('/img/', '').replace('.webp', '');
     const optimizedPath = '/img/optimized';
     
     // Verificar si es una imagen que tenemos optimizada
     const optimizedImages = ['me', 'melari', 'batiz', 'escom'];
     if (optimizedImages.includes(baseName)) {
-      return {
-        src: `${optimizedPath}/${baseName}-${size}.webp`,
-        srcSet: `
-          ${optimizedPath}/${baseName}-48.webp 48w,
-          ${optimizedPath}/${baseName}-64.webp 64w,
-          ${optimizedPath}/${baseName}-96.webp 96w,
-          ${optimizedPath}/${baseName}-128.webp 128w
-        `.trim()
-      };
+      return `${optimizedPath}/${baseName}-${size}.webp`;
     }
-    return { src: originalSrc, srcSet: undefined };
+    return originalSrc;
   };
   
-  const { src: optimizedSrc, srcSet } = generateSrcSet(src);
+  const optimizedSrc = getOptimizedSrc(src);
   
   return (
     <div
@@ -70,13 +62,10 @@ const OptimizedAvatarImage = React.forwardRef<
         priority={priority}
         sizes={sizes || `${size}px`}
         quality={85}
-        {...(srcSet && { 
-          srcSet,
-          onError: (e) => {
-            // Fallback a imagen original si la optimizada falla
-            e.currentTarget.src = src;
-          }
-        })}
+        onError={(e) => {
+          // Fallback a imagen original si la optimizada falla
+          e.currentTarget.src = src;
+        }}
       />
     </div>
   );

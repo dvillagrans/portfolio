@@ -81,23 +81,35 @@ const FloatingElement = ({ children, delay = 0 }: { children: React.ReactNode; d
 // Scroll parallax hook
 const useScrollParallax = () => {
   const [scrollY, setScrollY] = useState(0);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isClient) return;
+    
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isClient]);
 
-  return scrollY;
+  return isClient ? scrollY : 0;
 };
 
 // Intersection Observer hook for scroll animations (optimized)
 const useIntersectionObserver = (options = {}) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [ref, setRef] = useState<HTMLElement | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    if (!ref) return;
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!ref || !isClient) return;
 
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
@@ -113,7 +125,7 @@ const useIntersectionObserver = (options = {}) => {
 
     observer.observe(ref);
     return () => observer.disconnect();
-  }, [ref, options]);
+  }, [ref, options, isClient]);
 
   return [setRef, isIntersecting] as const;
 };

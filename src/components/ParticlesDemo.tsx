@@ -10,10 +10,17 @@ interface ParticlesDemoProps {
 const ParticlesDemo: React.FC<ParticlesDemoProps> = ({ title, skills }) => {
   const { theme } = useTheme();
   const [color, setColor] = useState("#ffffff");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setColor(theme === "dark" ? "#ffffff" : "#000000");
-  }, [theme]);
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted) {
+      setColor(theme === "dark" ? "#ffffff" : "#000000");
+    }
+  }, [theme, mounted]);
 
   return (
     <div className="relative flex h-[280px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">

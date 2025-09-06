@@ -74,7 +74,12 @@ export default function IconCloud({ iconSlugs }: DynamicCloudProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [hasRendered, setHasRendered] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { theme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Usar una ref para almacenar los iconos y evitar re-renderizaciones innecesarias
   const iconsRef = useMemo(() => iconSlugs, [iconSlugs]);
@@ -114,12 +119,12 @@ export default function IconCloud({ iconSlugs }: DynamicCloudProps) {
   }, [iconsRef, hasRendered, data]);
   // Memorizar los iconos renderizados para evitar cálculos innecesarios durante el scroll
   const renderedIcons = useMemo(() => {
-    if (!data) return null;
+    if (!data || !mounted) return null;
 
     return Object.values(data.simpleIcons).map((icon) =>
       renderCustomIcon(icon, theme || "light"),
     );
-  }, [data, theme]);
+  }, [data, theme, mounted]);
 
   // Memorizar el componente Cloud para evitar re-renderizaciones durante el scroll
   const cloudComponent = useMemo(() => {

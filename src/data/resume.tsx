@@ -6,7 +6,8 @@ export const DATA = {
   initials: "DV",
   url: "https://portfolio-pi-vert-92.vercel.app/",
   location: "Mexico City, MX",
-  locationLink: "", description:
+  locationLink: "",
+  description:
     "Data Scientist & Full-Stack Developer specializing in machine learning, data visualization, and scalable web solutions. Currently pursuing Data Science at ESCOM-IPN with 3+ years of hands-on experience delivering data-driven insights and production-ready applications.",
   summary:
     "Passionate data scientist and full-stack developer with a proven track record of transforming complex datasets into actionable business insights. Expert in building end-to-end machine learning pipelines, from data collection and preprocessing to model deployment and monitoring. My experience spans predictive analytics (92% forecasting accuracy in aviation demand), web development (40% conversion rate improvements), and cloud-based ETL systems processing millions of daily records. I thrive at the intersection of data science and software engineering, creating scalable solutions that drive real business value.",
@@ -363,6 +364,98 @@ export const DATA = {
       ],
       image: {
         src: "/img/dash-esperanzavida-mortalidad.webp",
+      },
+      video: "",
+    },
+    {
+      title: "NYC Ride-Hailing Analytics Dashboard",
+      href: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard",
+      dates: "June 2025",
+      active: true,
+      description:
+        "Comprehensive interactive dashboard built with Streamlit for analyzing Uber and Lyft trip patterns, revenue, and geographic distribution in NYC. Features machine learning models for fare prediction (R² > 0.85) and airport trip classification (92% accuracy), along with advanced visualizations including heat maps, 3D PyDeck maps, and real-time analytics across 8 specialized tabs covering peak hours, accessibility services, and competitive analysis.",
+      technologies: [
+        "Streamlit",
+        "Python",
+        "Pandas",
+        "Plotly",
+        "Machine Learning",
+        "TensorFlow",
+        "Scikit-learn",
+        "Folium",
+        "PyDeck",
+        "Data Visualization",
+        "Geospatial Analysis"
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src: "/img/nyc-ridehailing-dashboard.webp",
+      },
+      video: "",
+    },
+    {
+      title: "Matemáticas Avanzadas - Métodos de Optimización",
+      href: "https://github.com/dvillagrans/Metodos-de-optimizacion",
+      dates: "May 2025",
+      active: true,
+      description:
+        "Aplicación Flask para resolver problemas de programación lineal usando diferentes métodos de optimización (Simplex, Gran M, Dos Fases) con animaciones visuales generadas usando Manim. Incluye API REST, interfaz web interactiva y generación automática de videos explicativos de los algoritmos.",
+      technologies: [
+        "Flask",
+        "Python",
+        "Manim",
+        "NumPy",
+        "Linear Programming",
+        "Mathematical Optimization",
+        "API REST",
+        "HTML Templates",
+        "Mathematical Visualization"
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/Metodos-de-optimizacion",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src: "/img/metodos-optimizacion.webp",
+      },
+      video: "",
+    },
+    {
+      title: "Métodos de Optimización No Lineal",
+      href: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal",
+      dates: "June 2025",
+      active: true,
+      description:
+        "Interactive Flask web application implementing and visualizing main non-linear optimization algorithms with modern dynamic interface. Features Line Search (Golden Section, Fibonacci, Armijo), Gradient Descent (Basic, Momentum, Adam), Newton Method variants, and constrained optimization methods with real-time convergence graphs and mathematical visualizations.",
+      technologies: [
+        "Flask",
+        "Python",
+        "NumPy",
+        "Chart.js",
+        "Bootstrap 5",
+        "MathJax",
+        "Non-linear Optimization",
+        "Mathematical Visualization",
+        "API REST"
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: {
+        src: "/img/metodos-optimizacion-no-lineal.webp",
       },
       video: "",
     },
