@@ -11,6 +11,7 @@ interface ProjectCardProps {
   descriptionKey?: string;
   dates: string;
   tags: readonly string[];
+  role?: string;
   image?: {
     src: string;
     width?: number;
@@ -27,6 +28,7 @@ export function ProjectCard({
   descriptionKey,
   dates,
   tags,
+  role,
   image,
   onClick,
 }: ProjectCardProps) {
@@ -39,10 +41,14 @@ export function ProjectCard({
     onClick?.();
   };
   return (
-    <Card 
-      className="group overflow-hidden border border-primary/10 bg-gradient-to-b from-background/50 to-background/80 backdrop-blur-xl transition-all hover:border-primary/30 hover:shadow-lg"
-      onClick={handleProjectClick}
+    <motion.div
+      whileHover={{ y: -8, scale: 1.02 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
     >
+      <Card 
+        className="group overflow-hidden border border-primary/10 bg-gradient-to-b from-background/50 to-background/80 backdrop-blur-xl transition-all hover:border-primary/30 hover:shadow-2xl cursor-pointer"
+        onClick={handleProjectClick}
+      >
       {/* Contenedor de imagen con overlay y efecto hover */}
       <div className="relative aspect-video overflow-hidden">
         {image && (
@@ -68,27 +74,36 @@ export function ProjectCard({
       </div>
 
       <CardContent className="space-y-4 p-6">
-        {/* Título y fecha */}
-        <div>
-          <h3 className="font-bold text-xl group-hover:text-primary transition-colors">
-            {title}
-          </h3>
+        {/* Título, rol y fecha */}
+        <div className="space-y-2">
+          <div className="flex items-start justify-between gap-2">
+            <h3 className="font-bold text-xl group-hover:text-primary transition-colors flex-1">
+              {title}
+            </h3>
+            {role && (
+              <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 text-xs font-medium">
+                {role}
+              </Badge>
+            )}
+          </div>
           <p className="text-sm text-muted-foreground">{dates}</p>
         </div>
 
         {/* Descripción */}
-        <p className="text-muted-foreground line-clamp-2">{displayDescription}</p>
+        <p className="text-muted-foreground text-sm leading-relaxed" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+          {displayDescription}
+        </p>
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-2">
-          {tags.slice(0, 4).map((tag) => (
-            <Badge key={tag} variant="secondary" className="bg-primary/10">
+        <div className="flex flex-wrap gap-1.5">
+          {tags.slice(0, 3).map((tag) => (
+            <Badge key={tag} variant="secondary" className="bg-primary/10 text-xs px-2 py-1">
               {tag}
             </Badge>
           ))}
-          {tags.length > 4 && (
-            <Badge variant="secondary" className="bg-primary/5">
-              +{tags.length - 4}
+          {tags.length > 3 && (
+            <Badge variant="secondary" className="bg-primary/5 text-xs px-2 py-1">
+              +{tags.length - 3}
             </Badge>
           )}
         </div>
@@ -100,6 +115,7 @@ export function ProjectCard({
           </Badge>
         </div>
       </CardContent>
-    </Card>
+      </Card>
+    </motion.div>
   );
 }

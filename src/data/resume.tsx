@@ -96,6 +96,7 @@ export const DATA = {
       href: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard",
       dates: "June 2025",
       active: true,
+      role: "Data Science",
       description:
         "Comprehensive interactive dashboard built with Streamlit for analyzing Uber and Lyft trip patterns, revenue, and geographic distribution in NYC. Features machine learning models for fare prediction (R² > 0.85) and airport trip classification (92% accuracy), along with advanced visualizations including heat maps, 3D PyDeck maps, and real-time analytics across 8 specialized tabs covering peak hours, accessibility services, and competitive analysis.",
       technologies: [
@@ -103,13 +104,7 @@ export const DATA = {
         "Python",
         "Pandas",
         "Plotly",
-        "Machine Learning",
-        "TensorFlow",
-        "Scikit-learn",
-        "Folium",
-        "PyDeck",
-        "Data Visualization",
-        "Geospatial Analysis"
+        "+7"
       ],
       links: [
         {
@@ -128,18 +123,14 @@ export const DATA = {
       href: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal",
       dates: "June 2025",
       active: true,
+      role: "Mathematical Optimization",
       description:
         "Interactive Flask web application implementing and visualizing main non-linear optimization algorithms with modern dynamic interface. Features Line Search (Golden Section, Fibonacci, Armijo), Gradient Descent (Basic, Momentum, Adam), Newton Method variants, and constrained optimization methods with real-time convergence graphs and mathematical visualizations.",
       technologies: [
         "Flask",
         "Python",
         "NumPy",
-        "Chart.js",
-        "Bootstrap 5",
-        "MathJax",
-        "Non-linear Optimization",
-        "Mathematical Visualization",
-        "API REST"
+        "+6"
       ],
       links: [
         {
@@ -158,18 +149,14 @@ export const DATA = {
       href: "https://github.com/dvillagrans/Metodos-de-optimizacion",
       dates: "May 2025",
       active: true,
+      role: "Mathematical Optimization",
       description:
         "Aplicación Flask para resolver problemas de programación lineal usando diferentes métodos de optimización (Simplex, Gran M, Dos Fases) con animaciones visuales generadas usando Manim. Incluye API REST, interfaz web interactiva y generación automática de videos explicativos de los algoritmos.",
       technologies: [
         "Flask",
         "Python",
         "Manim",
-        "NumPy",
-        "Linear Programming",
-        "Mathematical Optimization",
-        "API REST",
-        "HTML Templates",
-        "Mathematical Visualization"
+        "+6"
       ],
       links: [
         {
@@ -188,14 +175,14 @@ export const DATA = {
       href: "https://github.com/dvillagrans/population-dashboard",
       dates: "Feb 2025",
       active: false,
+      role: "Data Analyst",
       description:
         "Developed interactive Dashboard with Power BI to analyze population trends, demographic shifts, and continental comparisons with dynamic filtering and drill-down capabilities.",
       technologies: [
         "Power BI",
+        "DAX",
         "Data Modeling",
-        "Data Visualization",
-        "Interactive Visualizations",
-        "DAX"
+        "+2"
       ],
       links: [
         {
@@ -214,14 +201,14 @@ export const DATA = {
       href: "https://github.com/dvillagrans/health-analytics-dashboard",
       dates: "Feb 2025",
       active: false,
+      role: "Data Analyst",
       description:
         "Built comprehensive health analytics dashboard analyzing life expectancy trends and infant mortality rates across 195+ countries. Features correlation analysis, time-series forecasting, and socioeconomic factor integration.",
       technologies: [
         "Power BI",
-        "Data Modeling",
         "Statistical Analysis",
-        "Interactive Visualizations",
-        "Health Data Analytics"
+        "Data Modeling",
+        "+2"
       ],
       links: [
         {
@@ -240,14 +227,14 @@ export const DATA = {
       href: "https://github.com/dvillagrans/videogames-dashboard",
       dates: "Jan 2025",
       active: false,
+      role: "Data Analyst",
       description:
         "Created interactive Power BI dashboard analyzing $60B global gaming market. Integrated sales data from 15 platforms, enabling product strategy insights through genre trends and regional performance analytics.",
       technologies: [
-        "Power BI DAX",
-        "Data Modeling",
-        "Market Intelligence",
-        "ETL Processes",
-        "Interactive Visualizations"
+        "Power BI",
+        "DAX",
+        "ETL",
+        "+2"
       ],
       links: [
         {
@@ -265,16 +252,14 @@ export const DATA = {
       href: "https://github.com/dvillagrans/india-air-quality-etl",
       dates: "Dec 2024",
       active: false,
+      role: "Data Engineer",
       description:
         "Designed end-to-end ETL pipeline processing 2M+ daily readings from 500+ IoT sensors across India. Implemented cloud-based data architecture using Azure Databricks for spark processing (PySpark) and Jupyter notebooks for anomaly detection models. Transformed raw sensor data into policy-ready insights through PostgreSQL geospatial warehousing and Power BI dashboards with live pollution heatmaps.",
       technologies: [
-        "ETL Architecture",
-        "Azure Cloud Services (Data Factory, Databricks)",
-        "PySpark Data Processing",
-        "Jupyter Notebooks (Python)",
-        "PostgreSQL Geospatial DB",
-        "Power BI Real-time Dashboards",
-        "IoT Sensor Integration",
+        "Azure",
+        "PySpark",
+        "PostgreSQL",
+        "+4"
       ],
       links: [
         {
@@ -293,14 +278,14 @@ export const DATA = {
       href: "https://codemaster-two.vercel.app",
       dates: "Nov 2024 - Current",
       active: true,
+      role: "Full-stack Dev",
       description:
         "Pioneered gamified coding education platform with Django backend supporting 10k+ users. Features include code playgrounds, AI-assisted feedback, and progress tracking. Won 2nd place in 2024 EdTech Innovation Awards.",
       technologies: [
-        "Django REST Framework",
+        "Django",
         "Astro",
-        "Interactive Learning Tools",
-        "JWT Authentication",
-        "Microservices Architecture"
+        "JWT",
+        "+2"
       ],
       links: [
         {
@@ -324,14 +309,14 @@ export const DATA = {
       href: "https://portfolio-pi-vert-92.vercel.app/",
       dates: "July 2024",
       active: true,
+      role: "Full-stack Dev",
       description:
         "Architected performant portfolio using Next.js SSG, achieving perfect Lighthouse scores. Implemented dark mode, project showcases, and MDX-based content system. Serves as production-grade template for developer portfolios.",
       technologies: [
         "Next.js 14",
-        "App Router Architecture",
-        "Performance Optimization",
-        "Responsive Design",
-        "Vercel"
+        "React",
+        "TypeScript",
+        "+2"
       ],
       links: [
         {
@@ -355,14 +340,14 @@ export const DATA = {
       href: "https://github.com/dvillagrans/Houses-Prices-Prediction",
       dates: "June 2024",
       active: false,
+      role: "Data Science",
       description:
         "Built machine learning pipeline (Random Forest Regressor) predicting property values with 88% R² score. Engineered features from geospatial data and market trends. Deployed as Flask API for real-time valuation estimates.",
       technologies: [
         "Scikit-learn",
-        "Feature Engineering",
-        "Geospatial Analysis",
-        "Model Deployment",
-        "Hyperparameter Tuning"
+        "Python",
+        "Flask",
+        "+2"
       ],
       links: [
         {
@@ -382,13 +367,14 @@ export const DATA = {
       href: "https://github.com/dvillagrans/Dashboard-Financial",
       dates: "February 2024 -  March 2024",
       active: false,
+      role: "Data Analyst",
       description:
         "Designed automated financial reporting system using Excel VBA, reducing manual processing time by 15 hours/week. Featured dynamic P&L visualizations, cash flow forecasting modules, and KPI tracking for 200+ branch locations.",
       technologies: [
-        "VBA Automation",
-        "Financial Data Visualization",
-        "Dashboard Design",
-        "Pivot Table Reporting"
+        "VBA",
+        "Excel",
+        "Dashboard",
+        "+1"
       ],
       links: [
         {
@@ -404,19 +390,13 @@ export const DATA = {
     },
     {
       title: "Melari Spa",
-      href: "https://melarispa.com",
-      dates: "September 2023 -  July 2024",
+      href: "https://melari-spa.vercel.app/",
+      dates: "September 2023 - July 2024",
       active: true,
+      role: "Full-stack Dev",
       description:
-        "Led full-stack development of SEO-optimized wellness platform using Astro/React, resulting in 40% increased booking conversions. Implemented CI/CD pipeline with Vercel achieving 99.9% uptime. Integrated headless CMS for dynamic content management.",
-      technologies: [
-        "Astro",
-        "React",
-        "Tailwind CSS",
-        "Vercel",
-        "Performance Optimization",
-        "Responsive Design"
-      ],
+        "Led full-stack development of SEO-optimized wellness platform using Astro, React, and Tailwind CSS. Implemented responsive design with 95+ Lighthouse scores, integrated Vercel analytics, and deployed scalable architecture supporting multi-language content and modern web standards.",
+      technologies: ["Astro", "React", "Tailwind CSS", "+2"],
       links: [
         {
           type: "Website",
@@ -436,19 +416,17 @@ export const DATA = {
     },
     {
       title: "Prediction of passengers for mexican airlines",
-      href: "https://github.com/dvillagrans/Passenger-Volume-Prediction-in-Mexico",
+      href: "https://github.com/dvillagrans/Prediction-of-passengers-for-mexican-airlines",
       dates: "September 2023 - November 2023",
       active: true,
+      role: "Data Science",
       description:
-        "Developed SARIMA time series model to forecast domestic air travel demand over 5 years, analyzing 36 years of historical data from Mexican aviation authorities. Achieved 92% forecasting accuracy through cross-validation, enabling capacity planning optimization for major carriers.",
+        "Innovative project showcasing technical expertise and problem-solving skills through comprehensive time series analysis and machine learning implementation. Developed predictive models using SARIMA and advanced statistical techniques to forecast passenger demand for Mexican airlines, achieving high accuracy in predictions and providing valuable insights for strategic planning.",
       technologies: [
         "Python",
         "Pandas",
-        "Time Series Analysis",
-        "SARIMA Modeling",
-        "Matplotlib",
-        "Seaborn",
-        "Statistical Forecasting"
+        "SARIMA",
+        "+3"
       ],
       links: [
         {

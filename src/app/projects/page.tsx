@@ -490,6 +490,7 @@ export default function ProjectsPage() {
                             descriptionKey={getProjectDescriptionKey(project.title)}
                             dates={project.dates}
                             tags={project.technologies}
+                            role={project.role}
                             image={project.image}
                           />
 
