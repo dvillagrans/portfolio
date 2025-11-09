@@ -1,0 +1,136 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Harvard-Style Academic Resume (One Page Optimized)
+% Diego Villagran Salazar - Data Analyst
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[7.5pt,a4paper]{article}
+
+% Essential packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+
+% Page layout - Ultra-optimized for single page
+\geometry{
+    left=0.3in,
+    right=0.3in,
+    top=0.25in,
+    bottom=0.25in
+}
+
+% Harvard-style color scheme (conservative)
+\definecolor{HarvardCrimson}{HTML}{A51C30}
+\definecolor{DarkGray}{HTML}{2E2E2E}
+\definecolor{MediumGray}{HTML}{666666}
+
+% Configure hyperlinks - ATS compatible
+\hypersetup{
+    colorlinks=true,
+    linkcolor=HarvardCrimson,
+    urlcolor=HarvardCrimson,
+    citecolor=HarvardCrimson,
+    pdfborder={0 0 0}
+}
+
+% Section formatting - Harvard style (ultra-compact)
+\titleformat{\section}
+{\small\bfseries\color{HarvardCrimson}}
+{}{0em}
+{}[\titlerule]
+
+\titleformat{name=\section,numberless}
+{\small\bfseries\color{HarvardCrimson}}
+{}{0em}
+{}[\titlerule]
+
+\titleformat{\subsection}
+{\footnotesize\bfseries\color{DarkGray}}
+{}{0em}
+{}
+
+% Remove page numbers
+\pagestyle{empty}
+
+% Adjust spacing for single page
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+
+% Compact itemize spacing
+\setlist[itemize]{leftmargin=0.2in, itemsep=0pt, parsep=0pt, topsep=0pt}
+
+% Custom commands
+\newcommand{\name}[1]{\begin{center}\Large\bfseries\color{HarvardCrimson}#1\end{center}}
+\newcommand{\tagline}[1]{\begin{center}\normalsize\color{DarkGray}#1\end{center}}
+\newcommand{\contactinfo}[1]{\begin{center}\small\color{MediumGray}#1\end{center}}
+
+% Entry commands
+\newcommand{\experience}[4]{\subsection*{#1}\textbf{#2} \hfill \textit{#3} \\\textit{#4}}
+\newcommand{\project}[3]{\subsection*{#1}\textit{#2} \hfill \textit{#3}}
+\newcommand{\education}[4]{\subsection*{#1}\textbf{#2} \hfill \textit{#3} \\\textit{#4}}
+
+\begin{document}
+
+% Header
+\name{Diego Villagran Salazar}
+\tagline{Data Analyst | SQL | BI Dashboards}
+\contactinfo{\href{mailto:diegovillasal@gmail.com}{diegovillasal@gmail.com} | +52 55 7207 1183 | \href{https://www.dvillagrans.dev}{www.dvillagrans.dev} | \href{https://www.linkedin.com/in/dvillagrans}{LinkedIn} | \href{https://github.com/dvillagrans}{GitHub}}
+
+\vspace{0.01cm}
+
+\section*{Professional Summary}
+\small
+Data Analyst with strong SQL, data cleaning, and dashboarding skills. Experience turning unstructured data into analysis-ready tables and building automated datasets for reporting. Comfortable with A/B testing, statistical analysis, and KPIs to drive decisions. Built pipelines that process 300+ documents per day with 92\% accuracy and dashboards tracking 25+ operational metrics. Seeking an analyst role focused on impact through clear, reliable insights.
+
+\vspace{0.01cm}
+
+\section*{Education}
+\education{Bachelor of Science in Data Science}{Superior School of Computer Science (ESCOM-IPN)}{2022 -- 2026 (December)}{Mexico City, Mexico}
+\begin{itemize}
+\item Maintained GPA of 8.5/10.0 while completing 45+ credit hours in advanced coursework
+\item Focus areas: Data Analytics, Statistical Modeling, SQL, Data Visualization
+\end{itemize}
+
+\section*{Professional Experience}
+
+\experience{AI \& Automation Intern}{EyeNet}{April 2025 -- Present}{Remote}
+\begin{itemize}
+\item Built automated ingestion to transform 300+ documents per day into structured tables; achieved 92\% extraction accuracy and reduced manual work by 65\%
+\item Designed SQL datasets and views for reporting on PostgreSQL and MongoDB; improved time-to-insight for operational stakeholders
+\item Implemented KPIs and monitoring for data freshness, error rates, and throughput; detected 95\%+ issues before production impact
+\item Integrated external APIs (OpenAI, Gemini) to enrich datasets and standardize text fields for analytics
+\end{itemize}
+
+\section*{Projects}
+
+\project{Qalma - Product Analytics for Real-time Signals}{Analytics Project}{2025}
+\begin{itemize}
+\item Built analysis-ready datasets for EEG events and sessions; designed metrics for engagement, session quality, and outcomes across 50+ users
+\item Developed pipelines for time-series aggregation and cohort analysis; stored curated tables in Supabase/PostgreSQL
+\item Created simple dashboards and reports to share insights with product and engineering
+\end{itemize}
+
+\project{Operational Metrics Dashboard}{Monitoring \& Reporting}{2025}
+\begin{itemize}
+\item Created dashboards tracking 25+ metrics (latency, error rates, throughput) with Grafana and Prometheus, enabling proactive actions
+\item Performed load testing and analysis using Apache Bench; recommended changes that reduced median latency by 40\%
+\end{itemize}
+
+\section*{Technical Skills}
+\textbf{SQL \& Analytics:} SQL (PostgreSQL), Joins, Window Functions, CTEs, Data Cleaning, A/B Testing, Statistical Modeling \\
+\textbf{BI \& Visualization:} Power BI, Tableau, Dashboard Design, Reporting \\
+\textbf{Data Engineering for Analytics:} ETL Pipelines, Batch Processing, Data Modeling (Star Schema, Data Marts) \\
+\textbf{Python for Analysis:} Python, Pandas, NumPy, Jupyter \\
+\textbf{Data Sources \& Tools:} PostgreSQL, MongoDB, Redis, Git, Docker (basic)
+
+\section*{Certifications \& Languages}
+\textbf{Certifications:} \href{https://www.credly.com/badges/c41430a1-de6e-4642-86e2-0d55dad94f18/public_url}{Build a Data Warehouse with BigQuery}, \href{https://www.credly.com/badges/18b87ad4-da02-4a37-a92e-f8e60fa53559/public_url}{Engineer Data for Predictive Modeling with BigQuery ML}, \href{https://www.credly.com/badges/5e7db262-4e11-41d3-8630-2b8c9c3458e3/public_url}{Manage Kubernetes in Google Cloud}, \href{https://www.credly.com/badges/1e3dfdbc-ec96-4e7c-a6e6-351eefae2390/public_url}{Google AI Essentials (Coursera)} \\
+\textbf{Languages:} Spanish (Native proficiency), English (B2 in-course)
+
+\end{document}

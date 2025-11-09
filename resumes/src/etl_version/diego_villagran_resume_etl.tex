@@ -1,0 +1,160 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Harvard-Style Academic Resume (One Page Optimized)
+% Diego Villagran Salazar - ETL & Data Engineering
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[7.5pt,a4paper]{article}
+
+% Essential packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx} % Times New Roman font
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+
+% Page layout - Ultra-optimized for single page
+\geometry{
+    left=0.3in,
+    right=0.3in,
+    top=0.25in,
+    bottom=0.25in
+}
+
+% Harvard-style color scheme (conservative)
+\definecolor{HarvardCrimson}{HTML}{A51C30}
+\definecolor{DarkGray}{HTML}{2E2E2E}
+\definecolor{MediumGray}{HTML}{666666}
+
+% Configure hyperlinks - ATS compatible
+\hypersetup{
+    colorlinks=true,
+    linkcolor=HarvardCrimson,
+    urlcolor=HarvardCrimson,
+    citecolor=HarvardCrimson,
+    pdfborder={0 0 0}
+}
+
+% Section formatting - Harvard style (ultra-compact)
+\titleformat{\section}
+{\small\bfseries\color{HarvardCrimson}}
+{}{0em}
+{}[\titlerule]
+
+\titleformat{name=\section,numberless}
+{\small\bfseries\color{HarvardCrimson}}
+{}{0em}
+{}[\titlerule]
+
+\titleformat{\subsection}
+{\footnotesize\bfseries\color{DarkGray}}
+{}{0em}
+{}
+
+% Remove page numbers
+\pagestyle{empty}
+
+% Adjust spacing for single page
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+
+% Compact itemize spacing
+\setlist[itemize]{leftmargin=0.2in, itemsep=0pt, parsep=0pt, topsep=0pt}
+
+% Custom commands for Harvard-style formatting
+\newcommand{\name}[1]{\begin{center}\Large\bfseries\color{HarvardCrimson}#1\end{center}}
+\newcommand{\tagline}[1]{\begin{center}\normalsize\color{DarkGray}#1\end{center}}
+\newcommand{\contactinfo}[1]{\begin{center}\small\color{MediumGray}#1\end{center}}
+
+% Experience entry command
+\newcommand{\experience}[4]{
+\subsection*{#1}
+\textbf{#2} \hfill \textit{#3} \\
+\textit{#4}
+}
+
+% Project entry command  
+\newcommand{\project}[3]{
+\subsection*{#1}
+\textit{#2} \hfill \textit{#3}
+}
+
+% Education entry command
+\newcommand{\education}[4]{
+\subsection*{#1}
+\textbf{#2} \hfill \textit{#3} \\
+\textit{#4}
+}
+
+\begin{document}
+
+% Header - Harvard style
+\name{Diego Villagran Salazar}
+\tagline{ETL Developer | Data Engineering | Pipeline Automation}
+\contactinfo{
+\href{mailto:diegovillasal@gmail.com}{diegovillasal@gmail.com} | +52 55 7207 1183 | \href{https://www.dvillagrans.dev}{www.dvillagrans.dev} | \href{https://www.linkedin.com/in/dvillagrans}{LinkedIn} | \href{https://github.com/dvillagrans}{GitHub}
+}
+
+\vspace{0.01cm}
+
+\section*{Professional Summary}
+\small
+Data Science student with hands-on experience building ETL pipelines, orchestration workflows, and automated data integration systems in production environments. Skilled in SQL optimization, Python-based data processing, and containerized data infrastructure handling 300+ daily inputs and 10K+ service requests. Strong foundation in data modeling, batch processing, and monitoring for reliability at scale. Currently expanding into enterprise ETL tools such as Ab Initio.
+
+\vspace{0.01cm}
+
+\section*{Education}
+\education{Bachelor of Science in Data Science}{Superior School of Computer Science (ESCOM-IPN)}{2022 -- 2026 (December)}{Mexico City, Mexico}
+\begin{itemize}
+\item Maintained GPA of 8.5/10.0 while completing 45+ credit hours in advanced coursework
+\item Specialized in Data Engineering, ETL Pipelines, Database Systems, Big Data Analytics, and Statistical Modeling
+\end{itemize}
+
+\section*{Professional Experience}
+
+\experience{AI \& Automation Intern}{EyeNet}{April 2025 -- Present}{Remote}
+\begin{itemize}
+\item Designed and maintained ETL pipelines using Python and orchestration workflows to process 300+ documents daily with 92\% extraction accuracy, transforming unstructured data into PostgreSQL databases
+\item Built data integration workflows connecting OpenAI and Gemini APIs with database systems, automating extraction and transformation of 200+ documents per day
+\item Developed containerized data services with PostgreSQL, Redis, and MongoDB, supporting 5+ services handling 10K+ daily requests with optimized query performance
+\item Implemented CI/CD pipelines and monitoring systems with automated alerts, reducing deployment time by 50\% and catching 95\%+ of data quality issues before production
+\item Created SQL optimization strategies and database indexing improvements, reducing query response times by 40\% (850ms to 510ms)
+\end{itemize}
+
+\section*{Projects \& Research}
+
+\project{Qalma - Data Processing Platform for Wellness Analytics}{Highlighted Project}{2025}
+\begin{itemize}
+\item Built real-time data ingestion pipeline processing 256 Hz EEG signal streams from 4 channels with <100ms latency, serving 50+ users
+\item Developed ETL workflows using Python-based data services (Flask/FastAPI) to extract, transform, and load sensor data into PostgreSQL, handling 1K+ daily data points per user
+\item Implemented batch processing jobs for historical data analysis and aggregation, enabling predictive analytics with 85\%+ accuracy
+\item Designed cloud data infrastructure with Supabase and PostgreSQL achieving 99.9\% uptime, with automated backup strategies using 3-2-1 methodology
+\item Created data quality monitoring dashboards tracking pipeline health, data freshness, and processing metrics across 100+ active sessions
+\end{itemize}
+
+\project{Microservices Data Orchestration \& Monitoring}{DevOps \& Data Engineering Project}{2025}
+\begin{itemize}
+\item Orchestrated Docker Compose environment with 8+ data services (PostgreSQL, Redis, Nginx, APIs) achieving 99.5\% uptime with automated health checks
+\item Built automated backup and recovery system using pg\_dump and rsync with 3-2-1 strategy, reducing recovery time from 2 hours to 15 minutes
+\item Designed monitoring infrastructure with Grafana and Prometheus tracking 25+ data pipeline metrics, detecting 95\%+ of issues before production impact
+\item Performed load testing and optimization using Apache Bench, improving data throughput and reducing API response time by 40\%
+\item Implemented log aggregation and analysis system for tracking data flow, errors, and performance bottlenecks across distributed services
+\end{itemize}
+
+\section*{Technical Skills}
+\textbf{ETL \& Data Engineering:} ETL Pipelines, Data Integration, Batch Processing, Data Warehousing, Star Schema/Fact-Dimension Modeling, Data Marts \\
+\textbf{Databases:} PostgreSQL, MongoDB, Redis, Supabase, Database Indexing \& Query Optimization \\
+\textbf{Programming \& Automation:} Python, SQL, Bash, REST APIs, Orchestration Workflows (n8n, CI/CD) \\
+\textbf{Cloud \& DevOps:} Docker, Microservices Architecture, Git, AWS/Azure, Linux Administration \\
+\textbf{Monitoring \& Reliability:} Grafana, Prometheus, Log Aggregation, Data Quality Monitoring \\
+\textbf{ML \& Analytics:} Pandas, NumPy, Scikit-learn, TensorFlow, Feature Engineering, Power BI, Tableau
+
+\section*{Certifications \& Languages}
+\textbf{Certifications:} \href{https://www.credly.com/badges/c41430a1-de6e-4642-86e2-0d55dad94f18/public_url}{Build a Data Warehouse with BigQuery}, \href{https://www.credly.com/badges/18b87ad4-da02-4a37-a92e-f8e60fa53559/public_url}{Engineer Data for Predictive Modeling with BigQuery ML}, \href{https://www.credly.com/badges/5e7db262-4e11-41d3-8630-2b8c9c3458e3/public_url}{Manage Kubernetes in Google Cloud}, \href{https://www.credly.com/badges/1e3dfdbc-ec96-4e7c-a6e6-351eefae2390/public_url}{Google AI Essentials (Coursera)} \\
+\textbf{Languages:} Spanish (Native proficiency), English (B2 in-course) 
+
+\end{document}

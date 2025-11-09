@@ -1,0 +1,136 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Harvard-Style Academic Resume (One Page Optimized)
+% Diego Villagran Salazar - DevOps & Platform Engineering
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[7.5pt,a4paper]{article}
+
+% Essential packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+
+% Page layout - Ultra-optimized for single page
+\geometry{
+    left=0.3in,
+    right=0.3in,
+    top=0.25in,
+    bottom=0.25in
+}
+
+% Harvard-style color scheme (conservative)
+\definecolor{HarvardCrimson}{HTML}{A51C30}
+\definecolor{DarkGray}{HTML}{2E2E2E}
+\definecolor{MediumGray}{HTML}{666666}
+
+% Configure hyperlinks - ATS compatible
+\hypersetup{
+    colorlinks=true,
+    linkcolor=HarvardCrimson,
+    urlcolor=HarvardCrimson,
+    citecolor=HarvardCrimson,
+    pdfborder={0 0 0}
+}
+
+% Section formatting - Harvard style (ultra-compact)
+\titleformat{\section}
+{\small\bfseries\color{HarvardCrimson}}
+{}{0em}
+{}[\titlerule]
+
+\titleformat{name=\section,numberless}
+{\small\bfseries\color{HarvardCrimson}}
+{}{0em}
+{}[\titlerule]
+
+\titleformat{\subsection}
+{\footnotesize\bfseries\color{DarkGray}}
+{}{0em}
+{}
+
+% Remove page numbers
+\pagestyle{empty}
+
+% Adjust spacing for single page
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+
+% Compact itemize spacing
+\setlist[itemize]{leftmargin=0.2in, itemsep=0pt, parsep=0pt, topsep=0pt}
+
+% Custom commands
+\newcommand{\name}[1]{\begin{center}\Large\bfseries\color{HarvardCrimson}#1\end{center}}
+\newcommand{\tagline}[1]{\begin{center}\normalsize\color{DarkGray}#1\end{center}}
+\newcommand{\contactinfo}[1]{\begin{center}\small\color{MediumGray}#1\end{center}}
+
+% Entry commands
+\newcommand{\experience}[4]{\subsection*{#1}\textbf{#2} \hfill \textit{#3} \\\textit{#4}}
+\newcommand{\project}[3]{\subsection*{#1}\textit{#2} \hfill \textit{#3}}
+\newcommand{\education}[4]{\subsection*{#1}\textbf{#2} \hfill \textit{#3} \\\textit{#4}}
+
+\begin{document}
+
+% Header
+\name{Diego Villagran Salazar}
+\tagline{DevOps Engineer | Containerization | Observability}
+\contactinfo{\href{mailto:diegovillasal@gmail.com}{diegovillasal@gmail.com} | +52 55 7207 1183 | \href{https://www.dvillagrans.dev}{www.dvillagrans.dev} | \href{https://www.linkedin.com/in/dvillagrans}{LinkedIn} | \href{https://github.com/dvillagrans}{GitHub}}
+
+\vspace{0.01cm}
+
+\section*{Professional Summary}
+\small
+Engineer with hands-on experience designing and operating containerized services, CI/CD pipelines, observability, and operational automation. Achieved 99.5\% uptime across 8+ services with Docker Compose, improved deployment time by 50\% with automated pipelines, and reduced recovery time from 2 hours to 15 minutes with a 3-2-1 backup strategy. Seeking a DevOps role focused on platform reliability, scalability, and developer velocity.
+
+\vspace{0.01cm}
+
+\section*{Education}
+\education{Bachelor of Science in Data Science}{Superior School of Computer Science (ESCOM-IPN)}{2022 -- 2026 (December)}{Mexico City, Mexico}
+\begin{itemize}
+\item Maintained GPA of 8.5/10.0 while completing 45+ credit hours in advanced coursework
+\item Focused on Systems Engineering, Data Engineering, and Distributed Systems
+\end{itemize}
+
+\section*{Professional Experience}
+
+\experience{AI \& Automation Intern}{EyeNet}{April 2025 -- Present}{Remote}
+\begin{itemize}
+\item Built CI/CD pipelines and proactive monitoring/alerting, reducing deployment time by 50\% and preventing 95\%+ of incidents before production
+\item Designed and operated containerized data services with PostgreSQL, Redis, and MongoDB, scaling to 10K+ daily requests with health checks and resource limits
+\item Automated data workflows with Python and orchestration to process 300+ documents per day with 92\% extraction accuracy
+\item Implemented backup and restore procedures and playbooks to accelerate recovery and reduce operational toil
+\end{itemize}
+
+\section*{Projects}
+
+\project{Microservices Orchestration \& Monitoring}{Platform Engineering Project}{2025}
+\begin{itemize}
+\item Deployed 8+ services (PostgreSQL, Redis, Nginx, APIs) using Docker Compose with automated health checks, achieving 99.5\% uptime
+\item Implemented 3-2-1 backups with pg\_dump and rsync, reducing recovery time from 2 hours to 15 minutes
+\item Built observability stack with Grafana and Prometheus tracking 25+ metrics; performed load testing with Apache Bench to reduce latency by 40\%
+\end{itemize}
+
+\project{Qalma - Reliable Data Platform}{Infra \& Reliability}{2025}
+\begin{itemize}
+\item Designed cloud data infrastructure on Supabase/PostgreSQL with 99.9\% uptime and automated maintenance tasks
+\item Hardened services with containerization, network reverse proxy (Nginx), and runtime monitoring
+\end{itemize}
+
+\section*{Technical Skills}
+\textbf{DevOps \& Platform:} Docker, Docker Compose, Nginx, CI/CD, Git, Linux Administration, Shell Scripting \\
+\textbf{Observability:} Prometheus, Grafana, Health Checks, Log Aggregation, Alerting \\
+\textbf{Databases \& Storage:} PostgreSQL, MongoDB, Redis, Backups \& Recovery, Performance Tuning \\
+\textbf{Cloud \& Networking:} AWS, Azure, Reverse Proxying, TLS Termination \\
+\textbf{Automation:} Python, Orchestration Workflows, ETL for Ops Data
+
+\section*{Certifications \& Languages}
+\textbf{Certifications:} \href{https://www.credly.com/badges/5e7db262-4e11-41d3-8630-2b8c9c3458e3/public_url}{Manage Kubernetes in Google Cloud}, \href{https://www.credly.com/badges/c41430a1-de6e-4642-86e2-0d55dad94f18/public_url}{Build a Data Warehouse with BigQuery}, \href{https://www.credly.com/badges/18b87ad4-da02-4a37-a92e-f8e60fa53559/public_url}{Engineer Data for Predictive Modeling with BigQuery ML}, \href{https://www.credly.com/badges/1e3dfdbc-ec96-4e7c-a6e6-351eefae2390/public_url}{Google AI Essentials (Coursera)} \\
+\textbf{Languages:} Spanish (Native proficiency), English (B2 in-course)
+
+\end{document}

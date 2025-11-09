@@ -1,0 +1,136 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Harvard-Style Academic Resume (One Page Optimized)
+% Diego Villagran Salazar - Machine Learning Engineering
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[7.5pt,a4paper]{article}
+
+% Essential packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+
+% Page layout - Ultra-optimized for single page
+\geometry{
+    left=0.3in,
+    right=0.3in,
+    top=0.25in,
+    bottom=0.25in
+}
+
+% Harvard-style color scheme (conservative)
+\definecolor{HarvardCrimson}{HTML}{A51C30}
+\definecolor{DarkGray}{HTML}{2E2E2E}
+\definecolor{MediumGray}{HTML}{666666}
+
+% Configure hyperlinks - ATS compatible
+\hypersetup{
+    colorlinks=true,
+    linkcolor=HarvardCrimson,
+    urlcolor=HarvardCrimson,
+    citecolor=HarvardCrimson,
+    pdfborder={0 0 0}
+}
+
+% Section formatting - Harvard style (ultra-compact)
+\titleformat{\section}
+{\small\bfseries\color{HarvardCrimson}}
+{}{0em}
+{}[\titlerule]
+
+\titleformat{name=\section,numberless}
+{\small\bfseries\color{HarvardCrimson}}
+{}{0em}
+{}[\titlerule]
+
+\titleformat{\subsection}
+{\footnotesize\bfseries\color{DarkGray}}
+{}{0em}
+{}
+
+% Remove page numbers
+\pagestyle{empty}
+
+% Adjust spacing for single page
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+
+% Compact itemize spacing
+\setlist[itemize]{leftmargin=0.2in, itemsep=0pt, parsep=0pt, topsep=0pt}
+
+% Custom commands
+\newcommand{\name}[1]{\begin{center}\Large\bfseries\color{HarvardCrimson}#1\end{center}}
+\newcommand{\tagline}[1]{\begin{center}\normalsize\color{DarkGray}#1\end{center}}
+\newcommand{\contactinfo}[1]{\begin{center}\small\color{MediumGray}#1\end{center}}
+
+% Entry commands
+\newcommand{\experience}[4]{\subsection*{#1}\textbf{#2} \hfill \textit{#3} \\\textit{#4}}
+\newcommand{\project}[3]{\subsection*{#1}\textit{#2} \hfill \textit{#3}}
+\newcommand{\education}[4]{\subsection*{#1}\textbf{#2} \hfill \textit{#3} \\\textit{#4}}
+
+\begin{document}
+
+% Header
+\name{Diego Villagran Salazar}
+\tagline{Machine Learning Engineer | MLOps | Applied AI}
+\contactinfo{\href{mailto:diegovillasal@gmail.com}{diegovillasal@gmail.com} | +52 55 7207 1183 | \href{https://www.dvillagrans.dev}{www.dvillagrans.dev} | \href{https://www.linkedin.com/in/dvillagrans}{LinkedIn} | \href{https://github.com/dvillagrans}{GitHub}}
+
+\vspace{0.01cm}
+
+\section*{Professional Summary}
+\small
+Data Science student with hands-on experience building machine learning pipelines, model training and serving, and data processing APIs in production. Skilled in Python (Pandas, NumPy, Scikit-learn, TensorFlow), feature engineering, evaluation, and containerized deployment with FastAPI/Flask and Docker. Delivered 85\%+ accuracy on EEG-based emotion classification with real-time streaming under 100ms, and supported 10K+ daily requests across services. Seeking an ML Engineer role to scale training, inference, and monitoring in production.
+
+\vspace{0.01cm}
+
+\section*{Education}
+\education{Bachelor of Science in Data Science}{Superior School of Computer Science (ESCOM-IPN)}{2022 -- 2026 (December)}{Mexico City, Mexico}
+\begin{itemize}
+\item Maintained GPA of 8.5/10.0 while completing 45+ credit hours in advanced coursework
+\item Specialized in Machine Learning, Statistical Modeling, Data Engineering, and Big Data Analytics
+\end{itemize}
+
+\section*{Professional Experience}
+
+\experience{AI \& Automation Intern}{EyeNet}{April 2025 -- Present}{Remote}
+\begin{itemize}
+\item Developed LLM-assisted document extraction pipelines integrating OpenAI and Gemini APIs with Python, structuring 200+ documents per day with 92\% extraction accuracy
+\item Built data processing APIs and services generating model-ready datasets on PostgreSQL, Redis, and MongoDB, supporting 10K+ daily requests
+\item Containerized data and model services with Docker and implemented CI/CD and telemetry, reducing deployment time by 50\% and detecting 95\%+ issues pre-production
+\item Created evaluation and monitoring dashboards with Grafana and Prometheus to track throughput, error rates, and data quality
+\end{itemize}
+
+\section*{Projects \& Research}
+
+\project{Qalma - Applied ML on EEG Signals}{Highlighted Project}{2025}
+\begin{itemize}
+\item Built end-to-end ML pipeline for EEG signals at 256 Hz: preprocessing, feature extraction, and classification achieving 85\%+ accuracy
+\item Implemented real-time streaming and inference with latency under 100ms; stored datasets and predictions in Supabase/PostgreSQL
+\item Served models via FastAPI/Flask with Docker; added batch jobs for historical analysis and drift checks
+\end{itemize}
+
+\project{Microservices Orchestration \& Monitoring}{MLOps \& Platform Project}{2025}
+\begin{itemize}
+\item Deployed 8+ services (APIs, PostgreSQL, Redis, Nginx) with Docker Compose, health checks, and automated recovery achieving 99.5\% uptime
+\item Built observability with Grafana/Prometheus exposing 25+ metrics; performed load testing (Apache Bench) reducing latency by 40\%
+\end{itemize}
+
+\section*{Technical Skills}
+\textbf{Machine Learning:} Python (Pandas, NumPy), Scikit-learn, TensorFlow, Feature Engineering, Model Training/Evaluation, Time-series Processing \\
+\textbf{MLOps \& Serving:} FastAPI/Flask, Docker, CI/CD, Monitoring (Grafana, Prometheus), Model Packaging \\
+\textbf{Data \& SQL:} SQL, PostgreSQL, MongoDB, Redis, ETL Pipelines, Data Modeling \\
+\textbf{Cloud \& Tools:} Git, AWS, Azure, Linux Administration, Shell Scripting \\
+\textbf{Analytics:} A/B Testing, Statistical Modeling, Power BI, Tableau
+
+\section*{Certifications \& Languages}
+\textbf{Certifications:} \href{https://www.credly.com/badges/1e3dfdbc-ec96-4e7c-a6e6-351eefae2390/public_url}{Google AI Essentials (Coursera)}, \href{https://www.credly.com/badges/c41430a1-de6e-4642-86e2-0d55dad94f18/public_url}{Build a Data Warehouse with BigQuery}, \href{https://www.credly.com/badges/18b87ad4-da02-4a37-a92e-f8e60fa53559/public_url}{Engineer Data for Predictive Modeling with BigQuery ML}, \href{https://www.credly.com/badges/5e7db262-4e11-41d3-8630-2b8c9c3458e3/public_url}{Manage Kubernetes in Google Cloud} \\
+\textbf{Languages:} Spanish (Native proficiency), English (B2 in-course)
+
+\end{document}
