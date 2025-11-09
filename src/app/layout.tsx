@@ -9,6 +9,7 @@ import { PageTransition } from "@/components/page-transition";
 import { OfflineIndicator } from "@/components/offline-indicator";
 import { ServiceWorkerProvider } from "@/components/service-worker-provider";
 import { I18nProvider } from "@/contexts/i18n-context";
+import { ProfileProvider } from "@/contexts/profile-context";
 import { DATA } from "@/data/resume";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
@@ -128,17 +129,19 @@ export default function RootLayout({
         <StructuredData />
         <ServiceWorkerProvider>
           <I18nProvider>
-            <ThemeProvider attribute="class" defaultTheme="dark">
-              <TooltipProvider delayDuration={0}>
-                <PageTransition>
-                  {children}
-                </PageTransition>
-                <Navbar />
-                <ScrollToTop />
-                <OfflineIndicator />
-                <Toaster richColors position="top-right" />
-              </TooltipProvider>
-            </ThemeProvider>
+            <ProfileProvider>
+              <ThemeProvider attribute="class" defaultTheme="dark">
+                <TooltipProvider delayDuration={0}>
+                  <PageTransition>
+                    {children}
+                  </PageTransition>
+                  <Navbar />
+                  <ScrollToTop />
+                  <OfflineIndicator />
+                  <Toaster richColors position="top-right" />
+                </TooltipProvider>
+              </ThemeProvider>
+            </ProfileProvider>
           </I18nProvider>
         </ServiceWorkerProvider>
       </body>
