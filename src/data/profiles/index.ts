@@ -1,8 +1,8 @@
 import { ProfileType } from "@/contexts/profile-context";
-import { mlEngineerProfile } from "./ml-engineer.tsx";
-import { dataEngineerProfile } from "./data-engineer.tsx";
-import { devopsEngineerProfile } from "./devops-engineer.tsx";
-import { dataAnalystProfile } from "./data-analyst.tsx";
+import { mlEngineerProfile } from "./ml-engineer";
+import { dataEngineerProfile } from "./data-engineer";
+import { devopsEngineerProfile } from "./devops-engineer";
+import { dataAnalystProfile } from "./data-analyst";
 import { ProfileData } from "./types";
 
 export const PROFILE_DATA: Record<ProfileType, ProfileData> = {
