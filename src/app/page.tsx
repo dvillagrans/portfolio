@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useI18n } from "@/contexts/i18n-context";
 import { PROFILE_METADATA, ProfileType } from "@/contexts/profile-context";
-import { ArrowRight, Code2, Database, Rocket, TrendingUp, Sparkles, Cpu, GitBranch } from "lucide-react";
+import { ArrowRight, Code2, Database, Rocket, TrendingUp } from "lucide-react";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -19,69 +19,66 @@ export default function LandingPage() {
 
   return (
     <div className="h-screen w-full flex items-center justify-center px-4 md:px-6 py-6 overflow-hidden">
-      <div className="max-w-7xl w-full space-y-6 md:space-y-8">
+      <div className="max-w-7xl w-full space-y-8">
 
-        {/* Hero Section - Compact */}
+        {/* Hero Section - Professional */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center space-y-2 max-w-3xl mx-auto"
+          className="text-center space-y-3 max-w-3xl mx-auto"
         >
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
             Diego Villagran
           </h1>
-          <p className="text-base md:text-lg text-muted-foreground/80">
+          <p className="text-sm md:text-base text-muted-foreground/90 leading-relaxed max-w-2xl mx-auto">
             {language === 'en'
-              ? 'Data Science Student & Multi-Disciplinary Engineer'
-              : 'Estudiante de Ciencia de Datos e Ingeniero Multidisciplinario'}
+              ? 'I build data systems end-to-end: ingestion, transformation, automation, deployment, and monitoring.'
+              : 'Diseño y opero soluciones de datos de punta a punta: ingestión, transformación, automatización, despliegue y monitoreo.'}
           </p>
         </motion.div>
 
-        {/* Bento Grid - Compact */}
+        {/* Bento Grid - Uniform Structure */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4">
 
-          {/* ML Engineer - Hero Card */}
+          {/* ML Engineer */}
           <motion.button
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.1 }}
             onClick={() => handleProfileSelect('ml-engineer')}
-            className="md:col-span-7 group relative overflow-hidden rounded-xl border-2 border-border bg-gradient-to-br from-purple-500/5 via-background to-pink-500/5 hover:border-purple-500/30 transition-all duration-500 text-left"
+            className="md:col-span-7 group relative overflow-hidden rounded-xl border border-white/5 bg-gradient-to-br from-purple-500/5 via-background to-pink-500/5 hover:border-white/10 hover:scale-[1.01] transition-all duration-500 text-left"
           >
-            <div className="p-5 md:p-6 space-y-4">
-              {/* Top section */}
+            <div className="p-6 space-y-4">
               <div className="flex items-start justify-between">
                 <div className="relative">
                   <div className="absolute -inset-3 bg-purple-500/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                  <div className="relative w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-purple-500/80 to-pink-500/80 flex items-center justify-center">
                     <Code2 className="w-6 h-6 md:w-7 md:h-7 text-white" />
                   </div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 group-hover:text-purple-500 transition-all duration-300" />
+                <ArrowRight className="w-4 h-4 text-muted-foreground/50 group-hover:translate-x-1 group-hover:text-purple-400 transition-all duration-300" />
               </div>
 
-              {/* Content */}
               <div className="space-y-2">
                 <div>
-                  <h3 className="text-xl md:text-2xl font-bold">
-                    {language === 'en' ? profiles['ml-engineer'].title : profiles['ml-engineer'].titleEs}
+                  <h3 className="text-xl md:text-2xl font-bold mb-1">
+                    {language === 'en' ? 'Machine Learning Engineer' : 'Ingeniero de Machine Learning'}
                   </h3>
-                  <p className="text-xs text-muted-foreground font-mono">
+                  <p className="text-xs text-muted-foreground/80 font-mono">
                     MLOps • Applied AI • Model Serving
                   </p>
                 </div>
-                <p className="text-xs md:text-sm text-muted-foreground/80 leading-relaxed line-clamp-2">
+                <p className="text-xs md:text-sm text-muted-foreground/70 leading-relaxed">
                   {language === 'en'
-                    ? 'Building production ML pipelines with 85%+ accuracy, real-time inference <100ms'
-                    : 'Construyendo pipelines ML con 85%+ precisión, inferencia <100ms'}
+                    ? 'Design and deploy production models focused on stability, reproducibility, and continuous monitoring for near-real-time systems.'
+                    : 'Diseño y despliego modelos en producción con enfoque en reproducibilidad, estabilidad y monitoreo continuo para sistemas en tiempo cercano a real.'}
                 </p>
               </div>
 
-              {/* Tags */}
-              <div className="flex flex-wrap gap-1.5">
-                {['TensorFlow', 'FastAPI', 'Docker'].map((tech) => (
-                  <span key={tech} className="px-2 py-0.5 text-xs rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20">
+              <div className="flex flex-wrap gap-1.5 pt-2">
+                {['TensorFlow', 'FastAPI', 'Docker', 'PostgreSQL'].map((tech) => (
+                  <span key={tech} className="px-2.5 py-1 text-xs rounded-md bg-purple-500/10 text-purple-400/90 border border-purple-500/20">
                     {tech}
                   </span>
                 ))}
@@ -89,154 +86,160 @@ export default function LandingPage() {
             </div>
           </motion.button>
 
-          {/* Data Engineer - Tall Card */}
+          {/* Data Engineer */}
           <motion.button
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             onClick={() => handleProfileSelect('data-engineer')}
-            className="md:col-span-5 group relative overflow-hidden rounded-xl border-2 border-border bg-gradient-to-br from-blue-500/5 via-background to-cyan-500/5 hover:border-blue-500/30 transition-all duration-500 text-left"
+            className="md:col-span-5 group relative overflow-hidden rounded-xl border border-white/5 bg-gradient-to-br from-blue-500/5 via-background to-cyan-500/5 hover:border-white/10 hover:scale-[1.01] transition-all duration-500 text-left"
           >
-            <div className="p-5 md:p-6 space-y-4 h-full flex flex-col">
-              {/* Icon centered */}
+            <div className="p-6 space-y-4 h-full flex flex-col">
               <div className="flex justify-center">
                 <div className="relative">
                   <div className="absolute -inset-3 bg-blue-500/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center transform group-hover:rotate-6 transition-transform duration-300">
+                  <div className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/80 to-cyan-500/80 flex items-center justify-center transform group-hover:rotate-6 transition-transform duration-300">
                     <Database className="w-6 h-6 text-white" />
                   </div>
                 </div>
               </div>
 
-              {/* Content */}
               <div className="space-y-2 flex-1 text-center">
                 <div>
-                  <h3 className="text-lg md:text-xl font-bold">
-                    {language === 'en' ? profiles['data-engineer'].title : profiles['data-engineer'].titleEs}
+                  <h3 className="text-lg md:text-xl font-bold mb-1">
+                    {language === 'en' ? 'Data Engineer' : 'Ingeniero de Datos'}
                   </h3>
-                  <p className="text-xs text-muted-foreground font-mono">
-                    ETL • Pipelines
+                  <p className="text-xs text-muted-foreground/80 font-mono">
+                    ETL • Pipelines • Data Modeling
                   </p>
                 </div>
-                <p className="text-xs text-muted-foreground/80 leading-relaxed line-clamp-2">
+                <p className="text-xs text-muted-foreground/70 leading-relaxed">
                   {language === 'en'
-                    ? '300+ daily inputs, 92% accuracy'
-                    : '300+ entradas diarias, 92% precisión'}
+                    ? 'Build resilient data pipelines that integrate, transform, and validate information from multiple sources ensuring consistency and traceability.'
+                    : 'Construyo pipelines de datos que integran, transforman y validan información desde múltiples fuentes asegurando consistencia y trazabilidad.'}
                 </p>
               </div>
 
-              {/* Bottom arrow */}
-              <div className="flex justify-center">
-                <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:translate-y-1 group-hover:text-blue-500 transition-all duration-300" />
+              <div className="flex flex-wrap justify-center gap-1.5">
+                {['PostgreSQL', 'Python', 'n8n'].map((tech) => (
+                  <span key={tech} className="px-2.5 py-1 text-xs rounded-md bg-blue-500/10 text-blue-400/90 border border-blue-500/20">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              <div className="flex justify-center pt-2">
+                <ArrowRight className="w-4 h-4 text-muted-foreground/50 group-hover:translate-y-1 group-hover:text-blue-400 transition-all duration-300" />
               </div>
             </div>
           </motion.button>
 
-          {/* DevOps Engineer - Wide Card */}
+          {/* DevOps Engineer */}
           <motion.button
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
             onClick={() => handleProfileSelect('devops-engineer')}
-            className="md:col-span-5 group relative overflow-hidden rounded-xl border-2 border-border hover:border-green-500/30 transition-all duration-500 text-left"
+            className="md:col-span-5 group relative overflow-hidden rounded-xl border border-white/5 hover:border-white/10 hover:scale-[1.01] transition-all duration-500 text-left"
           >
-            {/* Vertical accent line */}
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-green-500 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-green-500/80 to-teal-500/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-            <div className="p-5 md:p-6 space-y-4">
-              {/* Icon and arrow in row */}
+            <div className="p-6 space-y-4">
               <div className="flex items-center justify-between">
                 <div className="relative">
                   <div className="absolute -inset-2 bg-green-500/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative w-11 h-11 rounded-lg bg-gradient-to-br from-green-500 to-teal-500 flex items-center justify-center">
+                  <div className="relative w-11 h-11 rounded-lg bg-gradient-to-br from-green-500/80 to-teal-500/80 flex items-center justify-center">
                     <Rocket className="w-5 h-5 text-white" />
                   </div>
                 </div>
-                <div className="flex gap-1">
-                  <GitBranch className="w-3.5 h-3.5 text-green-500/40" />
-                  <Cpu className="w-3.5 h-3.5 text-green-500/40" />
+              </div>
+
+              <div className="space-y-2">
+                <div>
+                  <h3 className="text-lg md:text-xl font-bold mb-1">
+                    {language === 'en' ? 'DevOps Engineer' : 'Ingeniero DevOps'}
+                  </h3>
+                  <p className="text-xs text-muted-foreground/80 font-mono">
+                    CI/CD • Containers • Observability
+                  </p>
                 </div>
-              </div>
-
-              {/* Content */}
-              <div className="space-y-1.5">
-                <h3 className="text-lg md:text-xl font-bold">
-                  {language === 'en' ? profiles['devops-engineer'].title : profiles['devops-engineer'].titleEs}
-                </h3>
-                <p className="text-xs text-muted-foreground font-mono">
-                  CI/CD • Containers
-                </p>
-                <p className="text-xs text-muted-foreground/80 leading-relaxed line-clamp-2">
+                <p className="text-xs text-muted-foreground/70 leading-relaxed">
                   {language === 'en'
-                    ? '99.5% uptime, 50% faster deployments'
-                    : '99.5% disponibilidad, 50% más rápido'}
+                    ? 'Standardize environments and automate deployments to enable reliable deliveries and observability in production services.'
+                    : 'Estandarizo entornos y automatizo despliegues para habilitar entregas confiables y observabilidad en servicios productivos.'}
                 </p>
               </div>
 
-              {/* Bottom section */}
-              <div className="flex items-center justify-between pt-3 border-t border-border/50">
-                <span className="text-xs text-muted-foreground">Docker • K8s</span>
-                <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:translate-x-1 group-hover:text-green-500 transition-all duration-300" />
+              <div className="flex flex-wrap gap-1.5 pt-2">
+                {['Docker', 'Kubernetes', 'Grafana', 'Prometheus'].map((tech) => (
+                  <span key={tech} className="px-2.5 py-1 text-xs rounded-md bg-green-500/10 text-green-400/90 border border-green-500/20">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              <div className="flex justify-end pt-2">
+                <ArrowRight className="w-4 h-4 text-muted-foreground/50 group-hover:translate-x-1 group-hover:text-green-400 transition-all duration-300" />
               </div>
             </div>
           </motion.button>
 
-          {/* Data Analyst - Compact Stats Card */}
+          {/* Data Analyst */}
           <motion.button
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
             onClick={() => handleProfileSelect('data-analyst')}
-            className="md:col-span-7 group relative overflow-hidden rounded-xl border-2 border-border bg-gradient-to-br from-orange-500/5 via-background to-red-500/5 hover:border-orange-500/30 transition-all duration-500 text-left"
+            className="md:col-span-7 group relative overflow-hidden rounded-xl border border-white/5 bg-gradient-to-br from-orange-500/5 via-background to-red-500/5 hover:border-white/10 hover:scale-[1.01] transition-all duration-500 text-left"
           >
-            <div className="p-5 md:p-6 space-y-4">
+            <div className="p-6 space-y-4">
               <div className="flex items-start justify-between gap-4">
-                {/* Left side */}
                 <div className="space-y-3 flex-1">
                   <div className="flex items-center gap-3">
                     <div className="relative">
                       <div className="absolute -inset-2 bg-orange-500/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      <div className="relative w-11 h-11 rounded-lg bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
+                      <div className="relative w-11 h-11 rounded-lg bg-gradient-to-br from-orange-500/80 to-red-500/80 flex items-center justify-center">
                         <TrendingUp className="w-5 h-5 text-white" />
                       </div>
                     </div>
                     <div>
                       <h3 className="text-lg md:text-xl font-bold">
-                        {language === 'en' ? profiles['data-analyst'].title : profiles['data-analyst'].titleEs}
+                        {language === 'en' ? 'Data Analyst' : 'Analista de Datos'}
                       </h3>
-                      <p className="text-xs text-muted-foreground font-mono">
-                        SQL • BI Dashboards
+                      <p className="text-xs text-muted-foreground/80 font-mono">
+                        SQL • BI Dashboards • Insight Ops
                       </p>
                     </div>
                   </div>
 
-                  <p className="text-xs text-muted-foreground/80 leading-relaxed line-clamp-2">
+                  <p className="text-xs text-muted-foreground/70 leading-relaxed">
                     {language === 'en'
-                      ? '300+ documents/day into insights with Power BI'
-                      : '300+ documentos/día en insights con Power BI'}
+                      ? 'Develop dashboards and reporting systems that convert operational data into measurable decisions for different teams.'
+                      : 'Desarrollo dashboards y sistemas de reporting que convierten datos operativos en decisiones medibles para distintos equipos.'}
                   </p>
                 </div>
 
-                {/* Right side - Stats */}
                 <div className="hidden md:flex flex-col gap-2 text-right">
                   <div>
-                    <div className="text-xl font-bold text-orange-500">92%</div>
-                    <div className="text-xs text-muted-foreground">{language === 'en' ? 'Accuracy' : 'Precisión'}</div>
+                    <div className="text-xl font-bold text-orange-400">92%</div>
+                    <div className="text-xs text-muted-foreground/60">{language === 'en' ? 'Accuracy' : 'Precisión'}</div>
                   </div>
                   <div>
-                    <div className="text-xl font-bold text-orange-500">25+</div>
-                    <div className="text-xs text-muted-foreground">{language === 'en' ? 'Metrics' : 'Métricas'}</div>
+                    <div className="text-xl font-bold text-orange-400">25+</div>
+                    <div className="text-xs text-muted-foreground/60">{language === 'en' ? 'Metrics' : 'Métricas'}</div>
                   </div>
                 </div>
               </div>
 
-              {/* Bottom */}
-              <div className="flex items-center justify-between">
-                <div className="flex gap-2 items-center">
-                  <Sparkles className="w-3.5 h-3.5 text-orange-500/60" />
-                  <span className="text-xs text-muted-foreground">Power BI • Tableau</span>
+              <div className="flex items-center justify-between pt-2">
+                <div className="flex flex-wrap gap-1.5">
+                  {['Power BI', 'Tableau', 'DAX'].map((tech) => (
+                    <span key={tech} className="px-2.5 py-1 text-xs rounded-md bg-orange-500/10 text-orange-400/90 border border-orange-500/20">
+                      {tech}
+                    </span>
+                  ))}
                 </div>
-                <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 group-hover:text-orange-500 transition-all duration-300" />
+                <ArrowRight className="w-4 h-4 text-muted-foreground/50 group-hover:translate-x-1 group-hover:text-orange-400 transition-all duration-300" />
               </div>
             </div>
           </motion.button>
