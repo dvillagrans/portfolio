@@ -8,7 +8,7 @@ export const mlEngineerProfile: ProfileData = {
     credentials: "FastAPI · Docker · Grafana · 7+ despliegues productivos",
     badge: "Model registry · Feature store · Canary releases",
     persona: "Ex-Eyenet, obsesionado con despliegues aburridos y sin sorpresas.",
-    photo: "/img/me.webp",
+    photo: "/img/optimized/me-128.webp",
     metrics: [
       {
         label: "TTD notebook→API",

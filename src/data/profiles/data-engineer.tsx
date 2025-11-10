@@ -8,7 +8,7 @@ export const dataEngineerProfile: ProfileData = {
     credentials: "dbt · BigQuery · Airflow · 4 plataformas productivas",
     badge: "Linaje vivo · Tests de datos · Costos bajo control",
     persona: "Me obsesiona que cada dato tenga dueño, pruebas y destino trazable.",
-    photo: "/img/me.webp",
+    photo: "/img/optimized/me-128.webp",
     metrics: [
       {
         label: "Throughput diario",

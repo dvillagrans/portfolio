@@ -8,7 +8,7 @@ export function StructuredData() {
     "jobTitle": "Data Scientist & Full-Stack Developer",
     "description": DATA.description,
     "url": DATA.url,
-    "image": `${DATA.url}/img/me.webp`,
+    "image": `${DATA.url}/img/optimized/me-128.webp`,
     "sameAs": [
       DATA.contact.social.LinkedIn.url,
       DATA.contact.social.GitHub.url

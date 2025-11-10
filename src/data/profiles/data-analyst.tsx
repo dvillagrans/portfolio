@@ -8,7 +8,7 @@ export const dataAnalystProfile: ProfileData = {
     credentials: "Power BI · Streamlit · SQL avanzado · 30+ stakeholders impactados",
     badge: "Adopción medida · Historias accionables · KPIs alineados",
     persona: "Analista que combina UX, narrativa y datos para mover indicadores.",
-    photo: "/img/me.webp",
+    photo: "/img/optimized/me-128.webp",
     metrics: [
       {
         label: "Tiempo a insight",

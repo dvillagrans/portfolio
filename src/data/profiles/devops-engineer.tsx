@@ -8,7 +8,7 @@ export const devopsEngineerProfile: ProfileData = {
     credentials: "Terraform · Docker · Grafana · 8+ servicios críticos",
     badge: "SLOs visibles · Backups 3-2-1 · On-call preparado",
     persona: "Construyo entornos donde cada alerta llega con contexto y plan de acción.",
-    photo: "/img/me.webp",
+    photo: "/img/optimized/me-128.webp",
     metrics: [
       {
         label: "SLO uptime",

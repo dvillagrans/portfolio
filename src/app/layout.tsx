@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: `${DATA.url}/img/me.webp`,
+        url: `${DATA.url}/img/optimized/me-128.webp`,
         width: 1200,
         height: 630,
         alt: `${DATA.name} - Data Scientist Portfolio`,
@@ -78,7 +78,7 @@ export const metadata: Metadata = {
     title: `${DATA.name} - Data Scientist & Full-Stack Developer`,
     description: DATA.description,
     card: "summary_large_image",
-    images: [`${DATA.url}/img/me.webp`],
+    images: [`${DATA.url}/img/optimized/me-128.webp`],
     creator: "@dvillagrans",
   },
   verification: {
@@ -101,7 +101,7 @@ export const metadata: Metadata = {
     telephone: false,
   },
   other: {
-    'preload': '/img/me.webp',
+    'preload': '/img/optimized/me-128.webp',
     'preconnect': 'https://fonts.googleapis.com'
   }
 };

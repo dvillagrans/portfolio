@@ -11,7 +11,7 @@ export const DATA = {
     "Data Scientist & Full-Stack Developer specializing in machine learning, data visualization, and scalable web solutions. Currently pursuing Data Science at ESCOM-IPN with 3+ years of hands-on experience delivering data-driven insights and production-ready applications.",
   summary:
     "Passionate data scientist and full-stack developer with a proven track record of transforming complex datasets into actionable business insights. Expert in building end-to-end machine learning pipelines, from data collection and preprocessing to model deployment and monitoring. My experience spans predictive analytics (92% forecasting accuracy in aviation demand), web development (40% conversion rate improvements), and cloud-based ETL systems processing millions of daily records. I thrive at the intersection of data science and software engineering, creating scalable solutions that drive real business value.",
-  avatarUrl: "/img/me.webp",
+  avatarUrl: "/img/optimized/me-128.webp",
   skills: [
     "Python",
     "Pandas",
