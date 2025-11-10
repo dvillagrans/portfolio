@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useI18n } from "@/contexts/i18n-context";
-import { PROFILE_METADATA, ProfileType } from "@/contexts/profile-context";
-import { ArrowRight, Code2, Database, Rocket, TrendingUp, Sparkles, Eye } from "lucide-react";
+import { ProfileType } from "@/contexts/profile-context";
+import { ArrowRight, Code2, Database, Rocket, TrendingUp, Sparkles } from "lucide-react";
 import Image from "next/image";
 import { DATA } from "@/data/resume";
 
@@ -16,8 +16,6 @@ export default function LandingPage() {
     localStorage.setItem('profile', profile);
     router.push(`/${profile}`);
   };
-
-  const profiles = PROFILE_METADATA;
 
   return (
     <div className="min-h-screen w-full px-3 sm:px-4 md:px-6 py-8 sm:py-12 md:py-16 overflow-y-auto">
