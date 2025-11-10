@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { PortfolioToolboxGroup } from "@/data/profiles/types";
+import { TechSphere } from "./tech-sphere";
 
 interface ToolboxSectionProps {
   toolbox: PortfolioToolboxGroup[];
@@ -41,7 +42,7 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
 
       {hasCore ? (
         <motion.div
-          className="space-y-8"
+          className="space-y-12"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
@@ -54,56 +55,75 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
             },
           }}
         >
-          {/* Core tools - destacados */}
+          {/* TechSphere - Interactive 3D visualization */}
           <motion.div
-            className="rounded-3xl border-2 border-white/20 bg-gradient-to-br from-white/10 via-white/5 to-transparent p-8 backdrop-blur"
+            className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.06] via-white/[0.03] to-transparent p-8 backdrop-blur"
             variants={{
               hidden: { opacity: 0, y: 24 },
               visible: { opacity: 1, y: 0 },
             }}
           >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="h-2 w-2 rounded-full bg-white/80 animate-pulse" />
-              <h3 className="text-sm font-semibold uppercase tracking-[0.4em] text-white/70">
-                Pilares técnicos
-              </h3>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              {coreTools.map((tool) => (
-                <motion.span
-                  key={tool}
-                  className="inline-flex items-center gap-2 rounded-2xl border border-white/30 bg-white/10 px-5 py-3 text-base font-bold text-white shadow-lg"
-                  whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.5)" }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {tool}
-                </motion.span>
-              ))}
-            </div>
+            <TechSphere
+              coreTools={coreTools}
+              ecosystemTools={allTools.filter(tool => !coreTools.includes(tool))}
+            />
           </motion.div>
 
-          {/* Peripheral tools - más sutiles */}
+          {/* Legend / Info */}
           <motion.div
-            className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur"
+            className="grid gap-6 md:grid-cols-2"
             variants={{
               hidden: { opacity: 0, y: 24 },
               visible: { opacity: 1, y: 0 },
             }}
           >
-            <h3 className="text-sm font-semibold uppercase tracking-[0.4em] text-white/50 mb-4">
-              Ecosistema complementario
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {allTools
-                .filter(tool => !coreTools.includes(tool))
-                .map((tool) => (
+            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="h-3 w-3 rounded-full bg-white/80 animate-pulse" />
+                <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-white/70">
+                  Pilares técnicos
+                </h3>
+              </div>
+              <p className="text-sm text-white/60">
+                Herramientas core que definen mi arquitectura de datos: modelado, orquestación y calidad.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {coreTools.map((tool) => (
                   <span
                     key={tool}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-white/70"
+                    className="text-xs font-semibold text-white/80"
                   >
                     {tool}
                   </span>
                 ))}
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="h-2 w-2 rounded-full bg-white/40" />
+                <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-white/50">
+                  Ecosistema complementario
+                </h3>
+              </div>
+              <p className="text-sm text-white/60">
+                Stack flexible que adapto según el problema: streaming, BI, warehousing y más.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {allTools.filter(tool => !coreTools.includes(tool)).slice(0, 8).map((tool) => (
+                  <span
+                    key={tool}
+                    className="text-xs text-white/50"
+                  >
+                    {tool}
+                  </span>
+                ))}
+                {allTools.filter(tool => !coreTools.includes(tool)).length > 8 && (
+                  <span className="text-xs text-white/40">
+                    +{allTools.filter(tool => !coreTools.includes(tool)).length - 8} más
+                  </span>
+                )}
+              </div>
             </div>
           </motion.div>
         </motion.div>
