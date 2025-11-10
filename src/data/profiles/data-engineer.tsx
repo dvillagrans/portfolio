@@ -4,8 +4,8 @@ export const dataEngineerProfile: ProfileData = {
   hero: {
     eyebrow: "Data Pipelines & Modeling",
     title: "Pipelines que no se rompen. Datos modelados para durar.",
-    subtitle: "Construyo linajes claros, contratos de datos y modelos listos para negocio.",
-    credentials: "dbt · BigQuery · Airflow · 4 plataformas productivas",
+    subtitle: "Diseño pipelines que son fáciles de entender, mantener y pasar a otro equipo. Me importa el orden, la trazabilidad y que el sistema envejezca bien.",
+    credentials: "dbt · BigQuery / PostgreSQL · Airflow / n8n · Tests + Contratos de datos",
     badge: "Linaje vivo · Tests de datos · Costos bajo control",
     persona: "Me obsesiona que cada dato tenga dueño, pruebas y destino trazable.",
     photo: "/img/optimized/me-128.webp",
@@ -178,11 +178,29 @@ export const dataEngineerProfile: ProfileData = {
       },
       quickRead: true,
     },
+    {
+      title: "EyeNet: Automatización de reportes operativos",
+      category: "Orquestación & Automatización",
+      timeframe: "2024-2025",
+      summary: "Pipeline end-to-end para automatizar reportes internos que antes se generaban manualmente con alto riesgo de error.",
+      context: "EyeNet necesitaba automatizar sus procesos de reportería operativa. Los informes llegaban en distintos formatos y tiempos. El procesamiento manual implicaba riesgo de errores y era difícil replicar o modificar.",
+      action: "Diseñé y orquesté pipelines de extracción → limpieza → estructuración → generación automatizada de reportes, usando n8n, validaciones, logs y control de flujo claro. Implementé controles de calidad en cada etapa y documentación viva del proceso.",
+      result: "Automatización completa de reportes operativos recurrentes con mantenibilidad alta: cualquier persona puede revisar o modificar pasos. Errores reducidos al eliminar manipulación manual. Tiempo de entrega estable sin depender de una sola persona.",
+      metric: "Tiempo de procesamiento: ~2hrs → 15min automatizado · Errores manuales eliminados",
+      tags: ["n8n", "PostgreSQL", "Validación de datos", "Logs estructurados", "Documentación"],
+      proof: [],
+      media: {
+        type: "image",
+        src: "/img/dash-population.webp",
+        alt: "Pipeline automatizado EyeNet",
+      },
+      quickRead: false,
+    },
   ],
   toolbox: [
     {
       title: "Orquestación & Calidad",
-      items: ["Airflow", "Prefect", "dbt", "Great Expectations"],
+      items: ["Airflow", "Prefect", "n8n", "dbt", "Great Expectations"],
     },
     {
       title: "Modelado & Almacenamiento",
