@@ -3,82 +3,112 @@
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useI18n } from "@/contexts/i18n-context";
-import { PROFILE_METADATA, ProfileType } from "@/contexts/profile-context";
-import { ArrowRight, Code2, Database, Rocket, TrendingUp } from "lucide-react";
+import { ProfileType } from "@/contexts/profile-context";
+import { Code2, Database, Rocket, TrendingUp } from "lucide-react";
+import Image from "next/image";
+import { DATA } from "@/data/resume";
 
 export default function LandingPage() {
   const router = useRouter();
   const { language } = useI18n();
 
   const handleProfileSelect = (profile: ProfileType) => {
-    localStorage.setItem('profile', profile);
+    localStorage.setItem("profile", profile);
     router.push(`/${profile}`);
   };
 
-  const profiles = PROFILE_METADATA;
-
   return (
-    <div className="min-h-screen md:h-screen w-full flex items-center justify-center px-3 sm:px-4 md:px-6 py-4 sm:py-6 overflow-y-auto md:overflow-hidden">
-      <div className="max-w-7xl w-full space-y-6 md:space-y-8 my-auto">
-
-        {/* Hero Section - Responsive */}
+    <div className="h-screen w-full px-4 sm:px-6 md:px-8 py-6 md:py-8 overflow-hidden flex flex-col">
+      <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col">
+        {/* Hero - Ultra Compact */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center space-y-2 sm:space-y-3 max-w-3xl mx-auto px-2"
+          transition={{ duration: 0.5 }}
+          className="flex flex-col items-center text-center space-y-4 mb-6 md:mb-8"
         >
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-            Diego Villagran
-          </h1>
-          <p className="text-xs sm:text-sm md:text-base text-muted-foreground/90 leading-relaxed max-w-2xl mx-auto px-2">
-            {language === 'en'
-              ? 'I build data systems end-to-end: ingestion, transformation, automation, deployment, and monitoring.'
-              : 'Diseño y opero soluciones de datos de punta a punta: ingestión, transformación, automatización, despliegue y monitoreo.'}
-          </p>
+          {/* Photo - small */}
+          <div className="relative group">
+            <div className="absolute -inset-2 bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-cyan-500/10 rounded-full blur-lg opacity-40 group-hover:opacity-60 transition-opacity duration-300" />
+            <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden ring-2 ring-white/10">
+              <Image
+                src={DATA.avatarUrl}
+                alt="Diego Villagran"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          </div>
+
+          {/* Name + One Line */}
+          <div className="space-y-2">
+            <h1 className="text-2xl sm:text-3xl md:text-[40px] font-extrabold leading-tight">
+              {language === "en"
+                ? "Hi, I'm Diego"
+                : "Hola, soy Diego"}
+            </h1>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground/80 leading-relaxed max-w-xl mx-auto">
+              {language === "en"
+                ? "I build data systems that feel calm in production."
+                : "Construyo sistemas de datos que se sienten tranquilos en producción."}
+            </p>
+          </div>
+
+          {/* Values Bar */}
+          <div className="flex items-center gap-2 text-xs text-muted-foreground/70">
+            <span>
+              {language === "en" ? "Transparency" : "Transparencia"}
+            </span>
+            <span className="text-muted-foreground/40">•</span>
+            <span>
+              {language === "en" ? "Documentation" : "Documentación"}
+            </span>
+            <span className="text-muted-foreground/40">•</span>
+            <span>
+              {language === "en"
+                ? "Easy maintenance"
+                : "Mantenimiento sencillo"}
+            </span>
+          </div>
         </motion.div>
 
-        {/* Bento Grid - Responsive */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4">
-
-          {/* ML Engineer */}
+        {/* Main Selection Grid - Irregular Layout */}
+        <div className="flex-1 grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 max-w-6xl mx-auto w-full">
+          {/* Model Deployment & MLOps - Purple→Pink */}
           <motion.button
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            onClick={() => handleProfileSelect('ml-engineer')}
-            className="md:col-span-7 group relative overflow-hidden rounded-xl border border-white/5 bg-gradient-to-br from-purple-500/5 via-background to-pink-500/5 hover:border-white/10 hover:scale-[1.01] transition-all duration-500 text-left"
+            transition={{ duration: 0.4, delay: 0.1 }}
+            onClick={() => handleProfileSelect("ml-engineer")}
+            className="md:col-span-7 group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-purple-500/5 via-black/40 to-background backdrop-blur-sm hover:border-purple-400/30 hover:scale-[1.02] hover:shadow-[0_8px_30px_rgb(124,58,237,0.12)] transition-all duration-200 text-left p-4 md:p-6"
           >
-            <div className="p-4 sm:p-5 md:p-6 space-y-3 sm:space-y-4">
-              <div className="flex items-start justify-between">
-                <div className="relative">
-                  <div className="absolute -inset-2 sm:-inset-3 bg-purple-500/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg sm:rounded-xl bg-gradient-to-br from-purple-500/80 to-pink-500/80 flex items-center justify-center">
-                    <Code2 className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white" />
-                  </div>
-                </div>
-                <ArrowRight className="w-4 h-4 text-muted-foreground/50 group-hover:translate-x-1 group-hover:text-purple-400 transition-all duration-300" />
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-pink-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+
+            <div className="relative space-y-3">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-purple-600/20 to-pink-600/20 border border-purple-500/20 flex items-center justify-center backdrop-blur-sm shadow-lg shadow-purple-500/20">
+                <Code2 className="w-6 h-6 sm:w-7 sm:h-7 text-purple-400" />
               </div>
 
-              <div className="space-y-1.5 sm:space-y-2">
-                <div>
-                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-1">
-                    {language === 'en' ? 'Machine Learning Engineer' : 'Ingeniero de Machine Learning'}
-                  </h3>
-                  <p className="text-xs text-muted-foreground/80 font-mono">
-                    MLOps • Applied AI • Model Serving
-                  </p>
-                </div>
-                <p className="text-xs md:text-sm text-muted-foreground/70 leading-relaxed">
-                  {language === 'en'
-                    ? 'Design and deploy production models focused on stability, reproducibility, and continuous monitoring for near-real-time systems.'
-                    : 'Diseño y despliego modelos en producción con enfoque en reproducibilidad, estabilidad y monitoreo continuo.'}
+              <div className="space-y-1.5">
+                <h3 className="text-xl sm:text-2xl md:text-[22px] font-bold">
+                  {language === "en"
+                    ? "Model Deployment & MLOps"
+                    : "Despliegue de Modelos & MLOps"}
+                </h3>
+                <p className="text-sm sm:text-base text-muted-foreground/70 leading-relaxed">
+                  {language === "en"
+                    ? "From notebooks to production—reproducibly and without drama."
+                    : "De notebooks a producción—reproducible y sin drama."}
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-1.5 pt-1 sm:pt-2">
-                {['TensorFlow', 'FastAPI', 'Docker', 'PostgreSQL'].map((tech) => (
-                  <span key={tech} className="px-2 sm:px-2.5 py-0.5 sm:py-1 text-xs rounded-md bg-purple-500/10 text-purple-400/90 border border-purple-500/20">
+              <div className="flex flex-wrap gap-1.5">
+                {["TensorFlow", "FastAPI", "Docker"].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2.5 py-1 text-xs rounded-md bg-purple-500/10 text-purple-300/90 border border-purple-500/20"
+                  >
                     {tech}
                   </span>
                 ))}
@@ -86,166 +116,155 @@ export default function LandingPage() {
             </div>
           </motion.button>
 
-          {/* Data Engineer */}
+          {/* Data Pipelines & Modeling - Cyan→Blue */}
           <motion.button
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            onClick={() => handleProfileSelect('data-engineer')}
-            className="md:col-span-5 group relative overflow-hidden rounded-xl border border-white/5 bg-gradient-to-br from-blue-500/5 via-background to-cyan-500/5 hover:border-white/10 hover:scale-[1.01] transition-all duration-500 text-left"
+            transition={{ duration: 0.4, delay: 0.2 }}
+            onClick={() => handleProfileSelect("data-engineer")}
+            className="md:col-span-5 group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-cyan-500/5 via-black/40 to-background backdrop-blur-sm hover:border-cyan-400/30 hover:scale-[1.02] hover:shadow-[0_8px_30px_rgb(6,182,212,0.12)] transition-all duration-200 text-left p-4 md:p-6"
           >
-            <div className="p-4 sm:p-5 md:p-6 space-y-3 sm:space-y-4 h-full flex flex-col">
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+
+            <div className="relative space-y-3 h-full flex flex-col">
               <div className="flex justify-center">
-                <div className="relative">
-                  <div className="absolute -inset-2 sm:-inset-3 bg-blue-500/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-blue-500/80 to-cyan-500/80 flex items-center justify-center transform group-hover:rotate-6 transition-transform duration-300">
-                    <Database className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                  </div>
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/20 flex items-center justify-center backdrop-blur-sm shadow-lg shadow-cyan-500/20">
+                  <Database className="w-6 h-6 sm:w-7 sm:h-7 text-cyan-400" />
                 </div>
               </div>
 
-              <div className="space-y-1.5 sm:space-y-2 flex-1 text-center">
-                <div>
-                  <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1">
-                    {language === 'en' ? 'Data Engineer' : 'Ingeniero de Datos'}
-                  </h3>
-                  <p className="text-xs text-muted-foreground/80 font-mono">
-                    ETL • Pipelines • Data Modeling
-                  </p>
-                </div>
-                <p className="text-xs text-muted-foreground/70 leading-relaxed">
-                  {language === 'en'
-                    ? 'Build resilient data pipelines that integrate, transform, and validate information from multiple sources ensuring consistency.'
-                    : 'Construyo pipelines de datos que integran, transforman y validan información asegurando consistencia y trazabilidad.'}
+              <div className="space-y-1.5 flex-1 text-center">
+                <h3 className="text-xl sm:text-2xl md:text-[22px] font-bold">
+                  {language === "en"
+                    ? "Data Pipelines & Modeling"
+                    : "Pipelines de Datos & Modelado"}
+                </h3>
+                <p className="text-sm sm:text-base text-muted-foreground/70 leading-relaxed">
+                  {language === "en"
+                    ? "Clean, testable pipelines. Good data engineering is invisible."
+                    : "Pipelines limpios y testeables. La buena ingeniería de datos es invisible."}
                 </p>
               </div>
 
               <div className="flex flex-wrap justify-center gap-1.5">
-                {['PostgreSQL', 'Python', 'n8n'].map((tech) => (
-                  <span key={tech} className="px-2 sm:px-2.5 py-0.5 sm:py-1 text-xs rounded-md bg-blue-500/10 text-blue-400/90 border border-blue-500/20">
+                {["PostgreSQL", "Python", "n8n"].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2.5 py-1 text-xs rounded-md bg-cyan-500/10 text-cyan-300/90 border border-cyan-500/20"
+                  >
                     {tech}
                   </span>
                 ))}
               </div>
-
-              <div className="flex justify-center pt-1 sm:pt-2">
-                <ArrowRight className="w-4 h-4 text-muted-foreground/50 group-hover:translate-y-1 group-hover:text-blue-400 transition-all duration-300" />
-              </div>
             </div>
           </motion.button>
 
-          {/* DevOps Engineer */}
+          {/* Infrastructure & Observability - Green→Lime */}
           <motion.button
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            onClick={() => handleProfileSelect('devops-engineer')}
-            className="md:col-span-5 group relative overflow-hidden rounded-xl border border-white/5 hover:border-white/10 hover:scale-[1.01] transition-all duration-500 text-left"
+            transition={{ duration: 0.4, delay: 0.3 }}
+            onClick={() => handleProfileSelect("devops-engineer")}
+            className="md:col-span-5 group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-emerald-500/5 via-black/40 to-background backdrop-blur-sm hover:border-emerald-400/30 hover:scale-[1.02] hover:shadow-[0_8px_30px_rgb(16,185,129,0.12)] transition-all duration-200 text-left p-4 md:p-6"
           >
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-green-500/80 to-teal-500/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-lime-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
 
-            <div className="p-4 sm:p-5 md:p-6 space-y-3 sm:space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="relative">
-                  <div className="absolute -inset-2 bg-green-500/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-lg bg-gradient-to-br from-green-500/80 to-teal-500/80 flex items-center justify-center">
-                    <Rocket className="w-5 h-5 text-white" />
-                  </div>
-                </div>
+            <div className="relative space-y-3">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-emerald-500/20 to-lime-500/20 border border-emerald-500/20 flex items-center justify-center backdrop-blur-sm shadow-lg shadow-emerald-500/20">
+                <Rocket className="w-6 h-6 sm:w-7 sm:h-7 text-emerald-400" />
               </div>
 
-              <div className="space-y-1.5 sm:space-y-2">
-                <div>
-                  <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1">
-                    {language === 'en' ? 'DevOps Engineer' : 'Ingeniero DevOps'}
-                  </h3>
-                  <p className="text-xs text-muted-foreground/80 font-mono">
-                    CI/CD • Containers • Observability
-                  </p>
-                </div>
-                <p className="text-xs text-muted-foreground/70 leading-relaxed">
-                  {language === 'en'
-                    ? 'Standardize environments and automate deployments to enable reliable deliveries and observability in production.'
-                    : 'Estandarizo entornos y automatizo despliegues para habilitar entregas confiables y observabilidad en producción.'}
+              <div className="space-y-1.5">
+                <h3 className="text-xl sm:text-2xl md:text-[22px] font-bold">
+                  {language === "en"
+                    ? "Infrastructure & Observability"
+                    : "Infraestructura & Observabilidad"}
+                </h3>
+                <p className="text-sm sm:text-base text-muted-foreground/70 leading-relaxed">
+                  {language === "en"
+                    ? "If it matters, we can see it. Boring, reliable deployments."
+                    : "Si importa, podemos verlo. Despliegues aburridos y confiables."}
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-1.5 pt-1 sm:pt-2">
-                {['Docker', 'Kubernetes', 'Grafana', 'Prometheus'].map((tech) => (
-                  <span key={tech} className="px-2 sm:px-2.5 py-0.5 sm:py-1 text-xs rounded-md bg-green-500/10 text-green-400/90 border border-green-500/20">
+              <div className="flex flex-wrap gap-1.5">
+                {["Docker", "Kubernetes", "Grafana"].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2.5 py-1 text-xs rounded-md bg-emerald-500/10 text-emerald-300/90 border border-emerald-500/20"
+                  >
                     {tech}
                   </span>
                 ))}
               </div>
-
-              <div className="flex justify-end pt-1 sm:pt-2">
-                <ArrowRight className="w-4 h-4 text-muted-foreground/50 group-hover:translate-x-1 group-hover:text-green-400 transition-all duration-300" />
-              </div>
             </div>
           </motion.button>
 
-          {/* Data Analyst */}
+          {/* Dashboards & Analytics - Orange→Amber */}
           <motion.button
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            onClick={() => handleProfileSelect('data-analyst')}
-            className="md:col-span-7 group relative overflow-hidden rounded-xl border border-white/5 bg-gradient-to-br from-orange-500/5 via-background to-red-500/5 hover:border-white/10 hover:scale-[1.01] transition-all duration-500 text-left"
+            transition={{ duration: 0.4, delay: 0.4 }}
+            onClick={() => handleProfileSelect("data-analyst")}
+            className="md:col-span-7 group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-orange-500/5 via-black/40 to-background backdrop-blur-sm hover:border-orange-400/30 hover:scale-[1.02] hover:shadow-[0_8px_30px_rgb(249,115,22,0.12)] transition-all duration-200 text-left p-4 md:p-6"
           >
-            <div className="p-4 sm:p-5 md:p-6 space-y-3 sm:space-y-4">
-              <div className="flex items-start justify-between gap-3 sm:gap-4">
-                <div className="space-y-2 sm:space-y-3 flex-1">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="relative">
-                      <div className="absolute -inset-2 bg-orange-500/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-lg bg-gradient-to-br from-orange-500/80 to-red-500/80 flex items-center justify-center">
-                        <TrendingUp className="w-5 h-5 text-white" />
-                      </div>
-                    </div>
-                    <div>
-                      <h3 className="text-base sm:text-lg md:text-xl font-bold">
-                        {language === 'en' ? 'Data Analyst' : 'Analista de Datos'}
-                      </h3>
-                      <p className="text-xs text-muted-foreground/80 font-mono">
-                        SQL • BI Dashboards • Insight Ops
-                      </p>
-                    </div>
-                  </div>
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
 
-                  <p className="text-xs text-muted-foreground/70 leading-relaxed">
-                    {language === 'en'
-                      ? 'Develop dashboards and reporting systems that convert operational data into measurable decisions for teams.'
-                      : 'Desarrollo dashboards y sistemas de reporting que convierten datos operativos en decisiones medibles.'}
-                  </p>
+            <div className="relative space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 border border-orange-500/20 flex items-center justify-center backdrop-blur-sm shadow-lg shadow-orange-500/20">
+                  <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7 text-orange-400" />
                 </div>
-
-                <div className="hidden sm:flex flex-col gap-2 text-right">
-                  <div>
-                    <div className="text-lg md:text-xl font-bold text-orange-400">92%</div>
-                    <div className="text-xs text-muted-foreground/60">{language === 'en' ? 'Accuracy' : 'Precisión'}</div>
-                  </div>
-                  <div>
-                    <div className="text-lg md:text-xl font-bold text-orange-400">25+</div>
-                    <div className="text-xs text-muted-foreground/60">{language === 'en' ? 'Metrics' : 'Métricas'}</div>
-                  </div>
+                <div>
+                  <h3 className="text-xl sm:text-2xl md:text-[22px] font-bold">
+                    {language === "en"
+                      ? "Dashboards & Analytics"
+                      : "Dashboards & Analytics"}
+                  </h3>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-1 sm:pt-2">
-                <div className="flex flex-wrap gap-1.5">
-                  {['Power BI', 'Tableau', 'DAX'].map((tech) => (
-                    <span key={tech} className="px-2 sm:px-2.5 py-0.5 sm:py-1 text-xs rounded-md bg-orange-500/10 text-orange-400/90 border border-orange-500/20">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                <ArrowRight className="w-4 h-4 text-muted-foreground/50 group-hover:translate-x-1 group-hover:text-orange-400 transition-all duration-300" />
+              <p className="text-sm sm:text-base text-muted-foreground/70 leading-relaxed">
+                {language === "en"
+                  ? "Less dashboarding, more decisions."
+                  : "Menos dashboards, más decisiones."}
+              </p>
+
+              <div className="flex flex-wrap gap-1.5">
+                {["Power BI", "Tableau", "DAX"].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2.5 py-1 text-xs rounded-md bg-orange-500/10 text-orange-300/90 border border-orange-500/20"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
             </div>
           </motion.button>
-
         </div>
 
+        {/* Footer - Discrete Links */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="flex items-center justify-center gap-6 mt-6 text-xs text-muted-foreground/60"
+        >
+          <button
+            onClick={() => router.push("/projects")}
+            className="hover:text-foreground transition-colors duration-200"
+          >
+            {language === "en" ? "Projects" : "Proyectos"}
+          </button>
+          <span className="text-muted-foreground/30">•</span>
+          <button
+            onClick={() => router.push("/ml-engineer")}
+            className="hover:text-foreground transition-colors duration-200"
+          >
+            {language === "en" ? "Experience" : "Experiencia"}
+          </button>
+        </motion.div>
       </div>
     </div>
   );
