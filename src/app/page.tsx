@@ -81,7 +81,8 @@ export default function LandingPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.1 }}
             onClick={() => handleProfileSelect("ml-engineer")}
-            className="md:col-span-7 group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-gradient-to-br from-purple-500/5 via-black/40 to-background backdrop-blur-sm hover:border-purple-400/30 hover:scale-[1.02] hover:shadow-[0_8px_30px_rgb(124,58,237,0.12)] transition-all duration-200 text-left p-3 sm:p-4 md:p-6"
+            className="md:col-span-7 group relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3rem] border border-white/10 bg-gradient-to-br from-purple-500/5 via-black/40 to-background backdrop-blur-sm hover:border-purple-400/30 hover:scale-[1.02] hover:shadow-[0_8px_30px_rgb(124,58,237,0.12)] transition-all duration-200 text-left p-3 sm:p-4 md:p-6"
+            style={{ borderRadius: '2rem 2.5rem 2rem 2rem' }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-pink-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
 
@@ -122,7 +123,8 @@ export default function LandingPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.2 }}
             onClick={() => handleProfileSelect("data-engineer")}
-            className="md:col-span-5 group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-gradient-to-br from-cyan-500/5 via-black/40 to-background backdrop-blur-sm hover:border-cyan-400/30 hover:scale-[1.02] hover:shadow-[0_8px_30px_rgb(6,182,212,0.12)] transition-all duration-200 text-left p-3 sm:p-4 md:p-6"
+            className="md:col-span-5 group relative overflow-hidden border border-white/10 bg-gradient-to-br from-cyan-500/5 via-black/40 to-background backdrop-blur-sm hover:border-cyan-400/30 hover:scale-[1.02] hover:shadow-[0_8px_30px_rgb(6,182,212,0.12)] transition-all duration-200 text-left p-3 sm:p-4 md:p-6"
+            style={{ borderRadius: '2rem 2rem 2.5rem 2rem' }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
 
@@ -165,7 +167,8 @@ export default function LandingPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.3 }}
             onClick={() => handleProfileSelect("devops-engineer")}
-            className="md:col-span-5 group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-gradient-to-br from-emerald-500/5 via-black/40 to-background backdrop-blur-sm hover:border-emerald-400/30 hover:scale-[1.02] hover:shadow-[0_8px_30px_rgb(16,185,129,0.12)] transition-all duration-200 text-left p-3 sm:p-4 md:p-6"
+            className="md:col-span-5 group relative overflow-hidden border border-white/10 bg-gradient-to-br from-emerald-500/5 via-black/40 to-background backdrop-blur-sm hover:border-emerald-400/30 hover:scale-[1.02] hover:shadow-[0_8px_30px_rgb(16,185,129,0.12)] transition-all duration-200 text-left p-3 sm:p-4 md:p-6"
+            style={{ borderRadius: '2.5rem 2rem 2rem 2.5rem' }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-lime-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
 
@@ -206,7 +209,8 @@ export default function LandingPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.4 }}
             onClick={() => handleProfileSelect("data-analyst")}
-            className="md:col-span-7 group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-gradient-to-br from-orange-500/5 via-black/40 to-background backdrop-blur-sm hover:border-orange-400/30 hover:scale-[1.02] hover:shadow-[0_8px_30px_rgb(249,115,22,0.12)] transition-all duration-200 text-left p-3 sm:p-4 md:p-6"
+            className="md:col-span-7 group relative overflow-hidden border border-white/10 bg-gradient-to-br from-orange-500/5 via-black/40 to-background backdrop-blur-sm hover:border-orange-400/30 hover:scale-[1.02] hover:shadow-[0_8px_30px_rgb(249,115,22,0.12)] transition-all duration-200 text-left p-3 sm:p-4 md:p-6"
+            style={{ borderRadius: '2rem 2rem 2rem 2.5rem' }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
 
