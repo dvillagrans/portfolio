@@ -60,7 +60,7 @@ export function TestimonialsSection({ testimonials, onSectionView }: Testimonial
             }}
           >
             <div className="absolute -right-12 top-0 h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-[hsla(var(--portfolio-accent),0.25)] blur-3xl opacity-70" />
-            <p className="text-base sm:text-lg leading-relaxed text-white/80">"{testimonial.quote}"</p>
+            <p className="text-base sm:text-lg leading-relaxed text-white/80">&ldquo;{testimonial.quote}&rdquo;</p>
             <footer className="mt-4 sm:mt-6 text-xs sm:text-sm text-white/60">
               <span className="font-semibold text-white/80">{testimonial.author}</span>
               {testimonial.role && ` · ${testimonial.role}`}
