@@ -130,7 +130,12 @@ export default function RootLayout({
         <ServiceWorkerProvider>
           <I18nProvider>
             <ProfileProvider>
-              <ThemeProvider attribute="class" defaultTheme="dark">
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="dark"
+                enableSystem={false}
+                storageKey="portfolio-theme"
+              >
                 <TooltipProvider delayDuration={0}>
                   <PageTransition>
                     {children}

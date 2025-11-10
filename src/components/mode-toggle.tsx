@@ -31,6 +31,11 @@ export const ModeToggle = React.forwardRef<
     );
   }
 
+  const toggleTheme = () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+  };
+
   return (
     <Button
       ref={ref}
@@ -38,7 +43,7 @@ export const ModeToggle = React.forwardRef<
       type="button"
       size="icon"
       className="px-2"
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      onClick={toggleTheme}
       {...props}
     >
       <SunIcon className="h-[1.2rem] w-[1.2rem] text-foreground dark:hidden" />
