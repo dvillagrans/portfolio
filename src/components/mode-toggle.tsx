@@ -9,7 +9,7 @@ export const ModeToggle = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >((props, ref) => {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -31,10 +31,34 @@ export const ModeToggle = React.forwardRef<
     );
   }
 
-  const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
+  const toggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const currentTheme = theme || resolvedTheme || "dark";
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+    console.log("Toggle clicked - Current theme:", currentTheme, "New theme:", newTheme);
+
+    // Forzar el cambio de tema
     setTheme(newTheme);
+
+    // Como backup, también manipulamos el DOM directamente
+    setTimeout(() => {
+      const html = document.documentElement;
+      if (newTheme === "dark") {
+        html.classList.add("dark");
+        html.style.colorScheme = "dark";
+      } else {
+        html.classList.remove("dark");
+        html.style.colorScheme = "light";
+      }
+      localStorage.setItem("portfolio-theme", newTheme);
+      console.log("Theme updated. HTML classes:", html.className);
+    }, 0);
   };
+
+  const currentTheme = theme || resolvedTheme || "dark";
 
   return (
     <Button
@@ -46,8 +70,11 @@ export const ModeToggle = React.forwardRef<
       onClick={toggleTheme}
       {...props}
     >
-      <SunIcon className="h-[1.2rem] w-[1.2rem] text-foreground dark:hidden" />
-      <MoonIcon className="hidden h-[1.2rem] w-[1.2rem] text-foreground dark:block" />
+      {currentTheme === "dark" ? (
+        <MoonIcon className="h-[1.2rem] w-[1.2rem] text-foreground" />
+      ) : (
+        <SunIcon className="h-[1.2rem] w-[1.2rem] text-foreground" />
+      )}
     </Button>
   );
 });
