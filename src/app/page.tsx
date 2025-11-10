@@ -54,34 +54,45 @@ export default function LandingPage() {
           </div>
         </motion.div>
 
-        {/* Main Selection Grid - 2x2 */}
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-5xl mx-auto w-full">
+        {/* Main Selection Grid - Irregular Layout */}
+        <div className="flex-1 grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 max-w-6xl mx-auto w-full">
           {/* Model Deployment & MLOps */}
           <motion.button
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.1 }}
             onClick={() => handleProfileSelect("ml-engineer")}
-            className="group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-purple-500/5 via-black/40 to-background backdrop-blur-sm hover:border-white/20 hover:scale-[1.02] transition-all duration-200 text-left p-6 md:p-8"
+            className="md:col-span-7 group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-purple-500/5 via-black/40 to-background backdrop-blur-sm hover:border-white/20 hover:scale-[1.02] transition-all duration-200 text-left p-4 md:p-6"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
 
-            <div className="relative space-y-4">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/20 flex items-center justify-center backdrop-blur-sm">
-                <Code2 className="w-6 h-6 sm:w-7 sm:h-7 text-purple-400" />
+            <div className="relative space-y-3">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/20 flex items-center justify-center backdrop-blur-sm">
+                <Code2 className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
               </div>
 
-              <div className="space-y-2">
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold">
+              <div className="space-y-1.5">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold">
                   {language === "en"
                     ? "Model Deployment & MLOps"
                     : "Despliegue de Modelos & MLOps"}
                 </h3>
-                <p className="text-sm sm:text-base text-muted-foreground/80">
+                <p className="text-xs sm:text-sm text-muted-foreground/80">
                   {language === "en"
                     ? "From notebooks to production, reproducibly."
                     : "De notebooks a producción, reproducible."}
                 </p>
+              </div>
+
+              <div className="flex flex-wrap gap-1.5">
+                {["TensorFlow", "FastAPI", "Docker"].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2 py-0.5 text-xs rounded-md bg-purple-500/10 text-purple-400/80 border border-purple-500/20"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
             </div>
           </motion.button>
@@ -92,26 +103,39 @@ export default function LandingPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.2 }}
             onClick={() => handleProfileSelect("data-engineer")}
-            className="group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-purple-500/5 via-black/40 to-background backdrop-blur-sm hover:border-white/20 hover:scale-[1.02] transition-all duration-200 text-left p-6 md:p-8"
+            className="md:col-span-5 group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-purple-500/5 via-black/40 to-background backdrop-blur-sm hover:border-white/20 hover:scale-[1.02] transition-all duration-200 text-left p-4 md:p-6"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
 
-            <div className="relative space-y-4">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/20 flex items-center justify-center backdrop-blur-sm">
-                <Database className="w-6 h-6 sm:w-7 sm:h-7 text-purple-400" />
+            <div className="relative space-y-3 h-full flex flex-col">
+              <div className="flex justify-center">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/20 flex items-center justify-center backdrop-blur-sm">
+                  <Database className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold">
+              <div className="space-y-1.5 flex-1 text-center">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold">
                   {language === "en"
                     ? "Data Pipelines & Modeling"
                     : "Pipelines de Datos & Modelado"}
                 </h3>
-                <p className="text-sm sm:text-base text-muted-foreground/80">
+                <p className="text-xs sm:text-sm text-muted-foreground/80">
                   {language === "en"
                     ? "Clean, testable pipelines that don't break."
                     : "Pipelines limpios y testeables que no se rompen."}
                 </p>
+              </div>
+
+              <div className="flex flex-wrap justify-center gap-1.5">
+                {["PostgreSQL", "Python", "n8n"].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2 py-0.5 text-xs rounded-md bg-purple-500/10 text-purple-400/80 border border-purple-500/20"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
             </div>
           </motion.button>
@@ -122,26 +146,37 @@ export default function LandingPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.3 }}
             onClick={() => handleProfileSelect("devops-engineer")}
-            className="group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-purple-500/5 via-black/40 to-background backdrop-blur-sm hover:border-white/20 hover:scale-[1.02] transition-all duration-200 text-left p-6 md:p-8"
+            className="md:col-span-5 group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-purple-500/5 via-black/40 to-background backdrop-blur-sm hover:border-white/20 hover:scale-[1.02] transition-all duration-200 text-left p-4 md:p-6"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
 
-            <div className="relative space-y-4">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/20 flex items-center justify-center backdrop-blur-sm">
-                <Rocket className="w-6 h-6 sm:w-7 sm:h-7 text-purple-400" />
+            <div className="relative space-y-3">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/20 flex items-center justify-center backdrop-blur-sm">
+                <Rocket className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
               </div>
 
-              <div className="space-y-2">
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold">
+              <div className="space-y-1.5">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold">
                   {language === "en"
                     ? "Infrastructure & Observability"
                     : "Infraestructura & Observabilidad"}
                 </h3>
-                <p className="text-sm sm:text-base text-muted-foreground/80">
+                <p className="text-xs sm:text-sm text-muted-foreground/80">
                   {language === "en"
                     ? "Systems that tell you how they feel."
                     : "Sistemas que te dicen cómo se sienten."}
                 </p>
+              </div>
+
+              <div className="flex flex-wrap gap-1.5">
+                {["Docker", "Kubernetes", "Grafana"].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2 py-0.5 text-xs rounded-md bg-purple-500/10 text-purple-400/80 border border-purple-500/20"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
             </div>
           </motion.button>
@@ -152,26 +187,39 @@ export default function LandingPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.4 }}
             onClick={() => handleProfileSelect("data-analyst")}
-            className="group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-purple-500/5 via-black/40 to-background backdrop-blur-sm hover:border-white/20 hover:scale-[1.02] transition-all duration-200 text-left p-6 md:p-8"
+            className="md:col-span-7 group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-purple-500/5 via-black/40 to-background backdrop-blur-sm hover:border-white/20 hover:scale-[1.02] transition-all duration-200 text-left p-4 md:p-6"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
 
-            <div className="relative space-y-4">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/20 flex items-center justify-center backdrop-blur-sm">
-                <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7 text-purple-400" />
+            <div className="relative space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/20 flex items-center justify-center backdrop-blur-sm">
+                  <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold">
+                    {language === "en"
+                      ? "Dashboards & Analytics"
+                      : "Dashboards & Analytics"}
+                  </h3>
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold">
-                  {language === "en"
-                    ? "Dashboards & Analytics"
-                    : "Dashboards & Analytics"}
-                </h3>
-                <p className="text-sm sm:text-base text-muted-foreground/80">
-                  {language === "en"
-                    ? "Dashboards that lead to decisions, not noise."
-                    : "Dashboards que llevan a decisiones, no ruido."}
-                </p>
+              <p className="text-xs sm:text-sm text-muted-foreground/80">
+                {language === "en"
+                  ? "Dashboards that lead to decisions, not noise."
+                  : "Dashboards que llevan a decisiones, no ruido."}
+              </p>
+
+              <div className="flex flex-wrap gap-1.5">
+                {["Power BI", "Tableau", "DAX"].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2 py-0.5 text-xs rounded-md bg-purple-500/10 text-purple-400/80 border border-purple-500/20"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
             </div>
           </motion.button>
