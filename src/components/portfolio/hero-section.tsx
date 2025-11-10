@@ -31,7 +31,7 @@ export function HeroSection({ hero, metadata, onCtaClick, onSectionView }: HeroS
     <section
       id="hero"
       className={cn(
-        "relative overflow-hidden rounded-3xl border border-white/10 p-10 md:p-12",
+        "relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 p-6 sm:p-8 md:p-10 lg:p-12",
         "shadow-[0_30px_80px_rgba(8,8,16,0.6)]"
       )}
       style={{
@@ -42,25 +42,25 @@ export function HeroSection({ hero, metadata, onCtaClick, onSectionView }: HeroS
       }}
     >
       <motion.div
-        className="relative flex flex-col gap-10 lg:flex-row lg:items-end"
+        className="relative flex flex-col gap-6 sm:gap-8 lg:gap-10 lg:flex-row lg:items-end"
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        <div className="flex-1 space-y-8 text-white">
+        <div className="flex-1 space-y-5 sm:space-y-6 md:space-y-8 text-white">
           <div className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-white/70 backdrop-blur">
             <span>{hero.eyebrow}</span>
           </div>
 
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 text-lg text-white/70">
-              <span className="text-3xl">{metadata.icon}</span>
-              <span>{metadata.titleEs}</span>
+          <div className="space-y-3 sm:space-y-4">
+            <div className="flex items-center gap-2 sm:gap-3 text-base sm:text-lg text-white/70">
+              <span className="text-2xl sm:text-3xl">{metadata.icon}</span>
+              <span className="text-sm sm:text-base md:text-lg">{metadata.titleEs}</span>
             </div>
-            <h1 className="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight tracking-tight">
               {hero.title}
             </h1>
-            <p className="max-w-2xl text-lg text-white/80">{hero.subtitle}</p>
+            <p className="max-w-2xl text-base sm:text-lg text-white/80">{hero.subtitle}</p>
           </div>
 
           <div className="flex flex-wrap items-center gap-4 text-sm text-white/70">
@@ -92,12 +92,12 @@ export function HeroSection({ hero, metadata, onCtaClick, onSectionView }: HeroS
         </div>
 
         <motion.div
-          className="flex w-full max-w-xs flex-col items-center gap-4 rounded-3xl border border-white/10 bg-white/10/70 p-6 text-center text-white backdrop-blur"
+          className="flex w-full sm:max-w-sm lg:max-w-xs flex-col items-center gap-3 sm:gap-4 rounded-2xl sm:rounded-3xl border border-white/10 bg-white/10/70 p-5 sm:p-6 text-center text-white backdrop-blur"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1, duration: 0.4, ease: "easeOut" }}
         >
-          <div className="relative h-32 w-32 overflow-hidden rounded-3xl border-4 border-white/30 shadow-[0_20px_35px_rgba(0,0,0,0.45)]">
+          <div className="relative h-28 w-28 sm:h-32 sm:w-32 overflow-hidden rounded-2xl sm:rounded-3xl border-4 border-white/30 shadow-[0_20px_35px_rgba(0,0,0,0.45)]">
             <Image
               src={hero.photo}
               alt={hero.title}
