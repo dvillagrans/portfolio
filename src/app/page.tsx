@@ -58,7 +58,7 @@ export default function LandingPage() {
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
               {language === "en" ? (
                 <>
-                  Hi, I'm Diego — <br className="hidden sm:inline" />
+                  Hi, I&apos;m Diego — <br className="hidden sm:inline" />
                   <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
                     I build data systems that work in production
                   </span>
@@ -269,7 +269,7 @@ export default function LandingPage() {
                   </h3>
                   <p className="text-xs sm:text-sm text-muted-foreground/80 leading-relaxed">
                     {language === "en"
-                      ? "I'm obsessed with observability because a good system should tell you how it feels. Deployments should be boring."
+                      ? "I&apos;m obsessed with observability because a good system should tell you how it feels. Deployments should be boring."
                       : "Me obsesiona la observabilidad porque un buen sistema debe decirte cómo se siente. Los despliegues deben ser aburridos."}
                   </p>
                 </div>
