@@ -6,13 +6,18 @@ import { PortfolioToolboxGroup } from "@/data/profiles/types";
 
 interface ToolboxSectionProps {
   toolbox: PortfolioToolboxGroup[];
+  coreTools?: string[];
   onSectionView?: (section: string) => void;
 }
 
-export function ToolboxSection({ toolbox, onSectionView }: ToolboxSectionProps) {
+export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: ToolboxSectionProps) {
   useEffect(() => {
     onSectionView?.("toolbox");
   }, [onSectionView]);
+
+  // Flatten all tools for display
+  const allTools = toolbox.flatMap(group => group.items);
+  const hasCore = coreTools.length > 0;
 
   return (
     <section id="toolbox" className="space-y-8">
@@ -24,49 +29,123 @@ export function ToolboxSection({ toolbox, onSectionView }: ToolboxSectionProps) 
         transition={{ duration: 0.4 }}
       >
         <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/50">Toolbox</p>
-        <h2 className="text-3xl font-semibold text-white">Herramientas seleccionadas por impacto.</h2>
+        <h2 className="text-3xl font-semibold text-white">
+          {hasCore ? "No solo sé herramientas, sé diseñar sistemas coherentes." : "Herramientas seleccionadas por impacto."}
+        </h2>
         <p className="max-w-2xl text-base text-white/65">
-          No es una lista infinita; es el stack que uso recurrentemente para entregar valor en tu dominio.
+          {hasCore
+            ? "Estas son mis pilares técnicos no negociables. Lo demás se adapta según el problema."
+            : "No es una lista infinita; es el stack que uso recurrentemente para entregar valor en tu dominio."}
         </p>
       </motion.div>
 
-      <motion.div
-        className="grid gap-6 md:grid-cols-2"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-60px" }}
-        variants={{
-          hidden: {},
-          visible: {
-            transition: {
-              staggerChildren: 0.12,
+      {hasCore ? (
+        <motion.div
+          className="space-y-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.1,
+              },
             },
-          },
-        }}
-      >
-        {toolbox.map((group) => (
+          }}
+        >
+          {/* Core tools - destacados */}
           <motion.div
-            key={group.title}
+            className="rounded-3xl border-2 border-white/20 bg-gradient-to-br from-white/10 via-white/5 to-transparent p-8 backdrop-blur"
+            variants={{
+              hidden: { opacity: 0, y: 24 },
+              visible: { opacity: 1, y: 0 },
+            }}
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-2 w-2 rounded-full bg-white/80 animate-pulse" />
+              <h3 className="text-sm font-semibold uppercase tracking-[0.4em] text-white/70">
+                Pilares técnicos
+              </h3>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {coreTools.map((tool) => (
+                <motion.span
+                  key={tool}
+                  className="inline-flex items-center gap-2 rounded-2xl border border-white/30 bg-white/10 px-5 py-3 text-base font-bold text-white shadow-lg"
+                  whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.5)" }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {tool}
+                </motion.span>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Peripheral tools - más sutiles */}
+          <motion.div
             className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur"
             variants={{
               hidden: { opacity: 0, y: 24 },
               visible: { opacity: 1, y: 0 },
             }}
           >
-            <h3 className="text-lg font-semibold text-white">{group.title}</h3>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {group.items.map((item) => (
-                <span
-                  key={item}
-                  className="portfolio-chip inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80"
-                >
-                  {item}
-                </span>
-              ))}
+            <h3 className="text-sm font-semibold uppercase tracking-[0.4em] text-white/50 mb-4">
+              Ecosistema complementario
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {allTools
+                .filter(tool => !coreTools.includes(tool))
+                .map((tool) => (
+                  <span
+                    key={tool}
+                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-white/70"
+                  >
+                    {tool}
+                  </span>
+                ))}
             </div>
           </motion.div>
-        ))}
-      </motion.div>
+        </motion.div>
+      ) : (
+        <motion.div
+          className="grid gap-6 md:grid-cols-2"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.12,
+              },
+            },
+          }}
+        >
+          {toolbox.map((group) => (
+            <motion.div
+              key={group.title}
+              className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur"
+              variants={{
+                hidden: { opacity: 0, y: 24 },
+                visible: { opacity: 1, y: 0 },
+              }}
+            >
+              <h3 className="text-lg font-semibold text-white">{group.title}</h3>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {group.items.map((item) => (
+                  <span
+                    key={item}
+                    className="portfolio-chip inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
     </section>
   );
 }
