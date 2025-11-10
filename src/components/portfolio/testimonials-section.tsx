@@ -10,11 +10,12 @@ interface TestimonialsSectionProps {
 }
 
 export function TestimonialsSection({ testimonials, onSectionView }: TestimonialsSectionProps) {
-  if (!testimonials.length) return null;
-
   useEffect(() => {
+    if (!testimonials.length) return;
     onSectionView?.("testimonials");
-  }, [onSectionView]);
+  }, [onSectionView, testimonials.length]);
+
+  if (!testimonials.length) return null;
 
   return (
     <section id="testimonios" className="space-y-8">

@@ -2,8 +2,9 @@
 $ErrorActionPreference = 'Stop'
 
 $repoRoot = Split-Path $PSScriptRoot -Parent
-$srcRoot = Join-Path $repoRoot 'resumes' 'src'
-$publicResumes = Join-Path $repoRoot 'public' 'resumes'
+$resumesRoot = Join-Path $repoRoot 'resumes'
+$srcRoot = Join-Path $resumesRoot 'src'
+$publicResumes = Join-Path $repoRoot 'public\resumes'
 if (!(Test-Path $publicResumes)) { New-Item -ItemType Directory -Path $publicResumes | Out-Null }
 
 Write-Host "Building resumes..."
