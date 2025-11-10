@@ -4,8 +4,8 @@ export const dataEngineerProfile: ProfileData = {
   hero: {
     eyebrow: "Data Pipelines & Modeling",
     title: "Pipelines que no se rompen. Datos modelados para durar.",
-    subtitle: "Construyo linajes claros, contratos de datos y modelos listos para negocio.",
-    credentials: "dbt · BigQuery · Airflow · 4 plataformas productivas",
+    subtitle: "Diseño pipelines que son fáciles de entender, mantener y pasar a otro equipo. Me importa el orden, la trazabilidad y que el sistema envejezca bien.",
+    credentials: "dbt · BigQuery / PostgreSQL · Airflow / n8n · Tests + Contratos de datos",
     badge: "Linaje vivo · Tests de datos · Costos bajo control",
     persona: "Me obsesiona que cada dato tenga dueño, pruebas y destino trazable.",
     photo: "/img/optimized/me-128.webp",
@@ -43,24 +43,19 @@ export const dataEngineerProfile: ProfileData = {
   },
   problems: [
     {
-      title: "Pipelines frágiles",
-      description: "Automatizo orquestación con control de versiones y alertas específicas por dataset.",
-      metric: "Fallos críticos -80%",
+      title: "Los pipelines se rompen y nadie sabe por qué",
+      description: "Orquestación con alertas claras antes del fallo, logs estructurados y ownership explícito.",
+      metric: "Fallos críticos -80% · Tiempo de resolución <15min",
     },
     {
-      title: "Contratos invisibles",
-      description: "Implemento pruebas de datos, contratos y versionado de esquemas en CI.",
-      metric: "Coverage 90%+ columnas críticas",
+      title: "Cambios de esquema rompen dashboards sin avisar",
+      description: "Tests automáticos, contratos de datos en CI y catálogo vivo para que nada quede implícito.",
+      metric: "Incidentes por esquema -85% · 100% columnas críticas bajo contrato",
     },
     {
-      title: "Costo sin visibilidad",
-      description: "Particiono, materializo y monitoreo costos por modelo e informe.",
-      metric: "-28% costo BigQuery mensual",
-    },
-    {
-      title: "Linaje desactualizado",
-      description: "Genero linaje vivo con documentación dbt y dashboards interactivos.",
-      metric: "Actualización en tiempo real",
+      title: "El costo crece pero nadie sabe dónde",
+      description: "Particionado inteligente, materializaciones por uso y dashboard de costos por modelo/equipo.",
+      metric: "-28% BigQuery mensual · Costos visibles por dataset",
     },
   ],
   metrics: [
@@ -83,20 +78,20 @@ export const dataEngineerProfile: ProfileData = {
   process: [
     {
       icon: "pipeline",
-      title: "Descubrir & Documentar",
-      description: "Inventario de fuentes, owners y SLAs actuales.",
+      title: "Entender el terreno",
+      description: "Qué fuentes existen, quién las usa, qué duele y por qué.",
       detail: "Data contracts, definición de KPIs y riesgos de calidad.",
     },
     {
       icon: "quality",
-      title: "Modelar & Orquestar",
-      description: "Diseño modelos robustos con tests, partición y monitoreo.",
+      title: "Diseñar para que otro lo pueda mantener",
+      description: "Tests, contratos y linaje vivo. La claridad sale más barata.",
       detail: "dbt, Airflow/Prefect, linaje automatizado y data quality checks.",
     },
     {
       icon: "insights",
-      title: "Servir & Iterar",
-      description: "Datasets listos para BI/ML con gobernanza y costos optimizados.",
+      title: "Ponerlo en producción sin drama",
+      description: "Alertas antes del fallo, costos claros y tableros que se pueden contar.",
       detail: "Catálogo de métricas, reportes de uso y roadmap trimestral.",
     },
   ],
@@ -178,11 +173,29 @@ export const dataEngineerProfile: ProfileData = {
       },
       quickRead: true,
     },
+    {
+      title: "EyeNet: Automatización de reportes operativos",
+      category: "Orquestación & Automatización",
+      timeframe: "2024-2025",
+      summary: "Pipeline end-to-end para automatizar reportes internos que antes se generaban manualmente con alto riesgo de error.",
+      context: "EyeNet necesitaba automatizar sus procesos de reportería operativa. Los informes llegaban en distintos formatos y tiempos. El procesamiento manual implicaba riesgo de errores y era difícil replicar o modificar.",
+      action: "Diseñé y orquesté pipelines de extracción → limpieza → estructuración → generación automatizada de reportes, usando n8n, validaciones, logs y control de flujo claro. Implementé controles de calidad en cada etapa y documentación viva del proceso.",
+      result: "Automatización completa de reportes operativos recurrentes con mantenibilidad alta: cualquier persona puede revisar o modificar pasos. Errores reducidos al eliminar manipulación manual. Tiempo de entrega estable sin depender de una sola persona.",
+      metric: "Tiempo de procesamiento: ~2hrs → 15min automatizado · Errores manuales eliminados",
+      tags: ["n8n", "PostgreSQL", "Validación de datos", "Logs estructurados", "Documentación"],
+      proof: [],
+      media: {
+        type: "image",
+        src: "/img/dash-population.webp",
+        alt: "Pipeline automatizado EyeNet",
+      },
+      quickRead: false,
+    },
   ],
   toolbox: [
     {
       title: "Orquestación & Calidad",
-      items: ["Airflow", "Prefect", "dbt", "Great Expectations"],
+      items: ["Airflow", "Prefect", "n8n", "dbt", "Great Expectations"],
     },
     {
       title: "Modelado & Almacenamiento",
@@ -197,6 +210,7 @@ export const dataEngineerProfile: ProfileData = {
       items: ["Looker Studio", "Power BI", "Metabase", "Notion"],
     },
   ],
+  coreTools: ["dbt", "Airflow", "n8n", "BigQuery", "PostgreSQL", "Great Expectations"],
   guarantees: [
     {
       label: "Linaje actualizado",

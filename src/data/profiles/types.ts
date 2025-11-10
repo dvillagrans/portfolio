@@ -127,6 +127,7 @@ export interface ProfileData {
   process: PortfolioProcessStep[];
   caseStudies: PortfolioCaseStudy[];
   toolbox: PortfolioToolboxGroup[];
+  coreTools?: string[];
   guarantees: PortfolioGuarantee[];
   testimonials: PortfolioTestimonial[];
   anecdote: PortfolioAnecdote;

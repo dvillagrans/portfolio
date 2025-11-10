@@ -48,19 +48,23 @@ export function PortfolioLayout({
             onSectionView={onSectionView}
           />
           <ProcessTimeline steps={content.process} onSectionView={onSectionView} />
-          <CaseShowcase
-            studies={content.caseStudies}
-            onSectionView={onSectionView}
-            onProofClick={onProofClick}
-          />
-          <ToolboxSection toolbox={content.toolbox} onSectionView={onSectionView} />
-          <GuaranteesSection guarantees={content.guarantees} onSectionView={onSectionView} />
-          <TestimonialsSection testimonials={content.testimonials} onSectionView={onSectionView} />
           <HumanSection
             anecdote={content.anecdote}
             workingStyle={content.workingStyle}
             onSectionView={onSectionView}
           />
+          <CaseShowcase
+            studies={content.caseStudies}
+            onSectionView={onSectionView}
+            onProofClick={onProofClick}
+          />
+          <ToolboxSection
+            toolbox={content.toolbox}
+            coreTools={content.coreTools}
+            onSectionView={onSectionView}
+          />
+          <GuaranteesSection guarantees={content.guarantees} onSectionView={onSectionView} />
+          <TestimonialsSection testimonials={content.testimonials} onSectionView={onSectionView} />
           <FinalCta cta={content.finalCta} onCtaClick={onCtaClick} onSectionView={onSectionView} />
         </div>
       </div>
