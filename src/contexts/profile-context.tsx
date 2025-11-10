@@ -15,6 +15,10 @@ export interface ProfileMetadata {
   icon: string;
   color: string;
   resumePdf: string;
+  themeClass: string;
+  seoTitle: string;
+  seoDescription: string;
+  ogImage: string;
 }
 
 interface ProfileContextType {
@@ -36,7 +40,11 @@ export const PROFILE_METADATA: Record<ProfileType, ProfileMetadata> = {
     descriptionEs: 'Estudiante de Ciencia de Datos con experiencia práctica construyendo pipelines de machine learning, entrenamiento y despliegue de modelos, y APIs de procesamiento de datos en producción.',
     icon: '🤖',
     color: 'from-purple-500 to-pink-500',
-    resumePdf: '/resumes/diego_villagran_resume_ml.pdf'
+    resumePdf: '/resumes/diego_villagran_resume_ml.pdf',
+    themeClass: 'theme-ml-engineer',
+    seoTitle: 'Diego — MLOps & ML Engineer Portfolio',
+    seoDescription: 'Deploys reproducibles, monitoreados y sin sorpresas. Modelos en producción con observabilidad y retraining automático.',
+    ogImage: '/img/patterns/mlops-particles.svg'
   },
   'data-engineer': {
     id: 'data-engineer',
@@ -48,7 +56,11 @@ export const PROFILE_METADATA: Record<ProfileType, ProfileMetadata> = {
     descriptionEs: 'Estudiante de Ciencia de Datos con experiencia práctica construyendo pipelines ETL, flujos de orquestación y sistemas automatizados de integración de datos en entornos de producción.',
     icon: '⚙️',
     color: 'from-blue-500 to-cyan-500',
-    resumePdf: '/resumes/diego_villagran_resume_etl.pdf'
+    resumePdf: '/resumes/diego_villagran_resume_etl.pdf',
+    themeClass: 'theme-data-engineer',
+    seoTitle: 'Diego — Data Engineering Portfolio',
+    seoDescription: 'Pipelines que no se rompen, linaje vivo y costos bajo control. Datos listos para BI y ML.',
+    ogImage: '/img/patterns/pipelines-flow.svg'
   },
   'devops-engineer': {
     id: 'devops-engineer',
@@ -60,7 +72,11 @@ export const PROFILE_METADATA: Record<ProfileType, ProfileMetadata> = {
     descriptionEs: 'Ingeniero con experiencia práctica diseñando y operando servicios en contenedores, pipelines CI/CD, observabilidad y automatización operacional.',
     icon: '🚀',
     color: 'from-green-500 to-teal-500',
-    resumePdf: '/resumes/diego_villagran_resume_devops.pdf'
+    resumePdf: '/resumes/diego_villagran_resume_devops.pdf',
+    themeClass: 'theme-devops-engineer',
+    seoTitle: 'Diego — DevOps & Observability Portfolio',
+    seoDescription: 'Deploys aburridos, incidentes breves y métricas claras. SLOs, alertas y costos controlados.',
+    ogImage: '/img/patterns/infra-grid.svg'
   },
   'data-analyst': {
     id: 'data-analyst',
@@ -72,7 +88,11 @@ export const PROFILE_METADATA: Record<ProfileType, ProfileMetadata> = {
     descriptionEs: 'Analista de Datos con sólidas habilidades en SQL, limpieza de datos y creación de dashboards. Experiencia convirtiendo datos no estructurados en tablas listas para análisis y construyendo datasets automatizados para reportes.',
     icon: '📊',
     color: 'from-orange-500 to-red-500',
-    resumePdf: '/resumes/diego_villagran_resume_analyst.pdf'
+    resumePdf: '/resumes/diego_villagran_resume_analyst.pdf',
+    themeClass: 'theme-data-analyst',
+    seoTitle: 'Diego — Analytics & Dashboard Portfolio',
+    seoDescription: 'Insights que provocan decisiones. Dashboards con adopción real y storytelling accionable.',
+    ogImage: '/img/patterns/analytics-tiles.svg'
   }
 };
 

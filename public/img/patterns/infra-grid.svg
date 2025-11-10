@@ -1,0 +1,28 @@
+<svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="320" fill="url(#paint0_radial)" />
+  <g opacity="0.28" stroke="#26D07C" stroke-width="1.4">
+    <rect x="32" y="36" width="72" height="72" rx="12" />
+    <rect x="128" y="36" width="72" height="72" rx="12" />
+    <rect x="224" y="36" width="72" height="72" rx="12" />
+    <rect x="32" y="140" width="72" height="72" rx="12" />
+    <rect x="128" y="140" width="72" height="72" rx="12" />
+    <rect x="224" y="140" width="72" height="72" rx="12" />
+    <rect x="32" y="244" width="72" height="72" rx="12" />
+    <rect x="128" y="244" width="72" height="72" rx="12" />
+    <rect x="224" y="244" width="72" height="72" rx="12" />
+  </g>
+  <g opacity="0.45">
+    <path d="M68 72h32M164 176h32M260 108h32" stroke="#7EE081" stroke-width="2.2" stroke-linecap="round" />
+    <path d="M68 176h60M228 72h40M132 280h60" stroke="#3CD859" stroke-opacity="0.55" stroke-width="3" stroke-linecap="round" />
+  </g>
+  <circle cx="88" cy="196" r="6" fill="#88F472" fill-opacity="0.7" />
+  <circle cx="188" cy="84" r="8" fill="#2DE4A7" fill-opacity="0.6" />
+  <circle cx="260" cy="220" r="7" fill="#88F472" fill-opacity="0.65" />
+  <defs>
+    <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(36 48) rotate(45) scale(360 320)">
+      <stop stop-color="#02150C" />
+      <stop offset="1" stop-color="#010907" />
+    </radialGradient>
+  </defs>
+</svg>
+

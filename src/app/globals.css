@@ -79,6 +79,76 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+
+  .portfolio-theme {
+    --portfolio-bg: 230 56% 6%;
+    --portfolio-surface: 226 50% 10%;
+    --portfolio-surface-strong: 225 45% 14%;
+    --portfolio-border: 225 30% 26%;
+    --portfolio-text-strong: 218 100% 97%;
+    --portfolio-text-soft: 220 40% 75%;
+    --portfolio-muted: 220 26% 18%;
+    --portfolio-glow: 222 94% 82%;
+    --portfolio-shadow: 230 60% 4%;
+    --portfolio-card-blur: 18px;
+    --portfolio-card-opacity: 0.72;
+  }
+
+  .portfolio-surface {
+    background: radial-gradient(circle at 10% 20%, hsla(var(--portfolio-primary), 0.12) 0%, transparent 55%),
+      radial-gradient(circle at 90% 10%, hsla(var(--portfolio-accent), 0.16) 0%, transparent 50%),
+      linear-gradient(145deg, hsl(var(--portfolio-bg)) 0%, hsl(var(--portfolio-surface)) 60%, hsl(var(--portfolio-surface-strong)) 100%);
+    color: hsl(var(--portfolio-text-strong));
+  }
+
+  .portfolio-glass {
+    background: linear-gradient(160deg, hsla(var(--portfolio-primary), 0.14) 0%, hsla(var(--portfolio-accent), 0.08) 100%);
+    border: 1px solid hsla(var(--portfolio-border), 0.6);
+    backdrop-filter: blur(var(--portfolio-card-blur));
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.25),
+      0 0 0 1px rgba(255, 255, 255, 0.04),
+      0 0 40px hsla(var(--portfolio-accent), 0.15);
+  }
+
+  .portfolio-chip {
+    background: linear-gradient(120deg, hsla(var(--portfolio-primary), 0.22) 0%, hsla(var(--portfolio-accent), 0.18) 100%);
+    border: 1px solid hsla(var(--portfolio-border), 0.5);
+    color: hsl(var(--portfolio-text-strong));
+    box-shadow: inset 0 0 12px hsla(var(--portfolio-primary), 0.25);
+  }
+
+  .portfolio-muted {
+    color: hsla(var(--portfolio-text-soft), 1);
+  }
+
+  .theme-ml-engineer {
+    --portfolio-primary: 269 85% 68%;
+    --portfolio-accent: 188 92% 64%;
+    --portfolio-hero-gradient: radial-gradient(circle at 20% 20%, rgba(108, 75, 192, 0.42) 0%, rgba(17, 8, 37, 0) 55%), linear-gradient(140deg, #0d0221 0%, #2d0b4e 55%, #180d3a 100%);
+    --portfolio-illustration: url("/img/patterns/mlops-particles.svg");
+  }
+
+  .theme-data-engineer {
+    --portfolio-primary: 210 90% 60%;
+    --portfolio-accent: 173 92% 66%;
+    --portfolio-hero-gradient: radial-gradient(circle at 10% 10%, rgba(26, 117, 255, 0.35) 0%, rgba(10, 18, 48, 0) 50%), linear-gradient(150deg, #051029 0%, #08234b 55%, #03122b 100%);
+    --portfolio-illustration: url("/img/patterns/pipelines-flow.svg");
+  }
+
+  .theme-devops-engineer {
+    --portfolio-primary: 150 82% 52%;
+    --portfolio-accent: 86 92% 64%;
+    --portfolio-hero-gradient: radial-gradient(circle at 15% 30%, rgba(34, 197, 94, 0.32) 0%, rgba(8, 30, 20, 0) 55%), linear-gradient(160deg, #02140b 0%, #032519 55%, #042010 100%);
+    --portfolio-illustration: url("/img/patterns/infra-grid.svg");
+  }
+
+  .theme-data-analyst {
+    --portfolio-primary: 28 92% 60%;
+    --portfolio-accent: 40 95% 65%;
+    --portfolio-hero-gradient: radial-gradient(circle at 20% 20%, rgba(255, 140, 50, 0.36) 0%, rgba(27, 17, 8, 0) 55%), linear-gradient(155deg, #200d02 0%, #3b1f06 55%, #2a1604 100%);
+    --portfolio-illustration: url("/img/patterns/analytics-tiles.svg");
+  }
 }
 
 @layer base {

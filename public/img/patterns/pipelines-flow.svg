@@ -1,0 +1,25 @@
+<svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="320" fill="url(#paint0_radial)" />
+  <g opacity="0.35" stroke="#1D9BF0" stroke-width="2">
+    <path d="M24 48H296" stroke-opacity="0.3" stroke-dasharray="8 12" />
+    <path d="M24 112H296" stroke-opacity="0.2" stroke-dasharray="6 14" />
+    <path d="M24 176H296" stroke-opacity="0.26" stroke-dasharray="10 10" />
+    <path d="M24 240H296" stroke-opacity="0.22" stroke-dasharray="6 12" />
+  </g>
+  <g opacity="0.45">
+    <circle cx="64" cy="48" r="6" fill="#27E0D4" />
+    <circle cx="144" cy="112" r="8" fill="#1D9BF0" fill-opacity="0.5" />
+    <circle cx="232" cy="176" r="10" fill="#27E0D4" fill-opacity="0.45" />
+    <circle cx="92" cy="240" r="7" fill="#1D9BF0" fill-opacity="0.45" />
+    <circle cx="208" cy="272" r="9" fill="#27E0D4" fill-opacity="0.4" />
+  </g>
+  <path d="M48 72C120 56 196 92 264 72" stroke="#27E0D4" stroke-opacity="0.25" stroke-width="2" stroke-linecap="round" />
+  <path d="M48 136C112 168 204 152 272 184" stroke="#1D9BF0" stroke-opacity="0.2" stroke-width="3" stroke-linecap="round" />
+  <defs>
+    <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(40 48) rotate(40) scale(360 280)">
+      <stop stop-color="#03102A" />
+      <stop offset="1" stop-color="#010614" />
+    </radialGradient>
+  </defs>
+</svg>
+

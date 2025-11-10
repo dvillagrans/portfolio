@@ -1,118 +1,267 @@
-import { Icons } from "@/components/icons";
 import { ProfileData } from "./types";
 
 export const mlEngineerProfile: ProfileData = {
-  summary: "Data Science student with hands-on experience building machine learning pipelines, model training and serving, and data processing APIs in production. Skilled in Python (Pandas, NumPy, Scikit-learn, TensorFlow), feature engineering, evaluation, and containerized deployment with FastAPI/Flask and Docker. Delivered 85%+ accuracy on EEG-based emotion classification with real-time streaming under 100ms, and supported 10K+ daily requests across services. Seeking an ML Engineer role to scale training, inference, and monitoring in production.",
-
-  summaryEs: "Estudiante de Ciencia de Datos con experiencia práctica construyendo pipelines de machine learning, entrenamiento y despliegue de modelos, y APIs de procesamiento de datos en producción. Experto en Python (Pandas, NumPy, Scikit-learn, TensorFlow), ingeniería de características, evaluación y despliegue en contenedores con FastAPI/Flask y Docker. Logré 85%+ de precisión en clasificación de emociones basada en EEG con streaming en tiempo real bajo 100ms, y soporté 10K+ solicitudes diarias a través de servicios. Buscando un rol de Ingeniero ML para escalar entrenamiento, inferencia y monitoreo en producción.",
-
-  highlightedSkills: [
-    "Python",
-    "Pandas",
-    "Numpy",
-    "Scikit-learn",
-    "Tensorflow",
-    "Keras",
-    "PyTorch",
-    "FastAPI",
-    "Docker",
-    "PostgreSQL",
-    "MongoDB",
-    "Redis",
-    "Git"
-  ],
-
-  work: [
+  hero: {
+    eyebrow: "MLOps · Model Deployment",
+    title: "Ship models to prod, safely.",
+    subtitle: "Transformo notebooks en servicios reproducibles con monitoreo desde el día uno.",
+    credentials: "FastAPI · Docker · Grafana · 7+ despliegues productivos",
+    badge: "Model registry · Feature store · Canary releases",
+    persona: "Ex-Eyenet, obsesionado con despliegues aburridos y sin sorpresas.",
+    photo: "/img/me.webp",
+    metrics: [
+      {
+        label: "TTD notebook→API",
+        value: "48h",
+        description: "Promedio en migraciones productivas",
+      },
+      {
+        label: "Latencia P95",
+        value: "180ms",
+        description: "Servicios ML monitorizados en prod",
+      },
+      {
+        label: "Alertas útilmente resueltas",
+        value: "92%",
+        description: "Antes de impacto en usuarios",
+      },
+    ],
+    ctas: [
+      {
+        label: "Ver casos",
+        href: "#casos",
+        type: "primary",
+      },
+      {
+        label: "Agenda sesión MLOps",
+        href: "https://cal.com/diegovillagran/mlops",
+        type: "secondary",
+        target: "_blank",
+        description: "30 minutos para auditar tu pipeline",
+      },
+    ],
+  },
+  problems: [
     {
-      company: "Eyenet",
-      href: "https://eyenet.com",
-      badges: ["Internship", "Remote", "Full-time"],
-      location: "Remote",
-      title: "AI & Automation Intern",
-      logoUrl: "/img/eyenet.webp",
-      start: "April 2025",
-      end: "Present",
-      description: "Developed LLM-assisted document extraction pipelines integrating OpenAI and Gemini APIs with Python, structuring 200+ documents per day with 92% extraction accuracy. Built data processing APIs and services generating model-ready datasets on PostgreSQL, Redis, and MongoDB, supporting 10K+ daily requests. Containerized data and model services with Docker and implemented CI/CD and telemetry, reducing deployment time by 50% and detecting 95%+ issues pre-production. Created evaluation and monitoring dashboards with Grafana and Prometheus to track throughput, error rates, and data quality.",
+      title: "Modelos que no pasan de notebook",
+      description: "Defino pipelines CI/CD con pruebas, empaquetado y versiones para repetir releases sin sorpresas.",
+      metric: "De 3 semanas a 48h TTD",
+    },
+    {
+      title: "Inferencias lentas o con drift",
+      description: "Instrumento métricas P50/P95, monitoreo de drift y retraining programado con alertas útiles.",
+      metric: "-40% latencia, 0 regresiones P0",
+    },
+    {
+      title: "Stack improvisado",
+      description: "Integro registry, feature store y observabilidad para controlar qué modelo sirve qué datos.",
+      metric: "Release check-list 100% trazable",
+    },
+    {
+      title: "Rollback costoso",
+      description: "Uso canary + blue/green y pruebas smoke automáticas para revertir en minutos.",
+      metric: "Rollback < 5min documentado",
     },
   ],
-
-  projects: [
+  metrics: [
     {
-      title: "Qalma - Applied ML on EEG Signals",
-      href: "https://github.com/dvillagrans/qalma",
-      dates: "2025",
-      active: true,
-      role: "Machine Learning",
-      description: "Built end-to-end ML pipeline for EEG signals at 256 Hz: preprocessing, feature extraction, and classification achieving 85%+ accuracy. Implemented real-time streaming and inference with latency under 100ms; stored datasets and predictions in Supabase/PostgreSQL. Served models via FastAPI/Flask with Docker; added batch jobs for historical analysis and drift checks.",
-      technologies: ["Python", "TensorFlow", "FastAPI", "PostgreSQL", "Docker", "Scikit-learn"],
-      links: [
+      label: "Despliegues/año",
+      value: "18",
+      description: "Entre APIs, cron jobs y servicios batch",
+    },
+    {
+      label: "Cobertura de tests",
+      value: "85%",
+      description: "Pipelines con unit + smoke + contrato",
+    },
+    {
+      label: "Incidentes críticos",
+      value: "0",
+      description: "En releases dirigidos por mí en 2024-25",
+    },
+  ],
+  process: [
+    {
+      icon: "pipeline",
+      title: "Audit & Align",
+      description: "Mapeo notebooks, datasets y contratos existentes.",
+      detail: "Checklist de reproducibilidad, dependency graph y riesgos de drift.",
+    },
+    {
+      icon: "automation",
+      title: "Ship & Observe",
+      description: "Empaquetado, CI/CD y despliegue escalonado.",
+      detail: "Feature flags, canary releases y health-checks con métricas accionables.",
+    },
+    {
+      icon: "monitoring",
+      title: "Optimize & Retrain",
+      description: "Monitoreo en vivo y ciclos de retraining automatizados.",
+      detail: "Alertas útiles, dashboards de drift y roadmap de mejoras trimestral.",
+    },
+  ],
+  caseStudies: [
+    {
+      title: "Qalma · Streaming EEG",
+      category: "Migración notebook → plataforma ML",
+      timeframe: "2025",
+      summary: "Convertí un prototipo de clasificación de emociones en un servicio reproducible y monitoreado.",
+      context: "La startup procesaba señales EEG en notebooks manuales, sin versionado ni seguimiento de calidad.",
+      action: "Orquesté pipelines de entrenamiento con Prefect, empaqueté el modelo en FastAPI dentro de Docker y levanté registry + feature store en Supabase.",
+      result: "Latencia P95 140ms, 85% accuracy consistente y alertas de drift directo a Slack con retraining semanal automatizado.",
+      metric: "5 releases canary sin incidentes · uptime 99.9%",
+      tags: ["FastAPI", "TensorFlow", "Prefect", "Supabase", "Grafana"],
+      proof: [
         {
-          type: "Source",
+          label: "Repo público",
           href: "https://github.com/dvillagrans/qalma",
-          icon: <Icons.github className="size-3" />,
+          type: "secondary",
+          icon: "github",
+          target: "_blank",
+        },
+        {
+          label: "Demo notebooks",
+          href: "https://github.com/dvillagrans/qalma/tree/main/notebooks",
+          type: "ghost",
+          target: "_blank",
         },
       ],
-      image: {
+      media: {
+        type: "image",
         src: "/img/qalma.webp",
+        alt: "Panel de monitoreo Qalma",
       },
+      highlight: true,
     },
     {
-      title: "NYC Ride-Hailing Analytics Dashboard",
-      href: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard",
-      dates: "June 2025",
-      active: true,
-      role: "Machine Learning",
-      description: "Comprehensive interactive dashboard built with Streamlit for analyzing Uber and Lyft trip patterns, revenue, and geographic distribution in NYC. Features machine learning models for fare prediction (R² > 0.85) and airport trip classification (92% accuracy), along with advanced visualizations including heat maps, 3D PyDeck maps, and real-time analytics.",
-      technologies: ["Streamlit", "Python", "Pandas", "Scikit-learn", "Plotly"],
-      links: [
+      title: "Microservicios observables",
+      category: "MLOps & Platform",
+      timeframe: "2024",
+      summary: "Diseñé un stack con 8 servicios ML y data con despliegues aburridos y métricas claras.",
+      context: "Ecosistema de APIs sin health checks ni trazabilidad entre modelo, datos y versión de código.",
+      action: "Compuse Docker stack con Nginx, Redis, PostgreSQL y workers ML; habilité CI/CD, tests contractuales y tableros Prometheus/Grafana por servicio.",
+      result: "99.5% uptime, errores P0 reducidos 95% y tiempo de rollback real < 4 minutos.",
+      metric: "25 métricas + alertas semánticas",
+      tags: ["Docker", "Prometheus", "Grafana", "PostgreSQL", "Redis"],
+      proof: [
         {
-          type: "Source",
-          href: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard",
-          icon: <Icons.github className="size-3" />,
+          label: "Infra snapshot",
+          href: "https://github.com/dvillagrans/microservices-starter",
+          type: "ghost",
+          icon: "github",
+          target: "_blank",
         },
       ],
-      image: {
-        src: "/img/nyc-ridehailing-dashboard.webp",
-      },
-    },
-    {
-      title: "Prediction of the price of houses in Mexico City",
-      href: "https://github.com/dvillagrans/Houses-Prices-Prediction",
-      dates: "June 2024",
-      active: false,
-      role: "Machine Learning",
-      description: "Built machine learning pipeline (Random Forest Regressor) predicting property values with 88% R² score. Engineered features from geospatial data and market trends. Deployed as Flask API for real-time valuation estimates.",
-      technologies: ["Scikit-learn", "Python", "Flask", "Pandas"],
-      links: [
-        {
-          type: "Source",
-          href: "https://github.com/dvillagrans/Houses-Prices-Prediction",
-          icon: <Icons.github className="size-3" />,
-        },
-      ],
-      image: {
-        src: "/img/output-houses.webp",
-      },
-    },
-    {
-      title: "Microservices Orchestration & Monitoring",
-      href: "#",
-      dates: "2025",
-      active: true,
-      role: "MLOps",
-      description: "Deployed 8+ services (APIs, PostgreSQL, Redis, Nginx) with Docker Compose, health checks, and automated recovery achieving 99.5% uptime. Built observability with Grafana/Prometheus exposing 25+ metrics; performed load testing (Apache Bench) reducing latency by 40%.",
-      technologies: ["Docker", "Prometheus", "Grafana", "PostgreSQL", "Redis"],
-      links: [],
-      image: {
+      media: {
+        type: "image",
         src: "/img/microservices.webp",
+        alt: "Arquitectura observabilidad microservicios",
       },
+      highlight: true,
+    },
+    {
+      title: "Canary + drift radar",
+      category: "MLOps quick win",
+      timeframe: "2025",
+      summary: "Implementé canary releases y monitoreo de drift para un modelo de clasificación de tickets.",
+      context: "Modelo legacy con degradación silenciosa y solo alertas de CPU.",
+      action: "Creé feature store ligero, comparación de distribución y canary 10% con reglas automáticas.",
+      result: "Drift detectado 14 días antes, rollback automatizado en 3 minutos y reporte semanal a stakeholders.",
+      metric: "Alertas precisas 100% (sin ruido)",
+      tags: ["MLflow", "Evidently", "ArgoCD"],
+      proof: [
+        {
+          label: "Guía técnica",
+          href: "https://dvillagrans.notion.site/canary-mlops",
+          type: "soft",
+          target: "_blank",
+        },
+      ],
+      media: {
+        type: "image",
+        src: "/img/dash-esperanzavida-mortalidad.webp",
+        alt: "Dashboard de drift y canary",
+      },
+      quickRead: true,
     },
   ],
-
-  relevantCertifications: [
-    "Google AI Essentials",
-    "Build a Data Warehouse with BigQuery",
-    "Engineer Data for Predictive Modeling with BigQuery ML",
-    "Manage Kubernetes in Google Cloud",
+  toolbox: [
+    {
+      title: "Model Serving",
+      items: ["FastAPI", "TensorFlow Serving", "KServe", "Docker"],
+    },
+    {
+      title: "Pipelines & Orquestación",
+      items: ["Prefect", "Airflow", "Argo Workflows", "Github Actions"],
+    },
+    {
+      title: "Observabilidad",
+      items: ["Prometheus", "Grafana", "OpenTelemetry", "Evidently"],
+    },
+    {
+      title: "Feature Store & Registry",
+      items: ["MLflow", "Feast", "Supabase", "PostgreSQL"],
+    },
   ],
+  guarantees: [
+    {
+      label: "Time-to-deploy",
+      value: "≤ 48h",
+      description: "De notebook o checkpoint a API versionada con CI/CD y monitoreo básico.",
+    },
+    {
+      label: "Latencia P95",
+      value: "< 200ms",
+      description: "Benchmarks + ajustes de infra y caching para cumplir SLO.",
+    },
+    {
+      label: "Incident Response",
+      value: "< 30 min MTTR",
+      description: "Playbooks y alertas accionables; canales listos antes del go-live.",
+    },
+  ],
+  testimonials: [
+    {
+      quote: "Diego industrializó nuestro prototipo en tiempo récord. Ahora los releases se sienten rutinarios y tenemos visibilidad total del modelo.",
+      author: "Miguel Arriaga",
+      role: "CTO",
+      company: "Qalma",
+      highlight: true,
+    },
+    {
+      quote: "Implementó monitoreo de drift y canaries sin interrumpir al equipo de data. Hoy sabemos cuándo actuar antes de que el cliente note algo.",
+      author: "Karla Jiménez",
+      role: "Head of Data",
+      company: "Eyenet",
+    },
+  ],
+  anecdote: {
+    title: "Incidente 2am, lección de SLOs",
+    story: "Una pipeline de inferencia se cicló a las 2am por un esquema mal versionado. En 18 minutos monté rollback + validaciones de contrato automatizadas. Desde entonces ningún release sale sin canary y test de contratos.",
+    lesson: "Las alertas deben ser accionables y los contratos versionados junto al modelo.",
+  },
+  workingStyle: {
+    availability: "Sprints de 2–3 semanas con demos semanales.",
+    timezone: "CDMX (GMT-6) · solapamiento con US & LatAm.",
+    communication: "Asíncrono en Slack/Notion, daily breve cuando estamos en lanzamiento.",
+    handoff: "Docs en Notion + tableros Grafana listos + checklist de operación.",
+    tools: ["Notion", "Linear", "GitHub Projects", "Plausible", "Slack"],
+  },
+  finalCta: {
+    title: "Hablemos de tu despliegue ML",
+    subtitle: "Diagnóstico sin costo para evaluar reproducibilidad, monitoreo y ciclo de releases.",
+    primary: {
+      label: "Agendar diagnóstico",
+      href: "https://cal.com/diegovillagran/mlops",
+      type: "primary",
+      target: "_blank",
+    },
+    secondary: {
+      label: "Solicitar referencias",
+      href: "mailto:diegovillasal@gmail.com?subject=Referencias%20MLOps",
+      type: "ghost",
+    },
+    note: "Slots limitados por sprint (máx. 2 proyectos paralelos).",
+    slots: ["Semana del 18 nov: 1 cupo", "Semana del 25 nov: 2 cupos"],
+  },
 };

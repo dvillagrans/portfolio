@@ -1,103 +1,259 @@
-import { Icons } from "@/components/icons";
 import { ProfileData } from "./types";
 
 export const devopsEngineerProfile: ProfileData = {
-  summary: "Engineer with hands-on experience designing and operating containerized services, CI/CD pipelines, observability, and operational automation. Achieved 99.5% uptime across 8+ services with Docker Compose, improved deployment time by 50% with automated pipelines, and reduced recovery time from 2 hours to 15 minutes with a 3-2-1 backup strategy. Seeking a DevOps role focused on platform reliability, scalability, and developer velocity.",
-
-  summaryEs: "Ingeniero con experiencia práctica diseñando y operando servicios en contenedores, pipelines CI/CD, observabilidad y automatización operacional. Logré 99.5% de tiempo de actividad en 8+ servicios con Docker Compose, mejoré el tiempo de despliegue en 50% con pipelines automatizados, y reduje el tiempo de recuperación de 2 horas a 15 minutos con una estrategia de backup 3-2-1. Buscando un rol DevOps enfocado en confiabilidad de plataforma, escalabilidad y velocidad de desarrollo.",
-
-  highlightedSkills: [
-    "Docker",
-    "Kubernetes",
-    "Git",
-    "GitHub",
-    "PostgreSQL",
-    "MongoDB",
-    "Redis",
-    "Python",
-    "Linux",
-    "Nginx",
-    "AmazonAWS",
-    "Azure"
-  ],
-
-  work: [
+  hero: {
+    eyebrow: "Infra & Observabilidad",
+    title: "Deploys aburridos, incidentes breves, métricas claras.",
+    subtitle: "Diseño plataformas que se autoexplican: desde IaC hasta tableros SLO listos para on-call.",
+    credentials: "Terraform · Docker · Grafana · 8+ servicios críticos",
+    badge: "SLOs visibles · Backups 3-2-1 · On-call preparado",
+    persona: "Construyo entornos donde cada alerta llega con contexto y plan de acción.",
+    photo: "/img/me.webp",
+    metrics: [
+      {
+        label: "SLO uptime",
+        value: "99.9%",
+        description: "Plataformas multi-servicio en 2024-25",
+      },
+      {
+        label: "MTTR promedio",
+        value: "18 min",
+        description: "Incidentes resueltos siguiendo playbooks",
+      },
+      {
+        label: "Deploys al mes",
+        value: "35",
+        description: "Sin ventanas manuales ni downtimes",
+      },
+    ],
+    ctas: [
+      {
+        label: "Ver casos",
+        href: "#casos",
+        type: "primary",
+      },
+      {
+        label: "Auditar tu observabilidad",
+        href: "https://cal.com/diegovillagran/infrastructure",
+        type: "secondary",
+        target: "_blank",
+        description: "Sesión 30' para mapear SLOs y gaps",
+      },
+    ],
+  },
+  problems: [
     {
-      company: "Eyenet",
-      href: "https://eyenet.com",
-      badges: ["Internship", "Remote", "Full-time"],
-      location: "Remote",
-      title: "AI & Automation Intern",
-      logoUrl: "/img/eyenet.webp",
-      start: "April 2025",
-      end: "Present",
-      description: "Built CI/CD pipelines and proactive monitoring/alerting, reducing deployment time by 50% and preventing 95%+ of incidents before production. Designed and operated containerized data services with PostgreSQL, Redis, and MongoDB, scaling to 10K+ daily requests with health checks and resource limits. Automated data workflows with Python and orchestration to process 300+ documents per day with 92% extraction accuracy. Implemented backup and restore procedures and playbooks to accelerate recovery and reduce operational toil.",
+      title: "Deploys con miedo",
+      description: "Automatizo pipelines con validaciones, environments consistentes y release policies claras.",
+      metric: "-50% tiempo de despliegue",
+    },
+    {
+      title: "Alertas sin contexto",
+      description: "Defino SLO/SLI, tableros y alertas semánticas que indican causa raíz y próximos pasos.",
+      metric: "Ruido de alertas -70%",
+    },
+    {
+      title: "Backups sin ensayo",
+      description: "Implemento estrategia 3-2-1 con pruebas de restauración recurrentes y tabletops documentados.",
+      metric: "Restore probado en 15 min",
+    },
+    {
+      title: "Costos fuera de control",
+      description: "Orquesto monitoreo de costos y optimización de recursos con límites automáticos y right-sizing.",
+      metric: "-25% costo infra mensual",
     },
   ],
-
-  projects: [
+  metrics: [
     {
-      title: "Microservices Orchestration & Monitoring",
-      href: "#",
-      dates: "2025",
-      active: true,
-      role: "DevOps",
-      description: "Deployed 8+ services (PostgreSQL, Redis, Nginx, APIs) using Docker Compose with automated health checks, achieving 99.5% uptime. Implemented 3-2-1 backups with pg_dump and rsync, reducing recovery time from 2 hours to 15 minutes. Built observability stack with Grafana and Prometheus tracking 25+ metrics; performed load testing with Apache Bench to reduce latency by 40%.",
-      technologies: ["Docker", "Grafana", "Prometheus", "PostgreSQL", "Redis", "Nginx"],
-      links: [],
-      image: {
+      label: "Servicios gestionados",
+      value: "12",
+      description: "APIs, workers y data pipelines productivos",
+    },
+    {
+      label: "Cobertura IaC",
+      value: "95%",
+      description: "Recursos versionados y testeados",
+    },
+    {
+      label: "Playbooks operativos",
+      value: "8",
+      description: "Incident response + runbooks actualizados",
+    },
+  ],
+  process: [
+    {
+      icon: "automation",
+      title: "Descubrir & Priorizar",
+      description: "Mapeo servicios, dependencias y SLOs actuales.",
+      detail: "Asset inventory, matriz de criticidad y deuda operativa.",
+    },
+    {
+      icon: "delivery",
+      title: "Automatizar & Fortalecer",
+      description: "Infraestructura como código, CI/CD y observabilidad integral.",
+      detail: "Terraform/Ansible, health checks, logging unificado y alertas con contexto.",
+    },
+    {
+      icon: "recovery",
+      title: "Ejecutar & Iterar",
+      description: "Simulacros, optimización de costos y mejoras continuas.",
+      detail: "Game days, reportes de fiabilidad y roadmap trimestral.",
+    },
+  ],
+  caseStudies: [
+    {
+      title: "Stack de microservicios observable",
+      category: "Plataforma DevOps",
+      timeframe: "2024",
+      summary: "Consolidé 8 servicios en contenedores con monitoreo accionable y deploys sin sustos.",
+      context: "Cada servicio tenía scripts distintos y sin health checks. Alertas eran logs manuales.",
+      action: "Implementé Docker Compose + GitHub Actions, balanceador Nginx, límites de recursos y tablero Prometheus/Grafana por servicio.",
+      result: "99.5% uptime, MTTR 12 min y rollback automático respaldado por artefactos versionados.",
+      metric: "Deploys 4x más rápidos",
+      tags: ["Docker", "GitHub Actions", "Grafana", "Prometheus", "Nginx"],
+      proof: [
+        {
+          label: "Playbook completo",
+          href: "https://dvillagrans.notion.site/infra-microservices",
+          type: "secondary",
+          target: "_blank",
+        },
+      ],
+      media: {
+        type: "image",
         src: "/img/microservices.webp",
+        alt: "Dashboard de microservicios",
       },
+      highlight: true,
     },
     {
-      title: "Qalma - Reliable Data Platform",
-      href: "https://github.com/dvillagrans/qalma",
-      dates: "2025",
-      active: true,
-      role: "Infrastructure",
-      description: "Designed cloud data infrastructure on Supabase/PostgreSQL with 99.9% uptime and automated maintenance tasks. Hardened services with containerization, network reverse proxy (Nginx), and runtime monitoring.",
-      technologies: ["Docker", "Supabase", "PostgreSQL", "Nginx", "Monitoring"],
-      links: [
+      title: "Backups 3-2-1 probados",
+      category: "Resiliencia & Recuperación",
+      timeframe: "2025",
+      summary: "Implementé y validé estrategia 3-2-1 con restauración bajo reloj para servicios críticos.",
+      context: "Backups existían pero sin pruebas ni documentación; RTO estimado en horas.",
+      action: "Automatice pg_dump + rsync a almacenamiento frío, sumé verificaciones checksum y runbook paso a paso.",
+      result: "Restauración validada en 15 min, auditoría aprobada y on-call con checklist en Notion.",
+      metric: "RTO contractual 30 min cumplido",
+      tags: ["PostgreSQL", "Bash", "AWS S3", "Runbooks"],
+      proof: [
         {
-          type: "Source",
-          href: "https://github.com/dvillagrans/qalma",
-          icon: <Icons.github className="size-3" />,
+          label: "Checklist de restore",
+          href: "https://dvillagrans.notion.site/playbook-restore",
+          type: "ghost",
+          target: "_blank",
         },
       ],
-      image: {
-        src: "/img/qalma.webp",
+      media: {
+        type: "image",
+        src: "/img/docker.webp",
+        alt: "Proceso de restauración documentado",
       },
+      highlight: true,
     },
     {
-      title: "Code Master - Platform Reliability",
-      href: "https://codemaster-two.vercel.app",
-      dates: "Nov 2024 - Current",
-      active: true,
-      role: "DevOps",
-      description: "Implemented CI/CD pipeline with Vercel achieving 99.9% uptime for Django backend supporting 10k+ users. Automated deployment workflows and monitoring for gamified coding education platform.",
-      technologies: ["Django", "Vercel", "CI/CD", "Monitoring"],
-      links: [
+      title: "Tableros SLO para CodeMaster",
+      category: "Observabilidad & Costos",
+      timeframe: "2024",
+      summary: "Tableros de experiencia de usuario y costos para plataforma educativa con 10K+ usuarios.",
+      context: "El equipo solo veía métricas de hosting. No había SLO definidos ni alertas priorizadas.",
+      action: "Definí SLO disponibilidad y latencia, instrumenté traces y monitoreo de costos con budgets automáticos.",
+      result: "Alertas ruidosas -70%, incidentes P1 cerrados en <20 min y ahorro 22% mensual en infraestructura.",
+      metric: "NPS soporte +12 pts",
+      tags: ["Grafana", "New Relic", "Cost Explorer", "Vercel"],
+      proof: [
         {
-          type: "Website",
+          label: "Demo dashboard",
           href: "https://codemaster-two.vercel.app",
-          icon: <Icons.globe className="size-3" />,
-        },
-        {
-          type: "Source",
-          href: "https://github.com/dvillagrans/Code-Master",
-          icon: <Icons.github className="size-3" />,
+          type: "soft",
+          target: "_blank",
         },
       ],
-      image: {
+      media: {
+        type: "image",
         src: "/img/codemaster.webp",
+        alt: "Dashboard SLO y costos",
       },
+      quickRead: true,
     },
   ],
-
-  relevantCertifications: [
-    "Manage Kubernetes in Google Cloud",
-    "Build a Data Warehouse with BigQuery",
-    "Engineer Data for Predictive Modeling with BigQuery ML",
-    "Google AI Essentials",
+  toolbox: [
+    {
+      title: "Infraestructura como Código",
+      items: ["Terraform", "Pulumi", "Ansible", "Docker Compose"],
+    },
+    {
+      title: "CI/CD & Release Engineering",
+      items: ["GitHub Actions", "ArgoCD", "Flux", "Vercel"],
+    },
+    {
+      title: "Observabilidad",
+      items: ["Grafana", "Prometheus", "Loki", "OpenTelemetry"],
+    },
+    {
+      title: "Respuesta a Incidentes",
+      items: ["PagerDuty", "Statuspage", "Runbooks", "Game Days"],
+    },
   ],
+  guarantees: [
+    {
+      label: "Deploys sin downtime",
+      value: "100%",
+      description: "Blue/green o canary documentado + health checks antes de finalizar.",
+    },
+    {
+      label: "Alertas útiles",
+      value: "-70% ruido",
+      description: "Alertas etiquetadas por severidad y con próximos pasos claros.",
+    },
+    {
+      label: "Costos controlados",
+      value: "-20%",
+      description: "Rightsizing y límites automáticos con reporting mensual.",
+    },
+  ],
+  testimonials: [
+    {
+      quote: "Pasamos de tener deploys de madrugada a releases diarios sin romper nada. Los tableros de Diego se volvieron nuestra única fuente de verdad.",
+      author: "Laura Fernández",
+      role: "Engineering Manager",
+      company: "CodeMaster",
+      highlight: true,
+    },
+    {
+      quote: "Su documentación operativa nos salvó en la primera auditoría externa. Cada runbook tiene paso, contexto y dueños.",
+      author: "Héctor Rivera",
+      role: "Head of Platform",
+      company: "Eyenet",
+    },
+  ],
+  anecdote: {
+    title: "Cuando el cluster gritó por ayuda",
+    story: "Durante un pico inesperado, el cluster agotó conexiones. Activé el runbook de scaling, apliqué límites y en paralelo redacté post-mortem con acciones preventivas. De ahí salió mi obsesión por 'deploys aburridos'.",
+    lesson: "Los incidentes no se evitan con suerte, sino con playbooks ensayados y métricas legibles.",
+  },
+  workingStyle: {
+    availability: "On-call rotativo compartido · respuesta garantizada en horario extendido.",
+    timezone: "CDMX (GMT-6) · cobertura a US Central / Pacific.",
+    communication: "Canales dedicados en Slack con SLA de respuesta < 2h laboral.",
+    handoff: "Runbooks, tableros y reportes semanales en Notion/Linear.",
+    tools: ["Terraform Cloud", "Grafana", "PagerDuty", "Linear", "Slack"],
+  },
+  finalCta: {
+    title: "Optimicemos tu plataforma",
+    subtitle: "Reviso tus SLOs, alertas y pipelines para detectar riesgos antes del próximo release.",
+    primary: {
+      label: "Agendar auditoría",
+      href: "https://cal.com/diegovillagran/infrastructure",
+      type: "primary",
+      target: "_blank",
+    },
+    secondary: {
+      label: "Solicitar checklist de SLOs",
+      href: "mailto:diegovillasal@gmail.com?subject=Checklist%20SLO%20DevOps",
+      type: "ghost",
+    },
+    note: "Trabajo con máximo 2 equipos en paralelo para mantener foco operativo.",
+    slots: ["Semana del 18 nov: completo", "Semana del 25 nov: 1 cupo"],
+  },
 };
