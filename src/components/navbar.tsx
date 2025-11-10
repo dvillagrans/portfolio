@@ -3,6 +3,7 @@
 import { Dock, DockIcon } from "@/components/magicui/dock";
 import { ModeToggle } from "@/components/mode-toggle";
 import { LanguageToggle } from "@/components/language-toggle";
+import { ProfileToggle } from "@/components/profile-toggle";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -66,6 +67,9 @@ export default function Navbar() {
             </DockIcon>
           ))}
         <Separator orientation="vertical" className="h-full py-2" />
+        <DockIcon>
+          <ProfileToggle />
+        </DockIcon>
         <DockIcon>
           <LanguageToggle />
         </DockIcon>
