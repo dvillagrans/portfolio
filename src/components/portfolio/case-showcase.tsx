@@ -19,30 +19,30 @@ export function CaseShowcase({ studies, onSectionView, onProofClick }: CaseShowc
   }, [onSectionView]);
 
   return (
-    <section id="casos" className="space-y-10">
+    <section id="casos" className="space-y-8 sm:space-y-10">
       <motion.div
-        className="flex flex-col gap-3"
+        className="flex flex-col gap-2 sm:gap-3"
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.4 }}
       >
-        <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/50">
+        <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] sm:tracking-[0.4em] text-white/50">
           Casos insignia
         </p>
-        <h2 className="text-3xl font-semibold text-white">Contexto → Acción → Resultado.</h2>
-        <p className="max-w-2xl text-base text-white/65">
+        <h2 className="text-2xl sm:text-3xl font-semibold text-white">Contexto → Acción → Resultado.</h2>
+        <p className="max-w-2xl text-sm sm:text-base text-white/65">
           Muestro cómo paso del problema al valor tangible con métricas, tableros vivos y pruebas en
           producción.
         </p>
       </motion.div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-4 sm:gap-5 md:gap-6 lg:grid-cols-2">
         {studies.map((study) => (
           <motion.article
             key={study.title}
             className={cn(
-              "group relative flex flex-col gap-5 overflow-hidden rounded-3xl border border-white/12 bg-white/[0.04] p-6 backdrop-blur transition-all duration-500",
+              "group relative flex flex-col gap-4 sm:gap-5 overflow-hidden rounded-2xl sm:rounded-3xl border border-white/12 bg-white/[0.04] p-5 sm:p-6 backdrop-blur transition-all duration-500",
               study.highlight
                 ? "lg:row-span-2 lg:p-8 lg:[grid-column:span_1/span_1]"
                 : "border-dashed border-white/15 bg-transparent"
@@ -56,19 +56,19 @@ export function CaseShowcase({ studies, onSectionView, onProofClick }: CaseShowc
               <div className="absolute inset-0 bg-gradient-to-br from-[hsla(var(--portfolio-primary),0.18)] to-transparent" />
             </div>
 
-            <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-wide text-white/50">
-              <span className="rounded-full border border-white/10 px-3 py-1 text-white/70">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs uppercase tracking-wide text-white/50">
+              <span className="rounded-full border border-white/10 px-2.5 sm:px-3 py-1 text-white/70">
                 {study.category}
               </span>
-              <span>{study.timeframe}</span>
+              <span className="text-[10px] sm:text-xs">{study.timeframe}</span>
               {study.quickRead && (
-                <span className="rounded-full bg-white/10 px-2 py-1 text-[10px] font-semibold text-white/70">
+                <span className="rounded-full bg-white/10 px-2 py-1 text-[9px] sm:text-[10px] font-semibold text-white/70">
                   Quick win
                 </span>
               )}
             </div>
 
-            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-white/10">
+            <div className="relative aspect-[16/9] sm:aspect-[16/10] md:aspect-[16/9] w-full overflow-hidden rounded-xl sm:rounded-2xl border border-white/10">
               <Image
                 src={study.media.src}
                 alt={study.media.alt}
@@ -77,44 +77,44 @@ export function CaseShowcase({ studies, onSectionView, onProofClick }: CaseShowc
               />
             </div>
 
-            <div className="space-y-3">
-              <h3 className="text-2xl font-semibold text-white">{study.title}</h3>
-              <p className="text-base text-white/70">{study.summary}</p>
+            <div className="space-y-2 sm:space-y-3">
+              <h3 className="text-xl sm:text-2xl font-semibold text-white">{study.title}</h3>
+              <p className="text-sm sm:text-base text-white/70">{study.summary}</p>
             </div>
 
-            <div className="grid gap-3 text-sm text-white/65">
+            <div className="grid gap-2 sm:gap-3 text-xs sm:text-sm text-white/65">
               <InfoRow label="Contexto" value={study.context} />
               <InfoRow label="Acción" value={study.action} />
               <InfoRow label="Resultado" value={study.result} />
             </div>
 
-            <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-wide text-white/50">
-              <span className="rounded-full bg-[hsla(var(--portfolio-accent),0.18)] px-3 py-1 text-white/70">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs uppercase tracking-wide text-white/50">
+              <span className="rounded-full bg-[hsla(var(--portfolio-accent),0.18)] px-2.5 sm:px-3 py-1 text-white/70">
                 {study.metric}
               </span>
               {study.tags.map((tag) => (
-                <span key={tag} className="rounded-full border border-white/12 px-3 py-1 text-white/60">
+                <span key={tag} className="rounded-full border border-white/12 px-2.5 sm:px-3 py-1 text-white/60">
                   {tag}
                 </span>
               ))}
             </div>
 
             {study.proof.length > 0 && (
-              <div className="flex flex-wrap gap-3 pt-2">
+              <div className="flex flex-wrap gap-2 sm:gap-3 pt-1 sm:pt-2">
                 {study.proof.map((proof) => (
                   <Link
                     key={proof.label}
                     href={proof.href}
                     target={proof.target ?? "_blank"}
                     rel={proof.target === "_blank" ? "noopener noreferrer" : undefined}
-                    className="group/link inline-flex items-center gap-2 rounded-full border border-white/15 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-white/75 transition-all duration-200 hover:border-white/35 hover:bg-white/10 hover:text-white"
+                    className="group/link inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/15 px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-white/75 transition-all duration-200 hover:border-white/35 hover:bg-white/10 hover:text-white"
                     onClick={() => onProofClick?.(study.title, proof.label)}
                   >
                     {proof.icon === "github" && (
                       <svg
                         aria-hidden="true"
                         viewBox="0 0 24 24"
-                        className="h-4 w-4 opacity-70 group-hover/link:opacity-100"
+                        className="h-3 w-3 sm:h-4 sm:w-4 opacity-70 group-hover/link:opacity-100"
                       >
                         <path
                           fill="currentColor"
@@ -136,9 +136,9 @@ export function CaseShowcase({ studies, onSectionView, onProofClick }: CaseShowc
 
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex flex-col gap-1 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white/65 md:flex-row md:items-start md:gap-3">
-      <span className="text-xs uppercase tracking-wide text-white/50 md:min-w-[90px]">{label}</span>
-      <span className="text-sm text-white/75">{value}</span>
+    <div className="flex flex-col gap-1 rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-3 sm:px-4 py-2.5 sm:py-3 text-white/65 md:flex-row md:items-start md:gap-3">
+      <span className="text-[10px] sm:text-xs uppercase tracking-wide text-white/50 md:min-w-[90px]">{label}</span>
+      <span className="text-xs sm:text-sm text-white/75">{value}</span>
     </div>
   );
 }

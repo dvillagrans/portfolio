@@ -32,9 +32,9 @@ export function PortfolioLayout({
 }: PortfolioLayoutProps) {
   return (
     <div className={`portfolio-theme ${metadata.themeClass}`}>
-      <div className="portfolio-surface relative flex min-h-screen w-full flex-col gap-14 bg-[hsl(var(--portfolio-bg))] px-6 py-10 md:px-10 lg:px-16">
+      <div className="portfolio-surface relative flex min-h-screen w-full flex-col gap-10 sm:gap-12 md:gap-14 bg-[hsl(var(--portfolio-bg))] px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-8 sm:py-10">
         <div className="absolute inset-0 -z-10 bg-[hsla(var(--portfolio-shadow),0.85)]" />
-        <div className="mx-auto flex w-full max-w-5xl flex-col gap-14">
+        <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 sm:gap-12 md:gap-14">
           {headerSlot}
           <HeroSection
             hero={content.hero}

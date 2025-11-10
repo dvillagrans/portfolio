@@ -179,9 +179,9 @@ export default function ProjectsPage() {
     project.technologies.some((tech: string) => tech.toLowerCase().includes(searchQuery.toLowerCase()))
   );
   return (
-    <main className="flex flex-col min-h-[100dvh] space-y-10 max-w-5xl mx-auto px-4 sm:px-6">
+    <main className="flex flex-col min-h-[100dvh] space-y-8 sm:space-y-10 max-w-5xl mx-auto px-3 sm:px-4 md:px-6">
       {/* Hero Section con Parallax */}
-      <section className="relative py-10 md:py-12 space-y-6 overflow-hidden">
+      <section className="relative py-8 sm:py-10 md:py-12 space-y-5 sm:space-y-6 overflow-hidden">
         <div className="mx-auto w-full">
           {/* Partículas flotantes con parallax y efectos visuales mejorados */}
           <div
@@ -225,26 +225,26 @@ export default function ProjectsPage() {
           </div>
           
           {/* Cabecera mejorada con efectos visuales */}
-          <div className="space-y-4 relative">
+          <div className="space-y-3 sm:space-y-4 relative">
             {/* Efecto de luz difuminada detrás del título */}
-            <div className="absolute -top-2 -left-5 w-32 h-32 bg-gradient-to-br from-primary/30 via-blue-500/20 to-transparent rounded-full blur-2xl opacity-60 -z-10"></div>
+            <div className="absolute -top-2 -left-5 w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-primary/30 via-blue-500/20 to-transparent rounded-full blur-2xl opacity-60 -z-10"></div>
 
             <BlurFade delay={BLUR_FADE_DELAY * 2}>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent">
                 {t('projects.title')}
               </h1>
             </BlurFade>
 
             <BlurFadeText
-              className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-[520px]"
+              className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed max-w-[520px]"
               delay={BLUR_FADE_DELAY * 3}
               text={t('projects.description')}
             />
 
             <BlurFade delay={BLUR_FADE_DELAY * 3.5}>
-              <div className="flex items-center gap-2 mt-3">
-                <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                <span className="text-sm text-muted-foreground font-medium">
+              <div className="flex items-center gap-1.5 sm:gap-2 mt-2 sm:mt-3">
+                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full animate-pulse"></div>
+                <span className="text-xs sm:text-sm text-muted-foreground font-medium">
                   {filteredProjects.length} {t('projects.total')}
                   {activeFilter !== 'all' && ` • ${t('projects.filtering')}: ${categoryNames[activeFilter] || activeFilter}`}
                 </span>
@@ -256,40 +256,40 @@ export default function ProjectsPage() {
       
       {/* Barra de búsqueda y filtros mejorada */}
       <ScrollReveal animation="fade-in-up" delay={300}>
-        <div className="space-y-4 relative">
+        <div className="space-y-3 sm:space-y-4 relative">
           {/* Efecto de luz difuminada */}
-          <div className="absolute -bottom-4 right-10 w-40 h-40 bg-gradient-to-tl from-blue-500/20 via-primary/10 to-transparent rounded-full blur-2xl opacity-50 -z-10"></div>
+          <div className="absolute -bottom-4 right-10 w-32 h-32 sm:w-40 sm:h-40 bg-gradient-to-tl from-blue-500/20 via-primary/10 to-transparent rounded-full blur-2xl opacity-50 -z-10"></div>
 
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             {/* Búsqueda mejorada */}
             <div className="relative flex-1 group">
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/20 to-blue-500/30 opacity-0 blur transition-all duration-300 group-hover:opacity-100 -z-10"></div>
-              <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                <Search className="w-4 h-4 text-muted-foreground" />
+              <div className="absolute inset-0 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary/20 to-blue-500/30 opacity-0 blur transition-all duration-300 group-hover:opacity-100 -z-10"></div>
+              <div className="absolute inset-y-0 left-2.5 sm:left-3 flex items-center pointer-events-none">
+                <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground" />
               </div>
               <input
                 type="text"
                 placeholder={t('projects.search.placeholder')}
                 value={searchQuery}
                 onChange={handleSearch}
-                className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-background/60 backdrop-blur-sm border border-border/50 text-sm placeholder:text-muted-foreground/60 focus:border-primary/40 focus:ring-2 focus:ring-primary/20 transition-all shadow-sm group-hover:border-primary/30"
+                className="w-full pl-9 sm:pl-10 pr-9 sm:pr-10 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-background/60 backdrop-blur-sm border border-border/50 text-xs sm:text-sm placeholder:text-muted-foreground/60 focus:border-primary/40 focus:ring-2 focus:ring-primary/20 transition-all shadow-sm group-hover:border-primary/30"
               />
               {searchQuery && (
                 <button
                   onClick={handleClearSearch}
-                  className="absolute inset-y-0 right-3 flex items-center"
+                  className="absolute inset-y-0 right-2.5 sm:right-3 flex items-center"
                 >
-                  <X className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
+                  <X className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground hover:text-foreground transition-colors" />
                 </button>
               )}
             </div>
             
             {/* Botón de filtros mejorado con diseño más creativo */}
             <div className="relative group">
-              <div className="absolute -inset-0.5 rounded-xl bg-gradient-to-r from-primary/30 via-blue-500/30 to-purple-500/30 opacity-0 blur transition-all duration-300 group-hover:opacity-100 -z-10"></div>
+              <div className="absolute -inset-0.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary/30 via-blue-500/30 to-purple-500/30 opacity-0 blur transition-all duration-300 group-hover:opacity-100 -z-10"></div>
               <button
                 onClick={handleToggleFilters}
-                className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all shadow-sm z-10 overflow-hidden ${showFilters
+                className={`relative flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl transition-all shadow-sm z-10 overflow-hidden text-xs sm:text-sm ${showFilters
                   ? 'bg-gradient-to-r from-primary via-primary/95 to-primary/90 text-primary-foreground border border-primary/40 shadow-lg shadow-primary/25'
                   : 'bg-background/60 backdrop-blur-sm border border-border/50 hover:border-primary/40 hover:shadow-md'
                   }`}
@@ -300,12 +300,12 @@ export default function ProjectsPage() {
 
                 {/* Icono animado */}
                 <div className="relative">
-                  <Filter className={`w-4 h-4 transition-all duration-300 ${showFilters ? 'rotate-180 animate-pulse' : 'group-hover:rotate-12'
+                  <Filter className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all duration-300 ${showFilters ? 'rotate-180 animate-pulse' : 'group-hover:rotate-12'
                     }`} />
                 </div>
 
                 {/* Texto con animación */}
-                <span className="relative font-medium">
+                <span className="relative font-medium text-xs sm:text-sm">
                   {showFilters ? t('projects.filters.hide') : t('projects.filters.show')}
                 </span>
 
@@ -315,19 +315,19 @@ export default function ProjectsPage() {
                     initial={{ scale: 0, rotate: -180 }}
                     animate={{ scale: 1, rotate: 0 }}
                     exit={{ scale: 0, rotate: 180 }}
-                    className={`relative flex items-center gap-1 text-xs py-1 px-2 rounded-full ml-1 ${showFilters
+                    className={`relative flex items-center gap-0.5 sm:gap-1 text-[10px] sm:text-xs py-0.5 sm:py-1 px-1.5 sm:px-2 rounded-full ml-0.5 sm:ml-1 ${showFilters
                       ? 'bg-primary-foreground/20 text-primary-foreground'
                       : 'bg-primary/10 text-primary border border-primary/20'
                       }`}
                   >
-                    <div className={`w-1.5 h-1.5 rounded-full ${showFilters ? 'bg-primary-foreground/60' : 'bg-primary animate-pulse'
+                    <div className={`w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full ${showFilters ? 'bg-primary-foreground/60' : 'bg-primary animate-pulse'
                       }`}></div>
-                    <span className="font-medium capitalize">{categoryNames[activeFilter] || activeFilter}</span>
+                    <span className="font-medium capitalize hidden xs:inline">{categoryNames[activeFilter] || activeFilter}</span>
                   </motion.div>
                 )}
 
                 {/* Indicador de estado */}
-                <div className={`absolute top-1 right-1 w-2 h-2 rounded-full transition-all duration-300 ${showFilters
+                <div className={`absolute top-0.5 sm:top-1 right-0.5 sm:right-1 w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-300 ${showFilters
                   ? 'bg-primary-foreground/60 animate-pulse'
                   : 'bg-primary/40 group-hover:bg-primary group-hover:animate-bounce'
                   }`}></div>
