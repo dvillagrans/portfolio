@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from "react";
-import { ProfileMetadata } from "@/contexts/profile-context";
+import type { ProfileMetadata } from "@/data/profiles/metadata";
 import { ProfileData } from "@/data/profiles";
 import { HeroSection } from "./hero-section";
 import { ProblemsSection } from "./problems-section";

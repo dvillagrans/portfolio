@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { PROFILE_METADATA, ProfileType } from "@/contexts/profile-context";
+import { PROFILE_METADATA } from "@/data/profiles/metadata";
+import type { ProfileType } from "@/data/profiles/metadata";
 import { PROFILE_DATA } from "@/data/profiles";
 import { ProfileClient } from "./profile-client";
 

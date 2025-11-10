@@ -4,7 +4,7 @@ import {
   Activity,
   AlarmCheck,
   BarChart4,
-  ChartSpline,
+  Brain,
   CircuitBoard,
   CloudCog,
   DatabaseZap,
@@ -26,7 +26,7 @@ export function resolveIcon(token: PortfolioIconToken, className = "h-5 w-5") {
     dashboard: <BarChart4 className={className} />,
     insights: <LineChart className={className} />,
     recovery: <AlarmCheck className={className} />,
-    ai: <ChartSpline className={className} />,
+    ai: <Brain className={className} />,
     cloud: <CloudCog className={className} />,
     data: <DatabaseZap className={className} />,
   };

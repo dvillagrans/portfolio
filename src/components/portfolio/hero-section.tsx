@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { PortfolioHero } from "@/data/profiles/types";
-import { ProfileMetadata } from "@/contexts/profile-context";
+import type { ProfileMetadata } from "@/data/profiles/metadata";
 import { PortfolioCtaButton } from "./cta-button";
 import { cn } from "@/lib/utils";
 

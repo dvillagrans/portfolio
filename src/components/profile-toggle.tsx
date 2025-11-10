@@ -1,7 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useProfile, PROFILE_METADATA, ProfileType } from "@/contexts/profile-context";
+import { useProfile } from "@/contexts/profile-context";
+import type { ProfileType } from "@/data/profiles/metadata";
+import { PROFILE_METADATA } from "@/data/profiles/metadata";
 import { useRouter, usePathname } from "next/navigation";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
