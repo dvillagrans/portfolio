@@ -4,7 +4,14 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useI18n } from "@/contexts/i18n-context";
 import { ProfileType } from "@/contexts/profile-context";
-import { ArrowRight, Code2, Database, Rocket, TrendingUp, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Code2,
+  Database,
+  Rocket,
+  TrendingUp,
+  Sparkles,
+} from "lucide-react";
 import Image from "next/image";
 import { DATA } from "@/data/resume";
 
@@ -13,14 +20,13 @@ export default function LandingPage() {
   const { language } = useI18n();
 
   const handleProfileSelect = (profile: ProfileType) => {
-    localStorage.setItem('profile', profile);
+    localStorage.setItem("profile", profile);
     router.push(`/${profile}`);
   };
 
   return (
     <div className="min-h-screen w-full px-3 sm:px-4 md:px-6 py-8 sm:py-12 md:py-16 overflow-y-auto">
       <div className="max-w-6xl mx-auto space-y-12 md:space-y-16">
-
         {/* Hero Section - Personal & Human */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -50,29 +56,27 @@ export default function LandingPage() {
           {/* Greeting */}
           <div className="space-y-3 sm:space-y-4 max-w-3xl">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
-              {language === 'en'
-                ? (
-                  <>
-                    Hi, I'm Diego — <br className="hidden sm:inline" />
-                    <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                      I build data systems that work in production
-                    </span>
-                  </>
-                )
-                : (
-                  <>
-                    Hola, soy Diego — <br className="hidden sm:inline" />
-                    <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                      construyo sistemas de datos que funcionan en producción
-                    </span>
-                  </>
-                )}
+              {language === "en" ? (
+                <>
+                  Hi, I'm Diego — <br className="hidden sm:inline" />
+                  <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                    I build data systems that work in production
+                  </span>
+                </>
+              ) : (
+                <>
+                  Hola, soy Diego — <br className="hidden sm:inline" />
+                  <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                    construyo sistemas de datos que funcionan en producción
+                  </span>
+                </>
+              )}
             </h1>
 
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground/80 leading-relaxed max-w-2xl mx-auto">
-              {language === 'en'
-                ? 'I enjoy turning complex systems into clear, reproducible solutions that are peaceful to operate.'
-                : 'Me gusta convertir sistemas complejos en soluciones claras, reproducibles y tranquilas de operar.'}
+              {language === "en"
+                ? "I enjoy turning complex systems into clear, reproducible solutions that are peaceful to operate."
+                : "Me gusta convertir sistemas complejos en soluciones claras, reproducibles y tranquilas de operar."}
             </p>
           </div>
 
@@ -81,18 +85,23 @@ export default function LandingPage() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => router.push('/projects')}
+              onClick={() => router.push("/projects")}
               className="px-6 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 border border-white/10 hover:border-white/20 text-sm font-medium transition-all duration-300"
             >
-              {language === 'en' ? 'View Projects' : 'Ver Proyectos'}
+              {language === "en" ? "View Projects" : "Ver Proyectos"}
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
+              onClick={() =>
+                window.scrollTo({
+                  top: document.body.scrollHeight,
+                  behavior: "smooth",
+                })
+              }
               className="px-6 py-2.5 rounded-lg border border-white/10 hover:border-white/20 text-sm font-medium transition-all duration-300"
             >
-              {language === 'en' ? 'View Experience' : 'Ver Experiencia'}
+              {language === "en" ? "View Experience" : "Ver Experiencia"}
             </motion.button>
           </div>
         </motion.div>
@@ -112,9 +121,9 @@ export default function LandingPage() {
               </div>
               <div className="flex-1 space-y-3 text-left">
                 <p className="text-sm sm:text-base md:text-lg text-muted-foreground/90 leading-relaxed">
-                  {language === 'en'
-                    ? 'I believe engineering should be understandable. I value systems that age well: transparent, documented, and easy to maintain.'
-                    : 'Creo que la ingeniería debe ser entendible. Valoro los sistemas que envejecen bien: transparentes, documentados y fáciles de mantener.'}
+                  {language === "en"
+                    ? "I believe engineering should be understandable. I value systems that age well: transparent, documented, and easy to maintain."
+                    : "Creo que la ingeniería debe ser entendible. Valoro los sistemas que envejecen bien: transparentes, documentados y fáciles de mantener."}
                 </p>
               </div>
             </div>
@@ -129,7 +138,9 @@ export default function LandingPage() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-xl sm:text-2xl md:text-3xl font-bold text-center"
           >
-            {language === 'en' ? 'Areas where I have experience' : 'Áreas donde tengo experiencia'}
+            {language === "en"
+              ? "Areas where I have experience"
+              : "Áreas donde tengo experiencia"}
           </motion.h2>
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4">
@@ -138,7 +149,7 @@ export default function LandingPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
-              onClick={() => handleProfileSelect('ml-engineer')}
+              onClick={() => handleProfileSelect("ml-engineer")}
               className="md:col-span-7 group relative overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-purple-500/5 via-black/40 to-background backdrop-blur-sm hover:border-white/20 hover:scale-[1.01] transition-all duration-500 text-left"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -156,18 +167,23 @@ export default function LandingPage() {
 
                 <div className="space-y-2">
                   <h3 className="text-base sm:text-lg md:text-xl font-bold">
-                    {language === 'en' ? 'Model Deployment & MLOps' : 'Despliegue de Modelos & MLOps'}
+                    {language === "en"
+                      ? "Model Deployment & MLOps"
+                      : "Despliegue de Modelos & MLOps"}
                   </h3>
                   <p className="text-xs sm:text-sm text-muted-foreground/80 leading-relaxed">
-                    {language === 'en'
-                      ? 'I enjoy taking models to production and monitoring them so they work without surprises. I care about reproducibility and stability more than hype.'
-                      : 'Me gusta llevar modelos a producción y monitorearlos para que funcionen sin sobresaltos. Me importa más la reproducibilidad y estabilidad que el hype.'}
+                    {language === "en"
+                      ? "I enjoy taking models to production and monitoring them so they work without surprises. I care about reproducibility and stability more than hype."
+                      : "Me gusta llevar modelos a producción y monitorearlos para que funcionen sin sobresaltos. Me importa más la reproducibilidad y estabilidad que el hype."}
                   </p>
                 </div>
 
                 <div className="flex flex-wrap gap-1.5 pt-1">
-                  {['TensorFlow', 'FastAPI', 'Docker'].map((tech) => (
-                    <span key={tech} className="px-2 sm:px-2.5 py-0.5 sm:py-1 text-xs rounded-md bg-purple-500/10 text-purple-400/80 border border-purple-500/20">
+                  {["TensorFlow", "FastAPI", "Docker"].map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-2 sm:px-2.5 py-0.5 sm:py-1 text-xs rounded-md bg-purple-500/10 text-purple-400/80 border border-purple-500/20"
+                    >
                       {tech}
                     </span>
                   ))}
@@ -180,7 +196,7 @@ export default function LandingPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.6 }}
-              onClick={() => handleProfileSelect('data-engineer')}
+              onClick={() => handleProfileSelect("data-engineer")}
               className="md:col-span-5 group relative overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-purple-500/5 via-black/40 to-background backdrop-blur-sm hover:border-white/20 hover:scale-[1.01] transition-all duration-500 text-left"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -197,18 +213,23 @@ export default function LandingPage() {
 
                 <div className="space-y-2 flex-1 text-center">
                   <h3 className="text-base sm:text-lg md:text-xl font-bold">
-                    {language === 'en' ? 'Data Pipelines & Modeling' : 'Pipelines de Datos & Modelado'}
+                    {language === "en"
+                      ? "Data Pipelines & Modeling"
+                      : "Pipelines de Datos & Modelado"}
                   </h3>
                   <p className="text-xs sm:text-sm text-muted-foreground/80 leading-relaxed">
-                    {language === 'en'
-                      ? 'I enjoy designing clean, testable pipelines. Good data engineering is invisible—it just works.'
-                      : 'Disfruto diseñar pipelines limpios y testeables. La buena ingeniería de datos es invisible—simplemente funciona.'}
+                    {language === "en"
+                      ? "I enjoy designing clean, testable pipelines. Good data engineering is invisible—it just works."
+                      : "Disfruto diseñar pipelines limpios y testeables. La buena ingeniería de datos es invisible—simplemente funciona."}
                   </p>
                 </div>
 
                 <div className="flex flex-wrap justify-center gap-1.5">
-                  {['PostgreSQL', 'Python', 'n8n'].map((tech) => (
-                    <span key={tech} className="px-2 sm:px-2.5 py-0.5 sm:py-1 text-xs rounded-md bg-purple-500/10 text-purple-400/80 border border-purple-500/20">
+                  {["PostgreSQL", "Python", "n8n"].map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-2 sm:px-2.5 py-0.5 sm:py-1 text-xs rounded-md bg-purple-500/10 text-purple-400/80 border border-purple-500/20"
+                    >
                       {tech}
                     </span>
                   ))}
@@ -225,7 +246,7 @@ export default function LandingPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.7 }}
-              onClick={() => handleProfileSelect('devops-engineer')}
+              onClick={() => handleProfileSelect("devops-engineer")}
               className="md:col-span-5 group relative overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-purple-500/5 via-black/40 to-background backdrop-blur-sm hover:border-white/20 hover:scale-[1.01] transition-all duration-500 text-left"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -242,18 +263,23 @@ export default function LandingPage() {
 
                 <div className="space-y-2">
                   <h3 className="text-base sm:text-lg md:text-xl font-bold">
-                    {language === 'en' ? 'Infrastructure & Observability' : 'Infraestructura & Observabilidad'}
+                    {language === "en"
+                      ? "Infrastructure & Observability"
+                      : "Infraestructura & Observabilidad"}
                   </h3>
                   <p className="text-xs sm:text-sm text-muted-foreground/80 leading-relaxed">
-                    {language === 'en'
-                      ? 'I'm obsessed with observability because a good system should tell you how it feels. Deployments should be boring.'
-                      : 'Me obsesiona la observabilidad porque un buen sistema debe decirte cómo se siente. Los despliegues deben ser aburridos.'}
+                    {language === "en"
+                      ? "I'm obsessed with observability because a good system should tell you how it feels. Deployments should be boring."
+                      : "Me obsesiona la observabilidad porque un buen sistema debe decirte cómo se siente. Los despliegues deben ser aburridos."}
                   </p>
                 </div>
 
                 <div className="flex flex-wrap gap-1.5 pt-1">
-                  {['Docker', 'Kubernetes', 'Grafana'].map((tech) => (
-                    <span key={tech} className="px-2 sm:px-2.5 py-0.5 sm:py-1 text-xs rounded-md bg-purple-500/10 text-purple-400/80 border border-purple-500/20">
+                  {["Docker", "Kubernetes", "Grafana"].map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-2 sm:px-2.5 py-0.5 sm:py-1 text-xs rounded-md bg-purple-500/10 text-purple-400/80 border border-purple-500/20"
+                    >
                       {tech}
                     </span>
                   ))}
@@ -270,7 +296,7 @@ export default function LandingPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.8 }}
-              onClick={() => handleProfileSelect('data-analyst')}
+              onClick={() => handleProfileSelect("data-analyst")}
               className="md:col-span-7 group relative overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-purple-500/5 via-black/40 to-background backdrop-blur-sm hover:border-white/20 hover:scale-[1.01] transition-all duration-500 text-left"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -287,23 +313,28 @@ export default function LandingPage() {
                       </div>
                       <div>
                         <h3 className="text-base sm:text-lg md:text-xl font-bold">
-                          {language === 'en' ? 'Dashboards & Analytics' : 'Dashboards & Analytics'}
+                          {language === "en"
+                            ? "Dashboards & Analytics"
+                            : "Dashboards & Analytics"}
                         </h3>
                       </div>
                     </div>
 
                     <p className="text-xs sm:text-sm text-muted-foreground/80 leading-relaxed">
-                      {language === 'en'
-                        ? 'I build dashboards that help make decisions, not to decorate reports. Clarity over complexity.'
-                        : 'Hago dashboards que ayudan a tomar decisiones, no a decorar reportes. Claridad sobre complejidad.'}
+                      {language === "en"
+                        ? "I build dashboards that help make decisions, not to decorate reports. Clarity over complexity."
+                        : "Hago dashboards que ayudan a tomar decisiones, no a decorar reportes. Claridad sobre complejidad."}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between pt-1">
                   <div className="flex flex-wrap gap-1.5">
-                    {['Power BI', 'Tableau', 'DAX'].map((tech) => (
-                      <span key={tech} className="px-2 sm:px-2.5 py-0.5 sm:py-1 text-xs rounded-md bg-purple-500/10 text-purple-400/80 border border-purple-500/20">
+                    {["Power BI", "Tableau", "DAX"].map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-2 sm:px-2.5 py-0.5 sm:py-1 text-xs rounded-md bg-purple-500/10 text-purple-400/80 border border-purple-500/20"
+                      >
                         {tech}
                       </span>
                     ))}
@@ -314,7 +345,6 @@ export default function LandingPage() {
             </motion.button>
           </div>
         </div>
-
       </div>
     </div>
   );
