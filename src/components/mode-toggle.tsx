@@ -68,6 +68,7 @@ export const ModeToggle = React.forwardRef<
       size="icon"
       className="px-2"
       onClick={toggleTheme}
+      title="Cambiar tema"
       {...props}
     >
       {currentTheme === "dark" ? (

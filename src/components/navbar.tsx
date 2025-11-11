@@ -102,14 +102,7 @@ export default function Navbar() {
 
         {/* Theme toggle */}
         <DockIcon>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <ModeToggle />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{t("nav.theme")}</p>
-            </TooltipContent>
-          </Tooltip>
+          <ModeToggle />
         </DockIcon>
       </Dock>
     </div>
