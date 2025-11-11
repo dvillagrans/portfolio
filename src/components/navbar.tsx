@@ -17,6 +17,14 @@ import { useI18n } from "@/contexts/i18n-context";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
+// Map navigation hrefs to translation keys
+const navTranslationKeys: Record<string, string> = {
+  "/": "nav.home",
+  "#skills": "nav.skills",
+  "/projects": "nav.projects",
+  "#contact": "nav.contact",
+};
+
 export default function Navbar() {
   const { t } = useI18n();
   const pathname = usePathname();
@@ -28,10 +36,22 @@ export default function Navbar() {
       <Dock
         className={cn(
           "z-50 pointer-events-auto relative mx-auto flex min-h-full h-full items-center px-1 transform-gpu",
-          // Liquid glass effect
-          isLandingPage
-            ? "bg-white/5 dark:bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_0_rgba(255,255,255,0.05)]"
-            : "bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]"
+          // Unified Enhanced Liquid Glass Effect for all pages
+          [
+            // Base glass effect with gradient
+            "bg-gradient-to-b from-white/10 via-white/5 to-white/10",
+            "dark:from-white/8 dark:via-white/3 dark:to-white/8",
+            // Enhanced blur and saturation
+            "backdrop-blur-3xl backdrop-saturate-150",
+            // Refined borders with subtle glow
+            "border border-white/20 dark:border-white/15",
+            // Multi-layer soft shadows for depth
+            "shadow-[0_8px_32px_rgba(0,0,0,0.08),0_4px_16px_rgba(0,0,0,0.04),inset_0_0_0_1px_rgba(255,255,255,0.1)]",
+            "dark:shadow-[0_8px_32px_rgba(0,0,0,0.4),0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1),inset_0_-1px_0_rgba(255,255,255,0.05)]",
+            // Subtle inner glow
+            "before:absolute before:inset-0 before:rounded-full before:bg-gradient-to-b before:from-white/10 before:to-transparent before:opacity-50 before:pointer-events-none",
+            "dark:before:from-white/5"
+          ].join(" ")
         )}
       >
         {/* Navigation tabs - hidden on landing page */}
@@ -51,7 +71,7 @@ export default function Navbar() {
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>{item.label}</p>
+                  <p>{t(navTranslationKeys[item.href] || item.label)}</p>
                 </TooltipContent>
               </Tooltip>
             </DockIcon>
