@@ -466,7 +466,7 @@ export default function LandingPage() {
         </motion.div>
 
         <div className="mt-4 flex flex-1 flex-col overflow-hidden sm:mt-5">
-          <BentoGrid className="landing-bento grid w-full flex-1 grid-cols-1 auto-rows-[minmax(0,1fr)] gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:auto-rows-[minmax(0,1fr)]">
+          <BentoGrid className="landing-bento grid w-full flex-1 grid-cols-1 auto-rows-[minmax(140px,1fr)] gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:auto-rows-[minmax(180px,0.5fr)]">
             {cards.map((card) => (
               <motion.button
                 key={card.profile}
