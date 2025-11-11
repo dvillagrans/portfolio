@@ -36,8 +36,17 @@ Circle.displayName = "Circle";
 const InfrastructureDecoration = () => {
   return (
     <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-      {/* Green gradient base */}
+      {/* Deep green gradient base */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0b2415] via-[#123e25] to-[#07180e]" />
+      
+      {/* Server/Cloud icons background */}
+      <div className="absolute top-4 left-4 opacity-5">
+        <Rocket className="w-24 h-24 text-emerald-300" />
+      </div>
+      
+      <div className="absolute bottom-6 right-6 opacity-5">
+        <Database className="w-26 h-26 text-emerald-400" />
+      </div>
 
       {/* Grid pattern */}
       <div
@@ -49,40 +58,50 @@ const InfrastructureDecoration = () => {
         }}
       />
 
-      {/* Orbiting microservices */}
+      {/* Orbiting microservices con iconos */}
       <div className="relative flex h-full w-full items-center justify-center">
-        {/* Center glow */}
-        <div className="size-16 rounded-full border-2 border-emerald-500/30 bg-emerald-500/10 backdrop-blur-sm" />
+        {/* Center glow con icono */}
+        <div className="size-16 rounded-full border-2 border-emerald-500/30 bg-emerald-500/10 backdrop-blur-sm flex items-center justify-center">
+          <Cloud className="w-7 h-7 text-emerald-400" />
+        </div>
 
-        {/* Inner orbit */}
+        {/* Inner orbit con iconos */}
         <OrbitingCircles
-          className="size-8 border-none bg-emerald-500/20 backdrop-blur-sm"
+          className="size-8 border-none bg-emerald-500/20 backdrop-blur-sm flex items-center justify-center"
           duration={20}
           delay={0}
           radius={60}
-        />
+        >
+          <Container className="w-3 h-3 text-emerald-300" />
+        </OrbitingCircles>
         <OrbitingCircles
-          className="size-8 border-none bg-emerald-500/20 backdrop-blur-sm"
+          className="size-8 border-none bg-emerald-500/20 backdrop-blur-sm flex items-center justify-center"
           duration={20}
           delay={10}
           radius={60}
-        />
+        >
+          <Database className="w-3 h-3 text-emerald-300" />
+        </OrbitingCircles>
 
-        {/* Outer orbit */}
+        {/* Outer orbit con iconos */}
         <OrbitingCircles
-          className="size-10 border-none bg-emerald-400/15 backdrop-blur-sm"
+          className="size-10 border-none bg-emerald-400/15 backdrop-blur-sm flex items-center justify-center"
           duration={30}
           delay={0}
           radius={100}
           reverse
-        />
+        >
+          <Server className="w-4 h-4 text-emerald-300" />
+        </OrbitingCircles>
         <OrbitingCircles
-          className="size-10 border-none bg-emerald-400/15 backdrop-blur-sm"
+          className="size-10 border-none bg-emerald-400/15 backdrop-blur-sm flex items-center justify-center"
           duration={30}
           delay={15}
           radius={100}
           reverse
-        />
+        >
+          <Boxes className="w-4 h-4 text-emerald-300" />
+        </OrbitingCircles>
       </div>
 
       {/* Vignette */}
@@ -96,6 +115,15 @@ const DataAnalystDecoration = () => {
     <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-8">
       {/* Orange gradient base */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#2d1a10] via-[#3c200c] to-[#211209]" />
+
+      {/* Chart/Analytics icons background */}
+      <div className="absolute top-4 right-4 opacity-5">
+        <TrendingUp className="w-32 h-32 text-amber-300" />
+      </div>
+      
+      <div className="absolute bottom-6 left-6 opacity-5">
+        <Database className="w-24 h-24 text-amber-400" />
+      </div>
 
       {/* Dot pattern */}
       <div
@@ -173,8 +201,18 @@ const DataPipelinesDecoration = () => {
 
   return (
     <div ref={containerRef} className="pointer-events-none absolute inset-0 flex items-center justify-center p-10">
-      {/* Brand gradient base */}
+      {/* Deep cyan/blue gradient base */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0e223a] via-[#08243d] to-[#031726]" />
+      
+      {/* Database icon background */}
+      <div className="absolute top-4 left-4 opacity-5">
+        <Database className="w-24 h-24 text-cyan-400" />
+      </div>
+      
+      {/* Code icon background */}
+      <div className="absolute bottom-6 right-6 opacity-5">
+        <Code2 className="w-28 h-28 text-cyan-300" />
+      </div>
 
       {/* Grain texture */}
       <div
@@ -187,16 +225,24 @@ const DataPipelinesDecoration = () => {
         }}
       />
 
-      {/* Pipeline nodes - sin íconos */}
+      {/* Data pipeline nodes con iconos */}
       <div className="relative flex w-full max-w-lg flex-row items-center justify-between gap-10">
         <div className="flex flex-col gap-4">
-          <div ref={dbRef} className="size-12 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm" />
-          <div ref={pythonRef} className="size-12 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm" />
+          <div ref={dbRef} className="size-12 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm flex items-center justify-center">
+            <Database className="w-5 h-5 text-cyan-400" />
+          </div>
+          <div ref={pythonRef} className="size-12 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm flex items-center justify-center">
+            <Code2 className="w-5 h-5 text-cyan-400" />
+          </div>
         </div>
         
-        <div ref={apiRef} className="size-16 rounded-full border-2 border-cyan-500/40 bg-cyan-500/20 backdrop-blur-sm" />
+        <div ref={apiRef} className="size-16 rounded-full border-2 border-cyan-500/40 bg-cyan-500/20 backdrop-blur-sm flex items-center justify-center">
+          <Server className="w-7 h-7 text-cyan-300" />
+        </div>
 
-        <div ref={dashboardRef} className="size-12 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm" />
+        <div ref={dashboardRef} className="size-12 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm flex items-center justify-center">
+          <BarChart3 className="w-5 h-5 text-cyan-400" />
+        </div>
       </div>
 
       {/* Animated Beams */}
@@ -240,6 +286,16 @@ const MLOpsDecoration = () => {
     <div ref={containerRef} className="pointer-events-none absolute inset-0 flex items-center justify-center p-10">
       {/* Deep purple gradient base */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#2f1c5e] via-[#1a0f38] to-[#0c071a]" />
+      
+      {/* Rocket icon background */}
+      <div className="absolute top-6 right-6 opacity-5">
+        <Rocket className="w-32 h-32 text-purple-300" />
+      </div>
+      
+      {/* Code icon background */}
+      <div className="absolute bottom-4 left-4 opacity-5">
+        <Code2 className="w-28 h-28 text-purple-400" />
+      </div>
 
       {/* Grain texture */}
       <div
@@ -252,16 +308,24 @@ const MLOpsDecoration = () => {
         }}
       />
 
-      {/* MLOps pipeline nodes - sin íconos */}
+      {/* MLOps pipeline nodes con iconos */}
       <div className="relative flex w-full max-w-lg flex-row items-center justify-between gap-10">
         <div className="flex flex-col gap-4">
-          <div ref={notebookRef} className="size-12 rounded-full border-2 border-purple-500/30 bg-purple-500/10 backdrop-blur-sm" />
-          <div ref={gitRef} className="size-12 rounded-full border-2 border-purple-500/30 bg-purple-500/10 backdrop-blur-sm" />
+          <div ref={notebookRef} className="size-12 rounded-full border-2 border-purple-500/30 bg-purple-500/10 backdrop-blur-sm flex items-center justify-center">
+            <FileText className="w-5 h-5 text-purple-400" />
+          </div>
+          <div ref={gitRef} className="size-12 rounded-full border-2 border-purple-500/30 bg-purple-500/10 backdrop-blur-sm flex items-center justify-center">
+            <GitBranch className="w-5 h-5 text-purple-400" />
+          </div>
         </div>
         
-        <div ref={pipelineRef} className="size-16 rounded-full border-2 border-purple-500/40 bg-purple-500/20 backdrop-blur-sm" />
+        <div ref={pipelineRef} className="size-16 rounded-full border-2 border-purple-500/40 bg-purple-500/20 backdrop-blur-sm flex items-center justify-center">
+          <Activity className="w-7 h-7 text-purple-300" />
+        </div>
 
-        <div ref={prodRef} className="size-12 rounded-full border-2 border-purple-500/30 bg-purple-500/10 backdrop-blur-sm" />
+        <div ref={prodRef} className="size-12 rounded-full border-2 border-purple-500/30 bg-purple-500/10 backdrop-blur-sm flex items-center justify-center">
+          <Rocket className="w-5 h-5 text-purple-400" />
+        </div>
       </div>
 
       {/* Animated Beams */}
@@ -330,7 +394,7 @@ export default function LandingPage() {
     {
       profile: "ml-engineer",
       icon: Code2,
-      colSpan: "lg:col-span-2",
+      colSpan: "lg:col-span-3",
       background:
         "radial-gradient(circle at 22% 18%, rgba(145, 112, 255, 0.42) 0%, rgba(47, 28, 94, 0.88) 48%, rgba(12, 7, 24, 0.96) 100%)",
       texture: "/img/patterns/mlops-particles.svg",
@@ -352,7 +416,7 @@ export default function LandingPage() {
     {
       profile: "data-engineer",
       icon: Database,
-      colSpan: "lg:col-span-1",
+      colSpan: "lg:col-span-2",
       background:
         "linear-gradient(160deg, rgba(14, 34, 58, 0.94) 0%, rgba(6, 29, 48, 0.88) 52%, rgba(3, 23, 38, 0.96) 100%)",
       texture: "/img/patterns/pipelines-flow.svg",
@@ -396,7 +460,7 @@ export default function LandingPage() {
     {
       profile: "data-analyst",
       icon: TrendingUp,
-      colSpan: "lg:col-span-2",
+      colSpan: "lg:col-span-3",
       background:
         "linear-gradient(150deg, rgba(45, 26, 16, 0.9) 0%, rgba(60, 32, 12, 0.86) 55%, rgba(33, 18, 9, 0.94) 100%)",
       texture: "/img/patterns/analytics-tiles.svg",

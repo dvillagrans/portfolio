@@ -2,6 +2,11 @@
   "name": "porfolio",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": "please-use-pnpm-or-bun",
+    "yarn": "please-use-pnpm-or-bun"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
