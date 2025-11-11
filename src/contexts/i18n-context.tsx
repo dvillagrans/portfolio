@@ -8,6 +8,7 @@ interface I18nContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
+  isClient: boolean;
 }
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
@@ -371,6 +372,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     language,
     setLanguage,
     t,
+    isClient,
   };
 
   return (

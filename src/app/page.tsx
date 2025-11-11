@@ -2,14 +2,162 @@
 
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { useMemo, type ElementType, type ReactNode } from "react";
+import { useMemo, useRef, type ElementType, type ReactNode } from "react";
 import { useI18n } from "@/contexts/i18n-context";
 import { ProfileType } from "@/contexts/profile-context";
 import { Code2, Database, Rocket, TrendingUp } from "lucide-react";
 import Image from "next/image";
 import { BentoGrid } from "@/components/ui/bento-grid";
+import { AnimatedBeam } from "@/components/ui/animated-beam";
 import { cn } from "@/lib/utils";
 import { DATA } from "@/data/resume";
+
+const DataPipelinesDecoration = () => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const sourceRef = useRef<HTMLDivElement | null>(null);
+  const midRef = useRef<HTMLDivElement | null>(null);
+  const targetRef = useRef<HTMLDivElement | null>(null);
+
+  return (
+    <div ref={containerRef} className="pointer-events-none absolute inset-0">
+      {/* Brand gradient base (deeper, calmer tones) */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0e223a] via-[#08243d] to-[#031726]" />
+
+      {/* Subtle grain/grid to avoid too-digital feel */}
+      <div
+        className="absolute inset-0 opacity-[0.12] mix-blend-overlay"
+        style={{
+          backgroundImage:
+            "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), radial-gradient(rgba(0,0,0,0.03) 1px, transparent 1px)",
+          backgroundSize: "12px 12px, 16px 16px",
+          backgroundPosition: "0 0, 6px 6px",
+        }}
+      />
+
+      {/* Soft glows to hint sources/targets */}
+      <div
+        ref={sourceRef}
+        className="absolute left-[18%] top-[26%] h-16 w-16 rounded-full bg-[#5df0ff]/28 blur-[90px]"
+      />
+      <div
+        ref={midRef}
+        className="absolute left-[44%] bottom-[38%] h-20 w-20 rounded-full bg-[#22d3ee]/24 blur-[100px]"
+      />
+      <div
+        ref={targetRef}
+        className="absolute right-[17%] bottom-[28%] h-24 w-24 rounded-full bg-[#0ea5e9]/24 blur-[110px]"
+      />
+
+      {/* Calm cyan beams (atmospheric, not protagonist) */}
+      <AnimatedBeam
+        containerRef={containerRef}
+        fromRef={sourceRef}
+        toRef={midRef}
+        curvature={100}
+        pathColor="#1FD9D3"
+        pathWidth={2}
+        pathOpacity={0.1}
+        gradientStartColor="rgba(0,214,255,0.85)"
+        gradientStopColor="#22d3ee"
+        duration={18}
+        delay={0.6}
+        className="opacity-[0.18] blur-xl"
+      />
+      <AnimatedBeam
+        containerRef={containerRef}
+        fromRef={midRef}
+        toRef={targetRef}
+        curvature={120}
+        pathColor="#22d3ee"
+        pathWidth={1.8}
+        pathOpacity={0.1}
+        gradientStartColor="#22d3ee"
+        gradientStopColor="rgba(0,180,230,0.85)"
+        duration={22}
+        delay={1.2}
+        reverse
+        className="opacity-[0.16] blur-[18px]"
+      />
+
+      {/* Top-to-bottom vignette to keep content legible */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#031726]/35 to-[#010c14]/70" />
+    </div>
+  );
+};
+
+const MLOpsDecoration = () => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const notebookRef = useRef<HTMLDivElement | null>(null);
+  const pipelineRef = useRef<HTMLDivElement | null>(null);
+  const prodRef = useRef<HTMLDivElement | null>(null);
+
+  return (
+    <div ref={containerRef} className="pointer-events-none absolute inset-0">
+      {/* Deep purple gradient base */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#2f1c5e] via-[#1a0f38] to-[#0c071a]" />
+
+      {/* Subtle particle-like grain */}
+      <div
+        className="absolute inset-0 opacity-[0.1] mix-blend-overlay"
+        style={{
+          backgroundImage:
+            "radial-gradient(rgba(165,132,255,0.06) 1px, transparent 1px), radial-gradient(rgba(0,0,0,0.04) 1px, transparent 1px)",
+          backgroundSize: "14px 14px, 18px 18px",
+          backgroundPosition: "0 0, 7px 7px",
+        }}
+      />
+
+      {/* Soft purple glows (notebooks → pipeline → production) */}
+      <div
+        ref={notebookRef}
+        className="absolute left-[15%] top-[30%] h-16 w-16 rounded-full bg-[#b794ff]/32 blur-[85px]"
+      />
+      <div
+        ref={pipelineRef}
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-20 w-20 rounded-full bg-[#9370ff]/26 blur-[95px]"
+      />
+      <div
+        ref={prodRef}
+        className="absolute right-[15%] bottom-[30%] h-24 w-24 rounded-full bg-[#8f7bff]/28 blur-[105px]"
+      />
+
+      {/* Purple/violet beams (notebooks → pipeline) */}
+      <AnimatedBeam
+        containerRef={containerRef}
+        fromRef={notebookRef}
+        toRef={pipelineRef}
+        curvature={90}
+        pathColor="#9370ff"
+        pathWidth={2.2}
+        pathOpacity={0.11}
+        gradientStartColor="rgba(183,148,255,0.88)"
+        gradientStopColor="#9370ff"
+        duration={20}
+        delay={0.4}
+        className="opacity-[0.2] blur-xl"
+      />
+      {/* Pipeline → production */}
+      <AnimatedBeam
+        containerRef={containerRef}
+        fromRef={pipelineRef}
+        toRef={prodRef}
+        curvature={110}
+        pathColor="#8f7bff"
+        pathWidth={2}
+        pathOpacity={0.1}
+        gradientStartColor="#9370ff"
+        gradientStopColor="rgba(143,123,255,0.85)"
+        duration={24}
+        delay={1.0}
+        reverse
+        className="opacity-[0.18] blur-[16px]"
+      />
+
+      {/* Vignette for text legibility */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#1a0f38]/30 to-[#0c071a]/65" />
+    </div>
+  );
+};
 
 interface LandingCard {
   profile: ProfileType;
@@ -59,22 +207,16 @@ export default function LandingPage() {
       align: "left",
       tagClass: "border-[#7C6BFA]/35 bg-[#2E2051]/60 text-[#DED8FF]",
       labelClass: "text-[#BDAEFF]/80 group-hover:text-[#E8E2FF]",
-      decoration: (
-        <>
-          <div className="pointer-events-none absolute inset-[1.25px] rounded-[1.95rem] border border-[#9A8EFF]/25 opacity-70 blur-[0.5px] transition transition-duration-[750ms] group-hover:border-[#CFC4FF]/45 group-hover:opacity-100" />
-          <div className="pointer-events-none absolute -top-12 right-[-40px] h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(165,132,255,0.35),transparent_70%)] blur-3xl opacity-80 transition transition-duration-[1800ms] ease-out group-hover:opacity-100" />
-          <div className="pointer-events-none absolute -left-20 bottom-[-32px] h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(92,61,166,0.22),transparent_70%)] blur-[72px] opacity-70 group-hover:opacity-90" />
-        </>
-      ),
+      decoration: <MLOpsDecoration />,
     },
     {
       profile: "data-engineer",
       icon: Database,
       colSpan: "",
       background:
-        "linear-gradient(145deg, rgba(7, 27, 54, 0.88) 0%, rgba(11, 48, 86, 0.82) 55%, rgba(5, 21, 42, 0.94) 100%)",
+        "linear-gradient(160deg, rgba(14, 34, 58, 0.94) 0%, rgba(6, 29, 48, 0.88) 52%, rgba(3, 23, 38, 0.96) 100%)",
       texture: "/img/patterns/pipelines-flow.svg",
-      textureBlend: "mix-blend-screen opacity-[0.6]",
+      textureBlend: "mix-blend-screen opacity-[0.45]",
       iconWrapper:
         "border border-[#1FD9D3]/35 bg-[#08365D]/65 text-[#A5FFF9] shadow-[0_0_28px_rgba(31,217,211,0.28)]",
       title: language === "en" ? "Data Pipelines & Modeling" : "Pipelines de Datos & Modelado",
@@ -87,14 +229,7 @@ export default function LandingPage() {
       align: "center",
       tagClass: "border-[#1FD9D3]/25 bg-[#082C4B]/60 text-[#9BF7F0]",
       labelClass: "text-[#7BE3E0]/75 group-hover:text-[#C6FFFC]",
-      decoration: (
-        <>
-          <div className="pointer-events-none absolute inset-[1.25px] rounded-[1.95rem] border border-[#1FD9D3]/20 bg-gradient-to-br from-[#1FD9D3]/10 to-transparent opacity-70 transition transition-duration-[900ms] group-hover:border-[#72F5EF]/35 group-hover:opacity-100" />
-          <div className="pointer-events-none absolute -right-28 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full bg-[conic-gradient(from_90deg_at_50%_50%,rgba(31,217,211,0.24),rgba(9,17,40,0))] opacity-70 blur-[70px]" />
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-[radial-gradient(circle_at_top,rgba(31,217,211,0.12),transparent_75%)] opacity-80" />
-          <div className="pointer-events-none absolute -inset-16 rounded-full bg-[radial-gradient(circle_at_top,rgba(31,217,211,0.18),transparent_65%)] opacity-0 transition transition-duration-[1200ms] group-hover:opacity-45" />
-        </>
-      ),
+      decoration: <DataPipelinesDecoration />,
     },
     {
       profile: "devops-engineer",
@@ -172,8 +307,10 @@ export default function LandingPage() {
                 src={DATA.avatarUrl}
                 alt="Diego Villagran"
                 fill
+                sizes="(max-width: 640px) 48px, (max-width: 768px) 56px, 64px"
                 className="object-cover"
                 priority
+                suppressHydrationWarning
               />
             </div>
           </div>
@@ -221,6 +358,7 @@ export default function LandingPage() {
                   />
                   {card.texture ? (
                     <div
+                      suppressHydrationWarning
                       className={cn(
                         "absolute inset-0 bg-cover bg-center animate-[texture-pan_36s_ease-in-out_infinite]",
                         card.textureBlend,

@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useInView } from 'framer-motion';
 import { Dialog, DialogContent, DialogClose, DialogTitle } from "@/components/ui/dialog";
@@ -178,6 +180,7 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
   const { t } = useI18n();
   const [activeTab, setActiveTab] = useState("overview");
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [particles, setParticles] = useState<Array<{w:number,h:number,left:string,top:string,y:number,duration:number}>>([])
   
   // Valores para animaciones interactivas
   const mouseX = useMotionValue(0);
@@ -207,6 +210,15 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
 
   // Efecto para manejar teclas de escape
   useEffect(() => {
+    setParticles(Array.from({ length: 6 }).map(() => ({
+      w: Math.random() * 50 + 20,
+      h: Math.random() * 50 + 20,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      y: Math.random() * 30 - 15,
+      duration: Math.random() * 5 + 5,
+    })));
+
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
@@ -320,22 +332,22 @@ export function ProjectDialog({ isOpen, onClose, project }: ProjectDialogProps) 
                     >
                       {/* Partículas flotantes */}
                       <div className="absolute inset-0 overflow-hidden">
-                        {Array.from({ length: 6 }).map((_, i) => (
+                        {particles.map((p, i) => (
                           <motion.div
                             key={i}
                             className="absolute rounded-full bg-primary/20 blur-md"
                             style={{
-                              width: Math.random() * 50 + 20,
-                              height: Math.random() * 50 + 20,
-                              left: `${Math.random() * 100}%`,
-                              top: `${Math.random() * 100}%`,
+                              width: p.w,
+                              height: p.h,
+                              left: p.left,
+                              top: p.top,
                             }}
                             animate={{
-                              y: [0, Math.random() * 30 - 15],
+                              y: [0, p.y],
                               opacity: [0.3, 0.7, 0.3],
                             }}
                             transition={{
-                              duration: Math.random() * 5 + 5,
+                              duration: p.duration,
                               repeat: Infinity,
                               repeatType: 'reverse',
                             }}
