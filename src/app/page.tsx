@@ -394,7 +394,7 @@ export default function LandingPage() {
     {
       profile: "ml-engineer",
       icon: Code2,
-      colSpan: "sm:col-span-2 lg:col-span-3",
+      colSpan: "sm:col-span-1 sm:row-span-2",
       background:
         "radial-gradient(circle at 22% 18%, rgba(145, 112, 255, 0.42) 0%, rgba(47, 28, 94, 0.88) 48%, rgba(12, 7, 24, 0.96) 100%)",
       texture: "/img/patterns/mlops-particles.svg",
@@ -416,7 +416,7 @@ export default function LandingPage() {
     {
       profile: "data-engineer",
       icon: Database,
-      colSpan: "sm:col-span-1 lg:col-span-2",
+      colSpan: "sm:col-span-1",
       background:
         "linear-gradient(160deg, rgba(14, 34, 58, 0.94) 0%, rgba(6, 29, 48, 0.88) 52%, rgba(3, 23, 38, 0.96) 100%)",
       texture: "/img/patterns/pipelines-flow.svg",
@@ -438,7 +438,7 @@ export default function LandingPage() {
     {
       profile: "devops-engineer",
       icon: Rocket,
-      colSpan: "sm:col-span-1 lg:col-span-1",
+      colSpan: "sm:col-span-1",
       background:
         "linear-gradient(155deg, rgba(11, 36, 21, 0.9) 0%, rgba(18, 62, 37, 0.85) 55%, rgba(7, 24, 14, 0.95) 100%)",
       texture: "/img/patterns/infra-grid.svg",
@@ -460,7 +460,7 @@ export default function LandingPage() {
     {
       profile: "data-analyst",
       icon: TrendingUp,
-      colSpan: "sm:col-span-2 lg:col-span-3",
+      colSpan: "sm:col-span-2",
       background:
         "linear-gradient(150deg, rgba(45, 26, 16, 0.9) 0%, rgba(60, 32, 12, 0.86) 55%, rgba(33, 18, 9, 0.94) 100%)",
       texture: "/img/patterns/analytics-tiles.svg",
@@ -530,7 +530,7 @@ export default function LandingPage() {
         </motion.div>
 
         <div className="mt-3 flex flex-1 flex-col overflow-hidden sm:mt-4 md:mt-5">
-          <BentoGrid className="landing-bento grid w-full flex-1 grid-cols-1 auto-rows-[minmax(120px,1fr)] gap-2.5 sm:grid-cols-2 sm:auto-rows-[minmax(140px,1fr)] sm:gap-3 md:gap-3.5 lg:grid-cols-3 lg:auto-rows-[minmax(160px,0.6fr)] xl:auto-rows-[minmax(180px,0.5fr)]">
+          <BentoGrid className="landing-bento grid w-full flex-1 grid-cols-1 auto-rows-[minmax(130px,1fr)] gap-2.5 sm:grid-cols-2 sm:auto-rows-[minmax(150px,1fr)] sm:gap-3 md:gap-3.5 lg:auto-rows-[minmax(170px,1fr)] xl:auto-rows-[minmax(190px,1fr)]">
             {cards.map((card) => (
               <motion.button
                 key={card.profile}
