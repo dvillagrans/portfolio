@@ -2,28 +2,181 @@
 
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { useMemo, useRef, type ElementType, type ReactNode } from "react";
+import { useMemo, useRef, useState, useEffect, forwardRef, type ElementType, type ReactNode } from "react";
 import { useI18n } from "@/contexts/i18n-context";
 import { ProfileType } from "@/contexts/profile-context";
-import { Code2, Database, Rocket, TrendingUp } from "lucide-react";
+import { Code2, Database, Rocket, TrendingUp, Server, GitBranch, LineChart, Boxes, Container, Cloud, Activity, BarChart3, FileText, PieChart } from "lucide-react";
 import Image from "next/image";
 import { BentoGrid } from "@/components/ui/bento-grid";
 import { AnimatedBeam } from "@/components/ui/animated-beam";
+import { OrbitingCircles } from "@/components/ui/orbiting-circles";
 import { cn } from "@/lib/utils";
 import { DATA } from "@/data/resume";
 
+// Circle component for beam nodes (like Magic UI examples)
+const Circle = forwardRef<
+  HTMLDivElement,
+  { className?: string; children?: React.ReactNode }
+>(({ className, children }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "z-10 flex size-12 items-center justify-center rounded-full border-2 border-border bg-background p-3 shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)]",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+});
+
+Circle.displayName = "Circle";
+
+const InfrastructureDecoration = () => {
+  return (
+    <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+      {/* Green gradient base */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0b2415] via-[#123e25] to-[#07180e]" />
+
+      {/* Grid pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.15] mix-blend-overlay"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(143,240,178,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(143,240,178,0.05) 1px, transparent 1px)",
+          backgroundSize: "20px 20px",
+        }}
+      />
+
+      {/* Orbiting microservices */}
+      <div className="relative flex h-full w-full items-center justify-center">
+        {/* Center glow */}
+        <div className="size-16 rounded-full border-2 border-emerald-500/30 bg-emerald-500/10 backdrop-blur-sm" />
+
+        {/* Inner orbit */}
+        <OrbitingCircles
+          className="size-8 border-none bg-emerald-500/20 backdrop-blur-sm"
+          duration={20}
+          delay={0}
+          radius={60}
+        />
+        <OrbitingCircles
+          className="size-8 border-none bg-emerald-500/20 backdrop-blur-sm"
+          duration={20}
+          delay={10}
+          radius={60}
+        />
+
+        {/* Outer orbit */}
+        <OrbitingCircles
+          className="size-10 border-none bg-emerald-400/15 backdrop-blur-sm"
+          duration={30}
+          delay={0}
+          radius={100}
+          reverse
+        />
+        <OrbitingCircles
+          className="size-10 border-none bg-emerald-400/15 backdrop-blur-sm"
+          duration={30}
+          delay={15}
+          radius={100}
+          reverse
+        />
+      </div>
+
+      {/* Vignette */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#123e25]/30 to-[#07180e]/70" />
+    </div>
+  );
+};
+
+const DataAnalystDecoration = () => {
+  return (
+    <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-8">
+      {/* Orange gradient base */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#2d1a10] via-[#3c200c] to-[#211209]" />
+
+      {/* Dot pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.15]"
+        style={{
+          backgroundImage: "radial-gradient(rgba(244,184,96,0.4) 1px, transparent 1px)",
+          backgroundSize: "20px 20px",
+        }}
+      />
+
+      {/* Dashboard visualization - sin íconos */}
+      <div className="relative grid h-full w-full grid-cols-3 grid-rows-3 gap-2 p-6">
+        {/* Main chart */}
+        <div className="col-span-2 row-span-2 rounded-lg border border-amber-500/20 bg-amber-950/30 backdrop-blur-sm p-3">
+          <div className="mb-2">
+            <div className="h-1 w-16 bg-amber-500/30 rounded" />
+          </div>
+          <div className="space-y-1">
+            {[60, 80, 45, 90].map((height, i) => (
+              <div key={i} className="flex items-end gap-1 h-3">
+                <div
+                  className="bg-amber-500/40 rounded-sm transition-all"
+                  style={{ width: '20%', height: `${height}%` }}
+                />
+                <div
+                  className="bg-amber-500/30 rounded-sm transition-all"
+                  style={{ width: '20%', height: `${height * 0.7}%` }}
+                />
+                <div
+                  className="bg-amber-500/20 rounded-sm transition-all"
+                  style={{ width: '20%', height: `${height * 0.5}%` }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Small metric cards */}
+        <div className="row-span-1 rounded-lg border border-amber-500/20 bg-amber-950/30 backdrop-blur-sm p-2">
+          <div className="space-y-0.5">
+            <div className="h-0.5 w-full bg-amber-500/30 rounded" />
+            <div className="h-0.5 w-3/4 bg-amber-500/20 rounded" />
+          </div>
+        </div>
+
+        <div className="row-span-1 rounded-lg border border-amber-500/20 bg-amber-950/30 backdrop-blur-sm p-2">
+          <div className="space-y-0.5">
+            <div className="h-0.5 w-full bg-amber-500/30 rounded" />
+            <div className="h-0.5 w-2/3 bg-amber-500/20 rounded" />
+          </div>
+        </div>
+
+        {/* Data table */}
+        <div className="col-span-3 row-span-1 rounded-lg border border-amber-500/20 bg-amber-950/30 backdrop-blur-sm p-2">
+          <div className="space-y-1">
+            {[100, 85, 70].map((width, i) => (
+              <div key={i} className="h-0.5 rounded" style={{ width: `${width}%`, background: 'rgba(244,184,96,0.25)' }} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Vignette */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#3c200c]/30 to-[#211209]/70" />
+    </div>
+  );
+};
+
 const DataPipelinesDecoration = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const sourceRef = useRef<HTMLDivElement | null>(null);
-  const midRef = useRef<HTMLDivElement | null>(null);
-  const targetRef = useRef<HTMLDivElement | null>(null);
+  const dbRef = useRef<HTMLDivElement | null>(null);
+  const pythonRef = useRef<HTMLDivElement | null>(null);
+  const apiRef = useRef<HTMLDivElement | null>(null);
+  const dashboardRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <div ref={containerRef} className="pointer-events-none absolute inset-0">
-      {/* Brand gradient base (deeper, calmer tones) */}
+    <div ref={containerRef} className="pointer-events-none absolute inset-0 flex items-center justify-center p-10">
+      {/* Brand gradient base */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0e223a] via-[#08243d] to-[#031726]" />
 
-      {/* Subtle grain/grid to avoid too-digital feel */}
+      {/* Grain texture */}
       <div
         className="absolute inset-0 opacity-[0.12] mix-blend-overlay"
         style={{
@@ -34,52 +187,43 @@ const DataPipelinesDecoration = () => {
         }}
       />
 
-      {/* Soft glows to hint sources/targets */}
-      <div
-        ref={sourceRef}
-        className="absolute left-[18%] top-[26%] h-16 w-16 rounded-full bg-[#5df0ff]/28 blur-[90px]"
+      {/* Pipeline nodes - sin íconos */}
+      <div className="relative flex w-full max-w-lg flex-row items-center justify-between gap-10">
+        <div className="flex flex-col gap-4">
+          <div ref={dbRef} className="size-12 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm" />
+          <div ref={pythonRef} className="size-12 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm" />
+        </div>
+        
+        <div ref={apiRef} className="size-16 rounded-full border-2 border-cyan-500/40 bg-cyan-500/20 backdrop-blur-sm" />
+
+        <div ref={dashboardRef} className="size-12 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm" />
+      </div>
+
+      {/* Animated Beams */}
+      <AnimatedBeam
+        containerRef={containerRef}
+        fromRef={dbRef}
+        toRef={apiRef}
+        curvature={-40}
+        endYOffset={-10}
       />
-      <div
-        ref={midRef}
-        className="absolute left-[44%] bottom-[38%] h-20 w-20 rounded-full bg-[#22d3ee]/24 blur-[100px]"
-      />
-      <div
-        ref={targetRef}
-        className="absolute right-[17%] bottom-[28%] h-24 w-24 rounded-full bg-[#0ea5e9]/24 blur-[110px]"
+      
+      <AnimatedBeam
+        containerRef={containerRef}
+        fromRef={pythonRef}
+        toRef={apiRef}
+        curvature={40}
+        endYOffset={10}
       />
 
-      {/* Calm cyan beams (atmospheric, not protagonist) */}
       <AnimatedBeam
         containerRef={containerRef}
-        fromRef={sourceRef}
-        toRef={midRef}
-        curvature={100}
-        pathColor="#1FD9D3"
-        pathWidth={2}
-        pathOpacity={0.1}
-        gradientStartColor="rgba(0,214,255,0.85)"
-        gradientStopColor="#22d3ee"
-        duration={18}
-        delay={0.6}
-        className="opacity-[0.18] blur-xl"
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={midRef}
-        toRef={targetRef}
-        curvature={120}
-        pathColor="#22d3ee"
-        pathWidth={1.8}
-        pathOpacity={0.1}
-        gradientStartColor="#22d3ee"
-        gradientStopColor="rgba(0,180,230,0.85)"
-        duration={22}
-        delay={1.2}
+        fromRef={apiRef}
+        toRef={dashboardRef}
         reverse
-        className="opacity-[0.16] blur-[18px]"
       />
 
-      {/* Top-to-bottom vignette to keep content legible */}
+      {/* Vignette */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#031726]/35 to-[#010c14]/70" />
     </div>
   );
@@ -88,15 +232,16 @@ const DataPipelinesDecoration = () => {
 const MLOpsDecoration = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const notebookRef = useRef<HTMLDivElement | null>(null);
+  const gitRef = useRef<HTMLDivElement | null>(null);
   const pipelineRef = useRef<HTMLDivElement | null>(null);
   const prodRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <div ref={containerRef} className="pointer-events-none absolute inset-0">
+    <div ref={containerRef} className="pointer-events-none absolute inset-0 flex items-center justify-center p-10">
       {/* Deep purple gradient base */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#2f1c5e] via-[#1a0f38] to-[#0c071a]" />
 
-      {/* Subtle particle-like grain */}
+      {/* Grain texture */}
       <div
         className="absolute inset-0 opacity-[0.1] mix-blend-overlay"
         style={{
@@ -107,53 +252,43 @@ const MLOpsDecoration = () => {
         }}
       />
 
-      {/* Soft purple glows (notebooks → pipeline → production) */}
-      <div
-        ref={notebookRef}
-        className="absolute left-[15%] top-[30%] h-16 w-16 rounded-full bg-[#b794ff]/32 blur-[85px]"
-      />
-      <div
-        ref={pipelineRef}
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-20 w-20 rounded-full bg-[#9370ff]/26 blur-[95px]"
-      />
-      <div
-        ref={prodRef}
-        className="absolute right-[15%] bottom-[30%] h-24 w-24 rounded-full bg-[#8f7bff]/28 blur-[105px]"
-      />
+      {/* MLOps pipeline nodes - sin íconos */}
+      <div className="relative flex w-full max-w-lg flex-row items-center justify-between gap-10">
+        <div className="flex flex-col gap-4">
+          <div ref={notebookRef} className="size-12 rounded-full border-2 border-purple-500/30 bg-purple-500/10 backdrop-blur-sm" />
+          <div ref={gitRef} className="size-12 rounded-full border-2 border-purple-500/30 bg-purple-500/10 backdrop-blur-sm" />
+        </div>
+        
+        <div ref={pipelineRef} className="size-16 rounded-full border-2 border-purple-500/40 bg-purple-500/20 backdrop-blur-sm" />
 
-      {/* Purple/violet beams (notebooks → pipeline) */}
+        <div ref={prodRef} className="size-12 rounded-full border-2 border-purple-500/30 bg-purple-500/10 backdrop-blur-sm" />
+      </div>
+
+      {/* Animated Beams */}
       <AnimatedBeam
         containerRef={containerRef}
         fromRef={notebookRef}
         toRef={pipelineRef}
-        curvature={90}
-        pathColor="#9370ff"
-        pathWidth={2.2}
-        pathOpacity={0.11}
-        gradientStartColor="rgba(183,148,255,0.88)"
-        gradientStopColor="#9370ff"
-        duration={20}
-        delay={0.4}
-        className="opacity-[0.2] blur-xl"
+        curvature={-40}
+        endYOffset={-10}
       />
-      {/* Pipeline → production */}
+      
+      <AnimatedBeam
+        containerRef={containerRef}
+        fromRef={gitRef}
+        toRef={pipelineRef}
+        curvature={40}
+        endYOffset={10}
+      />
+
       <AnimatedBeam
         containerRef={containerRef}
         fromRef={pipelineRef}
         toRef={prodRef}
-        curvature={110}
-        pathColor="#8f7bff"
-        pathWidth={2}
-        pathOpacity={0.1}
-        gradientStartColor="#9370ff"
-        gradientStopColor="rgba(143,123,255,0.85)"
-        duration={24}
-        delay={1.0}
         reverse
-        className="opacity-[0.18] blur-[16px]"
       />
 
-      {/* Vignette for text legibility */}
+      {/* Vignette */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#1a0f38]/30 to-[#0c071a]/65" />
     </div>
   );
@@ -180,6 +315,11 @@ interface LandingCard {
 export default function LandingPage() {
   const router = useRouter();
   const { language } = useI18n();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleProfileSelect = (profile: ProfileType) => {
     localStorage.setItem("profile", profile);
@@ -190,7 +330,7 @@ export default function LandingPage() {
     {
       profile: "ml-engineer",
       icon: Code2,
-      colSpan: "",
+      colSpan: "lg:col-span-2",
       background:
         "radial-gradient(circle at 22% 18%, rgba(145, 112, 255, 0.42) 0%, rgba(47, 28, 94, 0.88) 48%, rgba(12, 7, 24, 0.96) 100%)",
       texture: "/img/patterns/mlops-particles.svg",
@@ -212,7 +352,7 @@ export default function LandingPage() {
     {
       profile: "data-engineer",
       icon: Database,
-      colSpan: "",
+      colSpan: "lg:col-span-1",
       background:
         "linear-gradient(160deg, rgba(14, 34, 58, 0.94) 0%, rgba(6, 29, 48, 0.88) 52%, rgba(3, 23, 38, 0.96) 100%)",
       texture: "/img/patterns/pipelines-flow.svg",
@@ -234,7 +374,7 @@ export default function LandingPage() {
     {
       profile: "devops-engineer",
       icon: Rocket,
-      colSpan: "",
+      colSpan: "lg:col-span-1",
       background:
         "linear-gradient(155deg, rgba(11, 36, 21, 0.9) 0%, rgba(18, 62, 37, 0.85) 55%, rgba(7, 24, 14, 0.95) 100%)",
       texture: "/img/patterns/infra-grid.svg",
@@ -251,19 +391,12 @@ export default function LandingPage() {
       align: "left",
       tagClass: "border-[#6DE7A1]/25 bg-[#112E1D]/65 text-[#C6FFD9]",
       labelClass: "text-[#9CEABF]/75 group-hover:text-[#D4FFE8]",
-      decoration: (
-        <>
-          <div className="pointer-events-none absolute inset-[1.25px] rounded-[1.95rem] border border-[#66E39F]/20 opacity-75 transition transition-duration-[800ms] group-hover:border-[#A8F7CD]/35 group-hover:opacity-100" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-[radial-gradient(circle_at_bottom,rgba(255,181,106,0.18),transparent_75%)] opacity-70" />
-          <div className="pointer-events-none absolute -left-10 top-10 h-32 w-32 rounded-full bg-[radial-gradient(circle,rgba(70,199,132,0.28),transparent_75%)] opacity-80 blur-[65px]" />
-          <div className="pointer-events-none absolute -top-8 right-12 h-16 w-16 rounded-full bg-[radial-gradient(circle,rgba(255,181,106,0.65),transparent_70%)] opacity-0 transition transition-duration-[900ms] group-hover:opacity-85" />
-        </>
-      ),
+      decoration: <InfrastructureDecoration />,
     },
     {
       profile: "data-analyst",
       icon: TrendingUp,
-      colSpan: "",
+      colSpan: "lg:col-span-2",
       background:
         "linear-gradient(150deg, rgba(45, 26, 16, 0.9) 0%, rgba(60, 32, 12, 0.86) 55%, rgba(33, 18, 9, 0.94) 100%)",
       texture: "/img/patterns/analytics-tiles.svg",
@@ -280,13 +413,7 @@ export default function LandingPage() {
       align: "left",
       tagClass: "border-[#F4B860]/22 bg-[#3A2114]/60 text-[#FFE3C2]",
       labelClass: "text-[#FAD8A4]/80 group-hover:text-[#FFEBD2]",
-      decoration: (
-        <>
-          <div className="pointer-events-none absolute inset-[1.25px] rounded-[1.95rem] border border-[#F4B860]/20 bg-gradient-to-br from-[#F4B860]/12 to-transparent opacity-75 transition transition-duration-[850ms] group-hover:border-[#FFD9A1]/35 group-hover:opacity-100" />
-          <div className="pointer-events-none absolute -right-16 bottom-0 h-44 w-44 rounded-[36%] bg-[radial-gradient(circle,rgba(244,184,96,0.22),transparent_70%)] blur-[72px] opacity-80" />
-          <div className="pointer-events-none absolute left-10 -top-10 h-16 w-16 rounded-full bg-[radial-gradient(circle,rgba(198,113,55,0.45),transparent_70%)] opacity-75 animate-[slow-spin_42s_linear_infinite]" />
-        </>
-      ),
+      decoration: <DataAnalystDecoration />,
     },
   ], [language]);
 
@@ -302,16 +429,19 @@ export default function LandingPage() {
         >
           <div className="relative">
             <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-purple-500/15 via-blue-500/12 to-cyan-500/12 blur-lg opacity-45" />
-            <div className="relative h-12 w-12 overflow-hidden rounded-full ring-2 ring-white/10 sm:h-14 sm:w-14 md:h-16 md:w-16">
-              <Image
-                src={DATA.avatarUrl}
-                alt="Diego Villagran"
-                fill
-                sizes="(max-width: 640px) 48px, (max-width: 768px) 56px, 64px"
-                className="object-cover"
-                priority
-                suppressHydrationWarning
-              />
+            <div className="relative h-12 w-12 overflow-hidden rounded-full ring-2 ring-white/10 sm:h-14 sm:w-14 md:h-16 md:w-16" suppressHydrationWarning>
+              {isMounted ? (
+                <Image
+                  src={DATA.avatarUrl}
+                  alt="Diego Villagran"
+                  fill
+                  sizes="(max-width: 640px) 48px, (max-width: 768px) 56px, 64px"
+                  className="object-cover"
+                  priority
+                />
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-blue-500/15 to-cyan-500/15 animate-pulse" />
+              )}
             </div>
           </div>
 
@@ -336,7 +466,7 @@ export default function LandingPage() {
         </motion.div>
 
         <div className="mt-4 flex flex-1 flex-col overflow-hidden sm:mt-5">
-          <BentoGrid className="landing-bento grid w-full flex-1 grid-cols-1 auto-rows-[minmax(0,1fr)] gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4 lg:auto-rows-[minmax(0,1fr)]">
+          <BentoGrid className="landing-bento grid w-full flex-1 grid-cols-1 auto-rows-[minmax(0,1fr)] gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:auto-rows-[minmax(0,1fr)]">
             {cards.map((card) => (
               <motion.button
                 key={card.profile}
@@ -352,22 +482,29 @@ export default function LandingPage() {
                 )}
               >
                 <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[2rem] opacity-95 transition-opacity transition-duration-[900ms] group-hover:opacity-100">
-                  <div
-                    className="absolute inset-0 transition transition-duration-[1200ms] ease-out"
-                    style={{ background: card.background }}
-                  />
-                  {card.texture ? (
-                    <div
-                      suppressHydrationWarning
-                      className={cn(
-                        "absolute inset-0 bg-cover bg-center animate-[texture-pan_36s_ease-in-out_infinite]",
-                        card.textureBlend,
-                      )}
-                      style={{ backgroundImage: `url(${card.texture})` }}
-                    />
-                  ) : null}
+                  {/* Custom decoration (includes its own background) OR default background */}
+                  {card.decoration || (
+                    <>
+                      <div
+                        className="absolute inset-0 transition transition-duration-[1200ms] ease-out"
+                        style={isMounted ? { background: card.background } : undefined}
+                        suppressHydrationWarning
+                      />
+                      {card.texture ? (
+                        <div
+                          suppressHydrationWarning
+                          className={cn(
+                            "absolute inset-0 bg-cover bg-center animate-[texture-pan_36s_ease-in-out_infinite]",
+                            card.textureBlend,
+                          )}
+                          style={{ backgroundImage: `url(${card.texture})` }}
+                        />
+                      ) : null}
+                    </>
+                  )}
+                  
+                  {/* Radial gradient overlay (always on top for all cards) */}
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.14),transparent_68%)] opacity-70" />
-                  {card.decoration}
                 </div>
 
                 <div className="relative flex h-full flex-col gap-3">

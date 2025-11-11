@@ -149,6 +149,9 @@
     --portfolio-hero-gradient: radial-gradient(circle at 20% 20%, rgba(255, 140, 50, 0.36) 0%, rgba(27, 17, 8, 0) 55%), linear-gradient(155deg, #200d02 0%, #3b1f06 55%, #2a1604 100%);
     --portfolio-illustration: url("/img/patterns/analytics-tiles.svg");
   }
+  .theme {
+    --animate-orbit: orbit calc(var(--duration)*1s) linear infinite;
+  }
 }
 
 @layer base {
@@ -572,5 +575,16 @@ code[data-line-numbers-max-digits="3"]>[data-line]::before {
   .reveal-element {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+@theme inline {
+  @keyframes orbit {
+  0% {
+    transform: rotate(calc(var(--angle) * 1deg)) translateY(calc(var(--radius) * 1px)) rotate(calc(var(--angle) * -1deg));
+    }
+  100% {
+    transform: rotate(calc(var(--angle) * 1deg + 360deg)) translateY(calc(var(--radius) * 1px)) rotate(calc((var(--angle) * -1deg) - 360deg));
+    }
   }
 }

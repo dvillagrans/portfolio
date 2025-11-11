@@ -32,7 +32,7 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
   toRef,
   curvature = 0,
   reverse = false, // Include the reverse prop
-  duration = 5,
+  duration = Math.random() * 3 + 4,
   delay = 0,
   pathColor = "gray",
   pathWidth = 2,
@@ -47,7 +47,6 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
   const id = useId()
   const [pathD, setPathD] = useState("")
   const [svgDimensions, setSvgDimensions] = useState({ width: 0, height: 0 })
-  const [animDuration, setAnimDuration] = useState(duration)
 
   // Calculate the gradient coordinates based on the reverse prop
   const gradientCoordinates = reverse
@@ -65,13 +64,6 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
       }
 
   useEffect(() => {
-    // compute non-deterministic duration on client only to avoid SSR mismatch
-    // only if duration is default (5), otherwise respect explicit value
-    if (duration === 5) {
-      setAnimDuration(Math.random() * 3 + 4)
-    } else {
-      setAnimDuration(duration)
-    }
     const updatePath = () => {
       if (containerRef.current && fromRef.current && toRef.current) {
         const containerRect = containerRef.current.getBoundingClientRect()
@@ -155,7 +147,6 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
       />
       <defs>
         <motion.linearGradient
-          suppressHydrationWarning
           className="transform-gpu"
           id={id}
           gradientUnits={"userSpaceOnUse"}
@@ -173,7 +164,7 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
           }}
           transition={{
             delay,
-            duration: animDuration,
+            duration,
             ease: [0.16, 1, 0.3, 1], // https://easings.net/#easeOutExpo
             repeat: Infinity,
             repeatDelay: 0,
