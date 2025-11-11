@@ -28,10 +28,35 @@ export default function Navbar() {
       <Dock
         className={cn(
           "z-50 pointer-events-auto relative mx-auto flex min-h-full h-full items-center px-1 transform-gpu",
-          // Liquid glass effect
+          // Enhanced Liquid glass effect
           isLandingPage
-            ? "bg-white/5 dark:bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_0_rgba(255,255,255,0.05)]"
-            : "bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]"
+            ? [
+                // Base glass effect
+                "bg-gradient-to-b from-white/10 via-white/5 to-white/10",
+                "dark:from-white/8 dark:via-white/3 dark:to-white/8",
+                // Blur and backdrop
+                "backdrop-blur-3xl backdrop-saturate-150",
+                // Borders with gradient
+                "border border-white/20 dark:border-white/15",
+                // Soft shadows
+                "shadow-[0_8px_32px_rgba(0,0,0,0.08),0_4px_16px_rgba(0,0,0,0.04),inset_0_0_0_1px_rgba(255,255,255,0.1)]",
+                "dark:shadow-[0_8px_32px_rgba(0,0,0,0.4),0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1),inset_0_-1px_0_rgba(255,255,255,0.05)]",
+                // Subtle glow
+                "before:absolute before:inset-0 before:rounded-full before:bg-gradient-to-b before:from-white/10 before:to-transparent before:opacity-50",
+                "dark:before:from-white/5"
+              ].join(" ")
+            : [
+                // Base glass effect for non-landing pages
+                "bg-gradient-to-b from-background/95 via-background/90 to-background/95",
+                "backdrop-blur-xl backdrop-saturate-150",
+                // Refined borders
+                "border border-border/50 dark:border-white/10",
+                // Layered shadows
+                "shadow-[0_0_0_1px_rgba(0,0,0,0.02),0_2px_8px_rgba(0,0,0,0.04),0_12px_24px_rgba(0,0,0,0.06)]",
+                "dark:shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_2px_8px_rgba(0,0,0,0.3),0_-20px_80px_-20px_rgba(255,255,255,0.08)_inset]",
+                // Inner glow
+                "before:absolute before:inset-0 before:rounded-full before:bg-gradient-to-b before:from-background/50 before:to-transparent before:opacity-30",
+              ].join(" ")
         )}
       >
         {/* Navigation tabs - hidden on landing page */}
