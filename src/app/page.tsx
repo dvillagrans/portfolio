@@ -59,48 +59,48 @@ const InfrastructureDecoration = () => {
       />
 
       {/* Orbiting microservices con iconos */}
-      <div className="relative flex h-full w-full items-center justify-center">
+      <div className="relative flex h-full w-full items-center justify-center scale-75 sm:scale-90 lg:scale-100">
         {/* Center glow con icono */}
-        <div className="size-16 rounded-full border-2 border-emerald-500/30 bg-emerald-500/10 backdrop-blur-sm flex items-center justify-center">
-          <Cloud className="w-7 h-7 text-emerald-400" />
+        <div className="size-12 rounded-full border-2 border-emerald-500/30 bg-emerald-500/10 backdrop-blur-sm flex items-center justify-center sm:size-14 lg:size-16">
+          <Cloud className="w-5 h-5 text-emerald-400 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />
         </div>
 
         {/* Inner orbit con iconos */}
         <OrbitingCircles
-          className="size-8 border-none bg-emerald-500/20 backdrop-blur-sm flex items-center justify-center"
+          className="size-6 border-none bg-emerald-500/20 backdrop-blur-sm flex items-center justify-center sm:size-7 lg:size-8"
           duration={20}
           delay={0}
-          radius={60}
+          radius={50}
         >
-          <Container className="w-3 h-3 text-emerald-300" />
+          <Container className="w-2.5 h-2.5 text-emerald-300 sm:w-3 sm:h-3" />
         </OrbitingCircles>
         <OrbitingCircles
-          className="size-8 border-none bg-emerald-500/20 backdrop-blur-sm flex items-center justify-center"
+          className="size-6 border-none bg-emerald-500/20 backdrop-blur-sm flex items-center justify-center sm:size-7 lg:size-8"
           duration={20}
           delay={10}
-          radius={60}
+          radius={50}
         >
-          <Database className="w-3 h-3 text-emerald-300" />
+          <Database className="w-2.5 h-2.5 text-emerald-300 sm:w-3 sm:h-3" />
         </OrbitingCircles>
 
         {/* Outer orbit con iconos */}
         <OrbitingCircles
-          className="size-10 border-none bg-emerald-400/15 backdrop-blur-sm flex items-center justify-center"
+          className="size-8 border-none bg-emerald-400/15 backdrop-blur-sm flex items-center justify-center sm:size-9 lg:size-10"
           duration={30}
           delay={0}
-          radius={100}
+          radius={80}
           reverse
         >
-          <Server className="w-4 h-4 text-emerald-300" />
+          <Server className="w-3 h-3 text-emerald-300 sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4" />
         </OrbitingCircles>
         <OrbitingCircles
-          className="size-10 border-none bg-emerald-400/15 backdrop-blur-sm flex items-center justify-center"
+          className="size-8 border-none bg-emerald-400/15 backdrop-blur-sm flex items-center justify-center sm:size-9 lg:size-10"
           duration={30}
           delay={15}
-          radius={100}
+          radius={80}
           reverse
         >
-          <Boxes className="w-4 h-4 text-emerald-300" />
+          <Boxes className="w-3 h-3 text-emerald-300 sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4" />
         </OrbitingCircles>
       </div>
 
@@ -112,17 +112,17 @@ const InfrastructureDecoration = () => {
 
 const DataAnalystDecoration = () => {
   return (
-    <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-8">
+    <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-3 sm:p-5 md:p-6 lg:p-8">
       {/* Orange gradient base */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#2d1a10] via-[#3c200c] to-[#211209]" />
 
       {/* Chart/Analytics icons background */}
-      <div className="absolute top-4 right-4 opacity-5">
-        <TrendingUp className="w-32 h-32 text-amber-300" />
+      <div className="absolute top-2 right-2 opacity-5 sm:top-3 sm:right-3 md:top-4 md:right-4">
+        <TrendingUp className="w-20 h-20 text-amber-300 sm:w-24 sm:h-24 md:w-32 md:h-32" />
       </div>
       
-      <div className="absolute bottom-6 left-6 opacity-5">
-        <Database className="w-24 h-24 text-amber-400" />
+      <div className="absolute bottom-3 left-3 opacity-5 sm:bottom-4 sm:left-4 md:bottom-6 md:left-6">
+        <Database className="w-16 h-16 text-amber-400 sm:w-20 sm:h-20 md:w-24 md:h-24" />
       </div>
 
       {/* Dot pattern */}
@@ -135,15 +135,15 @@ const DataAnalystDecoration = () => {
       />
 
       {/* Dashboard visualization - sin íconos */}
-      <div className="relative grid h-full w-full grid-cols-3 grid-rows-3 gap-2 p-6">
+      <div className="relative grid h-full w-full grid-cols-3 grid-rows-3 gap-1 p-3 sm:gap-1.5 sm:p-4 md:gap-2 md:p-6">
         {/* Main chart */}
-        <div className="col-span-2 row-span-2 rounded-lg border border-amber-500/20 bg-amber-950/30 backdrop-blur-sm p-3">
-          <div className="mb-2">
-            <div className="h-1 w-16 bg-amber-500/30 rounded" />
+        <div className="col-span-2 row-span-2 rounded-md border border-amber-500/20 bg-amber-950/30 backdrop-blur-sm p-1.5 sm:p-2 md:p-3 md:rounded-lg">
+          <div className="mb-1 sm:mb-1.5 md:mb-2">
+            <div className="h-0.5 w-10 bg-amber-500/30 rounded sm:h-0.5 sm:w-12 md:h-1 md:w-16" />
           </div>
-          <div className="space-y-1">
+          <div className="space-y-0.5 sm:space-y-0.5 md:space-y-1">
             {[60, 80, 45, 90].map((height, i) => (
-              <div key={i} className="flex items-end gap-1 h-3">
+              <div key={i} className="flex items-end gap-0.5 h-2 sm:h-2.5 md:h-3">
                 <div
                   className="bg-amber-500/40 rounded-sm transition-all"
                   style={{ width: '20%', height: `${height}%` }}
@@ -162,14 +162,14 @@ const DataAnalystDecoration = () => {
         </div>
 
         {/* Small metric cards */}
-        <div className="row-span-1 rounded-lg border border-amber-500/20 bg-amber-950/30 backdrop-blur-sm p-2">
+        <div className="row-span-1 rounded-md border border-amber-500/20 bg-amber-950/30 backdrop-blur-sm p-1 sm:p-1.5 md:p-2 md:rounded-lg">
           <div className="space-y-0.5">
             <div className="h-0.5 w-full bg-amber-500/30 rounded" />
             <div className="h-0.5 w-3/4 bg-amber-500/20 rounded" />
           </div>
         </div>
 
-        <div className="row-span-1 rounded-lg border border-amber-500/20 bg-amber-950/30 backdrop-blur-sm p-2">
+        <div className="row-span-1 rounded-md border border-amber-500/20 bg-amber-950/30 backdrop-blur-sm p-1 sm:p-1.5 md:p-2 md:rounded-lg">
           <div className="space-y-0.5">
             <div className="h-0.5 w-full bg-amber-500/30 rounded" />
             <div className="h-0.5 w-2/3 bg-amber-500/20 rounded" />
@@ -177,8 +177,8 @@ const DataAnalystDecoration = () => {
         </div>
 
         {/* Data table */}
-        <div className="col-span-3 row-span-1 rounded-lg border border-amber-500/20 bg-amber-950/30 backdrop-blur-sm p-2">
-          <div className="space-y-1">
+        <div className="col-span-3 row-span-1 rounded-md border border-amber-500/20 bg-amber-950/30 backdrop-blur-sm p-1 sm:p-1.5 md:p-2 md:rounded-lg">
+          <div className="space-y-0.5 sm:space-y-0.5 md:space-y-1">
             {[100, 85, 70].map((width, i) => (
               <div key={i} className="h-0.5 rounded" style={{ width: `${width}%`, background: 'rgba(244,184,96,0.25)' }} />
             ))}
@@ -200,18 +200,18 @@ const DataPipelinesDecoration = () => {
   const dashboardRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <div ref={containerRef} className="pointer-events-none absolute inset-0 flex items-center justify-center p-10">
+    <div ref={containerRef} className="pointer-events-none absolute inset-0 flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-10">
       {/* Deep cyan/blue gradient base */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0e223a] via-[#08243d] to-[#031726]" />
       
       {/* Database icon background */}
-      <div className="absolute top-4 left-4 opacity-5">
-        <Database className="w-24 h-24 text-cyan-400" />
+      <div className="absolute top-2 left-2 opacity-5 sm:top-3 sm:left-3 md:top-4 md:left-4">
+        <Database className="w-16 h-16 text-cyan-400 sm:w-20 sm:h-20 md:w-24 md:h-24" />
       </div>
       
       {/* Code icon background */}
-      <div className="absolute bottom-6 right-6 opacity-5">
-        <Code2 className="w-28 h-28 text-cyan-300" />
+      <div className="absolute bottom-4 right-4 opacity-5 sm:bottom-5 sm:right-5 md:bottom-6 md:right-6">
+        <Code2 className="w-20 h-20 text-cyan-300 sm:w-24 sm:h-24 md:w-28 md:h-28" />
       </div>
 
       {/* Grain texture */}
@@ -226,22 +226,22 @@ const DataPipelinesDecoration = () => {
       />
 
       {/* Data pipeline nodes con iconos */}
-      <div className="relative flex w-full max-w-lg flex-row items-center justify-between gap-10">
-        <div className="flex flex-col gap-4">
-          <div ref={dbRef} className="size-12 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm flex items-center justify-center">
-            <Database className="w-5 h-5 text-cyan-400" />
+      <div className="relative flex w-full max-w-xs sm:max-w-md md:max-w-lg flex-row items-center justify-between gap-4 sm:gap-6 md:gap-8 lg:gap-10 scale-90 sm:scale-95 md:scale-100">
+        <div className="flex flex-col gap-2 sm:gap-3 md:gap-4">
+          <div ref={dbRef} className="size-8 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm flex items-center justify-center sm:size-10 md:size-12">
+            <Database className="w-3.5 h-3.5 text-cyan-400 sm:w-4 sm:h-4 md:w-5 md:h-5" />
           </div>
-          <div ref={pythonRef} className="size-12 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm flex items-center justify-center">
-            <Code2 className="w-5 h-5 text-cyan-400" />
+          <div ref={pythonRef} className="size-8 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm flex items-center justify-center sm:size-10 md:size-12">
+            <Code2 className="w-3.5 h-3.5 text-cyan-400 sm:w-4 sm:h-4 md:w-5 md:h-5" />
           </div>
         </div>
         
-        <div ref={apiRef} className="size-16 rounded-full border-2 border-cyan-500/40 bg-cyan-500/20 backdrop-blur-sm flex items-center justify-center">
-          <Server className="w-7 h-7 text-cyan-300" />
+        <div ref={apiRef} className="size-12 rounded-full border-2 border-cyan-500/40 bg-cyan-500/20 backdrop-blur-sm flex items-center justify-center sm:size-14 md:size-16">
+          <Server className="w-5 h-5 text-cyan-300 sm:w-6 sm:h-6 md:w-7 md:h-7" />
         </div>
 
-        <div ref={dashboardRef} className="size-12 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm flex items-center justify-center">
-          <BarChart3 className="w-5 h-5 text-cyan-400" />
+        <div ref={dashboardRef} className="size-8 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 backdrop-blur-sm flex items-center justify-center sm:size-10 md:size-12">
+          <BarChart3 className="w-3.5 h-3.5 text-cyan-400 sm:w-4 sm:h-4 md:w-5 md:h-5" />
         </div>
       </div>
 
@@ -283,18 +283,18 @@ const MLOpsDecoration = () => {
   const prodRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <div ref={containerRef} className="pointer-events-none absolute inset-0 flex items-center justify-center p-10">
+    <div ref={containerRef} className="pointer-events-none absolute inset-0 flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-10">
       {/* Deep purple gradient base */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#2f1c5e] via-[#1a0f38] to-[#0c071a]" />
       
       {/* Rocket icon background */}
-      <div className="absolute top-6 right-6 opacity-5">
-        <Rocket className="w-32 h-32 text-purple-300" />
+      <div className="absolute top-3 right-3 opacity-5 sm:top-4 sm:right-4 md:top-6 md:right-6">
+        <Rocket className="w-20 h-20 text-purple-300 sm:w-24 sm:h-24 md:w-32 md:h-32" />
       </div>
       
       {/* Code icon background */}
-      <div className="absolute bottom-4 left-4 opacity-5">
-        <Code2 className="w-28 h-28 text-purple-400" />
+      <div className="absolute bottom-2 left-2 opacity-5 sm:bottom-3 sm:left-3 md:bottom-4 md:left-4">
+        <Code2 className="w-20 h-20 text-purple-400 sm:w-24 sm:h-24 md:w-28 md:h-28" />
       </div>
 
       {/* Grain texture */}
@@ -309,22 +309,22 @@ const MLOpsDecoration = () => {
       />
 
       {/* MLOps pipeline nodes con iconos */}
-      <div className="relative flex w-full max-w-lg flex-row items-center justify-between gap-10">
-        <div className="flex flex-col gap-4">
-          <div ref={notebookRef} className="size-12 rounded-full border-2 border-purple-500/30 bg-purple-500/10 backdrop-blur-sm flex items-center justify-center">
-            <FileText className="w-5 h-5 text-purple-400" />
+      <div className="relative flex w-full max-w-xs sm:max-w-md md:max-w-lg flex-row items-center justify-between gap-4 sm:gap-6 md:gap-8 lg:gap-10 scale-90 sm:scale-95 md:scale-100">
+        <div className="flex flex-col gap-2 sm:gap-3 md:gap-4">
+          <div ref={notebookRef} className="size-8 rounded-full border-2 border-purple-500/30 bg-purple-500/10 backdrop-blur-sm flex items-center justify-center sm:size-10 md:size-12">
+            <FileText className="w-3.5 h-3.5 text-purple-400 sm:w-4 sm:h-4 md:w-5 md:h-5" />
           </div>
-          <div ref={gitRef} className="size-12 rounded-full border-2 border-purple-500/30 bg-purple-500/10 backdrop-blur-sm flex items-center justify-center">
-            <GitBranch className="w-5 h-5 text-purple-400" />
+          <div ref={gitRef} className="size-8 rounded-full border-2 border-purple-500/30 bg-purple-500/10 backdrop-blur-sm flex items-center justify-center sm:size-10 md:size-12">
+            <GitBranch className="w-3.5 h-3.5 text-purple-400 sm:w-4 sm:h-4 md:w-5 md:h-5" />
           </div>
         </div>
         
-        <div ref={pipelineRef} className="size-16 rounded-full border-2 border-purple-500/40 bg-purple-500/20 backdrop-blur-sm flex items-center justify-center">
-          <Activity className="w-7 h-7 text-purple-300" />
+        <div ref={pipelineRef} className="size-12 rounded-full border-2 border-purple-500/40 bg-purple-500/20 backdrop-blur-sm flex items-center justify-center sm:size-14 md:size-16">
+          <Activity className="w-5 h-5 text-purple-300 sm:w-6 sm:h-6 md:w-7 md:h-7" />
         </div>
 
-        <div ref={prodRef} className="size-12 rounded-full border-2 border-purple-500/30 bg-purple-500/10 backdrop-blur-sm flex items-center justify-center">
-          <Rocket className="w-5 h-5 text-purple-400" />
+        <div ref={prodRef} className="size-8 rounded-full border-2 border-purple-500/30 bg-purple-500/10 backdrop-blur-sm flex items-center justify-center sm:size-10 md:size-12">
+          <Rocket className="w-3.5 h-3.5 text-purple-400 sm:w-4 sm:h-4 md:w-5 md:h-5" />
         </div>
       </div>
 
@@ -394,7 +394,7 @@ export default function LandingPage() {
     {
       profile: "ml-engineer",
       icon: Code2,
-      colSpan: "lg:col-span-3",
+      colSpan: "sm:col-span-2 lg:col-span-3",
       background:
         "radial-gradient(circle at 22% 18%, rgba(145, 112, 255, 0.42) 0%, rgba(47, 28, 94, 0.88) 48%, rgba(12, 7, 24, 0.96) 100%)",
       texture: "/img/patterns/mlops-particles.svg",
@@ -416,7 +416,7 @@ export default function LandingPage() {
     {
       profile: "data-engineer",
       icon: Database,
-      colSpan: "lg:col-span-2",
+      colSpan: "sm:col-span-1 lg:col-span-2",
       background:
         "linear-gradient(160deg, rgba(14, 34, 58, 0.94) 0%, rgba(6, 29, 48, 0.88) 52%, rgba(3, 23, 38, 0.96) 100%)",
       texture: "/img/patterns/pipelines-flow.svg",
@@ -438,7 +438,7 @@ export default function LandingPage() {
     {
       profile: "devops-engineer",
       icon: Rocket,
-      colSpan: "lg:col-span-1",
+      colSpan: "sm:col-span-1 lg:col-span-1",
       background:
         "linear-gradient(155deg, rgba(11, 36, 21, 0.9) 0%, rgba(18, 62, 37, 0.85) 55%, rgba(7, 24, 14, 0.95) 100%)",
       texture: "/img/patterns/infra-grid.svg",
@@ -460,7 +460,7 @@ export default function LandingPage() {
     {
       profile: "data-analyst",
       icon: TrendingUp,
-      colSpan: "lg:col-span-3",
+      colSpan: "sm:col-span-2 lg:col-span-3",
       background:
         "linear-gradient(150deg, rgba(45, 26, 16, 0.9) 0%, rgba(60, 32, 12, 0.86) 55%, rgba(33, 18, 9, 0.94) 100%)",
       texture: "/img/patterns/analytics-tiles.svg",
@@ -482,18 +482,18 @@ export default function LandingPage() {
   ], [language]);
 
   return (
-    <div className="h-dvh w-full overflow-hidden px-3 py-3 sm:px-4 sm:py-4 md:px-6 md:py-5 lg:px-8">
-      <div className="mx-auto flex h-full max-w-6xl flex-1 flex-col rounded-3xl border border-white/10 bg-black/25 p-4 sm:p-6 md:p-7 backdrop-blur-2xl">
+    <div className="h-dvh w-full overflow-hidden px-2 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 lg:px-8 lg:py-5">
+      <div className="mx-auto flex h-full max-w-7xl flex-1 flex-col rounded-2xl sm:rounded-3xl border border-white/10 bg-black/25 p-3 sm:p-5 md:p-6 lg:p-7 backdrop-blur-2xl">
         {/* Hero */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45 }}
-          className="flex flex-col items-center gap-3 text-center sm:gap-3.5"
+          className="flex flex-col items-center gap-2 text-center sm:gap-3 md:gap-3.5"
         >
           <div className="relative">
             <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-purple-500/15 via-blue-500/12 to-cyan-500/12 blur-lg opacity-45" />
-            <div className="relative h-12 w-12 overflow-hidden rounded-full ring-2 ring-white/10 sm:h-14 sm:w-14 md:h-16 md:w-16" suppressHydrationWarning>
+            <div className="relative h-10 w-10 overflow-hidden rounded-full ring-2 ring-white/10 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16" suppressHydrationWarning>
               {isMounted ? (
                 <Image
                   src={DATA.avatarUrl}
@@ -510,17 +510,17 @@ export default function LandingPage() {
           </div>
 
           <div className="space-y-1 sm:space-y-1.5">
-            <h1 className="text-xl font-extrabold leading-tight sm:text-2xl md:text-3xl lg:text-[34px]">
+            <h1 className="text-lg font-extrabold leading-tight sm:text-xl md:text-2xl lg:text-3xl xl:text-[34px]">
               {language === "en" ? "Hi, I'm Diego" : "Hola, soy Diego"}
             </h1>
-            <p className="mx-auto max-w-xl px-2 text-xs text-muted-foreground/80 leading-relaxed sm:text-sm md:text-base">
+            <p className="mx-auto max-w-xl px-2 text-[11px] text-muted-foreground/80 leading-relaxed sm:text-xs md:text-sm lg:text-base">
               {language === "en"
                 ? "I build data systems that feel calm in production."
                 : "Construyo sistemas de datos que se sienten tranquilos en producción."}
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-1.5 text-[10px] text-muted-foreground/65 sm:gap-2 sm:text-xs">
+          <div className="flex flex-wrap items-center justify-center gap-1 text-[9px] text-muted-foreground/65 sm:gap-1.5 sm:text-[10px] md:gap-2 md:text-xs">
             <span>{language === "en" ? "Transparency" : "Transparencia"}</span>
             <span className="text-muted-foreground/35">•</span>
             <span>{language === "en" ? "Documentation" : "Documentación"}</span>
@@ -529,8 +529,8 @@ export default function LandingPage() {
           </div>
         </motion.div>
 
-        <div className="mt-4 flex flex-1 flex-col overflow-hidden sm:mt-5">
-          <BentoGrid className="landing-bento grid w-full flex-1 grid-cols-1 auto-rows-[minmax(140px,1fr)] gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:auto-rows-[minmax(180px,0.5fr)]">
+        <div className="mt-3 flex flex-1 flex-col overflow-hidden sm:mt-4 md:mt-5">
+          <BentoGrid className="landing-bento grid w-full flex-1 grid-cols-1 auto-rows-[minmax(120px,1fr)] gap-2.5 sm:grid-cols-2 sm:auto-rows-[minmax(140px,1fr)] sm:gap-3 md:gap-3.5 lg:grid-cols-3 lg:auto-rows-[minmax(160px,0.6fr)] xl:auto-rows-[minmax(180px,0.5fr)]">
             {cards.map((card) => (
               <motion.button
                 key={card.profile}
@@ -540,8 +540,8 @@ export default function LandingPage() {
                 transition={{ duration: 0.4, delay: card.delay }}
                 onClick={() => handleProfileSelect(card.profile)}
                 className={cn(
-                  "group relative flex h-full flex-col overflow-hidden rounded-[2rem] border border-white/[0.08] bg-white/[0.035] p-4 text-left backdrop-blur-[26px] transition-all duration-500 sm:p-5",
-                  "hover:-translate-y-1.5 hover:border-white/[0.18] hover:shadow-[0_24px_68px_-32px_rgba(4,9,26,0.8)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                  "group relative flex h-full flex-col overflow-hidden rounded-xl sm:rounded-2xl lg:rounded-[2rem] border border-white/[0.08] bg-white/[0.035] p-3 text-left backdrop-blur-[26px] transition-all duration-500 sm:p-4 md:p-5",
+                  "hover:-translate-y-1 sm:hover:-translate-y-1.5 hover:border-white/[0.18] hover:shadow-[0_24px_68px_-32px_rgba(4,9,26,0.8)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                   card.colSpan,
                 )}
               >
@@ -571,38 +571,38 @@ export default function LandingPage() {
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.14),transparent_68%)] opacity-70" />
                 </div>
 
-                <div className="relative flex h-full flex-col gap-3">
+                <div className="relative flex h-full flex-col gap-2 sm:gap-2.5 md:gap-3">
                   <div
                     className={cn(
-                      "inline-flex h-11 w-11 items-center justify-center rounded-2xl border text-lg font-semibold shadow-lg transition-transform duration-300 group-hover:scale-95",
+                      "inline-flex h-9 w-9 items-center justify-center rounded-xl border text-base font-semibold shadow-lg transition-transform duration-300 group-hover:scale-95 sm:h-10 sm:w-10 sm:rounded-2xl md:h-11 md:w-11 md:text-lg",
                       card.iconWrapper,
                     )}
                   >
-                    <card.icon className="h-5 w-5" />
+                    <card.icon className="h-4 w-4 sm:h-4.5 sm:w-4.5 md:h-5 md:w-5" />
                   </div>
 
                   <div
                     className={cn(
-                      "flex flex-1 flex-col gap-2",
+                      "flex flex-1 flex-col gap-1.5 sm:gap-2",
                       card.align === "center" && "items-center text-center",
                     )}
                   >
-                    <h3 className="text-base font-semibold text-white sm:text-lg lg:text-xl">
+                    <h3 className="text-sm font-semibold text-white sm:text-base md:text-lg lg:text-xl leading-tight">
                       {card.title}
                     </h3>
-                    <p className="max-w-xs text-xs leading-relaxed text-white/70 sm:text-sm">
+                    <p className="max-w-xs text-[11px] leading-relaxed text-white/70 sm:text-xs md:text-sm">
                       {card.description}
                     </p>
                   </div>
 
                   <div
                     className={cn(
-                      "flex flex-wrap gap-1.5",
+                      "flex flex-wrap gap-1 sm:gap-1.5",
                       card.align === "center" ? "justify-center" : "",
                     )}
                   >
                     {card.tags.map((tech) => (
-                      <span key={tech} className={cn("rounded-full px-2.5 py-1 text-[10px] font-medium uppercase tracking-wide transition sm:text-xs", card.tagClass)}>
+                      <span key={tech} className={cn("rounded-full px-2 py-0.5 text-[9px] font-medium uppercase tracking-wide transition sm:px-2.5 sm:py-1 sm:text-[10px] md:text-xs", card.tagClass)}>
                         {tech}
                       </span>
                     ))}
@@ -611,7 +611,7 @@ export default function LandingPage() {
 
                 <span
                   className={cn(
-                    "pointer-events-none absolute bottom-4 right-5 text-[10px] uppercase tracking-[0.3em] transition-colors duration-500",
+                    "pointer-events-none absolute bottom-3 right-4 text-[9px] uppercase tracking-[0.3em] transition-colors duration-500 sm:bottom-4 sm:right-5 sm:text-[10px]",
                     card.labelClass,
                   )}
                 >
@@ -626,7 +626,7 @@ export default function LandingPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.35, delay: 0.3 }}
-          className="mt-4 flex items-center justify-center gap-4 text-[10px] text-muted-foreground/60 sm:gap-5 sm:text-xs"
+          className="mt-2.5 flex items-center justify-center gap-3 text-[9px] text-muted-foreground/60 sm:mt-3 sm:gap-4 sm:text-[10px] md:mt-4 md:gap-5 md:text-xs"
         >
           <button
             onClick={() => router.push("/projects")}
