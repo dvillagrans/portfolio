@@ -3,74 +3,22 @@
 import { IconCloud } from "@/components/ui/icon-cloud";
 import { motion } from "framer-motion";
 
+import { createToolIconNode } from "./tool-icon-utils";
+
 interface TechSphereProps {
   coreTools: string[];
   ecosystemTools: string[];
 }
 
-// Create SVG icons for each tool
-function createToolIcon(name: string, isCore: boolean) {
-  const size = isCore ? 80 : 60;
-  const fontSize = isCore ? 14 : 11;
-  const padding = isCore ? 12 : 8;
-
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox={`0 0 ${size} ${size}`}
-      xmlns="http://www.w3.org/2000/svg"
-      key={name}
-    >
-      {/* Background */}
-      <rect
-        x="0"
-        y="0"
-        width={size}
-        height={size}
-        rx={isCore ? 16 : 12}
-        fill={isCore ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.06)'}
-        stroke={isCore ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.15)'}
-        strokeWidth={isCore ? 2 : 1}
-      />
-
-      {/* Glow effect for core tools */}
-      {isCore && (
-        <rect
-          x="0"
-          y="0"
-          width={size}
-          height={size}
-          rx={16}
-          fill="none"
-          stroke="rgba(255, 255, 255, 0.2)"
-          strokeWidth="4"
-          filter="blur(8px)"
-        />
-      )}
-
-      {/* Text */}
-      <text
-        x={size / 2}
-        y={size / 2}
-        textAnchor="middle"
-        dominantBaseline="central"
-        fill="white"
-        fontSize={fontSize}
-        fontWeight={isCore ? 700 : 600}
-        fontFamily="system-ui, -apple-system, sans-serif"
-      >
-        {name}
-      </text>
-    </svg>
-  );
-}
-
 export function TechSphere({ coreTools, ecosystemTools }: TechSphereProps) {
   // Create icon nodes for IconCloud
   const toolIcons = [
-    ...coreTools.map(tool => createToolIcon(tool, true)),
-    ...ecosystemTools.map(tool => createToolIcon(tool, false))
+    ...coreTools.map((tool, index) =>
+      createToolIconNode(tool, { variant: "core", accentIndex: index }),
+    ),
+    ...ecosystemTools.map((tool, index) =>
+      createToolIconNode(tool, { variant: "default", accentIndex: index }),
+    ),
   ];
 
   return (

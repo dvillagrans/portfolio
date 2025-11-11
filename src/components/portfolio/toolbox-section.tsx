@@ -1,8 +1,10 @@
 'use client';
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { PortfolioToolboxGroup } from "@/data/profiles/types";
+import { IconCloud } from "@/components/ui/icon-cloud";
+import { createToolIconNode } from "./tool-icon-utils";
 import { TechSphere } from "./tech-sphere";
 
 interface ToolboxSectionProps {
@@ -19,6 +21,17 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
   // Flatten all tools for display
   const allTools = toolbox.flatMap(group => group.items);
   const hasCore = coreTools.length > 0;
+  const toolboxIcons = useMemo(
+    () =>
+      toolbox.flatMap((group, groupIndex) =>
+        group.items.map((item, itemIndex) =>
+          createToolIconNode(item, {
+            accentIndex: groupIndex * 4 + itemIndex,
+          }),
+        ),
+      ),
+    [toolbox],
+  );
 
   return (
     <section id="toolbox" className="space-y-8">
@@ -129,7 +142,7 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
         </motion.div>
       ) : (
         <motion.div
-          className="grid gap-6 md:grid-cols-2"
+          className="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:items-start"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
@@ -137,33 +150,83 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
             hidden: {},
             visible: {
               transition: {
-                staggerChildren: 0.12,
+                staggerChildren: 0.16,
               },
             },
           }}
         >
-          {toolbox.map((group) => (
-            <motion.div
-              key={group.title}
-              className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur"
-              variants={{
-                hidden: { opacity: 0, y: 24 },
-                visible: { opacity: 1, y: 0 },
-              }}
-            >
-              <h3 className="text-lg font-semibold text-white">{group.title}</h3>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {group.items.map((item) => (
-                  <span
-                    key={item}
-                    className="portfolio-chip inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80"
-                  >
-                    {item}
-                  </span>
-                ))}
+          <motion.div
+            className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.08] via-white/[0.02] to-transparent p-6 backdrop-blur"
+            variants={{
+              hidden: { opacity: 0, y: 24 },
+              visible: { opacity: 1, y: 0 },
+            }}
+          >
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.22),transparent_60%)]" />
+            <div className="relative flex flex-col items-center gap-6">
+              <div className="relative flex items-center justify-center">
+                <IconCloud icons={toolboxIcons} />
               </div>
-            </motion.div>
-          ))}
+              <div className="text-center">
+                <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/50">
+                  Ecosistema en movimiento
+                </p>
+                <p className="mt-2 text-base text-white/65">
+                  Explora las herramientas que activo según el reto: datos, infraestructura, automatización y BI sin silos.
+                </p>
+              </div>
+              <motion.span
+                className="rounded-full border border-white/10 bg-white/[0.05] px-4 py-1.5 text-xs text-white/50"
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.4 }}
+              >
+                Arrastra para rotar • Click para centrar
+              </motion.span>
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="grid gap-6 md:grid-cols-2"
+            variants={{
+              hidden: { opacity: 0, y: 24 },
+              visible: {
+                opacity: 1,
+                y: 0,
+                transition: { staggerChildren: 0.1 },
+              },
+            }}
+          >
+            {toolbox.map((group, groupIndex) => (
+              <motion.div
+                key={group.title}
+                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur transition hover:border-white/20"
+                variants={{
+                  hidden: { opacity: 0, y: 18 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+              >
+                <div className="absolute inset-0 opacity-0 transition group-hover:opacity-100">
+                  <div className="h-full w-full bg-gradient-to-br from-white/[0.06] via-white/[0.02] to-transparent" />
+                </div>
+                <div className="relative">
+                  <h3 className="text-lg font-semibold text-white">{group.title}</h3>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {group.items.map((item) => (
+                      <span
+                        key={item}
+                        className="portfolio-chip inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.02] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/75 transition group-hover:border-white/20 group-hover:text-white/90"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="pointer-events-none absolute -left-20 -top-20 h-40 w-40 rounded-full bg-white/[0.04] blur-2xl transition group-hover:bg-white/[0.06]" />
+                <div className="pointer-events-none absolute -right-16 -bottom-16 h-36 w-36 rounded-full bg-white/[0.03] blur-3xl transition group-hover:bg-white/[0.06]" />
+              </motion.div>
+            ))}
+          </motion.div>
         </motion.div>
       )}
     </section>
