@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion"
 import { usePathname } from "next/navigation"
-import { ReactNode } from "react"
+import { ReactNode, useEffect, useState } from "react"
 
 interface PageTransitionProps {
   children: ReactNode
@@ -34,6 +34,16 @@ const pageTransition = {
 
 export function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname()
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  // Durante SSR/hidratación, renderiza sin animación
+  if (!isMounted) {
+    return <div className="w-full">{children}</div>
+  }
 
   return (
     <AnimatePresence mode="wait" initial={false}>

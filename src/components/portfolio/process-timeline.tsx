@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { PortfolioProcessStep } from "@/data/profiles/types";
+import { PortfolioProcessStep, resolveText } from "@/data/profiles/types";
 import { resolveIcon } from "./icon-map";
+import { useI18n } from "@/contexts/i18n-context";
 
 interface ProcessTimelineProps {
   steps: PortfolioProcessStep[];
@@ -11,6 +12,26 @@ interface ProcessTimelineProps {
 }
 
 export function ProcessTimeline({ steps, onSectionView }: ProcessTimelineProps) {
+  const { language } = useI18n();
+
+  const localizedCopy = useMemo(
+    () => ({
+      eyebrow: {
+        en: "My Process",
+        es: "Mi proceso",
+      },
+      headline: {
+        en: "Clear milestones, visible deliverables.",
+        es: "Tramos claros, entregables visibles.",
+      },
+      description: {
+        en: "Three phases repeated in every engagement, adapted to your stack and team so nobody gets lost along the way.",
+        es: "Tres fases que se repiten en cada engagement, ajustadas a tu stack y equipo para que nadie se pierda en el camino.",
+      },
+    }),
+    [],
+  );
+
   useEffect(() => {
     onSectionView?.("process");
   }, [onSectionView]);
@@ -25,12 +46,13 @@ export function ProcessTimeline({ steps, onSectionView }: ProcessTimelineProps) 
         transition={{ duration: 0.4 }}
       >
         <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/50">
-          Mi proceso
+          {resolveText(localizedCopy.eyebrow, language)}
         </p>
-        <h2 className="text-3xl font-semibold text-white">Tramos claros, entregables visibles.</h2>
+        <h2 className="text-3xl font-semibold text-white">
+          {resolveText(localizedCopy.headline, language)}
+        </h2>
         <p className="max-w-2xl text-base text-white/65">
-          Tres fases que se repiten en cada engagement, ajustadas a tu stack y equipo para que nadie se
-          pierda en el camino.
+          {resolveText(localizedCopy.description, language)}
         </p>
       </motion.div>
 
@@ -50,7 +72,7 @@ export function ProcessTimeline({ steps, onSectionView }: ProcessTimelineProps) 
       >
         {steps.map((step, index) => (
           <motion.li
-            key={step.title}
+            key={resolveText(step.title, language)}
             className="group relative rounded-3xl border border-white/10 bg-white/[0.05] p-6 backdrop-blur transition-all duration-300 hover:-translate-y-2 hover:bg-white/[0.08]"
             variants={{
               hidden: { opacity: 0, y: 24 },
@@ -67,9 +89,11 @@ export function ProcessTimeline({ steps, onSectionView }: ProcessTimelineProps) 
               </span>
             </div>
             <div className="mt-6 space-y-3">
-              <h3 className="text-xl font-semibold text-white">{step.title}</h3>
-              <p className="text-sm text-white/70">{step.description}</p>
-              <p className="text-sm text-white/55">{step.detail}</p>
+              <h3 className="text-xl font-semibold text-white">
+                {resolveText(step.title, language)}
+              </h3>
+              <p className="text-sm text-white/70">{resolveText(step.description, language)}</p>
+              <p className="text-sm text-white/55">{resolveText(step.detail, language)}</p>
             </div>
           </motion.li>
         ))}

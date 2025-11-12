@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { PortfolioFinalCTA } from "@/data/profiles/types";
+import { PortfolioFinalCTA, resolveText } from "@/data/profiles/types";
 import { PortfolioCtaButton } from "./cta-button";
+import { useI18n } from "@/contexts/i18n-context";
 
 interface FinalCtaProps {
   cta: PortfolioFinalCTA;
@@ -12,9 +13,23 @@ interface FinalCtaProps {
 }
 
 export function FinalCta({ cta, onCtaClick, onSectionView }: FinalCtaProps) {
+  const { language } = useI18n();
+  const copy = useMemo(
+    () => ({
+      eyebrow: {
+        en: "Next Step",
+        es: "Próximo paso",
+      },
+    }),
+    [],
+  );
+
   useEffect(() => {
     onSectionView?.("final-cta");
   }, [onSectionView]);
+
+  const primaryLabel = resolveText(cta.primary.label, language);
+  const secondaryLabel = cta.secondary ? resolveText(cta.secondary.label, language) : undefined;
 
   return (
     <motion.section
@@ -30,30 +45,35 @@ export function FinalCta({ cta, onCtaClick, onSectionView }: FinalCtaProps) {
       transition={{ duration: 0.5 }}
     >
       <div className="space-y-6">
-        <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/60">Próximo paso</p>
-        <h2 className="text-3xl font-semibold leading-tight">{cta.title}</h2>
-        <p className="max-w-2xl text-base text-white/80">{cta.subtitle}</p>
+        <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/60">
+          {resolveText(copy.eyebrow, language)}
+        </p>
+        <h2 className="text-3xl font-semibold leading-tight">{resolveText(cta.title, language)}</h2>
+        <p className="max-w-2xl text-base text-white/80">{resolveText(cta.subtitle, language)}</p>
         <div className="flex flex-wrap gap-4">
           <PortfolioCtaButton
             link={cta.primary}
-            onClick={() => onCtaClick?.(cta.primary.label)}
+            onClick={() => onCtaClick?.(primaryLabel)}
           />
-          {cta.secondary && (
+          {cta.secondary && secondaryLabel && (
             <PortfolioCtaButton
               link={cta.secondary}
               className="bg-white/5 text-white/80 hover:bg-white/10"
-              onClick={() => onCtaClick?.(cta.secondary?.label ?? "")}
+              onClick={() => onCtaClick?.(secondaryLabel)}
             />
           )}
         </div>
-        {cta.note && <p className="text-sm text-white/60">{cta.note}</p>}
+        {cta.note && <p className="text-sm text-white/60">{resolveText(cta.note, language)}</p>}
         {cta.slots && (
           <div className="flex flex-wrap gap-3 text-sm text-white/60">
-            {cta.slots.map((slot) => (
-              <span key={slot} className="rounded-full border border-white/15 px-4 py-2">
-                {slot}
-              </span>
-            ))}
+            {cta.slots.map((slot) => {
+              const slotText = resolveText(slot, language);
+              return (
+                <span key={slotText} className="rounded-full border border-white/15 px-4 py-2">
+                  {slotText}
+                </span>
+              );
+            })}
           </div>
         )}
       </div>

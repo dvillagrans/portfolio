@@ -1,3 +1,5 @@
+import type { Language } from "@/contexts/i18n-context";
+
 export type PortfolioIconToken =
   | "pipeline"
   | "delivery"
@@ -11,47 +13,56 @@ export type PortfolioIconToken =
   | "cloud"
   | "data";
 
+export interface LocalizedText {
+  en: string;
+  es: string;
+}
+
+export function resolveText(text: LocalizedText, language: Language): string {
+  return text[language] ?? text.es;
+}
+
 export type PortfolioLinkType = "primary" | "secondary" | "ghost" | "soft";
 
 export interface PortfolioLink {
-  label: string;
+  label: LocalizedText;
   href: string;
   type?: PortfolioLinkType;
-  description?: string;
+  description?: LocalizedText;
   target?: "_blank" | "_self";
   icon?: string;
   download?: boolean;
 }
 
 export interface PortfolioMetric {
-  label: string;
-  value: string;
-  description?: string;
+  label: LocalizedText;
+  value: LocalizedText;
+  description?: LocalizedText;
 }
 
 export interface PortfolioHero {
-  eyebrow: string;
-  title: string;
-  subtitle: string;
-  credentials: string;
-  badge: string;
-  persona: string;
+  eyebrow: LocalizedText;
+  title: LocalizedText;
+  subtitle: LocalizedText;
+  credentials: LocalizedText;
+  badge: LocalizedText;
+  persona: LocalizedText;
   photo: string;
   metrics: PortfolioMetric[];
   ctas: PortfolioLink[];
 }
 
 export interface PortfolioProblem {
-  title: string;
-  description: string;
-  metric?: string;
+  title: LocalizedText;
+  description: LocalizedText;
+  metric?: LocalizedText;
 }
 
 export interface PortfolioProcessStep {
   icon: PortfolioIconToken;
-  title: string;
-  description: string;
-  detail: string;
+  title: LocalizedText;
+  description: LocalizedText;
+  detail: LocalizedText;
 }
 
 export interface PortfolioCaseMedia {
@@ -62,14 +73,14 @@ export interface PortfolioCaseMedia {
 }
 
 export interface PortfolioCaseStudy {
-  title: string;
-  category: string;
-  timeframe: string;
-  summary: string;
-  context: string;
-  action: string;
-  result: string;
-  metric: string;
+  title: LocalizedText;
+  category: LocalizedText;
+  timeframe: LocalizedText;
+  summary: LocalizedText;
+  context: LocalizedText;
+  action: LocalizedText;
+  result: LocalizedText;
+  metric: LocalizedText;
   tags: string[];
   proof: PortfolioLink[];
   media: PortfolioCaseMedia;
@@ -78,46 +89,46 @@ export interface PortfolioCaseStudy {
 }
 
 export interface PortfolioToolboxGroup {
-  title: string;
+  title: LocalizedText;
   items: string[];
 }
 
 export interface PortfolioGuarantee {
-  label: string;
-  value: string;
-  description: string;
+  label: LocalizedText;
+  value: LocalizedText;
+  description: LocalizedText;
 }
 
 export interface PortfolioTestimonial {
-  quote: string;
-  author: string;
-  role: string;
-  company?: string;
+  quote: LocalizedText;
+  author: LocalizedText;
+  role: LocalizedText;
+  company?: LocalizedText;
   avatar?: string;
   highlight?: boolean;
 }
 
 export interface PortfolioWorkingStyle {
-  availability: string;
-  timezone: string;
-  communication: string;
-  handoff: string;
+  availability: LocalizedText;
+  timezone: LocalizedText;
+  communication: LocalizedText;
+  handoff: LocalizedText;
   tools: string[];
 }
 
 export interface PortfolioAnecdote {
-  title: string;
-  story: string;
-  lesson: string;
+  title: LocalizedText;
+  story: LocalizedText;
+  lesson: LocalizedText;
 }
 
 export interface PortfolioFinalCTA {
-  title: string;
-  subtitle: string;
+  title: LocalizedText;
+  subtitle: LocalizedText;
   primary: PortfolioLink;
   secondary?: PortfolioLink;
-  note?: string;
-  slots?: string[];
+  note?: LocalizedText;
+  slots?: LocalizedText[];
 }
 
 export interface ProfileData {

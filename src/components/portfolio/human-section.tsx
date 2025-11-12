@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { PortfolioAnecdote, PortfolioWorkingStyle } from "@/data/profiles/types";
+import { PortfolioAnecdote, PortfolioWorkingStyle, resolveText } from "@/data/profiles/types";
+import { useI18n } from "@/contexts/i18n-context";
 
 interface HumanSectionProps {
   anecdote: PortfolioAnecdote;
@@ -11,6 +12,45 @@ interface HumanSectionProps {
 }
 
 export function HumanSection({ anecdote, workingStyle, onSectionView }: HumanSectionProps) {
+  const { language } = useI18n();
+  const localizedCopy = useMemo(
+    () => ({
+      eyebrow: {
+        en: "Human signals",
+        es: "Señales humanas",
+      },
+      lesson: {
+        en: "What I learned",
+        es: "Lo que aprendí",
+      },
+      howIWork: {
+        en: "How I work",
+        es: "Cómo trabajo",
+      },
+      availability: {
+        en: "Availability:",
+        es: "Disponibilidad:",
+      },
+      timezone: {
+        en: "Timezone:",
+        es: "Zona horaria:",
+      },
+      communication: {
+        en: "Communication:",
+        es: "Comunicación:",
+      },
+      handoff: {
+        en: "Handoff:",
+        es: "Handoff:",
+      },
+      tools: {
+        en: "Tools",
+        es: "Herramientas",
+      },
+    }),
+    [],
+  );
+
   useEffect(() => {
     onSectionView?.("human");
   }, [onSectionView]);
@@ -24,12 +64,16 @@ export function HumanSection({ anecdote, workingStyle, onSectionView }: HumanSec
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.4 }}
       >
-        <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/50">Señales humanas</p>
-        <h3 className="mt-3 text-2xl font-semibold text-white">{anecdote.title}</h3>
-        <p className="mt-4 text-base text-white/70">{anecdote.story}</p>
+        <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/50">
+          {resolveText(localizedCopy.eyebrow, language)}
+        </p>
+        <h3 className="mt-3 text-2xl font-semibold text-white">{resolveText(anecdote.title, language)}</h3>
+        <p className="mt-4 text-base text-white/70">{resolveText(anecdote.story, language)}</p>
         <div className="mt-6 rounded-2xl border border-white/12 bg-white/5 p-4">
-          <p className="text-xs uppercase tracking-wide text-white/55">Lo que aprendí</p>
-          <p className="mt-2 text-sm text-white/75">{anecdote.lesson}</p>
+          <p className="text-xs uppercase tracking-wide text-white/55">
+            {resolveText(localizedCopy.lesson, language)}
+          </p>
+          <p className="mt-2 text-sm text-white/75">{resolveText(anecdote.lesson, language)}</p>
         </div>
       </motion.article>
 
@@ -40,23 +84,31 @@ export function HumanSection({ anecdote, workingStyle, onSectionView }: HumanSec
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.4, delay: 0.1 }}
       >
-        <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/50">Cómo trabajo</p>
+        <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/50">
+          {resolveText(localizedCopy.howIWork, language)}
+        </p>
         <ul className="mt-5 space-y-4 text-sm text-white/70">
           <li>
-            <span className="text-white/55">Disponibilidad:</span> {workingStyle.availability}
+            <span className="text-white/55">{resolveText(localizedCopy.availability, language)}</span>{" "}
+            {resolveText(workingStyle.availability, language)}
           </li>
           <li>
-            <span className="text-white/55">Zona horaria:</span> {workingStyle.timezone}
+            <span className="text-white/55">{resolveText(localizedCopy.timezone, language)}</span>{" "}
+            {resolveText(workingStyle.timezone, language)}
           </li>
           <li>
-            <span className="text-white/55">Comunicación:</span> {workingStyle.communication}
+            <span className="text-white/55">{resolveText(localizedCopy.communication, language)}</span>{" "}
+            {resolveText(workingStyle.communication, language)}
           </li>
           <li>
-            <span className="text-white/55">Handoff:</span> {workingStyle.handoff}
+            <span className="text-white/55">{resolveText(localizedCopy.handoff, language)}</span>{" "}
+            {resolveText(workingStyle.handoff, language)}
           </li>
         </ul>
         <div className="mt-5">
-          <p className="text-xs uppercase tracking-wide text-white/55">Herramientas</p>
+          <p className="text-xs uppercase tracking-wide text-white/55">
+            {resolveText(localizedCopy.tools, language)}
+          </p>
           <div className="mt-3 flex flex-wrap gap-2">
             {workingStyle.tools.map((tool) => (
               <span

@@ -1,39 +1,49 @@
-import React, { useState, useEffect, memo } from "react";
+"use client";
+
 import IconCloud from "@/components/magicui/icon-cloud";
 import { DATA } from "@/data/resume";
 
-// Utilizamos React.memo para evitar re-renderizaciones innecesarias
-export const IconCloudDemo = memo(function IconCloudDemo() {
-  const [skills, setSkills] = useState<string[]>([]);
-  const [isReady, setIsReady] = useState(false);
+// Mapeo de nombres de skills a slugs válidos de SimpleIcons
+const skillToSlugMap: Record<string, string> = {
+  "Python": "python",
+  "Pandas": "pandas",
+  "Numpy": "numpy",
+  "Matplotlib": "matplotlib",
+  "Seaborn": "python", // No tiene icono específico, usar python
+  "anaconda": "anaconda",
+  "Scikit-learn": "scikitlearn",
+  "Tensorflow": "tensorflow",
+  "Keras": "keras",
+  "PyTorch": "pytorch",
+  "Yolo": "yolo",
+  "PostgreSQL": "postgresql",
+  "SQL": "mysql", // Usar mysql como representación de SQL
+  "Git": "git",
+  "GitHub": "github",
+  "Docker": "docker",
+  "Kubernetes": "kubernetes",
+  "AmazonAWS": "amazonaws",
+  "Azure": "microsoftazure",
+  "googlecloud": "googlecloud",
+  "HTML5": "html5",
+  "CSS3": "css3",
+  "JavaScript": "javascript",
+  "TypeScript": "typescript",
+  "React": "react",
+  "Astro": "astro",
+  "Vercel": "vercel",
+  "googlecolab": "googlecolab"
+};
 
-  // Usar useEffect para procesar habilidades solo una vez en el cliente
-  useEffect(() => {
-    // Procesar los skills en un useEffect para asegurar que solo se ejecute en el cliente
-    const processedSkills = DATA.skills
-      .map(skill => skill.toLowerCase())
-      .filter(skill => skill.trim() !== ""); // Filtrar cualquier skill vacío
-    
-    // Establecer el estado solo si es necesario para evitar re-renders
-    if (processedSkills.length > 0) {
-      setSkills(processedSkills);
-      setIsReady(true);
-    }
-    
-    // Este efecto solo debe ejecutarse una vez al montar el componente
-  }, []);
+// Convertir skills a slugs válidos
+const slugs = DATA.skills
+  .map(skill => skillToSlugMap[skill])
+  .filter((slug): slug is string => slug !== undefined);
 
-  // Usar un contenedor con altura fija para mantener el espacio durante la carga
+export function IconCloudDemo() {
   return (
-    <div 
-      className="relative flex h-[300px] w-full max-w-[28rem] items-center justify-center rounded-lg bg-transparent px-12 pb-4 pt-6"
-      style={{ willChange: 'auto', contain: 'content' }} // Mejora el rendimiento durante el scroll
-    >
-      {!isReady ? (
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>
-      ) : (
-        <IconCloud iconSlugs={skills} />
-      )}
+    <div className="relative flex h-full w-full max-w-[32rem] items-center justify-center overflow-hidden rounded-lg border bg-background px-20 pb-20 pt-8">
+      <IconCloud iconSlugs={slugs} />
     </div>
   );
-});
+}

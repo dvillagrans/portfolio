@@ -2,10 +2,11 @@
 
 import { useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { PortfolioToolboxGroup } from "@/data/profiles/types";
+import { PortfolioToolboxGroup, resolveText } from "@/data/profiles/types";
 import { IconCloud } from "@/components/ui/icon-cloud";
 import { createToolIconNode } from "./tool-icon-utils";
 import { TechSphere } from "./tech-sphere";
+import { useI18n } from "@/contexts/i18n-context";
 
 interface ToolboxSectionProps {
   toolbox: PortfolioToolboxGroup[];
@@ -14,6 +15,65 @@ interface ToolboxSectionProps {
 }
 
 export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: ToolboxSectionProps) {
+  const { language } = useI18n();
+
+  const localizedCopy = useMemo(
+    () => ({
+      eyebrow: {
+        en: "Toolbox",
+        es: "Toolbox",
+      },
+      headlineCore: {
+        en: "I don't just know tools—I design coherent systems.",
+        es: "No solo sé herramientas, sé diseñar sistemas coherentes.",
+      },
+      descriptionCore: {
+        en: "These are my non-negotiable technical pillars. Everything else adapts to the problem.",
+        es: "Estas son mis pilares técnicos no negociables. Lo demás se adapta según el problema.",
+      },
+      headlineNoCore: {
+        en: "Tools selected for impact.",
+        es: "Herramientas seleccionadas por impacto.",
+      },
+      descriptionNoCore: {
+        en: "Not an infinite list; it's the stack I reuse to deliver value in your domain.",
+        es: "No es una lista infinita; es el stack que uso recurrentemente para entregar valor en tu dominio.",
+      },
+      pillarsTitle: {
+        en: "Technical pillars",
+        es: "Pilares técnicos",
+      },
+      pillarsDescription: {
+        en: "Core tools that define my data architecture: modeling, orchestration, and quality.",
+        es: "Herramientas core que definen mi arquitectura de datos: modelado, orquestación y calidad.",
+      },
+      ecosystemTitle: {
+        en: "Complementary ecosystem",
+        es: "Ecosistema complementario",
+      },
+      ecosystemDescription: {
+        en: "Flexible stack I adapt per challenge: streaming, BI, warehousing, and more.",
+        es: "Stack flexible que adapto según el problema: streaming, BI, warehousing y más.",
+      },
+      ecosystemHeading: {
+        en: "Ecosystem in motion",
+        es: "Ecosistema en movimiento",
+      },
+      ecosystemCopy: {
+        en: "Explore the tools I activate based on the challenge: data, infrastructure, automation, and BI without silos.",
+        es: "Explora las herramientas que activo según el reto: datos, infraestructura, automatización y BI sin silos.",
+      },
+      interactionHint: {
+        en: "Drag to rotate • Click to center",
+        es: "Arrastra para rotar • Click para centrar",
+      },
+      moreSuffix: {
+        en: "more",
+        es: "más",
+      },
+    }),
+    [],
+  );
   useEffect(() => {
     onSectionView?.("toolbox");
   }, [onSectionView]);
@@ -42,14 +102,14 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.4 }}
       >
-        <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/50">Toolbox</p>
+        <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/50">
+          {resolveText(localizedCopy.eyebrow, language)}
+        </p>
         <h2 className="text-3xl font-semibold text-white">
-          {hasCore ? "No solo sé herramientas, sé diseñar sistemas coherentes." : "Herramientas seleccionadas por impacto."}
+          {resolveText(hasCore ? localizedCopy.headlineCore : localizedCopy.headlineNoCore, language)}
         </h2>
         <p className="max-w-2xl text-base text-white/65">
-          {hasCore
-            ? "Estas son mis pilares técnicos no negociables. Lo demás se adapta según el problema."
-            : "No es una lista infinita; es el stack que uso recurrentemente para entregar valor en tu dominio."}
+          {resolveText(hasCore ? localizedCopy.descriptionCore : localizedCopy.descriptionNoCore, language)}
         </p>
       </motion.div>
 
@@ -94,11 +154,11 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
               <div className="flex items-center gap-3 mb-3">
                 <div className="h-3 w-3 rounded-full bg-white/80 animate-pulse" />
                 <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-white/70">
-                  Pilares técnicos
+                  {resolveText(localizedCopy.pillarsTitle, language)}
                 </h3>
               </div>
               <p className="text-sm text-white/60">
-                Herramientas core que definen mi arquitectura de datos: modelado, orquestación y calidad.
+                {resolveText(localizedCopy.pillarsDescription, language)}
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {coreTools.map((tool) => (
@@ -116,11 +176,11 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
               <div className="flex items-center gap-3 mb-3">
                 <div className="h-2 w-2 rounded-full bg-white/40" />
                 <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-white/50">
-                  Ecosistema complementario
+                  {resolveText(localizedCopy.ecosystemTitle, language)}
                 </h3>
               </div>
               <p className="text-sm text-white/60">
-                Stack flexible que adapto según el problema: streaming, BI, warehousing y más.
+                {resolveText(localizedCopy.ecosystemDescription, language)}
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {allTools.filter(tool => !coreTools.includes(tool)).slice(0, 8).map((tool) => (
@@ -133,7 +193,9 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
                 ))}
                 {allTools.filter(tool => !coreTools.includes(tool)).length > 8 && (
                   <span className="text-xs text-white/40">
-                    +{allTools.filter(tool => !coreTools.includes(tool)).length - 8} más
+                    +
+                    {allTools.filter(tool => !coreTools.includes(tool)).length - 8}{" "}
+                    {resolveText(localizedCopy.moreSuffix, language)}
                   </span>
                 )}
               </div>
@@ -169,10 +231,10 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
               </div>
               <div className="text-center">
                 <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/50">
-                  Ecosistema en movimiento
+                  {resolveText(localizedCopy.ecosystemHeading, language)}
                 </p>
                 <p className="mt-2 text-base text-white/65">
-                  Explora las herramientas que activo según el reto: datos, infraestructura, automatización y BI sin silos.
+                  {resolveText(localizedCopy.ecosystemCopy, language)}
                 </p>
               </div>
               <motion.span
@@ -181,7 +243,7 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.4 }}
               >
-                Arrastra para rotar • Click para centrar
+                {resolveText(localizedCopy.interactionHint, language)}
               </motion.span>
             </div>
           </motion.div>
@@ -199,7 +261,7 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
           >
             {toolbox.map((group, groupIndex) => (
               <motion.div
-                key={group.title}
+                key={resolveText(group.title, language)}
                 className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur transition hover:border-white/20"
                 variants={{
                   hidden: { opacity: 0, y: 18 },
@@ -210,7 +272,9 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
                   <div className="h-full w-full bg-gradient-to-br from-white/[0.06] via-white/[0.02] to-transparent" />
                 </div>
                 <div className="relative">
-                  <h3 className="text-lg font-semibold text-white">{group.title}</h3>
+                  <h3 className="text-lg font-semibold text-white">
+                    {resolveText(group.title, language)}
+                  </h3>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {group.items.map((item) => (
                       <span

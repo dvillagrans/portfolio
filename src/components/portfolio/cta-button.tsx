@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { PortfolioLink } from "@/data/profiles/types";
+import { PortfolioLink, resolveText } from "@/data/profiles/types";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/contexts/i18n-context";
 
 const variantMap: Record<string, "default" | "secondary" | "outline" | "ghost"> = {
   primary: "default",
@@ -21,6 +22,8 @@ interface PortfolioCtaButtonProps {
 
 export function PortfolioCtaButton({ link, className, size = "lg", onClick }: PortfolioCtaButtonProps) {
   const variant = variantMap[link.type ?? "primary"] ?? "default";
+  const { language } = useI18n();
+  const label = resolveText(link.label, language);
 
   if (link.href.startsWith("http") || link.href.startsWith("mailto:")) {
     return (
@@ -43,7 +46,7 @@ export function PortfolioCtaButton({ link, className, size = "lg", onClick }: Po
           target={link.target ?? (link.href.startsWith("http") ? "_blank" : undefined)}
           rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
         >
-          {link.label}
+          {label}
         </Link>
       </Button>
     );
@@ -65,7 +68,7 @@ export function PortfolioCtaButton({ link, className, size = "lg", onClick }: Po
       )}
     >
       <Link href={link.href} download={link.download}>
-        {link.label}
+        {label}
       </Link>
     </Button>
   );

@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { PortfolioCaseStudy } from "@/data/profiles/types";
+import { PortfolioCaseStudy, resolveText, type LocalizedText } from "@/data/profiles/types";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/contexts/i18n-context";
 
 interface CaseShowcaseProps {
   studies: PortfolioCaseStudy[];
@@ -14,6 +15,42 @@ interface CaseShowcaseProps {
 }
 
 export function CaseShowcase({ studies, onSectionView, onProofClick }: CaseShowcaseProps) {
+  const { language } = useI18n();
+
+  const localizedCopy = useMemo(
+    () => ({
+      eyebrow: {
+        en: "Signature Cases",
+        es: "Casos insignia",
+      },
+      headline: {
+        en: "Context → Action → Outcome.",
+        es: "Contexto → Acción → Resultado.",
+      },
+      description: {
+        en: "I show how I move from problem to tangible value with metrics, live dashboards and production evidence.",
+        es: "Muestro cómo paso del problema al valor tangible con métricas, tableros vivos y pruebas en producción.",
+      },
+      quickWin: {
+        en: "Quick win",
+        es: "Quick win",
+      },
+      context: {
+        en: "Context",
+        es: "Contexto",
+      },
+      action: {
+        en: "Action",
+        es: "Acción",
+      },
+      result: {
+        en: "Result",
+        es: "Resultado",
+      },
+    }),
+    [],
+  );
+
   useEffect(() => {
     onSectionView?.("cases");
   }, [onSectionView]);
@@ -28,19 +65,20 @@ export function CaseShowcase({ studies, onSectionView, onProofClick }: CaseShowc
         transition={{ duration: 0.4 }}
       >
         <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] sm:tracking-[0.4em] text-white/50">
-          Casos insignia
+          {resolveText(localizedCopy.eyebrow, language)}
         </p>
-        <h2 className="text-2xl sm:text-3xl font-semibold text-white">Contexto → Acción → Resultado.</h2>
+        <h2 className="text-2xl sm:text-3xl font-semibold text-white">
+          {resolveText(localizedCopy.headline, language)}
+        </h2>
         <p className="max-w-2xl text-sm sm:text-base text-white/65">
-          Muestro cómo paso del problema al valor tangible con métricas, tableros vivos y pruebas en
-          producción.
+          {resolveText(localizedCopy.description, language)}
         </p>
       </motion.div>
 
       <div className="grid gap-4 sm:gap-5 md:gap-6 lg:grid-cols-2">
         {studies.map((study) => (
           <motion.article
-            key={study.title}
+            key={resolveText(study.title, language)}
             className={cn(
               "group relative flex flex-col gap-4 sm:gap-5 overflow-hidden rounded-2xl sm:rounded-3xl border border-white/12 bg-white/[0.04] p-5 sm:p-6 backdrop-blur transition-all duration-500",
               study.highlight
@@ -58,12 +96,12 @@ export function CaseShowcase({ studies, onSectionView, onProofClick }: CaseShowc
 
             <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs uppercase tracking-wide text-white/50">
               <span className="rounded-full border border-white/10 px-2.5 sm:px-3 py-1 text-white/70">
-                {study.category}
+                {resolveText(study.category, language)}
               </span>
-              <span className="text-[10px] sm:text-xs">{study.timeframe}</span>
+              <span className="text-[10px] sm:text-xs">{resolveText(study.timeframe, language)}</span>
               {study.quickRead && (
                 <span className="rounded-full bg-white/10 px-2 py-1 text-[9px] sm:text-[10px] font-semibold text-white/70">
-                  Quick win
+                  {resolveText(localizedCopy.quickWin, language)}
                 </span>
               )}
             </div>
@@ -78,19 +116,23 @@ export function CaseShowcase({ studies, onSectionView, onProofClick }: CaseShowc
             </div>
 
             <div className="space-y-2 sm:space-y-3">
-              <h3 className="text-xl sm:text-2xl font-semibold text-white">{study.title}</h3>
-              <p className="text-sm sm:text-base text-white/70">{study.summary}</p>
+              <h3 className="text-xl sm:text-2xl font-semibold text-white">
+                {resolveText(study.title, language)}
+              </h3>
+              <p className="text-sm sm:text-base text-white/70">
+                {resolveText(study.summary, language)}
+              </p>
             </div>
 
             <div className="grid gap-2 sm:gap-3 text-xs sm:text-sm text-white/65">
-              <InfoRow label="Contexto" value={study.context} />
-              <InfoRow label="Acción" value={study.action} />
-              <InfoRow label="Resultado" value={study.result} />
+              <InfoRow label={localizedCopy.context} value={study.context} />
+              <InfoRow label={localizedCopy.action} value={study.action} />
+              <InfoRow label={localizedCopy.result} value={study.result} />
             </div>
 
             <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs uppercase tracking-wide text-white/50">
               <span className="rounded-full bg-[hsla(var(--portfolio-accent),0.18)] px-2.5 sm:px-3 py-1 text-white/70">
-                {study.metric}
+                {resolveText(study.metric, language)}
               </span>
               {study.tags.map((tag) => (
                 <span key={tag} className="rounded-full border border-white/12 px-2.5 sm:px-3 py-1 text-white/60">
@@ -103,12 +145,17 @@ export function CaseShowcase({ studies, onSectionView, onProofClick }: CaseShowc
               <div className="flex flex-wrap gap-2 sm:gap-3 pt-1 sm:pt-2">
                 {study.proof.map((proof) => (
                   <Link
-                    key={proof.label}
+                    key={resolveText(proof.label, language)}
                     href={proof.href}
                     target={proof.target ?? "_blank"}
                     rel={proof.target === "_blank" ? "noopener noreferrer" : undefined}
                     className="group/link inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/15 px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-white/75 transition-all duration-200 hover:border-white/35 hover:bg-white/10 hover:text-white"
-                    onClick={() => onProofClick?.(study.title, proof.label)}
+                    onClick={() =>
+                      onProofClick?.(
+                        resolveText(study.title, language),
+                        resolveText(proof.label, language),
+                      )
+                    }
                   >
                     {proof.icon === "github" && (
                       <svg
@@ -122,7 +169,7 @@ export function CaseShowcase({ studies, onSectionView, onProofClick }: CaseShowc
                         />
                       </svg>
                     )}
-                    <span>{proof.label}</span>
+                    <span>{resolveText(proof.label, language)}</span>
                   </Link>
                 ))}
               </div>
@@ -134,11 +181,17 @@ export function CaseShowcase({ studies, onSectionView, onProofClick }: CaseShowc
   );
 }
 
-function InfoRow({ label, value }: { label: string; value: string }) {
+function InfoRow({ label, value }: { label: LocalizedText; value: LocalizedText }) {
+  const { language } = useI18n();
+
   return (
     <div className="flex flex-col gap-1 rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 px-3 sm:px-4 py-2.5 sm:py-3 text-white/65 md:flex-row md:items-start md:gap-3">
-      <span className="text-[10px] sm:text-xs uppercase tracking-wide text-white/50 md:min-w-[90px]">{label}</span>
-      <span className="text-xs sm:text-sm text-white/75">{value}</span>
+      <span className="text-[10px] sm:text-xs uppercase tracking-wide text-white/50 md:min-w-[90px]">
+        {resolveText(label, language)}
+      </span>
+      <span className="text-xs sm:text-sm text-white/75">
+        {resolveText(value, language)}
+      </span>
     </div>
   );
 }
