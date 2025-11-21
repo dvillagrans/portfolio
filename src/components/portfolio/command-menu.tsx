@@ -45,7 +45,19 @@ export function CommandMenu() {
         command();
     }, []);
 
-    const groups = [
+    interface CommandItem {
+        icon: any;
+        label: string;
+        action: () => void;
+        active?: boolean;
+    }
+
+    interface CommandGroup {
+        heading: string;
+        items: CommandItem[];
+    }
+
+    const groups: CommandGroup[] = [
         {
             heading: language === "en" ? "Navigation" : "Navegación",
             items: [
