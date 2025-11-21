@@ -9,7 +9,11 @@
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "es",
-  "categories": ["business", "productivity", "portfolio"],
+  "categories": [
+    "business",
+    "productivity",
+    "portfolio"
+  ],
   "icons": [
     {
       "src": "/favicon.ico",
@@ -27,22 +31,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable any"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/screenshot-wide.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Portfolio Desktop View"
-    },
-    {
-      "src": "/screenshot-narrow.png",
-      "sizes": "640x1136",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Portfolio Mobile View"
     }
   ],
   "shortcuts": [

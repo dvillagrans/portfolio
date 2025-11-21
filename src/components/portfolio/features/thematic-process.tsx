@@ -4,9 +4,27 @@ import { motion } from "framer-motion";
 import { PortfolioProcessStep, resolveText } from "@/data/profiles/types";
 import { useI18n } from "@/contexts/i18n-context";
 import { useProfile } from "@/contexts/profile-context";
-import { resolveIcon } from "../icon-map";
+// import { resolveIcon } from "@/components/portfolio/icon-map";
 import { cn } from "@/lib/utils";
-import { ArrowRight, RefreshCw, GitMerge, Search } from "lucide-react";
+import { ArrowRight, RefreshCw, GitMerge, Search, Workflow, Gauge, Activity, ShieldCheck, CircuitBoard, BarChart4, LineChart, AlarmCheck, Brain, CloudCog, DatabaseZap, Network } from "lucide-react";
+
+function resolveIcon(token: string, className = "h-5 w-5") {
+    const iconMap: Record<string, JSX.Element> = {
+        pipeline: <Workflow className={className} />,
+        delivery: <Gauge className={className} />,
+        monitoring: <Activity className={className} />,
+        quality: <ShieldCheck className={className} />,
+        automation: <CircuitBoard className={className} />,
+        dashboard: <BarChart4 className={className} />,
+        insights: <LineChart className={className} />,
+        recovery: <AlarmCheck className={className} />,
+        ai: <Brain className={className} />,
+        cloud: <CloudCog className={className} />,
+        data: <DatabaseZap className={className} />,
+    };
+
+    return iconMap[token] ?? <Network className={className} />;
+}
 
 interface ThematicProcessProps {
     steps: PortfolioProcessStep[];

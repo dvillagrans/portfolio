@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Database, Server, Layers, BarChart3, GitBranch, Terminal, Cloud, Shield, Cpu, Globe } from "lucide-react";
+import { Database, Server, Layers, BarChart3, GitBranch, Terminal, Cloud, Shield, Cpu, Globe, Activity } from "lucide-react";
 import { PortfolioToolboxGroup } from "@/data/profiles/types";
 import { cn } from "@/lib/utils";
 
@@ -39,7 +39,15 @@ export function TechStackArchitecture({ profile, toolbox }: TechStackArchitectur
     return null;
 }
 
-function StackCard({ title, items, icon: Icon, color, className }: any) {
+interface StackCardProps {
+    title: string;
+    items: string[];
+    icon: React.ElementType;
+    color: string;
+    className?: string;
+}
+
+function StackCard({ title, items, icon: Icon, color, className }: StackCardProps) {
     return (
         <motion.div
             className={cn(
@@ -144,5 +152,3 @@ function DataAnalystStack({ toolbox }: { toolbox: PortfolioToolboxGroup[] }) {
         </div>
     );
 }
-
-import { Activity } from "lucide-react";
