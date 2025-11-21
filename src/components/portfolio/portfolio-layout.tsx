@@ -12,6 +12,7 @@ import { GuaranteesSection } from "./guarantees-section";
 import { TestimonialsSection } from "./testimonials-section";
 import { HumanSection } from "./human-section";
 import { FinalCta } from "./final-cta";
+import { CommandMenu } from "./command-menu";
 
 export interface PortfolioLayoutProps {
   metadata: ProfileMetadata;
@@ -34,6 +35,7 @@ export function PortfolioLayout({
 }: PortfolioLayoutProps) {
   return (
     <div className={`portfolio-theme ${metadata.themeClass}`}>
+      <CommandMenu />
       <div className="portfolio-surface relative flex min-h-screen w-full flex-col gap-10 sm:gap-12 md:gap-14 bg-[hsl(var(--portfolio-bg))] px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-8 sm:py-10">
         <div className="absolute inset-0 -z-10 bg-[hsla(var(--portfolio-shadow),0.85)]" />
         <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 sm:gap-12 md:gap-14">

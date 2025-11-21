@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { PortfolioCaseStudy, resolveText, type LocalizedText } from "@/data/profiles/types";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/contexts/i18n-context";
+import { Code2, X } from "lucide-react";
 
 interface CaseShowcaseProps {
   studies: PortfolioCaseStudy[];
@@ -16,6 +17,7 @@ interface CaseShowcaseProps {
 
 export function CaseShowcase({ studies, onSectionView, onProofClick }: CaseShowcaseProps) {
   const { language } = useI18n();
+  const [activeCode, setActiveCode] = useState<string | null>(null);
 
   const localizedCopy = useMemo(
     () => ({
@@ -46,6 +48,10 @@ export function CaseShowcase({ studies, onSectionView, onProofClick }: CaseShowc
       result: {
         en: "Result",
         es: "Resultado",
+      },
+      viewCode: {
+        en: "View Code",
+        es: "Ver Código",
       },
     }),
     [],
@@ -106,13 +112,63 @@ export function CaseShowcase({ studies, onSectionView, onProofClick }: CaseShowc
               )}
             </div>
 
-            <div className="relative aspect-[16/9] sm:aspect-[16/10] md:aspect-[16/9] w-full overflow-hidden rounded-xl sm:rounded-2xl border border-white/10">
-              <Image
-                src={study.media.src}
-                alt={study.media.alt}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-              />
+            <div className="relative aspect-[16/9] sm:aspect-[16/10] md:aspect-[16/9] w-full overflow-hidden rounded-xl sm:rounded-2xl border border-white/10 bg-black">
+              <AnimatePresence mode="wait">
+                {activeCode === resolveText(study.title, language) && study.codeSnippet ? (
+                  <motion.div
+                    key="code"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute inset-0 z-20 flex flex-col bg-[#0d1117] p-4 text-left font-mono text-xs"
+                  >
+                    <div className="mb-2 flex items-center justify-between border-b border-white/10 pb-2">
+                      <span className="text-white/50">{study.codeSnippet.file}</span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveCode(null);
+                        }}
+                        className="rounded-full p-1 hover:bg-white/10"
+                      >
+                        <X className="h-4 w-4 text-white/70" />
+                      </button>
+                    </div>
+                    <div className="overflow-auto text-blue-300">
+                      <pre>
+                        <code>{study.codeSnippet.code}</code>
+                      </pre>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="image"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="relative h-full w-full"
+                  >
+                    <Image
+                      src={study.media.src}
+                      alt={study.media.alt}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    {study.codeSnippet && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveCode(resolveText(study.title, language));
+                        }}
+                        className="absolute bottom-3 right-3 z-10 flex items-center gap-2 rounded-full bg-black/80 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md transition-transform hover:scale-105 border border-white/20"
+                      >
+                        <Code2 className="h-3 w-3" />
+                        {resolveText(localizedCopy.viewCode, language)}
+                      </button>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div className="space-y-2 sm:space-y-3">

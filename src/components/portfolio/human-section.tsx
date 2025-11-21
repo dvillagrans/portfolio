@@ -4,6 +4,7 @@ import { useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { PortfolioAnecdote, PortfolioWorkingStyle, resolveText } from "@/data/profiles/types";
 import { useI18n } from "@/contexts/i18n-context";
+import { ActivityGraph } from "./activity-graph";
 
 interface HumanSectionProps {
   anecdote: PortfolioAnecdote;
@@ -121,6 +122,16 @@ export function HumanSection({ anecdote, workingStyle, onSectionView }: HumanSec
           </div>
         </div>
       </motion.aside>
+
+      <motion.div
+        className="lg:col-span-2"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.4, delay: 0.2 }}
+      >
+        <ActivityGraph />
+      </motion.div>
     </section>
   );
 }

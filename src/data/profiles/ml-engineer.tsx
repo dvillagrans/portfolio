@@ -149,6 +149,29 @@ export const mlEngineerProfile: ProfileData = {
         alt: "Panel de monitoreo Qalma",
       },
       highlight: true,
+      codeSnippet: {
+        language: "python",
+        file: "pipeline.py",
+        code: `
+@flow(name="eeg-training-pipeline")
+def train_model(batch_id: str):
+    # 1. Load validated data from Feature Store
+    X, y = load_features(batch_id, version="prod")
+    
+    # 2. Train with experiment tracking
+    with mlflow.start_run():
+        model = TensorFlowClassifier()
+        model.fit(X, y)
+        
+        # 3. Log metrics & artifacts
+        mlflow.log_metrics({"accuracy": model.score(X, y)})
+        mlflow.tensorflow.log_model(model, "model")
+        
+    # 4. Register if beats baseline
+    if model.accuracy > 0.85:
+        register_model(model, stage="Staging")
+`
+      }
     },
     {
       title: l("Observable microservices", "Microservicios observables"),
