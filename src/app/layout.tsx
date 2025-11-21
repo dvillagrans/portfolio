@@ -11,7 +11,7 @@ import { ServiceWorkerProvider } from "@/components/service-worker-provider";
 import { I18nProvider } from "@/contexts/i18n-context";
 import { ProfileProvider } from "@/contexts/profile-context";
 import { DATA } from "@/data/resume";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 
@@ -19,6 +19,10 @@ const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
+
+export const viewport: Viewport = {
+  themeColor: "#000000",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
@@ -113,13 +117,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <head>
-        <meta name="theme-color" content="#000000" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content={DATA.name} />
-        <link rel="apple-touch-icon" href="/icon-192.svg" />
-      </head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",

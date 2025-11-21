@@ -86,6 +86,11 @@ export interface PortfolioCaseStudy {
   media: PortfolioCaseMedia;
   highlight?: boolean;
   quickRead?: boolean;
+  codeSnippet?: {
+    language: string;
+    code: string;
+    file: string;
+  };
 }
 
 export interface PortfolioToolboxGroup {
