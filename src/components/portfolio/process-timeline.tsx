@@ -3,8 +3,8 @@
 import { useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { PortfolioProcessStep, resolveText } from "@/data/profiles/types";
-import { resolveIcon } from "./icon-map";
 import { useI18n } from "@/contexts/i18n-context";
+import { ThematicProcess } from "./features/thematic-process";
 
 interface ProcessTimelineProps {
   steps: PortfolioProcessStep[];
@@ -56,8 +56,7 @@ export function ProcessTimeline({ steps, onSectionView }: ProcessTimelineProps) 
         </p>
       </motion.div>
 
-      <motion.ol
-        className="relative grid gap-6 md:grid-cols-3"
+      <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-60px" }}
@@ -70,34 +69,8 @@ export function ProcessTimeline({ steps, onSectionView }: ProcessTimelineProps) 
           },
         }}
       >
-        {steps.map((step, index) => (
-          <motion.li
-            key={resolveText(step.title, language)}
-            className="group relative rounded-3xl border border-white/10 bg-white/[0.05] p-6 backdrop-blur transition-all duration-300 hover:-translate-y-2 hover:bg-white/[0.08]"
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: { opacity: 1, y: 0 },
-            }}
-          >
-            <div className="absolute inset-x-0 -top-[1px] h-[3px] rounded-full bg-gradient-to-r from-[hsla(var(--portfolio-primary),0.6)] to-[hsla(var(--portfolio-accent),0.5)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-            <div className="flex items-center justify-between">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/10 text-white">
-                {index + 1}
-              </span>
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[hsla(var(--portfolio-primary),0.12)] text-white/80">
-                {resolveIcon(step.icon, "h-5 w-5")}
-              </span>
-            </div>
-            <div className="mt-6 space-y-3">
-              <h3 className="text-xl font-semibold text-white">
-                {resolveText(step.title, language)}
-              </h3>
-              <p className="text-sm text-white/70">{resolveText(step.description, language)}</p>
-              <p className="text-sm text-white/55">{resolveText(step.detail, language)}</p>
-            </div>
-          </motion.li>
-        ))}
-      </motion.ol>
+        <ThematicProcess steps={steps} />
+      </motion.div>
     </section>
   );
 }
