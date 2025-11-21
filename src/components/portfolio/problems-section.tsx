@@ -4,6 +4,7 @@ import { useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { PortfolioMetric, PortfolioProblem, resolveText } from "@/data/profiles/types";
 import { useI18n } from "@/contexts/i18n-context";
+import { ThematicProblemCard } from "./features/thematic-problem-card";
 
 interface ProblemsSectionProps {
   problems: PortfolioProblem[];
@@ -93,30 +94,16 @@ export function ProblemsSection({ problems, metrics, onSectionView }: ProblemsSe
           },
         }}
       >
-        {problems.map((problem) => (
-          <motion.article
+        {problems.map((problem, index) => (
+          <motion.div
             key={resolveText(problem.title, language)}
-            className="group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-gradient-to-br from-white/8 via-white/3 to-transparent p-5 sm:p-6 md:p-7 backdrop-blur transition-transform duration-300 hover:-translate-y-2"
             variants={{
               hidden: { opacity: 0, y: 24 },
               visible: { opacity: 1, y: 0 },
             }}
           >
-            <div className="absolute -right-6 -top-6 h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-[hsla(var(--portfolio-primary),0.12)] blur-2xl transition-all duration-500 group-hover:scale-125" />
-            <div className="space-y-2 sm:space-y-3">
-              {problem.metric && (
-                <span className="inline-flex rounded-full bg-[hsla(var(--portfolio-accent),0.18)] px-2.5 sm:px-3 py-1 text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-white/70">
-                  {resolveText(problem.metric, language)}
-                </span>
-              )}
-              <h3 className="text-lg sm:text-xl font-semibold text-white">
-                {resolveText(problem.title, language)}
-              </h3>
-              <p className="text-xs sm:text-sm text-white/70">
-                {resolveText(problem.description, language)}
-              </p>
-            </div>
-          </motion.article>
+            <ThematicProblemCard problem={problem} index={index} />
+          </motion.div>
         ))}
       </motion.div>
     </section>

@@ -7,6 +7,8 @@ import { IconCloud } from "@/components/ui/icon-cloud";
 import { createToolIconNode } from "./tool-icon-utils";
 import { TechSphere } from "./tech-sphere";
 import { useI18n } from "@/contexts/i18n-context";
+import { TechStackArchitecture } from "./features/tech-stack-architecture";
+import { useProfile } from "@/contexts/profile-context";
 
 interface ToolboxSectionProps {
   toolbox: PortfolioToolboxGroup[];
@@ -16,6 +18,7 @@ interface ToolboxSectionProps {
 
 export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: ToolboxSectionProps) {
   const { language } = useI18n();
+  const { profile } = useProfile();
 
   const localizedCopy = useMemo(
     () => ({
@@ -128,7 +131,7 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
             },
           }}
         >
-          {/* TechSphere - Interactive 3D visualization */}
+          {/* TechSphere - Interactive 3D visualization OR Architecture Diagram */}
           <motion.div
             className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.06] via-white/[0.03] to-transparent p-8 backdrop-blur"
             variants={{
@@ -136,10 +139,14 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
               visible: { opacity: 1, y: 0 },
             }}
           >
-            <TechSphere
+            {/* We use the Architecture Diagram for specific profiles to tell a better story */}
+            <TechStackArchitecture profile={profile} toolbox={toolbox} />
+
+            {/* Fallback or complementary sphere if needed, but for now we replace it to be cleaner */}
+            {/* <TechSphere
               coreTools={coreTools}
               ecosystemTools={allTools.filter(tool => !coreTools.includes(tool))}
-            />
+            /> */}
           </motion.div>
 
           {/* Legend / Info */}
