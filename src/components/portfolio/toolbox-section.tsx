@@ -233,7 +233,7 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
           >
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.22),transparent_60%)]" />
             <div className="relative flex flex-col items-center gap-6">
-              <div className="relative flex items-center justify-center">
+              <div className="relative flex h-[320px] w-full max-w-[320px] items-center justify-center sm:h-[400px] sm:max-w-[400px]">
                 <IconCloud icons={toolboxIcons} />
               </div>
               <div className="text-center">
