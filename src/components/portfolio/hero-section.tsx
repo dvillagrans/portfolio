@@ -8,6 +8,7 @@ import type { ProfileMetadata } from "@/data/profiles/metadata";
 import { PortfolioCtaButton } from "./cta-button";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/contexts/i18n-context";
+import { Download } from "lucide-react";
 
 interface HeroSectionProps {
   hero: PortfolioHero;
@@ -112,6 +113,7 @@ export function HeroSection({ hero, metadata, onCtaClick, onSectionView }: HeroS
               size="default"
               className="text-sm font-medium uppercase tracking-wide"
               onClick={() => onCtaClick?.(resumeLinkLabel)}
+              icon={<Download className="mr-2 h-4 w-4" />}
             />
           </div>
         </div>
@@ -123,35 +125,35 @@ export function HeroSection({ hero, metadata, onCtaClick, onSectionView }: HeroS
           transition={{ delay: 0.1, duration: 0.4, ease: "easeOut" }}
         >
           <div className="relative h-28 w-28 sm:h-32 sm:w-32 overflow-hidden rounded-2xl sm:rounded-3xl border-4 border-white/30 shadow-[0_20px_35px_rgba(0,0,0,0.45)]">
-              <Image
-                src={hero.photo}
-                alt={resolveText(hero.title, language)}
-                fill
-                className="object-cover"
-                priority
-              />
+            <Image
+              src={hero.photo}
+              alt={resolveText(hero.title, language)}
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
           <div className="space-y-2 text-sm text-white/70">
-              <p className="font-semibold text-white/90">{resolveText(keyIndicatorsLabel, language)}</p>
+            <p className="font-semibold text-white/90">{resolveText(keyIndicatorsLabel, language)}</p>
             <ul className="space-y-2 text-left">
-                {hero.metrics.map((metric) => (
-                  <li key={resolveText(metric.label, language)} className="flex items-start gap-3">
-                    <span className="mt-[6px] h-1.5 w-1.5 flex-none rounded-full bg-[hsla(var(--portfolio-accent),0.9)]"></span>
-                    <div>
-                      <p className="text-sm font-semibold text-white">
-                        {resolveText(metric.value, language)}
+              {hero.metrics.map((metric) => (
+                <li key={resolveText(metric.label, language)} className="flex items-start gap-3">
+                  <span className="mt-[6px] h-1.5 w-1.5 flex-none rounded-full bg-[hsla(var(--portfolio-accent),0.9)]"></span>
+                  <div>
+                    <p className="text-sm font-semibold text-white">
+                      {resolveText(metric.value, language)}
+                    </p>
+                    <p className="text-xs uppercase tracking-wide text-white/60">
+                      {resolveText(metric.label, language)}
+                    </p>
+                    {metric.description && (
+                      <p className="mt-1 text-xs text-white/55">
+                        {resolveText(metric.description, language)}
                       </p>
-                      <p className="text-xs uppercase tracking-wide text-white/60">
-                        {resolveText(metric.label, language)}
-                      </p>
-                      {metric.description && (
-                        <p className="mt-1 text-xs text-white/55">
-                          {resolveText(metric.description, language)}
-                        </p>
-                      )}
-                    </div>
-                  </li>
-                ))}
+                    )}
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
         </motion.div>

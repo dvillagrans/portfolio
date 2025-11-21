@@ -18,9 +18,10 @@ interface PortfolioCtaButtonProps {
   className?: string;
   size?: "default" | "lg" | "sm";
   onClick?: () => void;
+  icon?: React.ReactNode;
 }
 
-export function PortfolioCtaButton({ link, className, size = "lg", onClick }: PortfolioCtaButtonProps) {
+export function PortfolioCtaButton({ link, className, size = "lg", onClick, icon }: PortfolioCtaButtonProps) {
   const variant = variantMap[link.type ?? "primary"] ?? "default";
   const { language } = useI18n();
   const label = resolveText(link.label, language);
@@ -46,6 +47,7 @@ export function PortfolioCtaButton({ link, className, size = "lg", onClick }: Po
           target={link.target ?? (link.href.startsWith("http") ? "_blank" : undefined)}
           rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
         >
+          {icon}
           {label}
         </Link>
       </Button>
@@ -68,6 +70,7 @@ export function PortfolioCtaButton({ link, className, size = "lg", onClick }: Po
       )}
     >
       <Link href={link.href} download={link.download}>
+        {icon}
         {label}
       </Link>
     </Button>

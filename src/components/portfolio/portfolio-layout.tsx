@@ -17,6 +17,7 @@ export interface PortfolioLayoutProps {
   metadata: ProfileMetadata;
   content: ProfileData;
   headerSlot?: ReactNode;
+  featureSlot?: ReactNode;
   onCtaClick?: (label: string) => void;
   onSectionView?: (section: string) => void;
   onProofClick?: (caseStudy: string, proof: string) => void;
@@ -26,6 +27,7 @@ export function PortfolioLayout({
   metadata,
   content,
   headerSlot,
+  featureSlot,
   onCtaClick,
   onSectionView,
   onProofClick,
@@ -42,6 +44,14 @@ export function PortfolioLayout({
             onCtaClick={onCtaClick}
             onSectionView={onSectionView}
           />
+
+          {/* Feature Slot - Unique per profile */}
+          {featureSlot && (
+            <div className="w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
+              {featureSlot}
+            </div>
+          )}
+
           <ProblemsSection
             problems={content.problems}
             metrics={content.metrics}

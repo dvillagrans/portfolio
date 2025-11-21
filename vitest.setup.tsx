@@ -47,13 +47,13 @@ Object.defineProperty(window, 'matchMedia', {
 
 // Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {
-  constructor() {}
-  disconnect() {}
-  observe() {}
+  constructor() { }
+  disconnect() { }
+  observe() { }
   takeRecords() {
     return [];
   }
-  unobserve() {}
+  unobserve() { }
 } as any;
 
 // Mock localStorage
@@ -91,4 +91,20 @@ vi.mock('framer-motion', () => ({
     start: vi.fn(),
     stop: vi.fn(),
   }),
+  useMotionValue: (initial: any) => ({
+    get: () => initial,
+    set: vi.fn(),
+    onChange: vi.fn(),
+  }),
+  useSpring: (initial: any) => ({
+    get: () => initial,
+    set: vi.fn(),
+    onChange: vi.fn(),
+  }),
+  useTransform: () => ({
+    get: () => 0,
+    set: vi.fn(),
+    onChange: vi.fn(),
+  }),
+  useMotionTemplate: () => "",
 }));

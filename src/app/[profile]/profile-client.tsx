@@ -11,6 +11,7 @@ import type { ProfileMetadata, ProfileType } from "@/data/profiles/metadata";
 import { ProfileData } from "@/data/profiles";
 import { PortfolioLayout } from "@/components/portfolio/portfolio-layout";
 import { usePortfolioMetrics } from "@/hooks/usePortfolioMetrics";
+import { ProfileFeature } from "@/components/portfolio/features/profile-feature";
 
 interface ProfileClientProps {
   profile: ProfileType;
@@ -56,6 +57,7 @@ export function ProfileClient({ profile, metadata, content }: ProfileClientProps
         metadata={metadata}
         content={content}
         headerSlot={headerSlot}
+        featureSlot={<ProfileFeature profile={profile} />}
         onCtaClick={trackCta}
         onProofClick={trackProof}
         onSectionView={trackSectionView}
