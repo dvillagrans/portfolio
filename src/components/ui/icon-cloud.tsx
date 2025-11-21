@@ -82,7 +82,7 @@ export function IconCloud({ icons, images }: IconCloudProps) {
           // Fix for Unicode characters in SVG string (e.g. accents in tool names)
           const encodedSvg = btoa(unescape(encodeURIComponent(svgString)))
           img.src = "data:image/svg+xml;base64," + encodedSvg
-          
+
           img.onload = () => {
             offCtx.clearRect(0, 0, offscreen.width, offscreen.height)
             // Draw image scaled to fit the canvas (40x40)
