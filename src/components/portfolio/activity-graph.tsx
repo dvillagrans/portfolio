@@ -55,12 +55,12 @@ export function ActivityGraph({ className }: ActivityGraphProps) {
     }, []);
 
     return (
-        <div className={cn("w-full overflow-hidden rounded-xl border border-white/10 bg-black/20 p-6 backdrop-blur-sm", className)}>
-            <div className="mb-4 flex items-center justify-between">
+        <div className={cn("w-full overflow-hidden rounded-xl border border-white/10 bg-black/20 p-4 sm:p-6 backdrop-blur-sm", className)}>
+            <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <h3 className="text-sm font-semibold uppercase tracking-wider text-white/70">
                     {language === "en" ? "Coding Activity" : "Actividad de Código"}
                 </h3>
-                <div className="flex items-center gap-2 text-xs text-white/40">
+                <div className="flex items-center gap-2 text-xs text-white/40 self-end sm:self-auto">
                     <span>Less</span>
                     <div className="flex gap-1">
                         <div className="h-2.5 w-2.5 rounded-sm bg-white/5" />
@@ -73,36 +73,40 @@ export function ActivityGraph({ className }: ActivityGraphProps) {
                 </div>
             </div>
 
-            <div className="flex w-full gap-1 overflow-x-auto pb-2 scrollbar-hide">
-                {/* We group by weeks for the grid layout */}
-                {Array.from({ length: 52 }).map((_, weekIndex) => (
-                    <div key={weekIndex} className="flex flex-col gap-1">
-                        {Array.from({ length: 7 }).map((_, dayIndex) => {
-                            const dataIndex = weekIndex * 7 + dayIndex;
-                            const dayData = data[dataIndex];
+            <div className="relative">
+                <div className="flex w-full gap-1 overflow-x-auto pb-2 scrollbar-hide mask-linear-fade">
+                    {/* We group by weeks for the grid layout */}
+                    {Array.from({ length: 52 }).map((_, weekIndex) => (
+                        <div key={weekIndex} className="flex flex-col gap-1 min-w-[10px]">
+                            {Array.from({ length: 7 }).map((_, dayIndex) => {
+                                const dataIndex = weekIndex * 7 + dayIndex;
+                                const dayData = data[dataIndex];
 
-                            if (!dayData) return <div key={dayIndex} className="h-2.5 w-2.5" />;
+                                if (!dayData) return <div key={dayIndex} className="h-2.5 w-2.5" />;
 
-                            return (
-                                <motion.div
-                                    key={dayData.date}
-                                    initial={{ opacity: 0, scale: 0 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ delay: dataIndex * 0.002 }}
-                                    className={cn(
-                                        "h-2.5 w-2.5 rounded-sm transition-colors hover:ring-1 hover:ring-white/50",
-                                        dayData.intensity === 0 && "bg-white/5",
-                                        dayData.intensity === 1 && "bg-emerald-900/40",
-                                        dayData.intensity === 2 && "bg-emerald-700/60",
-                                        dayData.intensity === 3 && "bg-emerald-500/80",
-                                        dayData.intensity === 4 && "bg-emerald-400"
-                                    )}
-                                    title={`${dayData.date}: ${dayData.count} contributions`}
-                                />
-                            );
-                        })}
-                    </div>
-                ))}
+                                return (
+                                    <motion.div
+                                        key={dayData.date}
+                                        initial={{ opacity: 0, scale: 0 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ delay: dataIndex * 0.002 }}
+                                        className={cn(
+                                            "h-2.5 w-2.5 rounded-sm transition-colors hover:ring-1 hover:ring-white/50",
+                                            dayData.intensity === 0 && "bg-white/5",
+                                            dayData.intensity === 1 && "bg-emerald-900/40",
+                                            dayData.intensity === 2 && "bg-emerald-700/60",
+                                            dayData.intensity === 3 && "bg-emerald-500/80",
+                                            dayData.intensity === 4 && "bg-emerald-400"
+                                        )}
+                                        title={`${dayData.date}: ${dayData.count} contributions`}
+                                    />
+                                );
+                            })}
+                        </div>
+                    ))}
+                </div>
+                {/* Fade effect for mobile scroll indication */}
+                <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-black/20 to-transparent sm:hidden" />
             </div>
         </div>
     );

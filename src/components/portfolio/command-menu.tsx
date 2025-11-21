@@ -17,10 +17,12 @@ import {
     Database,
     Server,
     LineChart,
-    ArrowRight
+    ArrowRight,
+    Menu
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ProfileType } from "@/data/profiles/metadata";
+import { Button } from "@/components/ui/button";
 
 export function CommandMenu() {
     const [open, setOpen] = React.useState(false);
@@ -44,6 +46,7 @@ export function CommandMenu() {
         setOpen(false);
         command();
     }, []);
+
 
     interface CommandItem {
         icon: any;
@@ -159,61 +162,71 @@ export function CommandMenu() {
     })).filter(group => group.items.length > 0);
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="overflow-hidden p-0 shadow-2xl sm:max-w-[550px] bg-[#0a0a0a] border-white/10">
-                <div className="flex items-center border-b border-white/10 px-4" cmdk-input-wrapper="">
-                    <Search className="mr-2 h-4 w-4 shrink-0 opacity-50 text-white" />
-                    <input
-                        className="flex h-12 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-white/50 text-white disabled:cursor-not-allowed disabled:opacity-50"
-                        placeholder={language === "en" ? "Type a command or search..." : "Escribe un comando o busca..."}
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        autoFocus
-                    />
-                    <div className="flex items-center gap-1 text-xs text-white/40">
-                        <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-white/10 bg-white/5 px-1.5 font-mono font-medium opacity-100">
-                            <span className="text-xs">ESC</span>
-                        </kbd>
-                    </div>
-                </div>
-                <div className="max-h-[300px] overflow-y-auto overflow-x-hidden py-2">
-                    {filteredGroups.length === 0 && (
-                        <div className="py-6 text-center text-sm text-white/50">
-                            {language === "en" ? "No results found." : "No se encontraron resultados."}
-                        </div>
-                    )}
+        <>
+            <button
+                onClick={() => setOpen(true)}
+                className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md border border-white/20 shadow-lg transition-transform hover:scale-110 active:scale-95 md:hidden"
+                aria-label="Open command menu"
+            >
+                <Command className="h-6 w-6" />
+            </button>
 
-                    {filteredGroups.map((group, i) => (
-                        <div key={group.heading} className="mb-2">
-                            <div className="px-4 py-1.5 text-xs font-medium text-white/40 uppercase tracking-wider">
-                                {group.heading}
-                            </div>
-                            {group.items.map((item, j) => (
-                                <div
-                                    key={item.label}
-                                    onClick={() => runCommand(item.action)}
-                                    className={cn(
-                                        "group mx-2 flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white",
-                                        item.active && "bg-white/10 text-white"
-                                    )}
-                                >
-                                    <item.icon className={cn("h-4 w-4 text-white/50 group-hover:text-white", item.active && "text-white")} />
-                                    <span className="flex-1">{item.label}</span>
-                                    {item.active && <ArrowRight className="h-3 w-3 text-white/50" />}
-                                </div>
-                            ))}
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogContent className="overflow-hidden p-0 shadow-2xl w-[95vw] max-w-[550px] bg-[#0a0a0a] border-white/10 rounded-xl">
+                    <div className="flex items-center border-b border-white/10 px-4" cmdk-input-wrapper="">
+                        <Search className="mr-2 h-4 w-4 shrink-0 opacity-50 text-white" />
+                        <input
+                            className="flex h-12 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-white/50 text-white disabled:cursor-not-allowed disabled:opacity-50"
+                            placeholder={language === "en" ? "Type a command or search..." : "Escribe un comando o busca..."}
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            autoFocus
+                        />
+                        <div className="hidden sm:flex items-center gap-1 text-xs text-white/40">
+                            <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-white/10 bg-white/5 px-1.5 font-mono font-medium opacity-100">
+                                <span className="text-xs">ESC</span>
+                            </kbd>
                         </div>
-                    ))}
-                </div>
-                <div className="border-t border-white/10 px-4 py-2.5 text-xs text-white/40 flex justify-between">
-                    <span>
-                        {language === "en" ? "Pro tip: Use" : "Tip: Usa"} <kbd className="font-sans">↑</kbd> <kbd className="font-sans">↓</kbd> {language === "en" ? "to navigate" : "para navegar"}
-                    </span>
-                    <span>
-                        Portfolio v2.0
-                    </span>
-                </div>
-            </DialogContent>
-        </Dialog>
+                    </div>
+                    <div className="max-h-[300px] overflow-y-auto overflow-x-hidden py-2">
+                        {filteredGroups.length === 0 && (
+                            <div className="py-6 text-center text-sm text-white/50">
+                                {language === "en" ? "No results found." : "No se encontraron resultados."}
+                            </div>
+                        )}
+
+                        {filteredGroups.map((group, i) => (
+                            <div key={group.heading} className="mb-2">
+                                <div className="px-4 py-1.5 text-xs font-medium text-white/40 uppercase tracking-wider">
+                                    {group.heading}
+                                </div>
+                                {group.items.map((item, j) => (
+                                    <div
+                                        key={item.label}
+                                        onClick={() => runCommand(item.action)}
+                                        className={cn(
+                                            "group mx-2 flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white",
+                                            item.active && "bg-white/10 text-white"
+                                        )}
+                                    >
+                                        <item.icon className={cn("h-4 w-4 text-white/50 group-hover:text-white", item.active && "text-white")} />
+                                        <span className="flex-1">{item.label}</span>
+                                        {item.active && <ArrowRight className="h-3 w-3 text-white/50" />}
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="hidden sm:flex border-t border-white/10 px-4 py-2.5 text-xs text-white/40 justify-between">
+                        <span>
+                            {language === "en" ? "Pro tip: Use" : "Tip: Usa"} <kbd className="font-sans">↑</kbd> <kbd className="font-sans">↓</kbd> {language === "en" ? "to navigate" : "para navegar"}
+                        </span>
+                        <span>
+                            Portfolio v2.0
+                        </span>
+                    </div>
+                </DialogContent>
+            </Dialog>
+        </>
     );
 }

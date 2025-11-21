@@ -160,9 +160,9 @@ export function CaseShowcase({ studies, onSectionView, onProofClick }: CaseShowc
                           e.stopPropagation();
                           setActiveCode(resolveText(study.title, language));
                         }}
-                        className="absolute bottom-3 right-3 z-10 flex items-center gap-2 rounded-full bg-black/80 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md transition-transform hover:scale-105 border border-white/20"
+                        className="absolute bottom-3 right-3 z-10 flex items-center gap-2 rounded-full bg-black/80 px-4 py-2 sm:px-3 sm:py-1.5 text-xs font-medium text-white backdrop-blur-md transition-transform hover:scale-105 border border-white/20 shadow-lg"
                       >
-                        <Code2 className="h-3 w-3" />
+                        <Code2 className="h-4 w-4 sm:h-3 sm:w-3" />
                         {resolveText(localizedCopy.viewCode, language)}
                       </button>
                     )}
