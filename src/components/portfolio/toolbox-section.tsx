@@ -3,8 +3,8 @@
 import { useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { PortfolioToolboxGroup, resolveText } from "@/data/profiles/types";
-import { IconCloud } from "@/components/ui/icon-cloud";
-import { createToolIconNode } from "./tool-icon-utils";
+import IconCloud from "@/components/magicui/icon-cloud";
+import { createToolIconNode, slugifyToolName } from "./tool-icon-utils";
 import { TechSphere } from "./tech-sphere";
 import { useI18n } from "@/contexts/i18n-context";
 import { TechStackArchitecture } from "./features/tech-stack-architecture";
@@ -84,14 +84,10 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
   // Flatten all tools for display
   const allTools = toolbox.flatMap(group => group.items);
   const hasCore = coreTools.length > 0;
-  const toolboxIcons = useMemo(
+  const iconSlugs = useMemo(
     () =>
-      toolbox.flatMap((group, groupIndex) =>
-        group.items.map((item, itemIndex) =>
-          createToolIconNode(item, {
-            accentIndex: groupIndex * 4 + itemIndex,
-          }),
-        ),
+      toolbox.flatMap((group) =>
+        group.items.map((item) => slugifyToolName(item))
       ),
     [toolbox],
   );
@@ -234,7 +230,7 @@ export function ToolboxSection({ toolbox, coreTools = [], onSectionView }: Toolb
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.22),transparent_60%)]" />
             <div className="relative flex flex-col items-center gap-6">
               <div className="relative flex h-[320px] w-full max-w-[320px] items-center justify-center sm:h-[400px] sm:max-w-[400px]">
-                <IconCloud icons={toolboxIcons} />
+                <IconCloud iconSlugs={iconSlugs} />
               </div>
               <div className="text-center">
                 <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/50">

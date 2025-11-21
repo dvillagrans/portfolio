@@ -93,6 +93,25 @@ export function createToolIconNode(
   );
 }
 
+export function slugifyToolName(name: string): string {
+  const map: Record<string, string> = {
+    "TensorFlow Serving": "tensorflow",
+    "Argo Workflows": "argo",
+    "Github Actions": "githubactions",
+    "Airflow": "apacheairflow",
+    "Next.js": "nextdotjs",
+    "Node.js": "nodedotjs",
+    "C++": "cplusplus",
+    "C#": "csharp",
+    ".NET": "dotnet",
+    "scikit-learn": "scikitlearn",
+  };
+
+  if (map[name]) return map[name];
+
+  return name.toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
 
 
 
