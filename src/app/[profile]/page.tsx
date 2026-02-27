@@ -6,13 +6,14 @@ import { PROFILE_DATA } from "@/data/profiles";
 import { ProfileClient } from "./profile-client";
 
 interface ProfilePageProps {
-  params: {
+  params: Promise<{
     profile: ProfileType;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: ProfilePageProps): Promise<Metadata> {
-  const metadata = PROFILE_METADATA[params.profile];
+  const { profile } = await params;
+  const metadata = PROFILE_METADATA[profile];
 
   if (!metadata) {
     return {};
@@ -31,7 +32,7 @@ export async function generateMetadata({ params }: ProfilePageProps): Promise<Me
           height: 630,
         },
       ],
-      url: `/profile/${params.profile}`,
+      url: `/profile/${profile}`,
     },
     twitter: {
       card: "summary_large_image",
@@ -42,14 +43,15 @@ export async function generateMetadata({ params }: ProfilePageProps): Promise<Me
   };
 }
 
-export default function ProfilePage({ params }: ProfilePageProps) {
-  const metadata = PROFILE_METADATA[params.profile];
+export default async function ProfilePage({ params }: ProfilePageProps) {
+  const { profile } = await params;
+  const metadata = PROFILE_METADATA[profile];
 
   if (!metadata) {
     notFound();
   }
 
-  const content = PROFILE_DATA[params.profile];
+  const content = PROFILE_DATA[profile];
 
-  return <ProfileClient profile={params.profile} metadata={metadata} content={content} />;
+  return <ProfileClient profile={profile} metadata={metadata} content={content} />;
 }

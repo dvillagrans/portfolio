@@ -40,7 +40,10 @@ const nextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   
-  // Webpack optimizations
+  // Turbopack es el bundler por defecto en Next.js 16; webpack solo se usa con --webpack
+  turbopack: {},
+  
+  // Webpack optimizations (usado cuando se ejecuta con --webpack)
   webpack: (config, { dev, isServer }) => {
     // Optimizaciones de bundle para producción
     if (!dev && !isServer) {
@@ -124,11 +127,6 @@ const nextConfig = {
     ];
   },
   
-  // Configuración de compresión
-  compress: true,
-  
-  // Optimización de bundle
-  swcMinify: true,
 };
 
 export default nextConfig;
