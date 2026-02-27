@@ -261,6 +261,24 @@ code[data-line-numbers-max-digits="3"]>[data-line]::before {
   width: 3rem;
 }
 
+/* Landing page ambient orb animations */
+@keyframes landing-orb-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(55px, -38px) scale(1.07); }
+  67%       { transform: translate(-32px, 22px) scale(0.95); }
+}
+
+@keyframes landing-orb-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%       { transform: translate(-46px, 34px) scale(1.05); }
+  75%       { transform: translate(30px, -20px) scale(0.96); }
+}
+
+@keyframes landing-number-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* Custom animations for portfolio */
 @keyframes float {
 

@@ -1,119 +1,229 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { useMemo, useState, useEffect } from "react";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useMotionTemplate } from "framer-motion";
+import { useState, useEffect, useMemo } from "react";
 import { useI18n } from "@/contexts/i18n-context";
 import { ProfileType } from "@/contexts/profile-context";
 import Image from "next/image";
-import { BentoGrid } from "@/components/ui/bento-grid";
-import { cn } from "@/lib/utils";
 import { DATA } from "@/data/resume";
-import { getLandingCards, LandingCard } from "@/data/landing-cards";
-import { LandingCardComponent } from "@/components/landing/landing-card";
+import { getLandingCards } from "@/data/landing-cards";
+import { cn } from "@/lib/utils";
+import { ArrowRight, Sparkles } from "lucide-react";
 
+/* Per-card ambient glow color (rgb) matching each profile's accent */
+const CARD_GLOWS = [
+  "145,112,255", // ml-engineer    – violet
+  "31,217,211",  // data-engineer  – cyan
+  "71,207,132",  // devops-engineer– emerald
+  "244,184,96",  // data-analyst   – amber
+] as const;
+
+/* ─── Main page ─────────────────────────────────────────────────── */
 export default function LandingPage() {
   const router = useRouter();
   const { language } = useI18n();
+  const [hovered, setHovered] = useState<number | null>(null);
   const [isMounted, setIsMounted] = useState(false);
+
+  const cards = useMemo(() => getLandingCards(language), [language]);
+
+  // Mouse tracking for the ambient orb
+  const mouseX = useMotionValue(typeof window !== "undefined" ? window.innerWidth / 2 : 0);
+  const mouseY = useMotionValue(typeof window !== "undefined" ? window.innerHeight / 2 : 0);
+  const smoothX = useSpring(mouseX, { damping: 40, stiffness: 150 });
+  const smoothY = useSpring(mouseY, { damping: 40, stiffness: 150 });
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [mouseX, mouseY]);
 
-  const handleProfileSelect = (profile: ProfileType) => {
+  const handleSelect = (profile: ProfileType) => {
     localStorage.setItem("profile", profile);
     router.push(`/${profile}`);
   };
 
-  const cards = useMemo<LandingCard[]>(() => getLandingCards(language), [language]);
-
   return (
-    <div className="relative h-dvh w-full overflow-hidden bg-background text-foreground">
-      {/* Scrollable container for mobile, fixed for desktop if it fits */}
-      <div className="h-full w-full overflow-y-auto overflow-x-hidden px-2 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 lg:px-8 lg:py-5">
-        <div className="mx-auto flex min-h-full max-w-7xl flex-col rounded-2xl sm:rounded-3xl border border-white/10 bg-black/25 p-3 sm:p-5 md:p-6 lg:p-7 backdrop-blur-2xl">
-          {/* Hero */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45 }}
-            className="flex flex-col items-center gap-2 text-center sm:gap-3 md:gap-3.5"
-          >
-            <div className="relative">
-              <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-purple-500/15 via-blue-500/12 to-cyan-500/12 blur-lg opacity-45" />
-              <div className="relative h-10 w-10 overflow-hidden rounded-full ring-2 ring-white/10 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16" suppressHydrationWarning>
-                {isMounted ? (
-                  <Image
-                    src={DATA.avatarUrl}
-                    alt="Diego Villagran"
-                    fill
-                    sizes="(max-width: 640px) 48px, (max-width: 768px) 56px, 64px"
-                    className="object-cover"
-                    priority
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-blue-500/15 to-cyan-500/15 animate-pulse" />
-                )}
+    <div className="relative min-h-dvh w-full bg-[#020204] overflow-x-hidden text-white selection:bg-white/20 flex flex-col lg:flex-row items-center justify-center max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-20 py-10 lg:py-0 gap-8 lg:gap-20">
+      
+      {/* ── Ambient Mouse Orb ── */}
+      <motion.div
+        className="pointer-events-none fixed top-0 left-0 w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] rounded-full blur-[100px] opacity-30 mix-blend-screen z-0"
+        style={{
+          x: useTransform(smoothX, (v) => v - 400),
+          y: useTransform(smoothY, (v) => v - 400),
+          background: hovered !== null
+            ? `radial-gradient(circle, rgba(${CARD_GLOWS[hovered]}, 0.6) 0%, transparent 70%)`
+            : `radial-gradient(circle, rgba(255,255,255, 0.15) 0%, transparent 70%)`,
+          transition: "background 0.5s ease",
+        }}
+      />
+
+      {/* ── Grid / Noise Overlay ── */}
+      <div className="pointer-events-none fixed inset-0 opacity-[0.015] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay z-0" />
+      <div className="pointer-events-none fixed inset-0 opacity-[0.03] z-0" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)', backgroundSize: '64px 64px' }} />
+
+      {/* ════ LEFT COLUMN: DYNAMIC SHOWCASE ════ */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-center relative min-h-[30vh] lg:min-h-0 lg:h-full z-10">
+        <AnimatePresence mode="wait">
+          {hovered === null ? (
+            <motion.div
+              key="default"
+              initial={{ opacity: 0, filter: "blur(10px)", y: 20 }}
+              animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+              exit={{ opacity: 0, filter: "blur(10px)", y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-6"
+            >
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
+                <div className="relative h-6 w-6 overflow-hidden rounded-full">
+                  {isMounted && <Image src={DATA.avatarUrl} alt="Diego" fill className="object-cover" />}
+                </div>
+                <span className="text-xs font-medium tracking-wide text-white/80">Diego Villagran</span>
+                <span className="w-1 h-1 rounded-full bg-green-400 animate-pulse" />
+                <span className="text-[10px] uppercase tracking-wider text-white/40">Available</span>
               </div>
-            </div>
 
-            <div className="space-y-1 sm:space-y-1.5">
-              <h1 className="text-lg font-extrabold leading-tight sm:text-xl md:text-2xl lg:text-3xl xl:text-[34px]">
-                {language === "en" ? "Hi, I'm Diego" : "Hola, soy Diego"}
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-[5.5rem] font-black tracking-tighter leading-[0.9]">
+                {language === "en" ? "Build" : "Crea"} <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white/40 to-white/80 italic font-serif font-light">
+                  {language === "en" ? "with purpose." : "con propósito."}
+                </span>
               </h1>
-              <p className="mx-auto max-w-xl px-2 text-[11px] text-muted-foreground/80 leading-relaxed sm:text-xs md:text-sm lg:text-base">
+
+              <p className="text-sm sm:text-base text-white/40 max-w-md leading-relaxed">
                 {language === "en"
-                  ? "I build data systems that feel calm in production."
-                  : "Construyo sistemas de datos que se sienten tranquilos en producción."}
+                  ? "I engineer data systems, deploy machine learning models, and build robust infrastructure. Select a profile to explore my work."
+                  : "Diseño sistemas de datos, despliego modelos de ML y construyo infraestructura robusta. Selecciona un perfil para explorar."}
               </p>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-1 text-[9px] text-muted-foreground/65 sm:gap-1.5 sm:text-[10px] md:gap-2 md:text-xs">
-              <span>{language === "en" ? "Transparency" : "Transparencia"}</span>
-              <span className="text-muted-foreground/35">•</span>
-              <span>{language === "en" ? "Documentation" : "Documentación"}</span>
-              <span className="text-muted-foreground/35">•</span>
-              <span>{language === "en" ? "Easy maintenance" : "Mantenimiento sencillo"}</span>
-            </div>
-          </motion.div>
-
-          <div className="mt-3 flex flex-1 flex-col sm:mt-4 md:mt-5">
-            <BentoGrid className="landing-bento grid w-full flex-1 grid-cols-1 gap-3 auto-rows-[11rem] sm:auto-rows-[22rem] sm:grid-cols-2 sm:grid-rows-2 sm:gap-3 md:gap-3.5">
-              {cards.map((card, index) => (
-                <LandingCardComponent
-                  key={card.profile}
-                  card={card}
-                  index={index}
-                  onClick={() => handleProfileSelect(card.profile)}
-                />
-              ))}
-            </BentoGrid>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.35, delay: 0.3 }}
-            className="mt-2.5 flex items-center justify-center gap-3 text-[9px] text-muted-foreground/60 sm:mt-3 sm:gap-4 sm:text-[10px] md:mt-4 md:gap-5 md:text-xs"
-          >
-            <button
-              onClick={() => router.push("/projects")}
-              className="transition-colors duration-200 hover:text-foreground"
-              aria-label={language === "en" ? "View Projects" : "Ver Proyectos"}
+            </motion.div>
+          ) : (
+            <motion.div
+              key={hovered}
+              initial={{ opacity: 0, filter: "blur(15px)", scale: 0.95 }}
+              animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+              exit={{ opacity: 0, filter: "blur(10px)", scale: 1.05 }}
+              transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+              className="space-y-6 relative z-10"
             >
-              {language === "en" ? "Projects" : "Proyectos"}
-            </button>
-            <span className="text-muted-foreground/30">•</span>
-            <button
-              onClick={() => router.push("/ml-engineer")}
-              className="transition-colors duration-200 hover:text-foreground"
-              aria-label={language === "en" ? "View Experience" : "Ver Experiencia"}
+              {/* Massive Background Decoration for the hovered item */}
+              <div 
+                className="absolute -inset-20 -z-10 opacity-30 pointer-events-none scale-150 origin-left"
+                style={{ WebkitMaskImage: 'radial-gradient(circle at center, black 20%, transparent 70%)' }}
+              >
+                {cards[hovered].decoration}
+              </div>
+
+              <div className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-bold" style={{ color: `rgb(${CARD_GLOWS[hovered]})` }}>
+                <Sparkles className="w-3 h-3" />
+                {language === "en" ? "Profile Selected" : "Perfil Seleccionado"}
+              </div>
+
+              <h2 className="text-5xl sm:text-6xl lg:text-7xl xl:text-[5rem] font-black tracking-tighter leading-[0.95]">
+                {cards[hovered].title.split(' ').map((word, i) => (
+                  <span key={i} className="block">{word}</span>
+                ))}
+              </h2>
+
+              <p className="text-base sm:text-lg text-white/60 max-w-md leading-relaxed border-l-2 pl-4" style={{ borderColor: `rgba(${CARD_GLOWS[hovered]}, 0.5)` }}>
+                {cards[hovered].description}
+              </p>
+
+              <div className="flex flex-wrap gap-2 pt-4">
+                {cards[hovered].tags.map(tag => (
+                  <span key={tag} className="px-3 py-1 rounded-full text-xs font-medium bg-white/5 border border-white/10 backdrop-blur-md">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* ════ RIGHT COLUMN: INTERACTIVE STACK ════ */}
+      <div className="w-full lg:w-1/2 flex flex-col gap-3 lg:gap-4 relative z-20 pb-20 lg:pb-0">
+        {cards.map((card, i) => {
+          const Icon = card.icon;
+          const isActive = hovered === i;
+          const isDimmed = hovered !== null && hovered !== i;
+
+          return (
+            <motion.button
+              key={card.profile}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+              onClick={() => handleSelect(card.profile)}
+              animate={{
+                height: isActive ? (typeof window !== 'undefined' && window.innerWidth >= 1024 ? 160 : 120) : 80,
+                opacity: isDimmed ? 0.4 : 1,
+                scale: isActive ? 1.02 : isDimmed ? 0.98 : 1,
+                x: isActive ? -10 : 0,
+              }}
+              transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+              className="group relative w-full rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-xl overflow-hidden text-left flex flex-col justify-center px-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20"
+              style={{
+                boxShadow: isActive ? `0 20px 40px -10px rgba(${CARD_GLOWS[i]}, 0.3), inset 0 0 0 1px rgba(${CARD_GLOWS[i]}, 0.5)` : 'none'
+              }}
             >
-              {language === "en" ? "Experience" : "Experiencia"}
-            </button>
-          </motion.div>
-        </div>
+              {/* Hover Gradient Background */}
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{ background: `linear-gradient(90deg, rgba(${CARD_GLOWS[i]}, 0.15) 0%, transparent 100%)` }}
+              />
+
+              <div className="relative z-10 flex items-center justify-between w-full">
+                <div className="flex items-center gap-4 lg:gap-6">
+                  <div
+                    className={cn(
+                      "flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-xl border shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3",
+                      card.iconWrapper
+                    )}
+                  >
+                    <Icon className="w-5 h-5 lg:w-6 lg:h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg lg:text-xl font-bold text-white/90 group-hover:text-white transition-colors">
+                      {card.title}
+                    </h3>
+                    {/* Expanded Content */}
+                    <AnimatePresence>
+                      {isActive && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0, y: -10 }}
+                          animate={{ opacity: 1, height: "auto", y: 0 }}
+                          exit={{ opacity: 0, height: 0, y: -10 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <p className="text-xs lg:text-sm text-white/50 mt-1 max-w-[80%]">
+                            {language === "en" ? "Click to enter this profile" : "Haz clic para entrar a este perfil"}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center border border-white/10 bg-white/5 group-hover:bg-white group-hover:text-black transition-all duration-300"
+                  style={{
+                    transform: isActive ? 'translateX(0)' : 'translateX(-10px)',
+                    opacity: isActive ? 1 : 0.5
+                  }}
+                >
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </div>
+            </motion.button>
+          );
+        })}
       </div>
     </div>
   );
