@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { ArrowLeft } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 
@@ -65,7 +65,7 @@ export default function About() {
 
         {/* Editorial Intro */}
         <section className="mb-32">
-          <h1 
+          <h1 style={{ viewTransitionName: "about-title" }} 
             ref={(el) => { elementsRef.current[0] = el; }}
             className="font-serif text-5xl italic tracking-tight md:text-7xl mb-6 text-graphite"
           >

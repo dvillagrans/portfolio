@@ -5,6 +5,7 @@ import "./globals.css";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import CustomCursor from "@/components/ui/CustomCursor";
 import GridOverlay from "@/components/ui/GridOverlay";
+import { ViewTransitions } from "next-view-transitions";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -35,8 +36,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth antialiased" suppressHydrationWarning>
-      <head>
+    <ViewTransitions>
+      <html lang="en" className="scroll-smooth antialiased" suppressHydrationWarning>
+        <head>
         {process.env.NODE_ENV === "development" && (
           <Script
             src="//unpkg.com/react-grab/dist/index.global.js"
@@ -60,5 +62,6 @@ export default function RootLayout({
         </LanguageProvider>
       </body>
     </html>
+    </ViewTransitions>
   );
 }

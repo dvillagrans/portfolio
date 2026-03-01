@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { Link } from "next-view-transitions";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
@@ -94,7 +94,7 @@ export default function TimeUpCaseStudy() {
   }, []);
 
   return (
-    <main ref={containerRef} className="min-h-screen pt-32 pb-32 px-6 md:px-12 lg:px-24 text-white uppercase tracking-wide">
+    <main ref={containerRef} className="min-h-screen pt-24 pb-20 md:pt-32 md:pb-32 px-5 md:px-12 lg:px-24 text-white uppercase tracking-wide">
       
       {/* Navigation */}
       <div className="mb-16 reveal-fade">
@@ -104,8 +104,8 @@ export default function TimeUpCaseStudy() {
       </div>
 
       {/* Header */}
-      <header className="mb-24 reveal-fade max-w-5xl">
-        <h1 className="text-6xl md:text-8xl font-black tracking-tight mb-8 leading-none">
+      <header className="mb-16 md:mb-24 reveal-fade max-w-5xl">
+        <h1 className="text-5xl md:text-8xl font-black tracking-tight mb-6 md:mb-8 leading-none">
           Time<span className="text-white/40">Up</span>
         </h1>
         <p className="text-xl md:text-3xl text-white/70 tracking-normal capitalize font-serif italic mb-6">
@@ -118,7 +118,7 @@ export default function TimeUpCaseStudy() {
       </header>
 
       {/* Meta Grid */}
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-32 border-t border-b border-white/10 py-8 reveal-fade font-mono text-sm">
+      <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-4 mb-12 md:mb-16 border-t border-b border-white/10 py-6 md:py-8 reveal-fade font-mono text-xs md:text-sm">
         {meta.map((item, idx) => (
           <div key={idx} className="flex flex-col gap-2">
             <span className="text-white/40">{item.label}</span>
@@ -127,10 +127,22 @@ export default function TimeUpCaseStudy() {
         ))}
       </section>
 
+      {/* Live URLs */}
+      <section className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 mb-20 md:mb-32 reveal-fade">
+        <a href="https://timeup.mx" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center sm:justify-start gap-3 border border-white/20 px-4 py-3 md:px-6 md:py-3 font-mono text-xs uppercase tracking-widest text-white transition-all hover:bg-white hover:text-black w-full sm:w-auto">
+          App Usuarios
+          <ArrowUpRight className="h-3 w-3" />
+        </a>
+        <a href="https://negocios.timeup.mx" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center sm:justify-start gap-3 border border-white/20 px-4 py-3 md:px-6 md:py-3 font-mono text-xs uppercase tracking-widest text-white transition-all hover:bg-white hover:text-black w-full sm:w-auto">
+          App Negocios
+          <ArrowUpRight className="h-3 w-3" />
+        </a>
+      </section>
+
       {/* 1. El Problema Real */}
-      <section className="mb-32 grid md:grid-cols-12 gap-12 reveal-fade">
+      <section className="mb-20 md:mb-32 grid md:grid-cols-12 gap-12 reveal-fade">
         <div className="md:col-span-4">
-          <h2 className="text-xs text-white/50 font-mono tracking-widest uppercase sticky top-32">01 // El Problema Real</h2>
+          <h2 className="text-xs text-white/50 font-mono tracking-widest uppercase relative md:sticky md:top-32 mb-6 md:mb-0">01 // El Problema Real</h2>
         </div>
         <div className="md:col-span-8 prose prose-invert font-serif normal-case tracking-normal text-lg md:text-xl leading-relaxed text-white/80">
           <p className="mb-6">El dolor que atacaba TimeUp no era "agendar citas". Era que los dueños de barberías, estéticas, spas y clínicas pequeñas operan con WhatsApp, libretas y memoria.</p>
@@ -141,9 +153,9 @@ export default function TimeUpCaseStudy() {
       </section>
 
       {/* 2. Constraints */}
-      <section className="mb-32 grid md:grid-cols-12 gap-12 reveal-fade">
+      <section className="mb-20 md:mb-32 grid md:grid-cols-12 gap-12 reveal-fade">
         <div className="md:col-span-4">
-          <h2 className="text-xs text-white/50 font-mono tracking-widest uppercase sticky top-32">02 // Context & Constraints</h2>
+          <h2 className="text-xs text-white/50 font-mono tracking-widest uppercase relative md:sticky md:top-32 mb-6 md:mb-0">02 // Context & Constraints</h2>
           <p className="mt-4 text-sm font-mono normal-case tracking-normal text-white/40 mb-8">Constraints That Shaped Every Decision. Estas restricciones no son excusas. Son el contexto que define cada decisión técnica y de producto.</p>
         </div>
         <div className="md:col-span-8">
@@ -160,44 +172,44 @@ export default function TimeUpCaseStudy() {
 
 
       {/* Visual System Context */}
-      <section className="mb-32 reveal-fade">
+      <section className="mb-20 md:mb-32 reveal-fade">
         <h2 className="text-xs text-white/50 font-mono tracking-widest uppercase mb-12 border-b border-white/10 pb-4">02.5 // System Interfaces</h2>
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
           
           {/* Main Hero Image - Admin Analytics */}
-          <div className="md:col-span-12 relative h-[40vh] md:h-[70vh] w-full border border-white/10 bg-white/5 group overflow-hidden">
+          <div className="md:col-span-12 relative h-[25vh] sm:h-[40vh] md:h-[70vh] w-full border border-white/10 bg-white/5 group overflow-hidden">
             <Image 
               src="/images/timeup/admin-analytics.png" 
               alt="TimeUp Admin Analytics Panel" 
               fill 
               className="object-cover object-left-top opacity-60 mix-blend-screen transition-opacity duration-700 group-hover:opacity-100" 
             />
-            <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 font-mono text-[10px] tracking-widest border border-white/10 text-white/70">
+            <div className="absolute top-2 left-2 md:top-4 md:left-4 bg-black/60 backdrop-blur-md px-2 py-1 md:px-3 font-mono text-[9px] md:text-[10px] tracking-widest border border-white/10 text-white/70">
               ROLE_ADMIN // ANALYTICS ENGINE
             </div>
           </div>
 
           {/* Sub Images - Staff & Owner */}
-          <div className="md:col-span-6 relative h-[30vh] md:h-[50vh] w-full border border-white/10 bg-white/5 group overflow-hidden">
+          <div className="md:col-span-6 relative h-[25vh] sm:h-[30vh] md:h-[50vh] w-full border border-white/10 bg-white/5 group overflow-hidden">
             <Image 
               src="/images/timeup/owner-finance.png" 
               alt="TimeUp Owner Financial Panel" 
               fill 
               className="object-cover object-left-top opacity-60 mix-blend-screen transition-opacity duration-700 group-hover:opacity-100" 
             />
-            <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 font-mono text-[10px] tracking-widest border border-white/10 text-white/70">
+            <div className="absolute top-2 left-2 md:top-4 md:left-4 bg-black/60 backdrop-blur-md px-2 py-1 md:px-3 font-mono text-[9px] md:text-[10px] tracking-widest border border-white/10 text-white/70">
               ROLE_OWNER // FINANCIAL METRICS
             </div>
           </div>
 
-          <div className="md:col-span-6 relative h-[30vh] md:h-[50vh] w-full border border-white/10 bg-white/5 group overflow-hidden">
+          <div className="md:col-span-6 relative h-[25vh] sm:h-[30vh] md:h-[50vh] w-full border border-white/10 bg-white/5 group overflow-hidden">
             <Image 
               src="/images/timeup/staff-dashboard.png" 
               alt="TimeUp Staff Daily Agenda" 
               fill 
               className="object-cover object-left-top opacity-60 mix-blend-screen transition-opacity duration-700 group-hover:opacity-100" 
             />
-            <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 font-mono text-[10px] tracking-widest border border-white/10 text-white/70">
+            <div className="absolute top-2 left-2 md:top-4 md:left-4 bg-black/60 backdrop-blur-md px-2 py-1 md:px-3 font-mono text-[9px] md:text-[10px] tracking-widest border border-white/10 text-white/70">
               ROLE_STAFF // KINETIC AGENDA
             </div>
           </div>
@@ -207,7 +219,7 @@ export default function TimeUpCaseStudy() {
 
 
       {/* Visual System Context */}
-      <section className="mb-32 reveal-fade">
+      <section className="mb-20 md:mb-32 reveal-fade">
         <h2 className="text-xs text-white/50 font-mono tracking-widest uppercase mb-12 border-b border-white/10 pb-4">02.5 // System Interfaces</h2>
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
           
@@ -219,32 +231,32 @@ export default function TimeUpCaseStudy() {
               fill 
               className="object-cover object-left-top opacity-60 mix-blend-screen transition-opacity duration-700 group-hover:opacity-100" 
             />
-            <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 font-mono text-[10px] tracking-widest border border-white/10 text-white/70">
+            <div className="absolute top-2 left-2 md:top-4 md:left-4 bg-black/60 backdrop-blur-md px-2 py-1 md:px-3 font-mono text-[9px] md:text-[10px] tracking-widest border border-white/10 text-white/70">
               ROLE_ADMIN // ANALYTICS ENGINE
             </div>
           </div>
 
           {/* Sub Images - Staff & Owner */}
-          <div className="md:col-span-6 relative h-[30vh] md:h-[50vh] w-full border border-white/10 bg-white/5 group overflow-hidden">
+          <div className="md:col-span-6 relative h-[25vh] sm:h-[30vh] md:h-[50vh] w-full border border-white/10 bg-white/5 group overflow-hidden">
             <Image 
               src="/images/timeup/owner-finance.png" 
               alt="TimeUp Owner Financial Panel" 
               fill 
               className="object-cover object-left-top opacity-60 mix-blend-screen transition-opacity duration-700 group-hover:opacity-100" 
             />
-            <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 font-mono text-[10px] tracking-widest border border-white/10 text-white/70">
+            <div className="absolute top-2 left-2 md:top-4 md:left-4 bg-black/60 backdrop-blur-md px-2 py-1 md:px-3 font-mono text-[9px] md:text-[10px] tracking-widest border border-white/10 text-white/70">
               ROLE_OWNER // FINANCIAL METRICS
             </div>
           </div>
 
-          <div className="md:col-span-6 relative h-[30vh] md:h-[50vh] w-full border border-white/10 bg-white/5 group overflow-hidden">
+          <div className="md:col-span-6 relative h-[25vh] sm:h-[30vh] md:h-[50vh] w-full border border-white/10 bg-white/5 group overflow-hidden">
             <Image 
               src="/images/timeup/staff-dashboard.png" 
               alt="TimeUp Staff Daily Agenda" 
               fill 
               className="object-cover object-left-top opacity-60 mix-blend-screen transition-opacity duration-700 group-hover:opacity-100" 
             />
-            <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 font-mono text-[10px] tracking-widest border border-white/10 text-white/70">
+            <div className="absolute top-2 left-2 md:top-4 md:left-4 bg-black/60 backdrop-blur-md px-2 py-1 md:px-3 font-mono text-[9px] md:text-[10px] tracking-widest border border-white/10 text-white/70">
               ROLE_STAFF // KINETIC AGENDA
             </div>
           </div>
@@ -253,7 +265,7 @@ export default function TimeUpCaseStudy() {
       </section>
 
       {/* 3. Architecture ASCII */}
-      <section className="mb-32 reveal-fade">
+      <section className="mb-20 md:mb-32 reveal-fade">
         <h2 className="text-xs text-white/50 font-mono tracking-widest uppercase mb-12 border-b border-white/10 pb-4">03 // System Architecture</h2>
         <div className="bg-black/40 border border-white/10 p-4 md:p-8 rounded-sm overflow-x-auto relative group">
           <div className="absolute top-4 right-4 text-[10px] uppercase font-mono text-white/20">V_1.0 Production</div>
@@ -286,7 +298,7 @@ export default function TimeUpCaseStudy() {
       </section>
 
       {/* 4. Key Decisions */}
-      <section className="mb-32 reveal-fade">
+      <section className="mb-20 md:mb-32 reveal-fade">
         <h2 className="text-xs text-white/50 font-mono tracking-widest uppercase mb-12 border-b border-white/10 pb-4">04 // Key Decisions</h2>
         <div className="flex flex-col gap-8 text-sm normal-case font-mono tracking-normal">
           {decisions.map((d, i) => (
@@ -311,9 +323,9 @@ export default function TimeUpCaseStudy() {
       </section>
 
       {/* 5. What Broke & Learned */}
-      <section className="mb-32 grid md:grid-cols-12 gap-12 reveal-fade">
+      <section className="mb-20 md:mb-32 grid md:grid-cols-12 gap-12 reveal-fade">
         <div className="md:col-span-4">
-          <h2 className="text-xs text-white/50 font-mono tracking-widest uppercase sticky top-32">05 // Post-Mortem</h2>
+          <h2 className="text-xs text-white/50 font-mono tracking-widest uppercase relative md:sticky md:top-32 mb-6 md:mb-0">05 // Post-Mortem</h2>
           <p className="mt-4 text-sm font-mono normal-case tracking-normal text-white/40 mb-8">What Broke, What Hurt, What I Learned. These failures shaped the system more than the successes.</p>
         </div>
         <div className="md:col-span-8">
