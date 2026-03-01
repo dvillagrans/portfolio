@@ -1,0 +1,19 @@
+
+> portfolio-v2@0.1.0 dev
+> next dev
+
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.160:3000
+
+✓ Starting...
+(node:62840) Warning: Setting the NODE_TLS_REJECT_UNAUTHORIZED environment variable to '0' makes TLS connections and HTTPS requests insecure by disabling certificate verification.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✓ Ready in 515ms
+ GET / 200 in 539ms (compile: 421ms, render: 118ms)
+ GET /projects 200 in 72ms (compile: 15ms, render: 57ms)
+ GET / 200 in 54ms (compile: 21ms, render: 32ms)
+ GET / 200 in 19ms (compile: 1951µs, render: 17ms)
+✓ Compiled in 78ms
+ GET /projects 200 in 94ms (compile: 28ms, render: 65ms)
+[?25h

@@ -1,0 +1,105 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ArrowUpRight } from "lucide-react";
+import { useLanguage } from "@/i18n/LanguageContext";
+
+gsap.registerPlugin(ScrollTrigger);
+
+
+export default function FeaturedWork() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const { t, language } = useLanguage();
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      cardsRef.current.forEach((card, index) => {
+        if (!card) return;
+        
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            ease: "expo.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+            },
+          }
+        );
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section ref={sectionRef} id="projects" className="relative bg-offwhite px-8 py-32 text-charcoal md:px-24">
+      <div className="mx-auto max-w-6xl">
+        <header className="mb-24 flex flex-col gap-6 md:flex-row md:items-end md:justify-between border-b border-charcoal/10 pb-12">
+          <div>
+            <h2 className="font-serif text-4xl italic text-graphite">{t.work.title}</h2>
+            <p className="mt-4 max-w-md font-sans text-sm tracking-wide text-gray-500 uppercase">
+              {t.work.subtitle}
+            </p>
+          </div>
+        </header>
+
+        <div className="flex items-center justify-end mb-12">
+          <a
+            href="/projects"
+            className="group flex items-center gap-3 border border-charcoal/20 px-6 py-3 font-mono text-xs uppercase tracking-widest text-charcoal transition-all hover:bg-charcoal hover:text-offwhite"
+          >
+            {language === 'en' ? 'View Full Archive' : 'Ver Archivo Completo'}
+            <ArrowUpRight className="h-3 w-3" />
+          </a>
+        </div>
+        <div className="flex flex-col gap-12 border-t border-charcoal/10 pt-12">
+          {t.work.projects.map((project, idx) => (
+            <div
+              key={project.id}
+              ref={(el) => {
+                cardsRef.current[idx] = el;
+              }}
+              className="group relative flex flex-col gap-8 md:flex-row md:items-start p-8 transition-colors duration-500 hover:bg-gray-100/50 rounded-3xl"
+            >
+              <div className="flex w-full flex-col justify-between md:w-[30%] border-l-2 border-transparent group-hover:border-accent pl-6 transition-all duration-300">
+                <span className="font-mono text-xs text-gray-400">SYS_0{project.id}</span>
+                <h3 className="mt-6 font-sans text-2xl font-medium tracking-tight">
+                  {project.title}
+                </h3>
+                <a
+                  href="#"
+                  className="mt-12 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest opacity-0 transform translate-x-[-10px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
+                >
+                  {t.work.inspect} <ArrowUpRight className="w-3 h-3" />
+                </a>
+              </div>
+
+              <div className="grid w-full grid-cols-1 gap-8 md:w-[70%] md:grid-cols-2 lg:grid-cols-3 font-mono text-sm leading-relaxed text-gray-700">
+                <div className="flex flex-col gap-3 border-t border-charcoal/10 pt-4 group-hover:border-charcoal/30 transition-colors">
+                  <span className="text-xs font-semibold uppercase tracking-widest text-charcoal">{t.work.labelScope}</span>
+                  <p>{project.problem}</p>
+                </div>
+                <div className="flex flex-col gap-3 border-t border-charcoal/10 pt-4 group-hover:border-charcoal/30 transition-colors">
+                  <span className="text-xs font-semibold uppercase tracking-widest text-charcoal">{t.work.labelSystem}</span>
+                  <p>{project.system}</p>
+                </div>
+                <div className="flex flex-col gap-3 border-t border-charcoal/10 pt-4 group-hover:border-charcoal/30 transition-colors md:col-span-2 lg:col-span-1">
+                  <span className="text-xs font-semibold uppercase tracking-widest text-charcoal">{t.work.labelOutcome}</span>
+                  <p>{project.outcome}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
