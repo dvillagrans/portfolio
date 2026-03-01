@@ -72,3 +72,17 @@
   100% { transform: scale(1) translateY(0); border-radius: 0; box-shadow: none; opacity: 1; clip-path: inset(0 0% 0 0% round 0px); }
 }
 
+
+/* Prevent double animation on swipe back / browser back */
+html.back-transition::view-transition-old(*),
+html.back-transition::view-transition-new(*),
+html.back-transition::view-transition-group(*) {
+  animation: none !important;
+}
+html.back-transition::view-transition-old(root) {
+  opacity: 0 !important;
+  display: none !important;
+}
+html.back-transition::view-transition-new(root) {
+  opacity: 1 !important;
+}

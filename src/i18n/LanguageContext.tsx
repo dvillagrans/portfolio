@@ -19,6 +19,29 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    const handlePopState = () => {
+      document.documentElement.classList.add('back-transition');
+      setTimeout(() => document.documentElement.classList.remove('back-transition'), 100);
+    };
+    
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches[0].clientX < 30 || e.touches[0].clientX > window.innerWidth - 30) {
+        document.documentElement.classList.add('back-transition');
+        setTimeout(() => document.documentElement.classList.remove('back-transition'), 1500); 
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState, { capture: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    
+    return () => {
+      window.removeEventListener('popstate', handlePopState, { capture: true });
+      window.removeEventListener('touchstart', handleTouchStart);
+    };
+  }, []);
+
+
+  useEffect(() => {
     setMounted(true);
     const stored = localStorage.getItem("portfolio-lang");
     if (stored === "en" || stored === "es") {
