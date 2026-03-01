@@ -139,6 +139,14 @@ export const en = {
     title1: "Let’s build something",
     title2: "intelligent and useful.",
     email: "diegovillasal@gmail.com",
+    bookSession: "Book a Session",
+    bookDesc: "Schedule a 30-min discovery call.",
+    formName: "Your Name",
+    formEmail: "Your Email",
+    formMessage: "What would you like to discuss?",
+    formSubmit: "Send Request",
+    formSuccess: "Message sent! I'll get back to you shortly.",
+    formError: "Something went wrong. Please email directly.",
     github: "https://github.com/dvillagrans",
     linkedin: "https://linkedin.com/in/dvillagrans",
     footerText: "— Diego Villagran"
@@ -286,8 +294,16 @@ export const es = {
     title1: "Construyamos algo",
     title2: "inteligente y útil.",
     email: "diegovillasal@gmail.com",
+    bookSession: "Agendar Sesión",
+    bookDesc: "Programa una llamada breve de 30 mins conmigo.",
+    formName: "Tu Nombre",
+    formEmail: "Tu Correo",
+    formMessage: "¿De qué te gustaría hablar?",
+    formSubmit: "Enviar Solicitud",
+    formSuccess: "¡Mensaje enviado! Te contactaré pronto.",
+    formError: "Hubo un error. Por favor, envía un correo.",
     github: "https://github.com/dvillagrans",
-    linkedin: "https://linkedin.com/in/dvillagrans",
+    linkedin: "https://www.linkedin.com/in/diegovillagrans/",
     footerText: "— Diego Villagran"
   }
 };
