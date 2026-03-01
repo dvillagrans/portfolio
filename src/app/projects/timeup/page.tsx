@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { Link } from "next-view-transitions";
+import Navbar from "@/components/layout/Navbar";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -94,7 +95,9 @@ export default function TimeUpCaseStudy() {
   }, []);
 
   return (
-    <main ref={containerRef} className="min-h-screen pt-24 pb-20 md:pt-32 md:pb-32 px-5 md:px-12 lg:px-24 text-white uppercase tracking-wide">
+    <>
+      <Navbar />
+      <main ref={containerRef} className="min-h-screen pt-24 pb-20 md:pt-32 md:pb-32 px-5 md:px-12 lg:px-24 text-white uppercase tracking-wide">
       
       {/* Navigation */}
       <div className="mb-16 reveal-fade">
@@ -325,5 +328,6 @@ export default function TimeUpCaseStudy() {
         LAST UPDATED: FEBRUARY 2026 // TIMEUP SYSTEM ARCHITECTURE LOG
       </div>
     </main>
+    </>
   );
 }

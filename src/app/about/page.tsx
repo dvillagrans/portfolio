@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "next-view-transitions";
+import Navbar from "@/components/layout/Navbar";
 import { ArrowLeft } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 
@@ -43,10 +44,11 @@ export default function About() {
 
   return (
     <main className="min-h-screen w-full bg-offwhite text-charcoal font-sans overflow-x-hidden selection:bg-accent selection:text-offwhite">
+      <Navbar theme="light" />
       <div className="relative z-10 mx-auto max-w-4xl px-8 py-16 md:px-12 md:py-32" ref={containerRef}>
         
         {/* Header / Nav */}
-        <header className="mb-24 flex items-center justify-between">
+        <header className="mb-24 mt-20 flex items-center justify-between">
           <Link 
             href="/" 
             className="group flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-gray-500 transition-colors hover:text-charcoal"
@@ -54,13 +56,6 @@ export default function About() {
             <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
             {language === 'en' ? 'Return' : 'Volver'}
           </Link>
-
-          <button
-            onClick={() => setLanguage(language === "en" ? "es" : "en")}
-            className="font-mono text-xs border border-charcoal/20 rounded-full px-3 py-1 transition-colors hover:bg-charcoal hover:text-offwhite"
-          >
-            {language === "en" ? "ES" : "EN"}
-          </button>
         </header>
 
         {/* Editorial Intro */}

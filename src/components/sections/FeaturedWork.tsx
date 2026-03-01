@@ -75,24 +75,42 @@ export default function FeaturedWork() {
                 <h3 className="mt-6 font-sans text-2xl font-medium tracking-tight">
                   {project.title}
                 </h3>
-                <div className="mt-12 flex flex-col items-start gap-4">
-                  {(project as any).caseStudy ? (
-                    <Link
-                      href={(project as any).caseStudy}
-                      className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-accent opacity-0 transform translate-x-[-10px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
-                    >
-                      Read Case Study <ArrowRight className="w-4 h-4" />
-                    </Link>
-                  ) : (
-                    <a
-                      href={project.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-charcoal opacity-0 transform translate-x-[-10px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
-                    >
-                      {t.work.inspect} <ArrowUpRight className="w-3 h-3" />
-                    </a>
-                  )}
+                <div className="mt-12 flex flex-col items-start gap-3">
+                  <>
+                    {(project as any).caseStudy ? (
+                      <Link
+                        href={(project as any).caseStudy}
+                        className="inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-widest text-accent opacity-100 md:opacity-0 transform md:translate-x-[-10px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 bg-accent/10 px-3 py-1.5 rounded-full"
+                      >
+                        {language === 'es' ? 'Caso de Estudio' : 'Case Study'} <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    ) : (
+                      <a
+                        href={project.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-charcoal opacity-100 md:opacity-0 transform md:translate-x-[-10px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
+                      >
+                        {t.work.inspect} <ArrowUpRight className="w-3 h-3" />
+                      </a>
+                    )}
+                    
+                    {(project as any).links && (project as any).links.length > 0 && (
+                      <div className="flex flex-col gap-2 mt-2 opacity-100 md:opacity-0 transform md:translate-x-[-10px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 delay-75">
+                        {(project as any).links.map((link: any, lIdx: number) => (
+                          <a 
+                            key={lIdx} 
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 font-mono text-[10px] text-charcoal/60 hover:text-charcoal transition-colors ml-1"
+                          >
+                            <ArrowUpRight className="w-3 h-3" /> {link.label}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </>
                 </div>
               </div>
 

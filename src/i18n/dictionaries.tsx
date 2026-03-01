@@ -1,45 +1,31 @@
+import { DATA } from '../data/resume';
+
 export const en = {
   nav: { projects: "Projects", systems: "Capabilities", contact: "Contact", about: "About" },
   hero: {
     title1: "Data Science meets",
     title2: "Full-Stack Execution.",
-    subtitle1: "Diego Villagran Salazar — Data Scientist & Full-Stack Developer.",
-    subtitle2: "I build machine learning systems, analytics products, and scalable web apps that create measurable business impact.",
+    subtitle1: DATA.description,
+    subtitle2: DATA.summary,
     cta: "View Projects",
   },
   work: {
     title: "Featured Projects",
     subtitle: "Selected systems // 2024—2025",
-    labelScope: "Challenge",
-    labelSystem: "Solution",
-    labelOutcome: "Impact",
+    labelScope: "Role",
+    labelSystem: "Description",
+    labelOutcome: "Tech Stack",
     inspect: "Open Project",
-    projects: [
-      {
-        id: "01",
-        title: "NYC Ride-Hailing Analytics Dashboard",
-        problem: "Transportation stakeholders needed reliable insights across Uber and Lyft trip patterns, pricing, and airport operations in New York City.",
-        system: "Built an interactive Streamlit analytics platform with predictive ML models, geospatial maps, and multi-tab operational dashboards.",
-        outcome: "Delivered fare prediction with R² > 0.85 and airport classification with 92% accuracy for practical decision support.",
-        href: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard",
-      },
-      {
-        id: "02",
-        title: "India Air Quality ETL Intelligence System",
-        problem: "Raw environmental data from hundreds of IoT sensors was fragmented and difficult to convert into policy-ready insights.",
-        system: "Designed a cloud ETL architecture using Azure Databricks, PySpark, PostgreSQL, and BI reporting for continuous analytics.",
-        outcome: "Processed 2M+ daily records from 500+ sensors and transformed noisy streams into consistent, actionable health indicators.",
-        href: "https://github.com/dvillagrans/india-air-quality-etl",
-      },
-      {
-        id: "03",
-        title: "Code Master — Interactive Learning Platform",
-        problem: "Students needed a more engaging and structured way to practice coding with feedback and measurable progress.",
-        system: "Developed a gamified full-stack platform with Astro/Django architecture, secure auth, and learning-oriented UX.",
-        outcome: "Scaled to 10k+ users and earned 2nd place in the 2024 EdTech Innovation Awards.",
-        href: "https://github.com/dvillagrans/Code-Master",
-      }
-    ]
+    projects: DATA.projects.filter(p => p.active).slice(0, 5).map((p, i) => ({
+      id: "0" + i,
+      title: p.title,
+      problem: p.role,
+      system: p.description,
+      outcome: p.technologies ? p.technologies.join(', ') : "",
+      href: p.href,
+      caseStudy: (p as any).caseStudy ? p.href : undefined,
+      links: p.links?.map((l:any) => ({ label: l.type, url: l.href }))
+    }))
   },
   systems: {
     title: "Systems & Capabilities",
@@ -61,30 +47,7 @@ export const en = {
   },
   stack: {
     title: "Technical Stack & Tooling",
-    tools: [
-      "Python",
-      "Pandas",
-      "NumPy",
-      "Scikit-learn",
-      "TensorFlow",
-      "PyTorch",
-      "PySpark",
-      "SQL",
-      "PostgreSQL",
-      "Power BI",
-      "Streamlit",
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "Docker",
-      "Kubernetes",
-      "Azure",
-      "AWS",
-      "Google Cloud",
-      "Git",
-      "GitHub"
-    ]
+    tools: DATA.skills
   },
   about: {
     title: "Diego Villagran Salazar",
@@ -119,21 +82,15 @@ export const en = {
     back: "Return",
     headers: { year: "Year", project: "Project", domain: "Domain", link: "Link" },
     viewProject: "Visit",
-    projects: [
-      { year: "2025", title: "NYC Ride-Hailing Analytics Dashboard", domain: "Data Science / Streamlit", link: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" },
-      { year: "2025", title: "Métodos de Optimización No Lineal", domain: "Optimization / Flask", link: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal" },
-      { year: "2025", title: "Matemáticas Avanzadas - Métodos de Optimización", domain: "Optimization / Education", link: "https://github.com/dvillagrans/Metodos-de-optimizacion" },
-      { year: "2025", title: "Population Dashboard", domain: "Analytics / Power BI", link: "https://github.com/dvillagrans/population-dashboard" },
-      { year: "2025", title: "Global Health Analytics Dashboard", domain: "Analytics / Power BI", link: "https://github.com/dvillagrans/health-analytics-dashboard" },
-      { year: "2025", title: "Video Game Market Intelligence", domain: "Analytics / Power BI", link: "https://github.com/dvillagrans/videogames-dashboard" },
-      { year: "2024", title: "India Air Quality ETL", domain: "Data Engineering / Azure", link: "https://github.com/dvillagrans/india-air-quality-etl" },
-      { year: "2024", title: "Code Master", domain: "EdTech / Full Stack", link: "https://github.com/dvillagrans/Code-Master" },
-      { year: "2024", title: "Technical Portfolio Platform", domain: "Web Development / Next.js", link: "https://github.com/dvillagrans/portfolio" },
-      { year: "2024", title: "Houses Prices Prediction", domain: "Machine Learning / Flask", link: "https://github.com/dvillagrans/Houses-Prices-Prediction" },
-      { year: "2024", title: "Dashboard Financial", domain: "Data Analysis / Excel VBA", link: "https://github.com/dvillagrans/Dashboard-Financial" },
-      { year: "2023", title: "Melari Spa", domain: "Web Development / Astro", link: "https://melarispa.com" },
-      { year: "2023", title: "Prediction of Passengers for Mexican Airlines", domain: "Time Series / Data Science", link: "https://github.com/dvillagrans/Passenger-Volume-Prediction-in-Mexico" }
-    ]
+    projects: DATA.projects.map(p => ({
+      year: (p.dates || "").split(' ').pop() || "",
+      title: p.title,
+      domain: p.role,
+      caseStudy: (p as any).caseStudy ? p.href : undefined,
+      isFeatured: (p as any).caseStudy || false,
+      link: p.href,
+      links: p.links?.map((l:any) => ({ label: l.type, url: l.href }))
+    }))
   },
   contact: {
     title1: "Let’s build something",
@@ -158,43 +115,27 @@ export const es = {
   hero: {
     title1: "Data Science con",
     title2: "ejecución Full-Stack.",
-    subtitle1: "Diego Villagran Salazar — Data Scientist & Full-Stack Developer.",
-    subtitle2: "Construyo sistemas de machine learning, productos analíticos y aplicaciones web escalables con impacto medible.",
+    subtitle1: DATA.description,
+    subtitle2: DATA.summary,
     cta: "Ver Proyectos",
   },
   work: {
     title: "Proyectos Destacados",
     subtitle: "Sistemas seleccionados // 2024—2025",
-    labelScope: "Reto",
-    labelSystem: "Solución",
-    labelOutcome: "Impacto",
+    labelScope: "Rol",
+    labelSystem: "Descripción",
+    labelOutcome: "Tecnologías",
     inspect: "Ver Proyecto",
-    projects: [
-      {
-        id: "01",
-        title: "NYC Ride-Hailing Analytics Dashboard",
-        problem: "Los equipos necesitaban insights confiables sobre patrones de viaje, tarifas y operación aeroportuaria de Uber/Lyft en NYC.",
-        system: "Desarrollé una plataforma interactiva en Streamlit con modelos predictivos, mapas geoespaciales y tableros operativos.",
-        outcome: "Se logró predicción de tarifas con R² > 0.85 y clasificación de viajes al aeropuerto con 92% de accuracy.",
-        href: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard",
-      },
-      {
-        id: "02",
-        title: "Sistema de Inteligencia ETL de Calidad del Aire (India)",
-        problem: "Los datos ambientales de cientos de sensores IoT estaban fragmentados y eran difíciles de convertir en insights accionables.",
-        system: "Diseñé una arquitectura ETL en la nube con Azure Databricks, PySpark, PostgreSQL y visualización en BI.",
-        outcome: "Procesamiento de más de 2M de registros diarios de 500+ sensores para crear indicadores de salud consistentes.",
-        href: "https://github.com/dvillagrans/india-air-quality-etl",
-      },
-      {
-        id: "03",
-        title: "Code Master — Plataforma Interactiva de Aprendizaje",
-        problem: "Los estudiantes necesitaban una forma más atractiva y estructurada de practicar programación con retroalimentación.",
-        system: "Construí una plataforma gamificada full-stack con arquitectura Astro/Django, autenticación segura y UX educativa.",
-        outcome: "Escaló a más de 10k usuarios y obtuvo 2º lugar en los EdTech Innovation Awards 2024.",
-        href: "https://github.com/dvillagrans/Code-Master",
-      }
-    ]
+    projects: DATA.projects.filter(p => p.active).slice(0, 5).map((p, i) => ({
+      id: "0" + i,
+      title: p.title,
+      problem: p.role,
+      system: p.description,
+      outcome: p.technologies ? p.technologies.join(', ') : "",
+      href: p.href,
+      caseStudy: (p as any).caseStudy ? p.href : undefined,
+      links: p.links?.map((l:any) => ({ label: l.type, url: l.href }))
+    }))
   },
   systems: {
     title: "Sistemas y Capacidades",
@@ -216,30 +157,7 @@ export const es = {
   },
   stack: {
     title: "Stack Técnico y Herramientas",
-    tools: [
-      "Python",
-      "Pandas",
-      "NumPy",
-      "Scikit-learn",
-      "TensorFlow",
-      "PyTorch",
-      "PySpark",
-      "SQL",
-      "PostgreSQL",
-      "Power BI",
-      "Streamlit",
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "Docker",
-      "Kubernetes",
-      "Azure",
-      "AWS",
-      "Google Cloud",
-      "Git",
-      "GitHub"
-    ]
+    tools: DATA.skills
   },
   about: {
     title: "Diego Villagran Salazar",
@@ -274,21 +192,15 @@ export const es = {
     back: "Volver",
     headers: { year: "Año", project: "Proyecto", domain: "Dominio", link: "Enlace" },
     viewProject: "Visitar",
-    projects: [
-      { year: "2025", title: "NYC Ride-Hailing Analytics Dashboard", domain: "Data Science / Streamlit", link: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" },
-      { year: "2025", title: "Métodos de Optimización No Lineal", domain: "Optimización / Flask", link: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal" },
-      { year: "2025", title: "Matemáticas Avanzadas - Métodos de Optimización", domain: "Optimización / Educación", link: "https://github.com/dvillagrans/Metodos-de-optimizacion" },
-      { year: "2025", title: "Dashboard de Población por Continente", domain: "Analítica / Power BI", link: "https://github.com/dvillagrans/population-dashboard" },
-      { year: "2025", title: "Global Health Analytics Dashboard", domain: "Analítica / Power BI", link: "https://github.com/dvillagrans/health-analytics-dashboard" },
-      { year: "2025", title: "Video Game Market Intelligence", domain: "Analítica / Power BI", link: "https://github.com/dvillagrans/videogames-dashboard" },
-      { year: "2024", title: "India Air Quality ETL", domain: "Data Engineering / Azure", link: "https://github.com/dvillagrans/india-air-quality-etl" },
-      { year: "2024", title: "Code Master", domain: "EdTech / Full Stack", link: "https://github.com/dvillagrans/Code-Master" },
-      { year: "2024", title: "Technical Portfolio Platform", domain: "Desarrollo Web / Next.js", link: "https://github.com/dvillagrans/portfolio" },
-      { year: "2024", title: "Predicción de precios de casas", domain: "Machine Learning / Flask", link: "https://github.com/dvillagrans/Houses-Prices-Prediction" },
-      { year: "2024", title: "Dashboard Financial", domain: "Análisis de Datos / Excel VBA", link: "https://github.com/dvillagrans/Dashboard-Financial" },
-      { year: "2023", title: "Melari Spa", domain: "Desarrollo Web / Astro", link: "https://melarispa.com" },
-      { year: "2023", title: "Predicción de pasajeros para aerolíneas mexicanas", domain: "Series de tiempo / Data Science", link: "https://github.com/dvillagrans/Passenger-Volume-Prediction-in-Mexico" }
-    ]
+    projects: DATA.projects.map(p => ({
+      year: (p.dates || "").split(' ').pop() || "",
+      title: p.title,
+      domain: p.role,
+      caseStudy: (p as any).caseStudy ? p.href : undefined,
+      isFeatured: (p as any).caseStudy || false,
+      link: p.href,
+      links: p.links?.map((l:any) => ({ label: l.type, url: l.href }))
+    }))
   },
   contact: {
     title1: "Construyamos algo",

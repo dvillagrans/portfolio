@@ -9,7 +9,7 @@ import { Menu, X } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function Navbar() {
+export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
@@ -34,7 +34,7 @@ export default function Navbar() {
       className={`fixed top-4 md:top-6 left-1/2 z-50 flex flex-col -translate-x-1/2 rounded-[2rem] transition-all duration-500 will-change-transform ${
         (scrolled || mobileMenuOpen)
           ? "w-[95%] sm:w-[90%] max-w-4xl bg-offwhite/95 text-charcoal backdrop-blur-xl border border-charcoal/10 shadow-lg md:w-[600px]"
-          : "w-[95%] sm:w-[90%] max-w-4xl bg-transparent text-offwhite border border-transparent md:w-[600px]"
+          : `w-[95%] sm:w-[90%] max-w-4xl bg-transparent ${theme === 'light' ? 'text-charcoal' : 'text-offwhite'} border border-transparent md:w-[600px]`
       }`}
     >
       <div className="flex items-center justify-between px-5 md:px-6 py-3 w-full">

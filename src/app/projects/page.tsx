@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { Link } from "next-view-transitions";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import Navbar from "@/components/layout/Navbar";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 export default function SystemArchive() {
@@ -45,8 +46,10 @@ export default function SystemArchive() {
 
       <div className="relative z-10 mx-auto max-w-6xl px-5 py-12 md:px-24 md:py-32" ref={containerRef}>
         
-        {/* Navigation & Switcher Header */}
-        <header className="mb-16 md:mb-24 flex items-center justify-between">
+        <Navbar />
+        
+        {/* Simple Return Link */}
+        <header className="mb-16 md:mb-24 mt-20 flex items-center justify-between">
           <Link 
             href="/" 
             className="group flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-gray-400 transition-colors hover:text-offwhite"
@@ -54,13 +57,6 @@ export default function SystemArchive() {
             <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
             {archive.back}
           </Link>
-
-          <button
-            onClick={() => setLanguage(language === "en" ? "es" : "en")}
-            className="font-mono text-xs border border-offwhite/20 rounded-full px-3 py-1 transition-colors hover:bg-offwhite hover:text-charcoal"
-          >
-            {language === "en" ? "ES" : "EN"}
-          </button>
         </header>
 
         {/* Title Container */}
@@ -114,9 +110,9 @@ export default function SystemArchive() {
                       {project.caseStudy && (
                         <Link 
                           href={project.caseStudy}
-                          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-accent transition-colors hover:text-white"
+                          className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-accent transition-colors hover:text-white bg-accent/10 px-3 py-1.5 rounded-full"
                         >
-                          Read Architecture
+                          {language === 'es' ? 'Caso de Estudio' : 'Case Study'} 
                           <ArrowLeft className="h-3 w-3 rotate-135" />
                         </Link>
                       )}
@@ -127,7 +123,7 @@ export default function SystemArchive() {
                             href={lnk.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`inline-flex items-center gap-2 text-xs uppercase tracking-widest transition-colors ${project.isFeatured ? 'text-gray-300 hover:text-white' : 'text-gray-400 hover:text-accent'}`}
+                            className={`inline-flex items-center gap-1.5 font-mono text-[10px] text-gray-400 hover:text-white transition-colors`}
                           >
                             {lnk.label}
                             <ArrowUpRight className="h-3 w-3" />
