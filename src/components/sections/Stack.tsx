@@ -7,31 +7,11 @@ import { useLanguage } from "@/i18n/LanguageContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const tools = [
-  "React",
-  "Next.js App Router",
-  "TypeScript",
-  "Tailwind CSS",
-  "GSAP",
-  "Framer Motion",
-  "Radix UI",
-  "Zustand",
-  "Sanity",
-  "Payload CMS",
-  "Vercel",
-  "Docker",
-  "PostgreSQL",
-  "Prisma",
-  "Python",
-  "Playwright",
-  "TRPC",
-  "Figma",
-];
-
 export default function Stack() {
   const container = useRef<HTMLElement>(null);
   const itemsRef = useRef<(HTMLSpanElement | null)[]>([]);
   const { t } = useLanguage();
+  const tools = t.stack.tools;
 
   useEffect(() => {
     const ctx = gsap.context(() => {

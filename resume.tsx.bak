@@ -42,12 +42,6 @@ export const DATA = {
     "Vercel",
     "googlecolab"
   ],
-  navbar: [
-    { href: "/", icon: HomeIcon, label: "Home" },
-    { href: "#skills", icon: NotebookIcon, label: "Skills" },
-    { href: "/projects", icon: CodeIcon, label: "Projects" },
-    { href: "#contact", icon: PencilLine, label: "Contact" },
-  ],
   contact: {
     email: "diegovillasal@gmail.com",
     tel: "+525572071183",

@@ -35,7 +35,7 @@ export default function Navbar() {
       }`}
     >
       <div className="text-sm font-semibold tracking-wide uppercase font-sans">
-        DV // <span className="font-mono text-xs opacity-70 ml-1">v2.0</span>
+        DIEGO VILLAGRAN // <span className="font-mono text-xs opacity-70 ml-1">v2.0</span>
       </div>
       <div className="flex items-center gap-2 md:gap-6">
       <ul className="hidden md:flex items-center gap-6 text-sm font-medium">

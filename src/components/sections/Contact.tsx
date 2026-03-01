@@ -79,10 +79,10 @@ export default function Contact() {
         </h2>
 
         <a
-          href="mailto:contact@danielvillagran.com"
+          href={`mailto:${t.contact.email}`}
           className="group relative mt-16 font-mono text-sm uppercase tracking-[0.2em] text-offwhite transition-colors hover:text-accent"
         >
-          contact@danielvillagran.com
+          {t.contact.email}
           <div className="absolute -bottom-2 left-0 h-[1px] w-full bg-offwhite/20 transition-all duration-300 group-hover:bg-accent" />
           <div className="absolute -bottom-2 left-0 h-[1px] w-0 bg-accent transition-all duration-500 ease-out group-hover:w-full" />
         </a>
@@ -90,8 +90,8 @@ export default function Contact() {
         <div className="mt-32 flex w-full items-center justify-between border-t border-offwhite/10 pt-8 font-mono text-xs uppercase tracking-widest text-gray-500">
           <span>{new Date().getFullYear()} {t.contact.footerText}</span>
           <div className="flex gap-6">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-offwhite transition-colors">Github</a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-offwhite transition-colors">LinkedIn</a>
+            <a href={t.contact.github} target="_blank" rel="noopener noreferrer" className="hover:text-offwhite transition-colors">Github</a>
+            <a href={t.contact.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-offwhite transition-colors">LinkedIn</a>
           </div>
         </div>
       </div>
