@@ -26,7 +26,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Daniel Villagran | Creative Technologist",
+  title: "Diego Villagran | Creative Technologist",
   description: "Senior Creative Technologist, Lead Frontend Engineer, and Product Systems Designer.",
 };
 
