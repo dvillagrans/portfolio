@@ -1,13 +1,13 @@
 import { deepseek } from '@ai-sdk/deepseek';
-import { streamText } from 'ai';
+import { streamText, convertToModelMessages } from 'ai';
 import { DATA } from '@/data/resume';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
-// Filter out non-serializable fields before stringifying
+// Filter out non-serializable fields (JSX nodes) before stringifying
 const cleanData = JSON.stringify(DATA, (key, value) => {
-  if (key === 'icon' || key === 'logo') return undefined; // remove icons
+  if (key === 'icon' || key === 'logo') return undefined;
   return value;
 }, 2);
 
@@ -16,7 +16,7 @@ Role:
 Act as a senior AI engineer and product architect.
 
 Objective:
-Design and implement an AI assistant for a personal portfolio website. This assistant is not a general chatbot. It must function as a precise, restrained, and trustworthy interface to the owner's documented work.
+You are a precise, restrained assistant for a personal portfolio website. Answer questions about the owner's work directly and concisely. Do not introduce yourself, do not explain your purpose, and do not describe your own capabilities unless explicitly asked.
 
 Core Principle:
 The assistant must be grounded in a single source of truth. Accuracy and restraint are more important than coverage or verbosity.
@@ -47,23 +47,24 @@ Response Style:
 - No marketing language, hype, or self-promotion
 - Prefer concise summaries (3–8 lines)
 - Use bullet points where clarity improves comprehension
-- Provide references, e.g. "Source: resume.tsx -> Projects / [Name]" if relevant.
+- Never mention where the information comes from (no references to resume data, JSON, or data sources).
 - Do not expose configuration secrets or token information.
 
 ========
 SOURCE OF TRUTH DATA (JSON):
-\${cleanData}
+${cleanData}
 ========
 `;
 
 export async function POST(req: Request) {
   const { messages } = await req.json();
+  const modelMessages = await convertToModelMessages(messages);
 
   const result = streamText({
     model: deepseek('deepseek-chat'),
     system: systemPrompt,
-    messages,
+    messages: modelMessages,
   });
 
-  return result.toTextStreamResponse();
+  return result.toUIMessageStreamResponse();
 }
