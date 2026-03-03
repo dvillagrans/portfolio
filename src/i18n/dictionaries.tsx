@@ -16,7 +16,7 @@ export const en = {
     labelSystem: "Description",
     labelOutcome: "Tech Stack",
     inspect: "Open Project",
-    projects: DATA.projects.filter(p => p.active).slice(0, 5).map((p, i) => ({
+    projects: DATA.projects.filter(p => p.active).slice(0, 3).map((p, i) => ({
       id: "0" + i,
       title: p.title,
       problem: p.role,
@@ -24,7 +24,14 @@ export const en = {
       outcome: p.technologies ? p.technologies.join(', ') : "",
       href: p.href,
       caseStudy: (p as any).caseStudy ? p.href : undefined,
-      links: p.links?.map((l:any) => ({ label: l.type, url: l.href }))
+      image: (p as any).image?.src,
+      links: p.links?.map((l:any) => ({ label: l.type, url: l.href })),
+      features: (p as any).features,
+      badges: (p as any).badges,
+      metrics: (p as any).metrics,
+      features: (p as any).features,
+      badges: (p as any).badges,
+      metrics: (p as any).metrics
     }))
   },
   systems: {
@@ -126,7 +133,7 @@ export const es = {
     labelSystem: "Descripción",
     labelOutcome: "Tecnologías",
     inspect: "Ver Proyecto",
-    projects: DATA.projects.filter(p => p.active).slice(0, 5).map((p, i) => ({
+    projects: DATA.projects.filter(p => p.active).slice(0, 3).map((p, i) => ({
       id: "0" + i,
       title: p.title,
       problem: p.role,
@@ -134,7 +141,14 @@ export const es = {
       outcome: p.technologies ? p.technologies.join(', ') : "",
       href: p.href,
       caseStudy: (p as any).caseStudy ? p.href : undefined,
-      links: p.links?.map((l:any) => ({ label: l.type, url: l.href }))
+      image: (p as any).image?.src,
+      links: p.links?.map((l:any) => ({ label: l.type, url: l.href })),
+      features: (p as any).features,
+      badges: (p as any).badges,
+      metrics: (p as any).metrics,
+      features: (p as any).features,
+      badges: (p as any).badges,
+      metrics: (p as any).metrics
     }))
   },
   systems: {

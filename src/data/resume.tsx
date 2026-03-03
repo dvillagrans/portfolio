@@ -9,9 +9,9 @@ export const DATA = {
   location: "Mexico City, MX",
   locationLink: "",
   description:
-    "Data Scientist & Full-Stack Developer specializing in machine learning, data visualization, and scalable web solutions. Currently pursuing Data Science at ESCOM-IPN with 3+ years of hands-on experience delivering data-driven insights and production-ready applications.",
+    "Data Scientist & Full-Stack Developer.",
   summary:
-    "Passionate data scientist and full-stack developer with a proven track record of transforming complex datasets into actionable business insights. Expert in building end-to-end machine learning pipelines, from data collection and preprocessing to model deployment and monitoring. My experience spans predictive analytics (92% forecasting accuracy in aviation demand), web development (40% conversion rate improvements), and cloud-based ETL systems processing millions of daily records. I thrive at the intersection of data science and software engineering, creating scalable solutions that drive real business value.",
+  "",
   avatarUrl: "/img/optimized/me-128.webp",
   skills: [
     "Python",
@@ -87,19 +87,48 @@ export const DATA = {
 
   projects: [
     {
-      title: "TimeUp // Time Tracking SaaS",
+      title: "TimeUp",
       caseStudy: true,
       href: "/projects/timeup",
       dates: "2025",
       active: true,
-      role: "SaaS / Full Stack",
-      description: "Businesses and employees needed an agile, frictionless system to manage time logs and payments, replacing paper completely. Built a two-way architecture (Business Portal & Employee Landing) with dashboards, automated calculations, and cloud infrastructure.",
+      role: "Founder · Built in 10 weeks",
+      badges: ["LIVE", "Multi-tenant SaaS", "Production-ready"],
+      metrics: [
+        { value: "<500ms", label: "Dashboard" },
+        { value: "0", label: "Overbooking" }
+      ],
+      features: [
+        { name: "What it replaces", value: "WhatsApp + Libreta + Excel" },
+        { name: "What it enables", value: "Mobile-first operations, Real-time availability" },
+        { name: "Performance", value: "Passkeys login, Guided onboarding" }
+      ],
+      description: "A frictionless time tracking system that modernizes how businesses and employees log hours and calculate payrolls.",
       technologies: [
-        "Next.js",
-        "React",
-        "SaaS",
-        "Cloud Infrastructure",
-        "Dashboards"
+        "Next.js 16",
+        "React 19",
+        "TypeScript 5.3",
+        "PostgreSQL 15",
+        "Prisma 7",
+        "Tailwind CSS 4",
+        "Turborepo",
+        "Vercel",
+        "Supabase",
+        "NextAuth.js",
+        "WebAuthn/Passkeys",
+        "WebSockets + Socket.IO",
+        "Redis Pub/Sub",
+        "Radix UI",
+        "Recharts",
+        "Web Push API",
+        "Docker",
+        "Stripe",
+        "Resend (Email)",
+        "Cypress (E2E Testing)",
+        "Jest",
+        "ESLint",
+        "AWS VPS",
+        "GitHub Actions"
       ],
       links: [
         {
@@ -123,9 +152,18 @@ export const DATA = {
       href: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard",
       dates: "June 2025",
       active: true,
-      role: "Data Science",
-      description:
-        "Comprehensive interactive dashboard built with Streamlit for analyzing Uber and Lyft trip patterns, revenue, and geographic distribution in NYC. Features machine learning models for fare prediction (R² > 0.85) and airport trip classification (92% accuracy), along with advanced visualizations including heat maps, 3D PyDeck maps, and real-time analytics across 8 specialized tabs covering peak hours, accessibility services, and competitive analysis.",
+      role: "Data Scientist · End-to-end ML Pipeline",
+      description: "Comprehensive interactive dashboard for analyzing Uber and Lyft trip patterns, revenue, and geographic distribution in NYC.",
+      badges: ["Machine Learning", "Big Data", "Geospatial"],
+      metrics: [
+        { value: "0.85+", label: "R² Fare Predict" },
+        { value: "92%", label: "Classification" }
+      ],
+      features: [
+        { name: "Models deployed", value: "Fare prediction, Airport trip classification" },
+        { name: "Visualizations", value: "Interactive 3D PyDeck maps, dynamic heatmaps" },
+        { name: "Scale", value: "Millions of records processed natively" }
+      ],
       technologies: [
         "Streamlit",
         "Python",
@@ -150,9 +188,18 @@ export const DATA = {
       href: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal",
       dates: "June 2025",
       active: true,
-      role: "Mathematical Optimization",
-      description:
-        "Interactive Flask web application implementing and visualizing main non-linear optimization algorithms with modern dynamic interface. Features Line Search (Golden Section, Fibonacci, Armijo), Gradient Descent (Basic, Momentum, Adam), Newton Method variants, and constrained optimization methods with real-time convergence graphs and mathematical visualizations.",
+      role: "Solo Dev · Algorithm Visualizer",
+      description: "Interactive web application implementing and explaining main non-linear optimization algorithms with a dynamic interface.",
+      badges: ["Math Optimization", "Academic", "Data Viz"],
+      metrics: [
+        { value: "10+", label: "Algorithms" },
+        { value: "0ms", label: "Real-time graphs" }
+      ],
+      features: [
+        { name: "Line Search", value: "Golden Section, Fibonacci, Armijo" },
+        { name: "Gradient Descent", value: "Basic, Momentum, Adam, Newton" },
+        { name: "Rendering", value: "Mathematical visualizations and step-by-step convergence" }
+      ],
       technologies: [
         "Flask",
         "Python",
@@ -178,7 +225,7 @@ export const DATA = {
       active: true,
       role: "Mathematical Optimization",
       description:
-        "Aplicación Flask para resolver problemas de programación lineal usando diferentes métodos de optimización (Simplex, Gran M, Dos Fases) con animaciones visuales generadas usando Manim. Incluye API REST, interfaz web interactiva y generación automática de videos explicativos de los algoritmos.",
+        "Flask app to solve linear programming using Simplex, Big M, and Two Phases with Manim-generated mathematical animations and visual insights.",
       technologies: [
         "Flask",
         "Python",
@@ -204,7 +251,7 @@ export const DATA = {
       active: false,
       role: "Data Analyst",
       description:
-        "Developed interactive Dashboard with Power BI to analyze population trends, demographic shifts, and continental comparisons with dynamic filtering and drill-down capabilities.",
+        "Power BI Dashboard analyzing population trends and dynamic demographic shifts.",
       technologies: [
         "Power BI",
         "DAX",
@@ -230,7 +277,7 @@ export const DATA = {
       active: false,
       role: "Data Analyst",
       description:
-        "Built comprehensive health analytics dashboard analyzing life expectancy trends and infant mortality rates across 195+ countries. Features correlation analysis, time-series forecasting, and socioeconomic factor integration.",
+        "Health analytics dashboard to analyze life expectancy and infant mortality rates, featuring socioeconomic factor integration.",
       technologies: [
         "Power BI",
         "Statistical Analysis",
@@ -256,7 +303,7 @@ export const DATA = {
       active: false,
       role: "Data Analyst",
       description:
-        "Created interactive Power BI dashboard analyzing $60B global gaming market. Integrated sales data from 15 platforms, enabling product strategy insights through genre trends and regional performance analytics.",
+        "Power BI dashboard analyzing global gaming market trends, integrating sales data from major platforms for regional analytics.",
       technologies: [
         "Power BI",
         "DAX",
@@ -281,7 +328,7 @@ export const DATA = {
       active: false,
       role: "Data Engineer",
       description:
-        "Designed end-to-end ETL pipeline processing 2M+ daily readings from 500+ IoT sensors across India. Implemented cloud-based data architecture using Azure Databricks for spark processing (PySpark) and Jupyter notebooks for anomaly detection models. Transformed raw sensor data into policy-ready insights through PostgreSQL geospatial warehousing and Power BI dashboards with live pollution heatmaps.",
+        "End-to-end ETL pipeline processing 2M+ daily readings. Cloud data architecture using Azure Databricks with Jupyter notebooks for anomaly detection models.",
       technologies: [
         "Azure",
         "PySpark",
@@ -307,7 +354,7 @@ export const DATA = {
       active: true,
       role: "Full-stack Dev",
       description:
-        "Pioneered gamified coding education platform with Django backend supporting 10k+ users. Features include code playgrounds, AI-assisted feedback, and progress tracking. Won 2nd place in 2024 EdTech Innovation Awards.",
+        "Gamified coding platform with Django backend. Features code playgrounds and AI-assisted feedback. 2nd place in 2024 EdTech Innovation Awards.",
       technologies: [
         "Django",
         "Astro",
@@ -338,7 +385,7 @@ export const DATA = {
       active: true,
       role: "Full-stack Dev",
       description:
-        "Architected performant portfolio using Next.js SSG, achieving perfect Lighthouse scores. Implemented dark mode, project showcases, and MDX-based content system. Serves as production-grade template for developer portfolios.",
+        "Performant portfolio using Next.js SSG with perfect Lighthouse scores. Includes project showcases and MDX-based content system.",
       technologies: [
         "Next.js 14",
         "React",
@@ -348,7 +395,7 @@ export const DATA = {
       links: [
         {
           type: "Website",
-          href: "https://portfolio-pi-vert-92.vercel.app/",
+          href: "https://www.dvillagrans.dev/",
           icon: <Icons.globe className="size-3" />,
         },
         {
@@ -369,7 +416,7 @@ export const DATA = {
       active: false,
       role: "Data Science",
       description:
-        "Built machine learning pipeline (Random Forest Regressor) predicting property values with 88% R² score. Engineered features from geospatial data and market trends. Deployed as Flask API for real-time valuation estimates.",
+        "Machine learning pipeline (Random Forest) predicting property values with 88% R² score. Deployed as a Flask API.",
       technologies: [
         "Scikit-learn",
         "Python",
@@ -396,7 +443,7 @@ export const DATA = {
       active: false,
       role: "Data Analyst",
       description:
-        "Designed automated financial reporting system using Excel VBA, reducing manual processing time by 15 hours/week. Featured dynamic P&L visualizations, cash flow forecasting modules, and KPI tracking for 200+ branch locations.",
+        "Automated financial system using Excel VBA, reducing process time by 15 hours/week. Featured P&L visualizations in dashboards.",
       technologies: [
         "VBA",
         "Excel",
@@ -422,7 +469,7 @@ export const DATA = {
       active: true,
       role: "Full-stack Dev",
       description:
-        "Led full-stack development of SEO-optimized wellness platform using Astro, React, and Tailwind CSS. Implemented responsive design with 95+ Lighthouse scores, integrated Vercel analytics, and deployed scalable architecture supporting multi-language content and modern web standards.",
+        "Full-stack development of an SEO-optimized wellness platform using Astro, React, and Tailwind CSS with multi-language support.",
       technologies: ["Astro", "React", "Tailwind CSS", "+2"],
       links: [
         {
@@ -448,7 +495,7 @@ export const DATA = {
       active: true,
       role: "Data Science",
       description:
-        "Innovative project showcasing technical expertise and problem-solving skills through comprehensive time series analysis and machine learning implementation. Developed predictive models using SARIMA and advanced statistical techniques to forecast passenger demand for Mexican airlines, achieving high accuracy in predictions and providing valuable insights for strategic planning.",
+        "Time series predictive models using SARIMA to forecast passenger demand for Mexican airlines with high accuracy.",
       technologies: [
         "Python",
         "Pandas",

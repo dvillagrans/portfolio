@@ -3,6 +3,7 @@
 import { useChat } from '@ai-sdk/react';
 import { Bot, Maximize2, Minimize2, Send, User, X } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 export function ProjectChat({ context }: { context?: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -78,9 +79,18 @@ export function ProjectChat({ context }: { context?: string }) {
                 {m.role === 'user' ? <User className="h-3 w-3" /> : <Bot className="h-3 w-3" />}
                 <span className="text-[10px] font-mono uppercase tracking-wider">{m.role}</span>
               </div>
-              <div className="whitespace-pre-wrap">
+              <ReactMarkdown
+                components={{
+                  p: ({ children }) => <p className="mb-1 last:mb-0">{children}</p>,
+                  ul: ({ children }) => <ul className="list-disc pl-4 mb-1 space-y-0.5">{children}</ul>,
+                  ol: ({ children }) => <ol className="list-decimal pl-4 mb-1 space-y-0.5">{children}</ol>,
+                  li: ({ children }) => <li>{children}</li>,
+                  strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+                  code: ({ children }) => <code className="bg-black/10 rounded px-1 font-mono text-xs">{children}</code>,
+                }}
+              >
                 {(m.parts ?? []).filter((p: any) => p.type === 'text').map((p: any) => p.text).join('') || m.content}
-              </div>
+              </ReactMarkdown>
             </div>
           </div>
         ))}
