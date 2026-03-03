@@ -1,4 +1,7 @@
-"use client";
+const fs = require('fs');
+const file = 'src/app/projects/timeup/page.tsx';
+
+const content = `"use client";
 
 import React, { useEffect, useRef } from "react";
 import { Link } from "next-view-transitions";
@@ -342,3 +345,6 @@ export default function TimeUpCaseStudy() {
     </>
   );
 }
+`
+
+fs.writeFileSync(file, content);
