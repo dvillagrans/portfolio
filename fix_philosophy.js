@@ -1,4 +1,6 @@
-"use client";
+const fs = require('fs');
+
+const content = `"use client";
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
@@ -115,3 +117,6 @@ export default function Philosophy() {
     </section>
   );
 }
+`;
+
+fs.writeFileSync('src/components/sections/Philosophy.tsx', content);

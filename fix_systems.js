@@ -1,4 +1,6 @@
-"use client";
+const fs = require('fs');
+
+const content = `"use client";
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
@@ -103,9 +105,9 @@ export default function Systems() {
                 ref={(el) => {
                   blocksRef.current[idx] = el;
                 }}
-                className={`group relative flex flex-col justify-between overflow-hidden rounded-[2rem] border border-offwhite/10 bg-offwhite/[0.02] p-8 lg:p-10 transition-all duration-500 hover:-translate-y-1 hover:border-accent/30 hover:bg-offwhite/[0.04] hover:shadow-2xl hover:shadow-accent/5 ${
+                className={\`group relative flex flex-col justify-between overflow-hidden rounded-[2rem] border border-offwhite/10 bg-offwhite/[0.02] p-8 lg:p-10 transition-all duration-500 hover:-translate-y-1 hover:border-accent/30 hover:bg-offwhite/[0.04] hover:shadow-2xl hover:shadow-accent/5 \${
                   isLarge ? "lg:col-span-2" : "lg:col-span-1"
-                }`}
+                }\`}
               >
                 {/* Background Glow Effect */}
                 <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/5 blur-[100px] transition-all duration-500 group-hover:bg-accent/15"></div>
@@ -137,3 +139,6 @@ export default function Systems() {
     </section>
   );
 }
+`;
+
+fs.writeFileSync('src/components/sections/Systems.tsx', content);

@@ -1,4 +1,6 @@
-"use client";
+const fs = require('fs');
+
+const content = `"use client";
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
@@ -136,3 +138,6 @@ export default function Stack() {
     </section>
   );
 }
+`;
+
+fs.writeFileSync('src/components/sections/Stack.tsx', content);

@@ -100,7 +100,7 @@ export default function FeaturedWork() {
                       href={(project as any).caseStudy}
                       className="flex-1 flex items-center justify-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-offwhite bg-accent px-5 py-3.5 rounded-xl hover:bg-accent/90 hover:scale-[1.02] transition-all duration-300 shadow-lg shadow-accent/20"
                     >
-                      {language === 'es' ? 'Entrar al Sistema' : 'Enter System'} <ArrowRight className="w-5 h-5" />
+                      {language === 'es' ? 'Caso de Estudio' : 'Case Study'} <ArrowRight className="w-5 h-5" />
                     </Link>
                   ) : (
                     <a
@@ -175,16 +175,17 @@ export default function FeaturedWork() {
 
                 {/* Auxiliary links below stack */}
                 {(project as any).links && (project as any).links.length > 0 && (
-                   <div className="mt-6 flex flex-wrap items-center gap-5">
+                   <div className="mt-6 flex flex-wrap items-center gap-3">
                      {(project as any).links.map((link: any, lIdx: number) => (
                        <a 
                          key={lIdx} 
                          href={link.url}
                          target="_blank"
                          rel="noopener noreferrer"
-                         className="inline-flex items-center gap-2 font-sans text-sm font-medium text-charcoal/60 hover:text-accent transition-colors"
+                         className="group inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-charcoal/10 bg-white font-sans text-sm font-medium text-charcoal/80 hover:text-accent hover:border-accent/30 hover:bg-accent/5 hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300"
                        >
-                         {link.label} <ArrowUpRight className="w-3.5 h-3.5 opacity-50" />
+                         {link.label} 
+                         <ArrowUpRight className="w-4 h-4 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
                        </a>
                      ))}
                    </div>

@@ -1,4 +1,6 @@
-"use client";
+const fs = require('fs');
+
+const content = `"use client";
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
@@ -104,7 +106,7 @@ export default function Contact() {
         {!showForm ? (
           <div className="flex flex-col sm:flex-row items-center gap-6 mt-8">
             <a
-              href={`mailto:${t.contact.email}`}
+              href={\`mailto:\${t.contact.email}\`}
               className="group relative inline-flex items-center gap-4 overflow-hidden rounded-full border border-offwhite/20 bg-transparent px-8 py-4 font-mono text-sm tracking-widest text-offwhite transition-all duration-500 hover:border-accent hover:bg-accent hover:text-black"
             >
               <span className="relative z-10 font-bold uppercase">{t.contact.email}</span>
@@ -199,3 +201,6 @@ export default function Contact() {
     </section>
   );
 }
+`;
+
+fs.writeFileSync('src/components/sections/Contact.tsx', content);
