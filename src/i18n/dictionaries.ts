@@ -21,6 +21,7 @@ export const en = {
         problem: "Businesses and employees needed an agile, frictionless system to manage time logs and payments, replacing paper completely.",
         system: "Built a two-way architecture (Business Portal & Employee Landing) with dashboards, automated calculations, and cloud infrastructure.",
         outcome: "Delivered a stable, production-adopted system that reduces payroll administrative work by up to 80%.",
+        image: "/img/timeup-mock.webp",
         links: [
           { label: "timeup.mx", url: "https://timeup.mx" },
           { label: "negocios.timeup.mx", url: "https://negocios.timeup.mx" }
@@ -33,6 +34,7 @@ export const en = {
         problem: "Transportation stakeholders needed reliable insights across Uber and Lyft trip patterns, pricing, and airport operations in New York City.",
         system: "Built an interactive Streamlit analytics platform with predictive ML models, geospatial maps, and multi-tab operational dashboards.",
         outcome: "Delivered fare prediction with R² > 0.85 and airport classification with 92% accuracy for practical decision support.",
+        image: "/img/nyc-ridehailing-dashboard.webp",
         href: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard",
       },
       {
@@ -41,6 +43,7 @@ export const en = {
         problem: "Raw environmental data from hundreds of IoT sensors was fragmented and difficult to convert into policy-ready insights.",
         system: "Designed a cloud ETL architecture using Azure Databricks, PySpark, PostgreSQL, and BI reporting for continuous analytics.",
         outcome: "Processed 2M+ daily records from 500+ sensors and transformed noisy streams into consistent, actionable health indicators.",
+        image: "/img/etl.webp",
         href: "https://github.com/dvillagrans/india-air-quality-etl",
       },
       {
@@ -49,6 +52,7 @@ export const en = {
         problem: "Students needed a more engaging and structured way to practice coding with feedback and measurable progress.",
         system: "Developed a gamified full-stack platform with Astro/Django architecture, secure auth, and learning-oriented UX.",
         outcome: "Scaled to 10k+ users and earned 2nd place in the 2024 EdTech Innovation Awards.",
+        image: "/img/codemaster.webp",
         href: "https://github.com/dvillagrans/Code-Master",
       }
     ]
@@ -250,6 +254,7 @@ export const es = {
         problem: "Negocios y empleados necesitaban un sistema ágil, sin fricción, para gestionar el registro de horas y pagos, reemplazando el papel.",
         system: "Construimos una arquitectura de dos vías (Portal de Negocios y Landing de Empleados) con dashboards, cálculo automatizado e infraestructura cloud.",
         outcome: "Entregamos un sistema estable, adoptado en entornos de producción que reduce hasta un 80% el trabajo administrativo de nóminas.",
+        image: "/img/timeup-mock.webp",
         links: [
           { label: "timeup.mx", url: "https://timeup.mx" },
           { label: "negocios.timeup.mx", url: "https://negocios.timeup.mx" }
@@ -262,6 +267,7 @@ export const es = {
         problem: "Los equipos necesitaban insights confiables sobre patrones de viaje, tarifas y operación aeroportuaria de Uber/Lyft en NYC.",
         system: "Desarrollé una plataforma interactiva en Streamlit con modelos predictivos, mapas geoespaciales y tableros operativos.",
         outcome: "Se logró predicción de tarifas con R² > 0.85 y clasificación de viajes al aeropuerto con 92% de accuracy.",
+        image: "/img/nyc-ridehailing-dashboard.webp",
         href: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard",
       },
       {
@@ -270,6 +276,7 @@ export const es = {
         problem: "Los datos ambientales de cientos de sensores IoT estaban fragmentados y eran difíciles de convertir en insights accionables.",
         system: "Diseñé una arquitectura ETL en la nube con Azure Databricks, PySpark, PostgreSQL y visualización en BI.",
         outcome: "Procesamiento de más de 2M de registros diarios de 500+ sensores para crear indicadores de salud consistentes.",
+        image: "/img/etl.webp",
         href: "https://github.com/dvillagrans/india-air-quality-etl",
       },
       {
@@ -278,6 +285,7 @@ export const es = {
         problem: "Los estudiantes necesitaban una forma más atractiva y estructurada de practicar programación con retroalimentación.",
         system: "Construí una plataforma gamificada full-stack con arquitectura Astro/Django, autenticación segura y UX educativa.",
         outcome: "Escaló a más de 10k usuarios y obtuvo 2º lugar en los EdTech Innovation Awards 2024.",
+        image: "/img/codemaster.webp",
         href: "https://github.com/dvillagrans/Code-Master",
       }
     ]

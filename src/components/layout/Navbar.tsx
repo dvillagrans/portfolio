@@ -39,7 +39,7 @@ export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" })
     >
       <div className="flex items-center justify-between px-5 md:px-6 py-3 w-full">
         <div className="text-xs md:text-sm font-semibold tracking-wide uppercase font-sans">
-          DIEGO VILLAGRAN <span className="hidden sm:inline">// </span><span className="font-mono text-[10px] md:text-xs opacity-70 sm:ml-1">v2.0</span>
+          DIEGO VILLAGRAN 
         </div>
         
         <div className="flex items-center gap-3 md:gap-6">
