@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { Link } from "next-view-transitions";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowUpRight } from "lucide-react"; // ArrowLeft used in back link
 import Navbar from "@/components/layout/Navbar";
 import { useLanguage } from "@/i18n/LanguageContext";
 
@@ -69,10 +69,69 @@ export default function SystemArchive() {
           </p>
         </div>
 
-        {/* Dense Table Layout */}
-        <div className="w-full">
-          <table className="w-full text-left font-mono text-sm col-span-full border-collapse block md:table">
-            <thead className="hidden md:table-header-group">
+        {/* ── MOBILE: card list ── */}
+        <div className="md:hidden flex flex-col divide-y divide-offwhite/5">
+          {archive.projects.map((project: any, idx: number) => (
+            <div
+              key={idx}
+              ref={(el) => { rowsRef.current[idx] = el; }}
+              className={`py-5 flex flex-col gap-3 ${project.isFeatured ? "bg-offwhite/[0.04]" : ""}`}
+            >
+              {/* Top row: year + domain badge */}
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-mono text-xs text-gray-500">{project.year}</span>
+                <span className="font-mono text-[10px] uppercase tracking-widest text-gray-500 text-right leading-tight">{project.domain}</span>
+              </div>
+
+              {/* Title */}
+              <p className={`font-sans text-base font-medium leading-snug ${project.isFeatured ? "text-accent" : "text-offwhite"}`}>
+                {project.title}
+              </p>
+
+              {/* CTA row */}
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                {project.caseStudy && (
+                  <Link
+                    href={project.caseStudy}
+                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-accent/15 font-mono text-[10px] font-bold uppercase tracking-widest text-accent active:scale-95 transition-transform"
+                  >
+                    {language === 'es' ? 'Caso de Estudio' : 'Case Study'}
+                    <ArrowUpRight className="h-3 w-3" />
+                  </Link>
+                )}
+                {project.links ? (
+                  project.links.map((lnk: any, lidx: number) => (
+                    <a
+                      key={lidx}
+                      href={lnk.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-offwhite/10 font-mono text-[10px] text-gray-400 active:scale-95 transition-transform"
+                    >
+                      {lnk.label}
+                      <ArrowUpRight className="h-3 w-3" />
+                    </a>
+                  ))
+                ) : (project.link && (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-offwhite/10 font-mono text-[10px] text-gray-400 active:scale-95 transition-transform"
+                  >
+                    {archive.viewProject}
+                    <ArrowUpRight className="h-3 w-3" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* ── DESKTOP: table ── */}
+        <div className="hidden md:block w-full">
+          <table className="w-full text-left font-mono text-sm border-collapse">
+            <thead>
               <tr className="border-b border-offwhite/10 text-xs uppercase tracking-widest text-gray-500">
                 <th className="pb-6 pl-2 pr-6 font-normal w-24">{archive.headers.year}</th>
                 <th className="pb-6 px-6 font-normal w-[40%]">{archive.headers.project}</th>
@@ -80,18 +139,18 @@ export default function SystemArchive() {
                 <th className="pb-6 px-6 text-right font-normal">{archive.headers.link}</th>
               </tr>
             </thead>
-            <tbody className="text-gray-300 block md:table-row-group">
+            <tbody className="text-gray-300">
               {archive.projects.map((project: any, idx: number) => (
-                <tr 
+                <tr
                   key={idx}
                   ref={(el) => { rowsRef.current[idx] = el; }}
-                  className={`group border-b transition-colors block md:table-row relative pb-6 md:pb-0 pt-4 md:pt-0 ${
-                    project.isFeatured 
-                      ? "border-offwhite/20 bg-offwhite/[0.03] hover:bg-offwhite/[0.08]" 
+                  className={`group border-b transition-colors ${
+                    project.isFeatured
+                      ? "border-offwhite/20 bg-offwhite/[0.03] hover:bg-offwhite/[0.08]"
                       : "border-offwhite/5 hover:bg-offwhite/5"
                   }`}
                 >
-                  <td className="md:py-6 md:pl-2 md:pr-6 align-top block md:table-cell mb-2 md:mb-0 text-gray-500 md:text-gray-300">
+                  <td className="py-6 pl-2 pr-6 align-top text-gray-500">
                     {project.year}
                     {project.isFeatured && (
                       <span className="block mt-2 text-[10px] text-accent uppercase tracking-widest font-mono">
@@ -99,42 +158,42 @@ export default function SystemArchive() {
                       </span>
                     )}
                   </td>
-                  <td className={`md:py-6 md:px-6 align-top font-sans text-xl md:text-lg font-medium block md:table-cell mb-1 md:mb-0 ${project.isFeatured ? 'text-accent font-bold' : 'text-offwhite'}`}>
+                  <td className={`py-6 px-6 align-top font-sans text-lg font-medium ${project.isFeatured ? "text-accent font-bold" : "text-offwhite"}`}>
                     {project.title}
                   </td>
-                  <td className="md:py-6 md:px-6 align-top text-xs md:text-sm text-gray-500 block md:table-cell mb-4 md:mb-0">
+                  <td className="py-6 px-6 align-top text-sm text-gray-500">
                     {project.domain}
                   </td>
-                  <td className="md:py-6 md:px-6 text-left md:text-right align-top block md:table-cell">
-                    <div className="flex flex-row md:flex-col items-center md:items-end flex-wrap gap-4 md:gap-3">
+                  <td className="py-6 px-6 text-right align-top">
+                    <div className="flex flex-col items-end gap-3">
                       {project.caseStudy && (
-                        <Link 
+                        <Link
                           href={project.caseStudy}
                           className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-accent transition-colors hover:text-white bg-accent/10 px-3 py-1.5 rounded-full"
                         >
-                          {language === 'es' ? 'Caso de Estudio' : 'Case Study'} 
-                          <ArrowLeft className="h-3 w-3 rotate-135" />
+                          {language === 'es' ? 'Caso de Estudio' : 'Case Study'}
+                          <ArrowUpRight className="h-3 w-3" />
                         </Link>
                       )}
                       {project.links ? (
                         project.links.map((lnk: any, lidx: number) => (
-                          <a 
+                          <a
                             key={lidx}
                             href={lnk.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`inline-flex items-center gap-1.5 font-mono text-[10px] text-gray-400 hover:text-white transition-colors`}
+                            className="inline-flex items-center gap-1.5 font-mono text-[10px] text-gray-400 hover:text-white transition-colors"
                           >
                             {lnk.label}
                             <ArrowUpRight className="h-3 w-3" />
                           </a>
                         ))
                       ) : (project.link && (
-                        <a 
+                        <a
                           href={project.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`inline-flex items-center gap-2 text-xs uppercase tracking-widest transition-colors ${project.isFeatured ? 'text-gray-300 hover:text-white' : 'text-gray-400 hover:text-accent'}`}
+                          className={`inline-flex items-center gap-2 text-xs uppercase tracking-widest transition-colors ${project.isFeatured ? "text-gray-300 hover:text-white" : "text-gray-400 hover:text-accent"}`}
                         >
                           {archive.viewProject}
                           <ArrowUpRight className="h-3 w-3" />

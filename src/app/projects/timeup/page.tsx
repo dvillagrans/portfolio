@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Link } from "next-view-transitions";
 import Navbar from "@/components/layout/Navbar";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { 
   ArrowLeft, ArrowUpRight, 
-  Clock, Users, Zap, Shield, Database, LayoutTemplate, Activity, FileCheck2, AlertCircle, Quote 
+  Clock, Users, Zap, Shield, Database, LayoutTemplate, Activity, FileCheck2, AlertCircle, Quote, X, ZoomIn, ChevronLeft, ChevronRight, ArrowUp
 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -15,10 +15,110 @@ import Image from "next/image";
 gsap.registerPlugin(ScrollTrigger);
 
 
+const IMAGES = [
+  { src: "/images/timeup/admin-analytics.png", alt: "Administrador TimeUp" },
+  { src: "/images/timeup/owner-finance.png", alt: "Finanzas Dueño" },
+  { src: "/images/timeup/staff-dashboard.png", alt: "Agenda Staff" },
+];
+
+function Lightbox({ index, onClose, onPrev, onNext }: { index: number; onClose: () => void; onPrev: () => void; onNext: () => void }) {
+  const { src, alt } = IMAGES[index];
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowLeft") onPrev();
+      if (e.key === "ArrowRight") onNext();
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose, onPrev, onNext]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/92 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      {/* Close */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 z-10 flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white hover:bg-white/20 active:scale-95 transition-all"
+        aria-label="Close"
+      >
+        <X size={18} />
+      </button>
+
+      {/* Prev */}
+      <button
+        onClick={(e) => { e.stopPropagation(); onPrev(); }}
+        className="absolute left-3 md:left-6 z-10 flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white hover:bg-white/20 active:scale-95 transition-all"
+        aria-label="Previous"
+      >
+        <ChevronLeft size={20} />
+      </button>
+
+      {/* Next */}
+      <button
+        onClick={(e) => { e.stopPropagation(); onNext(); }}
+        className="absolute right-3 md:right-6 z-10 flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white hover:bg-white/20 active:scale-95 transition-all"
+        aria-label="Next"
+      >
+        <ChevronRight size={20} />
+      </button>
+
+      {/* Image */}
+      <div
+        className="relative mx-14 max-w-[90vw] max-h-[85vh] w-full h-full"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <Image src={src} alt={alt} fill className="object-contain" sizes="90vw" />
+      </div>
+
+      {/* Dots */}
+      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2">
+        {IMAGES.map((_, i) => (
+          <button
+            key={i}
+            onClick={(e) => { e.stopPropagation(); }}
+            className={`rounded-full transition-all duration-300 ${
+              i === index ? "w-5 h-1.5 bg-[#00C9FF]" : "w-1.5 h-1.5 bg-white/30"
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* Caption */}
+      <p className="absolute bottom-12 left-1/2 -translate-x-1/2 font-mono text-[10px] uppercase tracking-widest text-white/40">{alt}</p>
+    </div>
+  );
+}
+
 export default function TimeUpCaseStudy() {
   const { t } = useLanguage();
   const dict = t.timeup;
   const containerRef = useRef<HTMLDivElement>(null);
+  const [lightbox, setLightbox] = useState<number | null>(null);
+  const openLightbox = useCallback((index: number) => setLightbox(index), []);
+  const closeLightbox = useCallback(() => setLightbox(null), []);
+  const prevImage = useCallback(() => setLightbox((i) => i !== null ? (i - 1 + IMAGES.length) % IMAGES.length : null), []);
+  const nextImage = useCallback(() => setLightbox((i) => i !== null ? (i + 1) % IMAGES.length : null), []);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const el = document.documentElement;
+      const scrolled = el.scrollTop;
+      const total = el.scrollHeight - el.clientHeight;
+      setScrollProgress(total > 0 ? (scrolled / total) * 100 : 0);
+      setShowScrollTop(scrolled > 600);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     let ctx = gsap.context(() => {
@@ -35,7 +135,27 @@ export default function TimeUpCaseStudy() {
 
   return (
     <>
+      {/* Scroll progress bar */}
+      <div
+        className="fixed top-0 left-0 z-[9998] h-[2px] bg-gradient-to-r from-[#00C9FF] via-[#00E3CC] to-[#4B5DFF] transition-none"
+        style={{ width: `${scrollProgress}%` }}
+      />
+
       <Navbar />
+      {lightbox !== null && (
+        <Lightbox index={lightbox} onClose={closeLightbox} onPrev={prevImage} onNext={nextImage} />
+      )}
+
+      {/* Back to top */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className={`fixed bottom-6 right-5 z-50 flex items-center justify-center w-10 h-10 rounded-full bg-[#00C9FF]/10 border border-[#00C9FF]/30 text-[#00C9FF] backdrop-blur-sm hover:bg-[#00C9FF]/20 active:scale-95 transition-all duration-300 ${
+          showScrollTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+        }`}
+        aria-label="Back to top"
+      >
+        <ArrowUp size={16} />
+      </button>
       <main ref={containerRef} className="min-h-screen pt-24 pb-20 md:pt-32 md:pb-32 px-5 md:px-12 lg:px-24 text-zinc-300 bg-[#020406] selection:bg-[#00C9FF] selection:text-[#020406]">
       
       {/* Navigation */}
@@ -145,7 +265,10 @@ export default function TimeUpCaseStudy() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
           
-          <div className="md:col-span-12 relative h-[35vh] sm:h-[50vh] md:h-[75vh] w-full bg-[#1A1A1A] rounded-3xl overflow-hidden group border border-white/5">
+          <div
+            className="md:col-span-12 relative h-[35vh] sm:h-[50vh] md:h-[75vh] w-full bg-[#1A1A1A] rounded-3xl overflow-hidden group border border-white/5 cursor-zoom-in"
+            onClick={() => openLightbox(0)}
+          >
             <Image 
               src="/images/timeup/admin-analytics.png" 
               alt="Administrador TimeUp" 
@@ -155,9 +278,15 @@ export default function TimeUpCaseStudy() {
             <div className="absolute top-6 left-6 md:top-8 md:left-8 bg-[#020406]/90 p-4 rounded-xl backdrop-blur-md border-l-4 border-[#00C9FF] shadow-2xl">
               <p className="font-mono text-[10px] md:text-xs tracking-widest text-[#00C9FF] uppercase mb-1">{dict.interfaces.admin.tag}</p><p className="font-serif text-white/90 text-sm md:text-base">{dict.interfaces.admin.desc}</p>
             </div>
+            <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm text-white/70 text-[10px] font-mono uppercase tracking-widest px-3 py-1.5 rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-300 md:opacity-0">
+              <ZoomIn size={12} /> Expand
+            </div>
           </div>
 
-          <div className="md:col-span-6 relative h-[30vh] sm:h-[40vh] md:h-[55vh] w-full bg-[#1A1A1A] rounded-3xl overflow-hidden group border border-white/5">
+          <div
+            className="md:col-span-6 relative h-[30vh] sm:h-[40vh] md:h-[55vh] w-full bg-[#1A1A1A] rounded-3xl overflow-hidden group border border-white/5 cursor-zoom-in"
+            onClick={() => openLightbox(1)}
+          >
             <Image 
               src="/images/timeup/owner-finance.png" 
               alt="Finanzas Dueño" 
@@ -167,9 +296,15 @@ export default function TimeUpCaseStudy() {
             <div className="absolute top-6 left-6 bg-[#020406]/90 p-4 rounded-xl backdrop-blur-md border-l-4 border-[#00E3CC] shadow-2xl">
               <p className="font-mono text-[10px] md:text-xs tracking-widest text-[#00E3CC] uppercase mb-1">{dict.interfaces.owner.tag}</p><p className="font-serif text-white/90 text-sm md:text-base">{dict.interfaces.owner.desc}</p>
             </div>
+            <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm text-white/70 text-[10px] font-mono uppercase tracking-widest px-3 py-1.5 rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-300 md:opacity-0">
+              <ZoomIn size={12} /> Expand
+            </div>
           </div>
 
-          <div className="md:col-span-6 relative h-[30vh] sm:h-[40vh] md:h-[55vh] w-full bg-[#1A1A1A] rounded-3xl overflow-hidden group border border-white/5">
+          <div
+            className="md:col-span-6 relative h-[30vh] sm:h-[40vh] md:h-[55vh] w-full bg-[#1A1A1A] rounded-3xl overflow-hidden group border border-white/5 cursor-zoom-in"
+            onClick={() => openLightbox(2)}
+          >
             <Image 
               src="/images/timeup/staff-dashboard.png" 
               alt="Agenda Staff" 
@@ -178,6 +313,9 @@ export default function TimeUpCaseStudy() {
             />
             <div className="absolute top-6 left-6 bg-[#020406]/90 p-4 rounded-xl backdrop-blur-md border-l-4 border-[#4B5DFF] shadow-2xl">
               <p className="font-mono text-[10px] md:text-xs tracking-widest text-[#4B5DFF] uppercase mb-1">{dict.interfaces.staff.tag}</p><p className="font-serif text-white/90 text-sm md:text-base">{dict.interfaces.staff.desc}</p>
+            </div>
+            <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm text-white/70 text-[10px] font-mono uppercase tracking-widest px-3 py-1.5 rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-300 md:opacity-0">
+              <ZoomIn size={12} /> Expand
             </div>
           </div>
 

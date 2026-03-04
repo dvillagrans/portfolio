@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
@@ -12,7 +12,22 @@ gsap.registerPlugin(ScrollTrigger);
 export default function FeaturedWork() {
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
   const { t, language } = useLanguage();
+
+  const handleCarouselScroll = useCallback(() => {
+    const el = carouselRef.current;
+    if (!el) return;
+    const idx = Math.round(el.scrollLeft / el.offsetWidth);
+    setActiveIdx(idx);
+  }, []);
+
+  const scrollToCard = (idx: number) => {
+    const el = carouselRef.current;
+    if (!el) return;
+    el.scrollTo({ left: idx * el.offsetWidth, behavior: "smooth" });
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -40,51 +55,153 @@ export default function FeaturedWork() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="projects" className="relative bg-offwhite px-6 py-20 text-charcoal md:px-12 lg:px-24">
+    <section ref={sectionRef} id="projects" className="relative bg-offwhite py-12 text-charcoal md:px-12 md:py-20 lg:px-24">
       <div className="mx-auto max-w-7xl">
-        <header className="mb-16 flex flex-col gap-6 md:flex-row md:items-end md:justify-between border-b border-charcoal/10 pb-8">
+        {/* Header */}
+        <header className="mb-8 md:mb-16 flex flex-col gap-4 md:flex-row md:items-end md:justify-between border-b border-charcoal/10 pb-6 md:pb-8 px-4 md:px-0">
           <div>
-            <h2 className="font-serif text-5xl italic text-graphite">{t.work.title}</h2>
-            <p className="mt-4 max-w-md font-sans text-sm tracking-wide text-gray-500 uppercase">
+            <h2 className="font-serif text-4xl md:text-5xl italic text-graphite">{t.work.title}</h2>
+            <p className="mt-3 max-w-md font-sans text-xs tracking-wide text-gray-500 uppercase">
               {t.work.subtitle}
             </p>
           </div>
           <a
             href="/projects"
-            className="group flex items-center gap-3 border border-charcoal/20 px-6 py-3 font-mono text-xs uppercase tracking-widest text-charcoal transition-all hover:bg-charcoal hover:text-offwhite rounded-full bg-white shadow-sm hover:shadow-md"
+            className="group flex items-center justify-center gap-3 border border-charcoal/20 px-6 py-3.5 font-mono text-xs uppercase tracking-widest text-charcoal transition-all hover:bg-charcoal hover:text-offwhite rounded-full bg-white shadow-sm hover:shadow-md"
           >
             {language === 'en' ? 'View Full Archive' : 'Ver Archivo Completo'}
             <ArrowUpRight className="h-3 w-3" />
           </a>
         </header>
 
-        <div className="flex flex-col gap-12">
+        {/* ── MOBILE: horizontal swipe carousel ── */}
+        <div className="lg:hidden">
+          <div
+            ref={carouselRef}
+            onScroll={handleCarouselScroll}
+            className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-3 px-4 pb-2"
+            style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+          >
+            {t.work.projects.map((project, idx) => (
+              <div
+                key={project.id}
+                className="snap-start shrink-0 w-[85vw] bg-white rounded-2xl border border-charcoal/5 shadow-sm overflow-hidden flex flex-col"
+              >
+                {/* Image */}
+                {(project as any).image ? (
+                  <div className="relative w-full aspect-[16/9] overflow-hidden">
+                    <img
+                      src={(project as any).image}
+                      alt={project.title}
+                      className="w-full h-full object-cover object-top"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                    <span className="absolute bottom-3 left-4 font-mono text-[10px] font-bold text-white/60 uppercase tracking-widest">
+                      SYS_0{project.id}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="relative w-full aspect-[16/9] bg-gray-100 flex items-center justify-center">
+                    <span className="font-mono text-xs text-charcoal/30 uppercase tracking-widest">No Preview</span>
+                  </div>
+                )}
+
+                {/* Content */}
+                <div className="flex flex-col gap-4 p-5 flex-1">
+                  <h3 className="font-sans text-lg font-medium tracking-tight text-charcoal leading-snug">
+                    {project.title}
+                  </h3>
+
+                  {/* Key outcome */}
+                  <p className="text-sm text-charcoal/70 font-sans leading-relaxed line-clamp-3">
+                    {project.outcome}
+                  </p>
+
+                  {/* Links row */}
+                  {(project as any).links && (project as any).links.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {(project as any).links.map((link: any, lIdx: number) => (
+                        <a
+                          key={lIdx}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-charcoal/10 bg-gray-50 font-mono text-[10px] text-charcoal/60 active:scale-95 transition-transform"
+                        >
+                          {link.label}
+                          <ArrowUpRight className="w-2.5 h-2.5" />
+                        </a>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* CTA — pinned to bottom */}
+                  <div className="mt-auto">
+                    {(project as any).caseStudy ? (
+                      <Link
+                        href={(project as any).caseStudy}
+                        className="flex items-center justify-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-offwhite bg-accent px-5 py-4 rounded-xl active:scale-[0.98] transition-transform shadow-lg shadow-accent/20"
+                      >
+                        {language === 'es' ? 'Caso de Estudio' : 'Case Study'} <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    ) : (
+                      <a
+                        href={project.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-offwhite bg-charcoal px-5 py-4 rounded-xl active:scale-[0.98] transition-transform shadow-md"
+                      >
+                        {language === 'es' ? 'Ver Proyecto' : 'Open Project'} <ArrowUpRight className="w-4 h-4" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Dot indicators */}
+          <div className="flex items-center justify-center gap-2 mt-5">
+            {t.work.projects.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => scrollToCard(idx)}
+                aria-label={`Project ${idx + 1}`}
+                className={`transition-all duration-300 rounded-full ${
+                  idx === activeIdx
+                    ? "w-5 h-1.5 bg-charcoal"
+                    : "w-1.5 h-1.5 bg-charcoal/20"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* ── DESKTOP: vertical stacked layout ── */}
+        <div className="hidden lg:flex flex-col gap-12">
           {t.work.projects.map((project, idx) => (
             <div
               key={project.id}
-              ref={(el) => {
-                cardsRef.current[idx] = el;
-              }}
-              className="group relative flex flex-col gap-8 lg:flex-row p-6 lg:p-10 transition-colors duration-500 bg-white hover:bg-gray-50/80 rounded-[2rem] shadow-sm hover:shadow-xl border border-charcoal/5"
+              ref={(el) => { cardsRef.current[idx] = el; }}
+              className="group relative flex flex-row gap-8 p-10 transition-colors duration-500 bg-white hover:bg-gray-50/80 rounded-[2rem] shadow-sm hover:shadow-xl border border-charcoal/5 overflow-hidden"
             >
-              {/* Left Column: Title, Visual, CTA */}
-              <div className="flex w-full flex-col lg:w-[45%] gap-8">
+              {/* Left Column */}
+              <div className="flex w-[45%] flex-col gap-8">
                 <div>
                   <span className="font-mono text-xs font-bold text-charcoal/40 block mb-3 uppercase tracking-widest">
                     SYS_0{project.id}
                   </span>
-                  <h3 className="font-sans text-2xl lg:text-3xl font-medium tracking-tight text-charcoal leading-tight">
+                  <h3 className="font-sans text-3xl font-medium tracking-tight text-charcoal leading-tight">
                     {project.title}
                   </h3>
                 </div>
-                
-                {/* Visual Proof / Image */}
+
                 {(project as any).image ? (
                   <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-charcoal/10 shadow-inner group-hover:shadow-lg transition-all duration-500 transform group-hover:-translate-y-1">
-                    <img 
-                      src={(project as any).image} 
-                      alt={project.title} 
-                      className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700" 
+                    <img
+                      src={(project as any).image}
+                      alt={project.title}
+                      className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
                     />
                   </div>
                 ) : (
@@ -93,104 +210,87 @@ export default function FeaturedWork() {
                   </div>
                 )}
 
-                {/* Case Study / Links CTA */}
-                <div className="flex flex-wrap items-center gap-4 mt-2">
+                <div className="flex flex-wrap items-center gap-3">
                   {(project as any).caseStudy ? (
                     <Link
                       href={(project as any).caseStudy}
-                      className="flex-1 flex items-center justify-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-offwhite bg-accent px-5 py-3.5 rounded-xl hover:bg-accent/90 hover:scale-[1.02] transition-all duration-300 shadow-lg shadow-accent/20"
+                      className="flex-1 flex items-center justify-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-offwhite bg-accent px-5 py-4 rounded-xl hover:bg-accent/90 active:scale-[0.98] transition-all duration-200 shadow-lg shadow-accent/20"
                     >
-                      {language === 'es' ? 'Caso de Estudio' : 'Case Study'} <ArrowRight className="w-5 h-5" />
+                      {language === 'es' ? 'Caso de Estudio' : 'Case Study'} <ArrowRight className="w-4 h-4" />
                     </Link>
                   ) : (
                     <a
                       href={project.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-offwhite bg-charcoal px-5 py-3.5 rounded-xl hover:bg-charcoal/90 hover:scale-[1.02] transition-all duration-300 shadow-md"
+                      className="flex-1 flex items-center justify-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-offwhite bg-charcoal px-5 py-4 rounded-xl hover:bg-charcoal/90 active:scale-[0.98] transition-all duration-200 shadow-md"
                     >
-                      {language === 'es' ? 'Ver Proyecto' : 'Open Project'} <ArrowUpRight className="w-5 h-5" />
+                      {language === 'es' ? 'Ver Proyecto' : 'Open Project'} <ArrowUpRight className="w-4 h-4" />
                     </a>
                   )}
                 </div>
               </div>
 
-              {/* Right Column: Impact, Narrative, Stack */}
-              <div className="flex w-full flex-col lg:w-[55%] lg:pl-12 pt-4 lg:pt-0 lg:border-l border-charcoal/10">
-
-                {/* Impact / Features Breakdown */}
+              {/* Right Column */}
+              <div className="flex w-[55%] flex-col pl-12 border-l border-charcoal/10">
                 <div className="flex flex-col mb-8">
-                   <h4 className="text-[10px] font-mono font-bold uppercase tracking-widest text-charcoal/50 mb-6 flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>
-                      {language === 'es' ? 'Impacto & Arquitectura' : 'Impact & Architecture'}
-                   </h4>
-                   
-                   {(project as any).features ? (
-                      <div className="flex flex-col gap-6">
-                         {(project as any).features.map((feat: any, i: number) => (
-                            <div key={i} className="flex flex-col gap-1.5">
-                               <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-charcoal/40">
-                                  {feat.name}
-                               </span>
-                               <span className="text-base font-sans font-medium text-charcoal/90">
-                                  {feat.value}
-                               </span>
-                            </div>
-                         ))}
-                      </div>
-                   ) : (
-                     <p className="text-base lg:text-lg text-charcoal/90 font-sans leading-relaxed">
-                       {project.system.split(' ').map((word: string, i: number) => {
-                          const isKeyword = word.length > 5 && (i % 5 === 0 || word.includes('ing') || word.includes('ed'));
-                          return isKeyword ? <strong key={i} className="font-semibold text-charcoal">{word} </strong> : word + ' ';
-                       })}
-                     </p>
-                   )}
+                  <h4 className="text-[10px] font-mono font-bold uppercase tracking-widest text-charcoal/50 mb-6 flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>
+                    {language === 'es' ? 'Impacto & Arquitectura' : 'Impact & Architecture'}
+                  </h4>
+                  {(project as any).features ? (
+                    <div className="flex flex-col gap-6">
+                      {(project as any).features.map((feat: any, i: number) => (
+                        <div key={i} className="flex flex-col gap-1.5">
+                          <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-charcoal/40">{feat.name}</span>
+                          <span className="text-base font-sans font-medium text-charcoal/90">{feat.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-lg text-charcoal/90 font-sans leading-relaxed">
+                      {project.system.split(' ').map((word: string, i: number) => {
+                        const isKeyword = word.length > 5 && (i % 5 === 0 || word.includes('ing') || word.includes('ed'));
+                        return isKeyword ? <strong key={i} className="font-semibold text-charcoal">{word} </strong> : word + ' ';
+                      })}
+                    </p>
+                  )}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-auto bg-gray-50/50 p-5 lg:p-6 rounded-2xl border border-charcoal/5">
-                   {/* Role */}
-                   <div className="flex flex-col gap-4">
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-charcoal/40">
-                        {t.work.labelScope}
-                      </span>
-                      <p className="text-sm font-sans font-medium text-charcoal/80 leading-relaxed">{project.problem}</p>
-                   </div>
-
-                   {/* Tech Stack */}
-                   <div className="flex flex-col gap-4">
-                       <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-charcoal/40">
-                         {t.work.labelOutcome}
-                       </span>
-                       <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                         {project.outcome.split(',').map((tech: string, i: number, arr: string[]) => (
-                           <span key={i} className="flex items-center text-xs font-sans text-charcoal/60">
-                             {tech.trim()}
-                             {i < arr.length - 1 && <span className="opacity-30 mx-2 text-[10px]">•</span>}
-                           </span>
-                         ))}
-                       </div>
-                   </div>
+                <div className="grid grid-cols-2 gap-8 mt-auto bg-gray-50/50 p-6 rounded-2xl border border-charcoal/5">
+                  <div className="flex flex-col gap-4">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-charcoal/40">{t.work.labelScope}</span>
+                    <p className="text-sm font-sans font-medium text-charcoal/80 leading-relaxed">{project.problem}</p>
+                  </div>
+                  <div className="flex flex-col gap-4">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-charcoal/40">{t.work.labelOutcome}</span>
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                      {project.outcome.split(',').map((tech: string, i: number, arr: string[]) => (
+                        <span key={i} className="flex items-center text-xs font-sans text-charcoal/60">
+                          {tech.trim()}
+                          {i < arr.length - 1 && <span className="opacity-30 mx-2 text-[10px]">•</span>}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
 
-                {/* Auxiliary links below stack */}
                 {(project as any).links && (project as any).links.length > 0 && (
-                   <div className="mt-6 flex flex-wrap items-center gap-3">
-                     {(project as any).links.map((link: any, lIdx: number) => (
-                       <a 
-                         key={lIdx} 
-                         href={link.url}
-                         target="_blank"
-                         rel="noopener noreferrer"
-                         className="group inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-charcoal/10 bg-white font-sans text-sm font-medium text-charcoal/80 hover:text-accent hover:border-accent/30 hover:bg-accent/5 hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300"
-                       >
-                         {link.label} 
-                         <ArrowUpRight className="w-4 h-4 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
-                       </a>
-                     ))}
-                   </div>
+                  <div className="mt-6 flex flex-wrap items-center gap-3">
+                    {(project as any).links.map((link: any, lIdx: number) => (
+                      <a
+                        key={lIdx}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-charcoal/10 bg-white font-sans text-xs font-medium text-charcoal/80 hover:text-accent hover:border-accent/30 hover:bg-accent/5 active:scale-[0.97] transition-all duration-200"
+                      >
+                        {link.label}
+                        <ArrowUpRight className="w-3 h-3 opacity-50 group-hover:opacity-100 transition-all duration-200" />
+                      </a>
+                    ))}
+                  </div>
                 )}
-
               </div>
             </div>
           ))}
