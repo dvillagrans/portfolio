@@ -9,7 +9,7 @@ import { useLanguage } from "@/i18n/LanguageContext";
 
 export default function SystemArchive() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const rowsRef = useRef<(HTMLTableRowElement | null)[]>([]);
+  const rowsRef = useRef<(HTMLDivElement | null)[]>([]);
   const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
