@@ -3,208 +3,187 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { Link } from "next-view-transitions";
-import { ArrowLeft, ArrowUpRight } from "lucide-react"; // ArrowLeft used in back link
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 export default function SystemArchive() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const rowsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const { language, setLanguage, t } = useLanguage();
+  const { language, t } = useLanguage();
+  const archive = (t as any).archive;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        rowsRef.current,
-        { opacity: 0, y: 15 },
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.05,
-          duration: 0.8,
-          ease: "power2.out",
-          delay: 0.2, // Wait for hydration
-        }
+        ".archive-item",
+        { opacity: 0, y: 18 },
+        { opacity: 1, y: 0, stagger: 0.045, duration: 0.75, ease: "power2.out", delay: 0.15 }
       );
     }, containerRef);
     return () => ctx.revert();
   }, []);
 
-  // Use archive dictionary (make sure to cast if not strongly typed yet, handled internally)
-  const archive = (t as any).archive;
-
   if (!archive) return null;
+
+  const featured = archive.projects.find((p: any) => p.isFeatured);
+  const rest: any[] = archive.projects.filter((p: any) => !p.isFeatured);
+
+  // Group rest by year, descending
+  const byYear = rest.reduce((acc: Record<string, any[]>, p: any) => {
+    if (!acc[p.year]) acc[p.year] = [];
+    acc[p.year].push(p);
+    return acc;
+  }, {});
+  const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
 
   return (
     <main className="min-h-screen w-full bg-charcoal text-offwhite selection:bg-accent selection:text-offwhite font-sans overflow-x-hidden">
-      
+
       <div className="fixed inset-0 z-0 bg-charcoal">
-        <div className="absolute inset-0 opacity-80 mix-blend-screen bg-cover bg-center"
-             style={{ backgroundImage: "url('/images/bg-water-dark.jpg')" }} />
-        <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/50 to-transparent" />
+        <div
+          className="absolute inset-0 opacity-60 mix-blend-screen bg-cover bg-center"
+          style={{ backgroundImage: "url('/images/bg-water-dark.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/60 to-charcoal/20" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-6xl px-5 py-12 md:px-24 md:py-32" ref={containerRef}>
-        
+      <div className="relative z-10 mx-auto max-w-5xl px-5 py-12 md:px-16 md:py-32" ref={containerRef}>
+
         <Navbar />
-        
-        {/* Simple Return Link */}
-        <header className="mb-16 md:mb-24 mt-20 flex items-center justify-between">
-          <Link 
-            href="/" 
+
+        {/* Header */}
+        <header className="mb-12 md:mb-20 mt-20 flex items-center justify-between">
+          <Link
+            href="/"
             className="group flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-gray-400 transition-colors hover:text-offwhite"
           >
             <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
             {archive.back}
           </Link>
+          <span className="font-mono text-[10px] uppercase tracking-widest text-gray-600">
+            {archive.projects.length} {language === "es" ? "proyectos" : "projects"} · 2023—2025
+          </span>
         </header>
 
-        {/* Title Container */}
-        <div className="mb-16 md:mb-24">
-          <h1 className="font-serif text-4xl sm:text-5xl italic tracking-tight text-offwhite md:text-7xl" style={{ viewTransitionName: "page-title" }}>
+        {/* Title */}
+        <div className="mb-16 md:mb-20">
+          <h1
+            className="font-serif text-4xl sm:text-5xl italic tracking-tight text-offwhite md:text-7xl"
+            style={{ viewTransitionName: "page-title" }}
+          >
             {archive.title}
           </h1>
-          <p className="mt-6 font-mono text-sm leading-relaxed text-gray-400 max-w-xl">
+          <p className="mt-6 font-mono text-sm leading-relaxed text-gray-500 max-w-xl">
             {archive.subtitle}
           </p>
         </div>
 
-        {/* ── MOBILE: card list ── */}
-        <div className="md:hidden flex flex-col divide-y divide-offwhite/5">
-          {archive.projects.map((project: any, idx: number) => (
-            <div
-              key={idx}
-              ref={(el) => { rowsRef.current[idx] = el; }}
-              className={`py-5 flex flex-col gap-3 ${project.isFeatured ? "bg-offwhite/[0.04]" : ""}`}
-            >
-              {/* Top row: year + domain badge */}
-              <div className="flex items-center justify-between gap-3">
-                <span className="font-mono text-xs text-gray-500">{project.year}</span>
-                <span className="font-mono text-[10px] uppercase tracking-widest text-gray-500 text-right leading-tight">{project.domain}</span>
+        {/* ── Featured card (TimeUp) ── */}
+        {featured && (
+          <div className="archive-item mb-16 md:mb-20 group relative rounded-2xl border border-accent/20 bg-accent/[0.04] hover:bg-accent/[0.07] transition-colors duration-300 overflow-hidden">
+            <div className="p-7 md:p-10">
+              {/* Top meta */}
+              <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center gap-2.5">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-50" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-accent">
+                    {language === "es" ? "Proyecto Destacado" : "Featured Project"} · {featured.year}
+                  </span>
+                </div>
+                <span className="font-mono text-[10px] uppercase tracking-widest text-gray-600 hidden sm:block">
+                  {featured.domain}
+                </span>
               </div>
 
-              {/* Title */}
-              <p className={`font-sans text-base font-medium leading-snug ${project.isFeatured ? "text-accent" : "text-offwhite"}`}>
-                {project.title}
-              </p>
+              <h2 className="font-sans text-2xl md:text-3xl font-semibold text-offwhite leading-tight mb-2">
+                {featured.title}
+              </h2>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-gray-600 sm:hidden block mb-6">
+                {featured.domain}
+              </span>
 
-              {/* CTA row */}
-              <div className="flex flex-wrap items-center gap-2 pt-1">
-                {project.caseStudy && (
+              {/* CTAs */}
+              <div className="flex flex-wrap items-center gap-2.5 mt-6">
+                {featured.caseStudy && (
                   <Link
-                    href={project.caseStudy}
-                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-accent/15 font-mono text-[10px] font-bold uppercase tracking-widest text-accent active:scale-95 transition-transform"
+                    href={featured.caseStudy}
+                    className="inline-flex items-center gap-2 bg-accent text-charcoal font-mono text-[11px] font-bold uppercase tracking-widest px-5 py-2.5 rounded-full hover:bg-accent/90 transition-colors"
                   >
-                    {language === 'es' ? 'Caso de Estudio' : 'Case Study'}
-                    <ArrowUpRight className="h-3 w-3" />
+                    {language === "es" ? "Caso de Estudio" : "Case Study"}
+                    <ArrowUpRight className="h-3.5 w-3.5" />
                   </Link>
                 )}
-                {project.links ? (
-                  project.links.map((lnk: any, lidx: number) => (
-                    <a
-                      key={lidx}
-                      href={lnk.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-offwhite/10 font-mono text-[10px] text-gray-400 active:scale-95 transition-transform"
-                    >
-                      {lnk.label}
-                      <ArrowUpRight className="h-3 w-3" />
-                    </a>
-                  ))
-                ) : (project.link && (
+                {featured.links?.map((lnk: any, i: number) => (
                   <a
-                    href={project.link}
+                    key={i}
+                    href={lnk.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-offwhite/10 font-mono text-[10px] text-gray-400 active:scale-95 transition-transform"
+                    className="inline-flex items-center gap-2 border border-offwhite/15 text-gray-400 font-mono text-[11px] uppercase tracking-widest px-5 py-2.5 rounded-full hover:border-offwhite/40 hover:text-offwhite transition-colors"
                   >
-                    {archive.viewProject}
-                    <ArrowUpRight className="h-3 w-3" />
+                    {lnk.label}
+                    <ArrowUpRight className="h-3.5 w-3.5" />
                   </a>
                 ))}
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        )}
 
-        {/* ── DESKTOP: table ── */}
-        <div className="hidden md:block w-full">
-          <table className="w-full text-left font-mono text-sm border-collapse">
-            <thead>
-              <tr className="border-b border-offwhite/10 text-xs uppercase tracking-widest text-gray-500">
-                <th className="pb-6 pl-2 pr-6 font-normal w-24">{archive.headers.year}</th>
-                <th className="pb-6 px-6 font-normal w-[40%]">{archive.headers.project}</th>
-                <th className="pb-6 px-6 font-normal">{archive.headers.domain}</th>
-                <th className="pb-6 px-6 text-right font-normal">{archive.headers.link}</th>
-              </tr>
-            </thead>
-            <tbody className="text-gray-300">
-              {archive.projects.map((project: any, idx: number) => (
-                <tr
-                  key={idx}
-                  ref={(el) => { rowsRef.current[idx] = el; }}
-                  className={`group border-b transition-colors ${
-                    project.isFeatured
-                      ? "border-offwhite/20 bg-offwhite/[0.03] hover:bg-offwhite/[0.08]"
-                      : "border-offwhite/5 hover:bg-offwhite/5"
-                  }`}
-                >
-                  <td className="py-6 pl-2 pr-6 align-top text-gray-500">
-                    {project.year}
-                    {project.isFeatured && (
-                      <span className="block mt-2 text-[10px] text-accent uppercase tracking-widest font-mono">
-                        [CASE STUDY]
+        {/* ── Year-grouped list ── */}
+        <div className="flex flex-col gap-12 md:gap-16">
+          {years.map((year) => (
+            <div key={year}>
+              {/* Year divider */}
+              <div className="flex items-center gap-4 mb-6">
+                <span className="font-mono text-[11px] uppercase tracking-widest text-gray-500">{year}</span>
+                <div className="flex-1 h-px bg-offwhite/[0.07]" />
+                <span className="font-mono text-[10px] text-gray-600">{byYear[year].length}</span>
+              </div>
+
+              {/* Rows */}
+              <div className="flex flex-col">
+                {byYear[year].map((project: any, pidx: number) => (
+                  <div
+                    key={pidx}
+                    className="archive-item group flex items-center gap-4 md:gap-8 py-4 md:py-5 border-b border-offwhite/[0.06] hover:border-offwhite/[0.12] border-l-2 border-l-transparent hover:border-l-accent pl-4 md:pl-5 transition-all duration-200"
+                  >
+                    {/* Domain — desktop only */}
+                    <span className="hidden md:block shrink-0 w-44 font-mono text-[10px] uppercase tracking-widest text-gray-600 leading-tight">
+                      {project.domain}
+                    </span>
+
+                    {/* Title */}
+                    <p className="flex-1 font-sans text-sm md:text-base font-medium text-offwhite/70 group-hover:text-offwhite transition-colors leading-snug">
+                      {project.title}
+                      {/* Domain — mobile only */}
+                      <span className="md:hidden flex font-mono text-[10px] uppercase tracking-widest text-gray-600 mt-1">
+                        {project.domain}
                       </span>
-                    )}
-                  </td>
-                  <td className={`py-6 px-6 align-top font-sans text-lg font-medium ${project.isFeatured ? "text-accent font-bold" : "text-offwhite"}`}>
-                    {project.title}
-                  </td>
-                  <td className="py-6 px-6 align-top text-sm text-gray-500">
-                    {project.domain}
-                  </td>
-                  <td className="py-6 px-6 text-right align-top">
-                    <div className="flex flex-col items-end gap-3">
-                      {project.caseStudy && (
-                        <Link
-                          href={project.caseStudy}
-                          className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-accent transition-colors hover:text-white bg-accent/10 px-3 py-1.5 rounded-full"
-                        >
-                          {language === 'es' ? 'Caso de Estudio' : 'Case Study'}
-                          <ArrowUpRight className="h-3 w-3" />
-                        </Link>
-                      )}
-                      {project.links ? (
-                        project.links.map((lnk: any, lidx: number) => (
-                          <a
-                            key={lidx}
-                            href={lnk.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 font-mono text-[10px] text-gray-400 hover:text-white transition-colors"
-                          >
-                            {lnk.label}
-                            <ArrowUpRight className="h-3 w-3" />
-                          </a>
-                        ))
-                      ) : (project.link && (
+                    </p>
+
+                    {/* Link */}
+                    <div className="shrink-0">
+                      {project.link && (
                         <a
                           href={project.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`inline-flex items-center gap-2 text-xs uppercase tracking-widest transition-colors ${project.isFeatured ? "text-gray-300 hover:text-white" : "text-gray-400 hover:text-accent"}`}
+                          className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-gray-600 group-hover:text-accent transition-colors"
                         >
-                          {archive.viewProject}
-                          <ArrowUpRight className="h-3 w-3" />
+                          <span className="hidden sm:inline">{archive.viewProject}</span>
+                          <ArrowUpRight className="h-3.5 w-3.5" />
                         </a>
-                      ))}
+                      )}
                     </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
 
       </div>
