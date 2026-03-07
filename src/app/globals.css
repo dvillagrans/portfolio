@@ -20,6 +20,26 @@
   body {
     @apply font-sans bg-charcoal text-offwhite;
   }
+
+  /* Focus visible: anillo consistente para teclado (no en click) */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  [tabindex]:focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-charcoal;
+  }
+
+  /* Reduced motion: acortar/desactivar animaciones */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
 
 /* Subtly textured noise for the whole app */
@@ -44,12 +64,30 @@
   color: transparent;
 }
 
-/* Custom Epic View Transition */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 1.2s;
-  animation-timing-function: cubic-bezier(0.87, 0, 0.13, 1);
-  animation-fill-mode: both;
+/* Chat typing indicator — ease-out pulse (no bounce) */
+@keyframes chat-typing {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1); }
+}
+.chat-typing-dot {
+  animation: chat-typing 1s ease-out infinite;
+}
+
+/* Custom Epic View Transition — shortened when user prefers reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 1.2s;
+    animation-timing-function: cubic-bezier(0.87, 0, 0.13, 1);
+    animation-fill-mode: both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.15s;
+    animation-timing-function: ease-out;
+  }
 }
 
 ::view-transition-old(root) {

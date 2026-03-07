@@ -41,7 +41,7 @@ export default function Philosophy() {
             y: 0,
             duration: 1,
             stagger: 0.2,
-            ease: "back.out(1.7)",
+            ease: "expo.out",
             scrollTrigger: {
               trigger: textRef.current,
               start: "top 80%",
@@ -54,15 +54,16 @@ export default function Philosophy() {
   }, []);
 
   return (
-    <section ref={container} className="relative bg-white px-6 py-24 md:py-32 text-charcoal md:px-12 lg:px-24 overflow-hidden">
+    <section ref={container} className="relative bg-white py-24 md:py-32 text-charcoal pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] md:px-12 lg:px-24 overflow-hidden">
       
       {/* Decorative Grid Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgb(0_0_0_/_0.07)_1px,transparent_1px),linear-gradient(to_bottom,rgb(0_0_0_/_0.07)_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none"></div>
 
-      <div className="mx-auto max-w-7xl relative z-10">
+      <div className="@container mx-auto max-w-7xl relative z-10">
         
-        {/* Header Label */}
-        <div className="flex items-center gap-4 mb-16 justify-center md:justify-start">
+        {/* Section heading for accessibility and semantics */}
+        <h2 className="sr-only">{t.philosophy.tag}</h2>
+        <div className="flex items-center gap-4 mb-16 justify-center md:justify-start" aria-hidden>
            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent font-bold">
              04. {t.philosophy.tag}
            </span>
@@ -80,7 +81,7 @@ export default function Philosophy() {
         {/* 3 Pillar Cards */}
         <div 
           ref={textRef} 
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10"
+          className="grid grid-cols-1 @md:grid-cols-3 gap-6 @lg:gap-10"
         >
           {t.philosophy.items.map((item, idx) => {
             // Split title number from text
@@ -102,7 +103,7 @@ export default function Philosophy() {
                      <div className="w-2 h-2 rounded-full bg-accent/40 group-hover:bg-accent transition-colors duration-500"></div>
                      {pureTitle || item.title}
                   </h3>
-                  <p className="font-sans text-base leading-relaxed text-charcoal/70 group-hover:text-charcoal/90 transition-colors duration-500">
+                  <p className="font-sans text-base leading-relaxed text-graphite group-hover:text-charcoal transition-colors duration-500">
                     {item.description}
                   </p>
                 </div>

@@ -31,7 +31,7 @@ export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" })
   return (
     <nav
       ref={navRef}
-      className={`fixed top-4 md:top-6 left-1/2 z-50 flex flex-col -translate-x-1/2 rounded-[2rem] transition-all duration-500 will-change-transform ${
+      className={`fixed left-1/2 z-50 flex flex-col -translate-x-1/2 rounded-[2rem] top-[max(1rem,env(safe-area-inset-top))] md:top-6 transition-all duration-500 will-change-transform ${
         (scrolled || mobileMenuOpen)
           ? "w-[95%] sm:w-[90%] max-w-4xl bg-offwhite/95 text-charcoal backdrop-blur-xl border border-charcoal/10 shadow-lg md:w-[600px]"
           : `w-[95%] sm:w-[90%] max-w-4xl bg-transparent ${theme === 'light' ? 'text-charcoal' : 'text-offwhite'} border border-transparent md:w-[600px]`
@@ -44,16 +44,18 @@ export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" })
         
         <div className="flex items-center gap-3 md:gap-6">
           <ul className="hidden md:flex items-center gap-6 text-sm font-medium">
-            <li><Link href="/#projects" className="hover:opacity-60 transition-opacity duration-300">{t.nav.projects}</Link></li>
-            <li><Link href="/#systems" className="hover:opacity-60 transition-opacity duration-300">{t.nav.systems}</Link></li>
-            <li><Link href="/about" className="hover:opacity-60 transition-opacity duration-300">{t.nav.about}</Link></li>
-            <li><Link href="/#contact" className="hover:opacity-60 transition-opacity duration-300">{t.nav.contact}</Link></li>
+            <li><Link href="/#projects" className="min-h-[44px] inline-flex items-center py-2 hover:opacity-60 transition-opacity duration-300">{t.nav.projects}</Link></li>
+            <li><Link href="/#systems" className="min-h-[44px] inline-flex items-center py-2 hover:opacity-60 transition-opacity duration-300">{t.nav.systems}</Link></li>
+            <li><Link href="/about" className="min-h-[44px] inline-flex items-center py-2 hover:opacity-60 transition-opacity duration-300">{t.nav.about}</Link></li>
+            <li><Link href="/#contact" className="min-h-[44px] inline-flex items-center py-2 hover:opacity-60 transition-opacity duration-300">{t.nav.contact}</Link></li>
           </ul>
           
           <div className="flex items-center gap-2">
             <button
+              type="button"
               onClick={() => setLanguage(language === "en" ? "es" : "en")}
-              className={`font-mono text-[10px] md:text-xs border rounded-full px-2 py-1 md:px-3 md:py-1 transition-colors ${
+              aria-label={language === "en" ? "ES, Switch to Spanish" : "EN, Cambiar a inglés"}
+              className={`min-w-[44px] min-h-[44px] flex items-center justify-center font-mono text-[10px] md:text-xs border rounded-full px-3 py-2 md:px-3 md:py-1 transition-colors ${
                 (scrolled || mobileMenuOpen)
                   ? "border-charcoal/20 hover:bg-charcoal hover:text-offwhite"
                   : "border-offwhite/20 hover:bg-offwhite hover:text-charcoal"
@@ -63,10 +65,13 @@ export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" })
             </button>
 
             {/* Mobile Hamburger Toggle */}
-            <button 
-              className="md:hidden p-1"
+            <button
+              type="button"
+              className="md:hidden min-w-[44px] min-h-[44px] flex items-center justify-center p-2"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle Menu"
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="nav-mobile-menu"
             >
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -74,30 +79,37 @@ export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" })
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
-      <div className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${mobileMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'}`}>
-        <ul className="flex flex-col items-center gap-4 py-6 px-6 border-t border-charcoal/5">
-          <li className="w-full text-center">
-            <Link href="/#projects" onClick={() => setMobileMenuOpen(false)} className="block w-full text-sm font-semibold tracking-widest uppercase hover:text-accent transition-colors">
+      {/* Mobile Menu Dropdown — grid-template-rows to avoid animating height */}
+      <div
+        id="nav-mobile-menu"
+        className="md:hidden grid transition-[grid-template-rows] duration-500 ease-in-out"
+        style={{ gridTemplateRows: mobileMenuOpen ? "1fr" : "0fr" }}
+        aria-hidden={!mobileMenuOpen}
+      >
+        <div className="overflow-hidden min-h-0">
+          <ul className="flex flex-col items-center gap-1 py-6 px-6 border-t border-charcoal/5">
+          <li className="w-full">
+            <Link href="/#projects" onClick={() => setMobileMenuOpen(false)} tabIndex={mobileMenuOpen ? 0 : -1} className="flex min-h-[44px] w-full items-center justify-center text-sm font-semibold tracking-widest uppercase hover:text-accent transition-colors py-2">
               {t.nav.projects}
             </Link>
           </li>
-          <li className="w-full text-center">
-            <Link href="/#systems" onClick={() => setMobileMenuOpen(false)} className="block w-full text-sm font-semibold tracking-widest uppercase hover:text-accent transition-colors">
+          <li className="w-full">
+            <Link href="/#systems" onClick={() => setMobileMenuOpen(false)} tabIndex={mobileMenuOpen ? 0 : -1} className="flex min-h-[44px] w-full items-center justify-center text-sm font-semibold tracking-widest uppercase hover:text-accent transition-colors py-2">
               {t.nav.systems}
             </Link>
           </li>
-          <li className="w-full text-center">
-            <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="block w-full text-sm font-semibold tracking-widest uppercase hover:text-accent transition-colors">
+          <li className="w-full">
+            <Link href="/about" onClick={() => setMobileMenuOpen(false)} tabIndex={mobileMenuOpen ? 0 : -1} className="flex min-h-[44px] w-full items-center justify-center text-sm font-semibold tracking-widest uppercase hover:text-accent transition-colors py-2">
               {t.nav.about}
             </Link>
           </li>
-          <li className="w-full text-center">
-            <Link href="/#contact" onClick={() => setMobileMenuOpen(false)} className="block w-full text-sm font-semibold tracking-widest uppercase hover:text-accent transition-colors">
+          <li className="w-full">
+            <Link href="/#contact" onClick={() => setMobileMenuOpen(false)} tabIndex={mobileMenuOpen ? 0 : -1} className="flex min-h-[44px] w-full items-center justify-center text-sm font-semibold tracking-widest uppercase hover:text-accent transition-colors py-2">
               {t.nav.contact}
             </Link>
           </li>
         </ul>
+        </div>
       </div>
     </nav>
   );

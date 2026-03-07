@@ -21,18 +21,19 @@ export default function Contact() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Main container pin and reveal
+      const charcoal = getComputedStyle(document.documentElement).getPropertyValue("--color-charcoal").trim() || "#090a0a";
+      const graphite = getComputedStyle(document.documentElement).getPropertyValue("--color-graphite").trim() || "#1a1b1e";
       gsap.fromTo(
         container.current,
-        { backgroundColor: "#0f0f11" }, 
-        { 
-           backgroundColor: "#000000",
-           scrollTrigger: {
-             trigger: container.current,
-             start: "top 50%",
-             end: "bottom bottom",
-             scrub: true,
-           }
+        { backgroundColor: graphite },
+        {
+          backgroundColor: charcoal,
+          scrollTrigger: {
+            trigger: container.current,
+            start: "top 50%",
+            end: "bottom bottom",
+            scrub: true,
+          },
         }
       );
 
@@ -81,7 +82,7 @@ export default function Contact() {
     <section 
       id="contact" 
       ref={container} 
-      className="relative flex min-h-screen flex-col items-center justify-center bg-black px-6 py-32 text-offwhite md:px-12 lg:px-24 overflow-hidden"
+      className="relative flex min-h-screen flex-col items-center justify-center bg-charcoal py-32 text-offwhite pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] md:px-12 lg:px-24 overflow-hidden"
     >
       {/* Dynamic Grid Overlay for Contact */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:120px_120px] pointer-events-none"></div>
@@ -97,7 +98,7 @@ export default function Contact() {
           className="mb-16 flex flex-col gap-2 font-serif text-5xl font-light tracking-tight md:text-7xl lg:text-[7rem] leading-[1.1] perspective-[1000px]"
         >
           <span className="block">{t.contact.title1}</span>
-          <span className="block text-gray-500 italic">{t.contact.title2}</span>
+          <span className="block text-offwhite/60 italic">{t.contact.title2}</span>
         </h2>
 
         {/* Action Buttons */}
@@ -105,7 +106,7 @@ export default function Contact() {
           <div className="flex flex-col sm:flex-row items-center gap-6 mt-8">
             <a
               href={`mailto:${t.contact.email}`}
-              className="group relative inline-flex items-center gap-4 overflow-hidden rounded-full border border-offwhite/20 bg-transparent px-8 py-4 font-mono text-sm tracking-widest text-offwhite transition-all duration-500 hover:border-accent hover:bg-accent hover:text-black"
+              className="group relative inline-flex items-center min-h-[44px] gap-4 overflow-hidden rounded-full border border-offwhite/20 bg-transparent px-8 py-4 font-mono text-sm tracking-widest text-offwhite transition-all duration-500 hover:border-accent hover:bg-accent hover:text-black active:scale-[0.98]"
             >
               <span className="relative z-10 font-bold uppercase">{t.contact.email}</span>
               <ArrowUpRight className="relative z-10 h-4 w-4 transition-transform group-hover:scale-110 group-hover:rotate-12" />
@@ -115,24 +116,25 @@ export default function Contact() {
 
             <button
               onClick={() => setShowForm(true)}
-              className="group inline-flex items-center gap-3 px-6 py-4 font-mono text-xs uppercase tracking-widest text-gray-400 hover:text-white transition-colors"
+              type="button"
+              className="group inline-flex items-center min-h-[44px] gap-3 px-6 py-4 font-mono text-xs uppercase tracking-widest text-offwhite/70 hover:text-white transition-colors active:scale-[0.98]"
             >
               {t.contact.bookSession}
-              <span className="block h-[1px] w-8 bg-gray-600 transition-all duration-300 group-hover:bg-accent group-hover:w-16"></span>
+              <span className="block h-[1px] w-8 bg-offwhite/40 transition-all duration-300 group-hover:bg-accent group-hover:w-16"></span>
             </button>
           </div>
         ) : (
-          <div className="mt-8 w-full max-w-lg bg-[#111111] p-10 rounded-[2.5rem] border border-white/10 shadow-2xl animate-in fade-in zoom-in-95 duration-500 text-left">
+          <div className="mt-8 w-full max-w-lg bg-graphite p-6 sm:p-10 rounded-[2.5rem] border border-white/10 shadow-2xl animate-in fade-in zoom-in-95 duration-500 text-left">
             <div className="flex items-center justify-between mb-8">
                <span className="font-mono text-xs tracking-widest uppercase text-accent font-bold">
                  Sys_Message /
                </span>
-               <button onClick={() => setShowForm(false)} className="text-gray-500 hover:text-white text-2xl font-light leading-none">
+               <button type="button" onClick={() => setShowForm(false)} aria-label="Close form" className="min-w-[44px] min-h-[44px] flex items-center justify-center text-offwhite/60 hover:text-white text-2xl font-light leading-none">
                  &times;
                </button>
             </div>
             
-            <p className="text-base text-gray-400 mb-8 font-sans">{t.contact.bookDesc}</p>
+            <p className="text-base text-offwhite/70 mb-8 font-sans">{t.contact.bookDesc}</p>
             
             <form onSubmit={handleSubmit} className="flex flex-col gap-6">
               <div className="relative group">
@@ -140,9 +142,9 @@ export default function Contact() {
                   type="text" required id="name"
                   placeholder=" "
                   value={name} onChange={e => setName(e.target.value)}
-                  className="peer w-full bg-transparent border-b border-white/20 focus:border-accent outline-none py-3 text-white font-sans text-lg transition-colors placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg"
+                  className="peer w-full bg-transparent border-b border-white/20 focus:border-accent focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal outline-none py-3 text-white font-sans text-lg transition-colors placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg"
                 />
-                <label htmlFor="name" className="absolute left-2 top-3 font-mono text-xs text-gray-500 uppercase tracking-widest transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-accent peer-valid:-top-4 peer-valid:text-[10px]">
+                <label htmlFor="name" className="absolute left-2 top-3 font-mono text-xs text-offwhite/60 uppercase tracking-widest transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-accent peer-valid:-top-4 peer-valid:text-[10px]">
                   {t.contact.formName}
                 </label>
               </div>
@@ -152,9 +154,9 @@ export default function Contact() {
                   type="email" required id="email"
                   placeholder=" "
                   value={email} onChange={e => setEmail(e.target.value)}
-                  className="peer w-full bg-transparent border-b border-white/20 focus:border-accent outline-none py-3 text-white font-sans text-lg transition-colors placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg"
+                  className="peer w-full bg-transparent border-b border-white/20 focus:border-accent focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal outline-none py-3 text-white font-sans text-lg transition-colors placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg"
                 />
-                <label htmlFor="email" className="absolute left-2 top-3 font-mono text-xs text-gray-500 uppercase tracking-widest transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-accent peer-valid:-top-4 peer-valid:text-[10px]">
+                <label htmlFor="email" className="absolute left-2 top-3 font-mono text-xs text-offwhite/60 uppercase tracking-widest transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-accent peer-valid:-top-4 peer-valid:text-[10px]">
                   {t.contact.formEmail}
                 </label>
               </div>
@@ -164,9 +166,9 @@ export default function Contact() {
                   required id="message" rows={3}
                   placeholder=" "
                   value={message} onChange={e => setMessage(e.target.value)}
-                  className="peer w-full bg-transparent border-b border-white/20 focus:border-accent outline-none py-3 text-white font-sans text-lg transition-colors resize-none placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg"
+                  className="peer w-full bg-transparent border-b border-white/20 focus:border-accent focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal outline-none py-3 text-white font-sans text-lg transition-colors resize-none placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg"
                 />
-                <label htmlFor="message" className="absolute left-2 top-3 font-mono text-xs text-gray-500 uppercase tracking-widest transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-accent peer-valid:-top-4 peer-valid:text-[10px]">
+                <label htmlFor="message" className="absolute left-2 top-3 font-mono text-xs text-offwhite/60 uppercase tracking-widest transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-accent peer-valid:-top-4 peer-valid:text-[10px]">
                   {t.contact.formMessage}
                 </label>
               </div>
@@ -174,9 +176,9 @@ export default function Contact() {
               <button 
                 type="submit" 
                 disabled={status === 'loading'}
-                className="mt-6 flex items-center justify-center gap-3 bg-white text-black px-8 py-4 rounded-xl font-mono text-xs font-bold uppercase tracking-widest hover:bg-accent hover:shadow-lg hover:shadow-accent/20 transition-all disabled:opacity-50"
+                className="mt-6 flex min-h-[44px] items-center justify-center gap-3 bg-white text-black px-8 py-4 rounded-xl font-mono text-xs font-bold uppercase tracking-widest hover:bg-accent hover:shadow-lg hover:shadow-accent/20 transition-all disabled:opacity-50 active:scale-[0.98]"
               >
-                {status === 'loading' ? 'Procesando...' : status === 'success' ? t.contact.formSuccess : status === 'error' ? t.contact.formError : t.contact.formSubmit}
+                {status === 'loading' ? t.contact.formLoading : status === 'success' ? t.contact.formSuccess : status === 'error' ? t.contact.formError : t.contact.formSubmit}
                 <ArrowUpRight className="w-4 h-4" />
               </button>
             </form>
@@ -189,9 +191,9 @@ export default function Contact() {
              <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse"></div>
              <span>{new Date().getFullYear()} {t.contact.footerText}</span>
           </div>
-          <div className="flex gap-8 text-[11px] uppercase tracking-[0.2em] font-bold">
-            <a href={t.contact.github} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">Github</a>
-            <a href={t.contact.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">LinkedIn</a>
+          <div className="flex gap-6 text-[11px] uppercase tracking-[0.2em] font-bold">
+            <a href={t.contact.github} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center justify-center hover:text-accent transition-colors py-2">Github</a>
+            <a href={t.contact.linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center justify-center hover:text-accent transition-colors py-2">LinkedIn</a>
           </div>
         </div>
 

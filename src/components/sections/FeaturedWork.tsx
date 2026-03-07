@@ -55,10 +55,10 @@ export default function FeaturedWork() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="projects" className="relative bg-offwhite py-12 text-charcoal md:px-12 md:py-20 lg:px-24">
+    <section ref={sectionRef} id="projects" className="relative bg-offwhite py-12 text-charcoal pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] md:px-12 md:py-20 lg:px-24">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
-        <header className="mb-8 md:mb-16 flex flex-col gap-4 md:flex-row md:items-end md:justify-between border-b border-charcoal/10 pb-6 md:pb-8 px-4 md:px-0">
+        <header className="mb-8 md:mb-16 flex flex-col gap-4 md:flex-row md:items-end md:justify-between border-b border-charcoal/10 pb-6 md:pb-8 pl-4 pr-4 md:px-0">
           <div>
             <h2 className="font-serif text-4xl md:text-5xl italic text-graphite">{t.work.title}</h2>
             <p className="mt-3 max-w-md font-sans text-xs tracking-wide text-gray-500 uppercase">
@@ -67,7 +67,7 @@ export default function FeaturedWork() {
           </div>
           <a
             href="/projects"
-            className="group flex items-center justify-center gap-3 border border-charcoal/20 px-6 py-3.5 font-mono text-xs uppercase tracking-widest text-charcoal transition-all hover:bg-charcoal hover:text-offwhite rounded-full bg-white shadow-sm hover:shadow-md"
+            className="group flex items-center justify-center min-h-[44px] gap-3 border border-charcoal/20 px-6 py-3.5 font-mono text-xs uppercase tracking-widest text-charcoal transition-all hover:bg-charcoal hover:text-offwhite rounded-full bg-white shadow-sm hover:shadow-md active:scale-[0.98]"
           >
             {language === 'en' ? 'View Full Archive' : 'Ver Archivo Completo'}
             <ArrowUpRight className="h-3 w-3" />
@@ -113,11 +113,11 @@ export default function FeaturedWork() {
                   </h3>
 
                   {/* Key outcome */}
-                  <p className="text-sm text-charcoal/70 font-sans leading-relaxed line-clamp-3">
+                  <p className="text-base sm:text-sm text-charcoal/70 font-sans leading-relaxed line-clamp-3">
                     {project.outcome}
                   </p>
 
-                  {/* Links row */}
+                  {/* Links row — 44px touch targets on mobile */}
                   {(project as any).links && (project as any).links.length > 0 && (
                     <div className="flex flex-wrap gap-2">
                       {(project as any).links.map((link: any, lIdx: number) => (
@@ -126,10 +126,10 @@ export default function FeaturedWork() {
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-charcoal/10 bg-gray-50 font-mono text-[10px] text-charcoal/60 active:scale-95 transition-transform"
+                          className="inline-flex min-h-[44px] items-center gap-1.5 px-3 py-2.5 rounded-lg border border-charcoal/10 bg-charcoal/5 font-mono text-xs text-charcoal/70 active:scale-[0.98] transition-transform sm:py-1.5 sm:text-[10px] sm:min-h-0"
                         >
                           {link.label}
-                          <ArrowUpRight className="w-2.5 h-2.5" />
+                          <ArrowUpRight className="w-2.5 h-2.5 sm:w-2.5 sm:h-2.5" />
                         </a>
                       ))}
                     </div>
@@ -140,7 +140,7 @@ export default function FeaturedWork() {
                     {(project as any).caseStudy ? (
                       <Link
                         href={(project as any).caseStudy}
-                        className="flex items-center justify-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-offwhite bg-accent px-5 py-4 rounded-xl active:scale-[0.98] transition-transform shadow-lg shadow-accent/20"
+                        className="flex min-h-[44px] items-center justify-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-offwhite bg-accent px-5 py-4 rounded-xl active:scale-[0.98] transition-transform shadow-lg shadow-accent/20"
                       >
                         {language === 'es' ? 'Caso de Estudio' : 'Case Study'} <ArrowRight className="w-4 h-4" />
                       </Link>
@@ -149,7 +149,7 @@ export default function FeaturedWork() {
                         href={project.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-offwhite bg-charcoal px-5 py-4 rounded-xl active:scale-[0.98] transition-transform shadow-md"
+                        className="flex min-h-[44px] items-center justify-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-offwhite bg-charcoal px-5 py-4 rounded-xl active:scale-[0.98] transition-transform shadow-md"
                       >
                         {language === 'es' ? 'Ver Proyecto' : 'Open Project'} <ArrowUpRight className="w-4 h-4" />
                       </a>
@@ -160,19 +160,26 @@ export default function FeaturedWork() {
             ))}
           </div>
 
-          {/* Dot indicators */}
-          <div className="flex items-center justify-center gap-2 mt-5">
+          {/* Dot indicators — 44px touch target each */}
+          <div className="flex items-center justify-center gap-1 mt-5" role="tablist" aria-label="Project carousel">
             {t.work.projects.map((_, idx) => (
               <button
                 key={idx}
-                onClick={() => scrollToCard(idx)}
+                type="button"
+                role="tab"
                 aria-label={`Project ${idx + 1}`}
-                className={`transition-all duration-300 rounded-full ${
-                  idx === activeIdx
-                    ? "w-5 h-1.5 bg-charcoal"
-                    : "w-1.5 h-1.5 bg-charcoal/20"
-                }`}
-              />
+                aria-selected={idx === activeIdx}
+                tabIndex={idx === activeIdx ? 0 : -1}
+                onClick={() => scrollToCard(idx)}
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full transition-colors hover:bg-charcoal/10"
+              >
+                <span
+                  className={`block rounded-full transition-all duration-300 ${
+                    idx === activeIdx ? "w-5 h-1.5 bg-charcoal" : "w-1.5 h-1.5 bg-charcoal/20"
+                  }`}
+                  aria-hidden
+                />
+              </button>
             ))}
           </div>
         </div>

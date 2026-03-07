@@ -77,16 +77,20 @@ function Lightbox({ index, onClose, onPrev, onNext }: { index: number; onClose: 
         <Image src={src} alt={alt} fill className="object-contain" sizes="90vw" />
       </div>
 
-      {/* Dots */}
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2">
+      {/* Dots — 44px touch target, ARIA for carousel */}
+      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-1" role="tablist" aria-label="Image carousel">
         {IMAGES.map((_, i) => (
           <button
             key={i}
+            type="button"
+            role="tab"
+            aria-label={`${i + 1} of ${IMAGES.length}`}
+            aria-selected={i === index}
             onClick={(e) => { e.stopPropagation(); }}
-            className={`rounded-full transition-all duration-300 ${
-              i === index ? "w-5 h-1.5 bg-[#00C9FF]" : "w-1.5 h-1.5 bg-white/30"
-            }`}
-          />
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full transition-colors hover:bg-white/10"
+          >
+            <span className={`block rounded-full transition-all duration-300 ${i === index ? "w-5 h-1.5 bg-[#00C9FF]" : "w-1.5 h-1.5 bg-white/30"}`} aria-hidden />
+          </button>
         ))}
       </div>
 
@@ -97,7 +101,7 @@ function Lightbox({ index, onClose, onPrev, onNext }: { index: number; onClose: 
 }
 
 export default function TimeUpCaseStudy() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const dict = t.timeup;
   const containerRef = useRef<HTMLDivElement>(null);
   const [lightbox, setLightbox] = useState<number | null>(null);
@@ -156,7 +160,7 @@ export default function TimeUpCaseStudy() {
       >
         <ArrowUp size={16} />
       </button>
-      <main ref={containerRef} className="min-h-screen pt-24 pb-20 md:pt-32 md:pb-32 px-5 md:px-12 lg:px-24 text-zinc-300 bg-[#020406] selection:bg-[#00C9FF] selection:text-[#020406]">
+      <main ref={containerRef} className="min-h-screen pt-24 pb-[calc(5rem+env(safe-area-inset-bottom,0px))] md:pt-32 md:pb-[calc(8rem+env(safe-area-inset-bottom,0px))] px-5 md:px-12 lg:px-24 text-zinc-300 bg-[#020406] selection:bg-[#00C9FF] selection:text-[#020406]">
       
       {/* Navigation */}
       <div className="mb-12 reveal-fade">
@@ -172,7 +176,8 @@ export default function TimeUpCaseStudy() {
       </header>
 
       {/* 1. TL;DR Cards */}
-      <section className="grid grid-cols-1 xl:grid-cols-3 gap-4 mb-16 reveal-fade">
+      <section className="grid grid-cols-1 xl:grid-cols-3 gap-4 mb-16 reveal-fade" aria-labelledby="tldr-heading">
+        <h2 id="tldr-heading" className="sr-only">{language === "es" ? "Resumen" : "Summary"}</h2>
         <div className="bg-white/[0.02] border border-white/10 p-6 rounded-2xl hover:border-[#00C9FF]/30 transition-all duration-500">
           <h3 className="text-[#00C9FF] font-mono text-xs uppercase tracking-widest mb-3 flex items-center gap-2"><AlertCircle size={14}/> {dict.tldr.challenge.title}</h3><p className="text-sm text-white/60 leading-relaxed font-sans">{dict.tldr.challenge.text1}<span className="text-white font-medium">{dict.tldr.challenge.bold}</span>{dict.tldr.challenge.text2}</p>
         </div>
@@ -180,7 +185,7 @@ export default function TimeUpCaseStudy() {
           <h3 className="text-[#00E3CC] font-mono text-xs uppercase tracking-widest mb-3 flex items-center gap-2"><Zap size={14}/> {dict.tldr.solution.title}</h3><p className="text-sm text-white/60 leading-relaxed font-sans">{dict.tldr.solution.text1}<span className="text-white font-medium">{dict.tldr.solution.bold}</span>{dict.tldr.solution.text2}<span className="text-[#00E3CC]">{dict.tldr.solution.cyan}</span>{dict.tldr.solution.text3}</p>
         </div>
         <div className="bg-[#4B5DFF]/10 border border-[#4B5DFF]/20 p-6 rounded-2xl hover:border-[#4B5DFF]/40 transition-all duration-500">
-          <h3 className="text-[#4B5DFF] font-mono text-xs uppercase tracking-widest mb-3 flex items-center gap-2"><Activity size={14}/> {dict.tldr.impact.title}</h3><p className="text-sm text-[#4B5DFF]/90 leading-relaxed font-sans"><span className="text-white font-medium">{dict.tldr.impact.bold}</span>{dict.tldr.impact.text1}</p>
+          <h3 className="text-white font-mono text-xs uppercase tracking-widest mb-3 flex items-center gap-2"><Activity size={14}/> {dict.tldr.impact.title}</h3><p className="text-sm text-white/90 leading-relaxed font-sans"><span className="text-white font-medium">{dict.tldr.impact.bold}</span>{dict.tldr.impact.text1}</p>
         </div>
       </section>
 

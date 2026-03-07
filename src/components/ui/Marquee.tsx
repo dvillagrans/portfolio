@@ -26,7 +26,7 @@ export default function Marquee() {
     <div className="w-full overflow-hidden bg-accent/10 border-y border-offwhite/5 py-4">
       <div 
         ref={scrollRef} 
-        className="flex whitespace-nowrap font-mono text-xs uppercase tracking-[0.2em] text-accent/80"
+        className="flex whitespace-nowrap font-mono text-xs uppercase tracking-[0.2em] text-offwhite/80"
         style={{ width: "fit-content" }}
       >
         <span>{text}</span>

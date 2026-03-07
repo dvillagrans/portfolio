@@ -71,7 +71,7 @@ export default function Stack() {
             opacity: 1,
             scale: 1,
             duration: 0.6,
-            ease: "back.out(1.5)",
+            ease: "power3.out",
             scrollTrigger: {
               trigger: container.current,
               start: "top 70%",
@@ -85,7 +85,7 @@ export default function Stack() {
   }, []);
 
   return (
-    <section ref={container} className="relative bg-charcoal px-6 py-24 md:py-32 text-offwhite md:px-12 lg:px-24 overflow-hidden border-t border-offwhite/5 border-b">
+    <section ref={container} className="relative bg-charcoal py-24 md:py-32 text-offwhite pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] md:px-12 lg:px-24 overflow-hidden border-t border-offwhite/5 border-b">
       
       {/* Background radial gradient */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl aspect-square rounded-full bg-accent/5 blur-[120px] pointer-events-none"></div>
@@ -94,16 +94,16 @@ export default function Stack() {
         <header className="mb-20">
           <div className="flex items-center gap-4 mb-6 md:justify-center">
              <div className="h-[1px] w-12 bg-accent opacity-50 block md:hidden"></div>
-             <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent font-bold">
+             <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-offwhite/80 font-bold">
                05. {t.stack.title}
              </span>
              <div className="h-[1px] w-12 bg-accent opacity-50 block md:hidden"></div>
           </div>
           <h2 className="font-serif text-4xl lg:text-5xl tracking-tight text-white mb-4 md:text-center">
              {language === 'es' ? (
-                <>Tecnologías <span className="italic text-gray-500 font-light">&</span> Herramientas</>
+                <>Tecnologías <span className="italic text-offwhite/60 font-light">&</span> Herramientas</>
              ) : (
-                <>Technologies <span className="italic text-gray-500 font-light">&</span> Tooling</>
+                <>Technologies <span className="italic text-offwhite/60 font-light">&</span> Tooling</>
              )}
           </h2>
         </header>
@@ -112,7 +112,7 @@ export default function Stack() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {categories.map((category, cIdx) => (
              <div key={cIdx} className="stack-category group p-8 rounded-3xl bg-white/[0.02] border border-white/5 hover:border-accent/30 hover:bg-white/[0.04] transition-all duration-500">
-                <h3 className="font-mono text-xs uppercase tracking-widest text-gray-400 mb-8 flex items-center gap-3">
+                <h3 className="font-mono text-xs uppercase tracking-widest text-offwhite/70 mb-8 flex items-center gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent/50 group-hover:bg-accent transition-colors duration-500"></span>
                   {category.name}
                 </h3>
@@ -123,7 +123,7 @@ export default function Stack() {
                         ref={(el) => {
                            if (cIdx === 0) itemsRef.current[iIdx] = el;
                         }}
-                        className="inline-flex items-center px-3 py-1.5 rounded-lg bg-black/40 border border-white/10 font-sans text-[13px] text-gray-300 hover:text-white hover:border-accent/50 hover:bg-accent/10 transition-all duration-300 cursor-default"
+                        className="inline-flex items-center px-3 py-1.5 rounded-lg bg-black/40 border border-white/10 font-sans text-[13px] text-offwhite/80 hover:text-white hover:border-accent/50 hover:bg-accent/10 transition-all duration-300 cursor-default"
                       >
                         {tool}
                       </span>

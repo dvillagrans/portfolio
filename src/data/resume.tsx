@@ -148,6 +148,44 @@ export const DATA = {
       video: ""
     },
     {
+      title: "COVID-19 Risk Profiles (Mexico)",
+      caseStudy: true,
+      href: "/projects/covid-perfiles",
+      dates: "2025",
+      active: true,
+      role: "Data Science · Clustering & Analytics",
+      badges: ["Academic", "K-Means", "Fuzzy C-Means", "ESCOM-IPN"],
+      metrics: [
+        { value: "9", label: "K-Means profiles" },
+        { value: "30M+", label: "SSA records" }
+      ],
+      features: [
+        { name: "Scope", value: "Stratified sampling, 17 variables, PCA for viz" },
+        { name: "Deliverables", value: "LaTeX report, Next.js portfolio, notebooks" },
+        { name: "Impact", value: "Interpretable risk profiles for triage and policy" }
+      ],
+      description: "Identification of COVID-19 risk profiles from Mexican open health data using K-Means and Fuzzy C-Means. Advanced Data Analytics final project.",
+      technologies: [
+        "Python",
+        "Pandas",
+        "scikit-learn",
+        "scikit-fuzzy",
+        "Jupyter",
+        "LaTeX",
+        "Next.js",
+        "Recharts"
+      ],
+      links: [
+        {
+          type: "Dashboard",
+          href: "https://identificaci-on-de-perfiles-de-ries.vercel.app/",
+          icon: <Icons.globe className="size-3" />
+        }
+      ],
+      image: { src: "/img/dashboard-covid-19.webp" },
+      video: ""
+    },
+    {
       title: "NYC Ride-Hailing Analytics Dashboard",
       href: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard",
       dates: "June 2025",

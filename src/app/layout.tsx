@@ -4,9 +4,8 @@ import Script from "next/script";
 import { Space_Grotesk, EB_Garamond, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/i18n/LanguageContext";
-import CustomCursor from "@/components/ui/CustomCursor";
-import GridOverlay from "@/components/ui/GridOverlay";
 import { ViewTransitions } from "next-view-transitions";
+import { HtmlLang } from "@/components/ui/HtmlLang";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -58,6 +57,7 @@ export default function RootLayout({
         className={`${spaceGrotesk.variable} ${ebGaramond.variable} ${jetbrainsMono.variable} font-sans bg-charcoal text-offwhite overflow-x-hidden selection:bg-accent selection:text-offwhite`}
       >
         <LanguageProvider>
+          <HtmlLang />
           <div className="noise-overlay pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.03] mix-blend-overlay"></div>
           {children}
         </LanguageProvider>

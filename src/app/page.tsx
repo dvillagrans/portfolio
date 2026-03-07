@@ -9,7 +9,7 @@ import Contact from "@/components/sections/Contact";
 
 export default function Home() {
   return (
-    <main className="min-h-screen w-full bg-charcoal text-offwhite overflow-x-hidden relative">
+    <main id="main-content" className="min-h-screen w-full bg-charcoal text-offwhite overflow-x-hidden relative pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)]" tabIndex={-1}>
       <Navbar />
       <Hero />
       <FeaturedWork />

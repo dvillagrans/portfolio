@@ -63,7 +63,7 @@ export default function About() {
       ];
 
   return (
-    <main className="min-h-screen w-full bg-offwhite text-charcoal font-sans overflow-x-hidden selection:bg-accent selection:text-offwhite">
+    <main id="main-content" className="min-h-screen w-full bg-offwhite text-charcoal font-sans overflow-x-hidden selection:bg-accent selection:text-offwhite pb-[env(safe-area-inset-bottom)]" tabIndex={-1}>
 
       {/* Reading progress bar */}
       <div className="fixed top-0 left-0 z-[100] h-[2px] w-full bg-charcoal/5">
@@ -80,7 +80,7 @@ export default function About() {
         <header className="mb-24 mt-20 flex items-center justify-between">
           <Link
             href="/"
-            className="group flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-gray-500 transition-colors hover:text-charcoal"
+            className="group flex items-center min-h-[44px] gap-3 font-mono text-xs uppercase tracking-widest text-charcoal/70 transition-colors hover:text-charcoal active:scale-[0.98]"
           >
             <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
             {language === "en" ? "Return" : "Volver"}
@@ -92,7 +92,7 @@ export default function About() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-60" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
             </span>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/60">
               Eyenet · {language === "en" ? "Open to work" : "Disponible"}
             </span>
           </div>
@@ -113,7 +113,7 @@ export default function About() {
               </h1>
               <p
                 ref={(el) => { elementsRef.current[1] = el; }}
-                className="font-mono text-sm uppercase tracking-widest text-gray-500"
+                className="font-mono text-sm uppercase tracking-widest text-charcoal/70"
               >
                 {about.subtitle}
               </p>
@@ -147,7 +147,7 @@ export default function About() {
             {stats.map((stat, i) => (
               <div key={i} className="bg-white px-6 py-6 flex flex-col gap-1">
                 <span className="font-serif text-3xl md:text-4xl italic text-charcoal">{stat.value}</span>
-                <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400 leading-tight">{stat.label}</span>
+                <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/60 leading-tight">{stat.label}</span>
               </div>
             ))}
           </div>
@@ -158,7 +158,7 @@ export default function About() {
 
           {/* How I build */}
           <section ref={(el) => { elementsRef.current[3] = el; }} className="grid grid-cols-1 md:grid-cols-12 gap-8">
-            <h2 className="md:col-span-4 font-mono text-xs uppercase tracking-widest text-gray-400 pt-2 border-t border-charcoal/10 md:border-transparent md:pt-0">
+            <h2 className="md:col-span-4 font-mono text-xs uppercase tracking-widest text-charcoal/60 pt-2 border-t border-charcoal/10 md:border-transparent md:pt-0">
               01 // {about.sections.systems.title}
             </h2>
             <div className="md:col-span-8 font-serif text-xl md:text-2xl leading-relaxed text-charcoal/80">
@@ -168,7 +168,7 @@ export default function About() {
 
           {/* What I optimize for */}
           <section ref={(el) => { elementsRef.current[4] = el; }} className="grid grid-cols-1 md:grid-cols-12 gap-8">
-            <h2 className="md:col-span-4 font-mono text-xs uppercase tracking-widest text-gray-400 pt-2 border-t border-charcoal/10 md:border-transparent md:pt-0">
+            <h2 className="md:col-span-4 font-mono text-xs uppercase tracking-widest text-charcoal/60 pt-2 border-t border-charcoal/10 md:border-transparent md:pt-0">
               02 // {about.sections.optimization.title}
             </h2>
             <div className="md:col-span-8 flex flex-col divide-y divide-charcoal/10">
@@ -178,7 +178,7 @@ export default function About() {
                     <span className="font-mono text-[10px] font-bold text-accent/80">0{idx + 1}</span>
                     <h3 className="font-sans font-semibold tracking-wide text-charcoal">{item.label}</h3>
                   </div>
-                  <p className="font-mono text-sm leading-relaxed text-gray-600 pl-7">{item.desc}</p>
+                  <p className="font-mono text-sm leading-relaxed text-charcoal/70 pl-7">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -186,14 +186,14 @@ export default function About() {
 
           {/* Decisions */}
           <section ref={(el) => { elementsRef.current[5] = el; }} className="grid grid-cols-1 md:grid-cols-12 gap-8 bg-charcoal text-offwhite p-10 md:p-16 rounded-[2rem] shadow-2xl">
-            <h2 className="md:col-span-4 font-mono text-xs uppercase tracking-widest text-gray-400 pt-2 border-t border-offwhite/10 md:border-transparent md:pt-0">
+            <h2 className="md:col-span-4 font-mono text-xs uppercase tracking-widest text-offwhite/70 pt-2 border-t border-offwhite/10 md:border-transparent md:pt-0">
               03 // {about.sections.decisions.title}
             </h2>
             <div className="md:col-span-8 flex flex-col gap-12">
               {about.sections.decisions.items.map((item: any, idx: number) => (
                 <div key={idx} className="flex flex-col gap-4 border-l-2 border-accent pl-6">
                   <h3 className="font-serif text-2xl italic">{item.title}</h3>
-                  <p className="font-mono text-sm leading-relaxed text-gray-400">{item.desc}</p>
+                  <p className="font-mono text-sm leading-relaxed text-offwhite/80">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -224,7 +224,7 @@ export default function About() {
                 href="https://github.com/dvillagrans"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-4 font-mono text-xs uppercase tracking-widest text-gray-500 border border-charcoal/15 rounded-full hover:border-charcoal/40 hover:text-charcoal transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-4 font-mono text-xs uppercase tracking-widest text-charcoal/70 border border-charcoal/15 rounded-full hover:border-charcoal/40 hover:text-charcoal transition-colors"
               >
                 <Github className="h-3.5 w-3.5" />
                 GitHub
@@ -233,7 +233,7 @@ export default function About() {
                 href="https://linkedin.com/in/dvillagrans"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-4 font-mono text-xs uppercase tracking-widest text-gray-500 border border-charcoal/15 rounded-full hover:border-charcoal/40 hover:text-charcoal transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-4 font-mono text-xs uppercase tracking-widest text-charcoal/70 border border-charcoal/15 rounded-full hover:border-charcoal/40 hover:text-charcoal transition-colors"
               >
                 <Linkedin className="h-3.5 w-3.5" />
                 LinkedIn

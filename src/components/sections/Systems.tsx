@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const abstractions = [
   (
-    <svg className="w-full h-full stroke-gray-500 hover:stroke-accent transition-colors duration-500" viewBox="0 0 100 100">
+    <svg className="w-full h-full stroke-offwhite/50 hover:stroke-accent transition-colors duration-500" viewBox="0 0 100 100" aria-hidden>
       <rect x="10" y="10" width="80" height="20" rx="4" fill="none" strokeWidth="1" />
       <rect x="10" y="40" width="35" height="50" rx="4" fill="none" strokeWidth="1" />
       <rect x="55" y="40" width="35" height="50" rx="4" fill="none" strokeWidth="1" />
@@ -17,7 +17,7 @@ const abstractions = [
     </svg>
   ),
   (
-    <svg className="w-full h-full stroke-gray-500 hover:stroke-accent transition-colors duration-500" viewBox="0 0 100 100">
+    <svg className="w-full h-full stroke-offwhite/50 hover:stroke-accent transition-colors duration-500" viewBox="0 0 100 100" aria-hidden>
       <circle cx="20" cy="50" r="10" fill="none" strokeWidth="1" />
       <circle cx="80" cy="50" r="10" fill="none" strokeWidth="1" />
       <path d="M30 50 h40" strokeWidth="1" strokeDasharray="4,2" />
@@ -25,7 +25,7 @@ const abstractions = [
     </svg>
   ),
   (
-    <svg className="w-full h-full stroke-gray-500 hover:stroke-accent transition-colors duration-500" viewBox="0 0 100 100">
+    <svg className="w-full h-full stroke-offwhite/50 hover:stroke-accent transition-colors duration-500" viewBox="0 0 100 100" aria-hidden>
       <rect x="20" y="20" width="60" height="60" rx="8" fill="none" strokeWidth="1" />
       <circle cx="50" cy="50" r="15" fill="none" strokeWidth="1" />
       <path d="M45 45 l10 10" strokeWidth="1" />
@@ -33,7 +33,7 @@ const abstractions = [
     </svg>
   ),
   (
-    <svg className="w-full h-full stroke-gray-500 hover:stroke-accent transition-colors duration-500" viewBox="0 0 100 100">
+    <svg className="w-full h-full stroke-offwhite/50 hover:stroke-accent transition-colors duration-500" viewBox="0 0 100 100" aria-hidden>
       <path d="M25 25 L50 15 L75 25 L75 75 L50 85 L25 75 Z" fill="none" strokeWidth="1" />
       <circle cx="50" cy="50" r="5" fill="none" strokeWidth="1" />
       <path d="M50 25 V45 m0 10 V75 M25 50 H45 m10 0 H75" strokeWidth="1" strokeDasharray="2,2" />
@@ -71,7 +71,7 @@ export default function Systems() {
   }, []);
 
   return (
-    <section ref={containerRef} id="systems" className="relative bg-charcoal px-6 py-24 md:py-32 text-offwhite md:px-12 lg:px-24 overflow-hidden">
+    <section ref={containerRef} id="systems" className="relative bg-charcoal py-24 md:py-32 text-offwhite pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] md:px-12 lg:px-24 overflow-hidden">
       {/* Background ambient line */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[1px] bg-gradient-to-r from-transparent via-offwhite/10 to-transparent"></div>
       
@@ -79,15 +79,15 @@ export default function Systems() {
         <header className="mb-20">
           <div className="flex items-center gap-4 mb-6">
              <div className="h-[1px] w-12 bg-accent opacity-50"></div>
-             <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent">
+             <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-offwhite/80">
                03. {t.systems.title}
              </span>
           </div>
           <h2 className="font-serif text-5xl lg:text-6xl tracking-tight text-white mb-4">
              {language === 'es' ? (
-                <>Arquitectura <span className="italic text-gray-500 font-light">&</span> Escala</>
+                <>Arquitectura <span className="italic text-offwhite/60 font-light">&</span> Escala</>
              ) : (
-                <>Architecture <span className="italic text-gray-500 font-light">&</span> Scale</>
+                <>Architecture <span className="italic text-offwhite/60 font-light">&</span> Scale</>
              )}
           </h2>
         </header>
@@ -112,7 +112,7 @@ export default function Systems() {
                 
                 <div className="relative z-10 flex flex-col gap-8 h-full">
                   <div className="flex items-start justify-between">
-                    <span className="font-mono text-xs font-bold text-accent/80 tracking-widest uppercase mt-2">
+                    <span className="font-mono text-xs font-bold text-offwhite/70 tracking-widest uppercase mt-2">
                       SYS_0{idx + 1}
                     </span>
                     <div className="h-16 w-16 opacity-40 transition-all duration-500 group-hover:scale-110 group-hover:opacity-100 flex-shrink-0">
@@ -124,7 +124,7 @@ export default function Systems() {
                     <h3 className="mb-4 font-sans text-2xl lg:text-3xl font-medium tracking-tight text-white group-hover:text-accent transition-colors">
                       {cap.title}
                     </h3>
-                    <p className="font-sans text-sm lg:text-base leading-relaxed text-gray-400 group-hover:text-gray-300 transition-colors">
+                    <p className="font-sans text-base leading-relaxed text-offwhite/70 group-hover:text-offwhite/90 transition-colors lg:text-base">
                       {cap.description}
                     </p>
                   </div>
