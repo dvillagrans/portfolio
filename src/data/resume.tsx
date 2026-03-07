@@ -173,6 +173,11 @@ export const DATA = {
       ],
       links: [
         {
+          type: "Live app",
+          href: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
           type: "Source",
           href: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard",
           icon: <Icons.github className="size-3" />,
@@ -490,7 +495,7 @@ export const DATA = {
     },
     {
       title: "Prediction of passengers for mexican airlines",
-      href: "https://github.com/dvillagrans/Prediction-of-passengers-for-mexican-airlines",
+      href: "https://passenger-volume-prediction-in-mexi.vercel.app/",
       dates: "September 2023 - November 2023",
       active: true,
       role: "Data Science",
@@ -503,6 +508,11 @@ export const DATA = {
         "+3"
       ],
       links: [
+        {
+          type: "Website",
+          href: "https://passenger-volume-prediction-in-mexi.vercel.app/",
+          icon: <Icons.globe className="size-3" />,
+        },
         {
           type: "Source",
           href: "https://github.com/dvillagrans/Passenger-Volume-Prediction-in-Mexico",

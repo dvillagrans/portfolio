@@ -165,9 +165,22 @@ export default function SystemArchive() {
                       </span>
                     </p>
 
-                    {/* Link */}
-                    <div className="shrink-0">
-                      {project.link && (
+                    {/* Link(s) */}
+                    <div className="shrink-0 flex items-center gap-2">
+                      {project.links ? (
+                        project.links.map((lnk: any, li: number) => (
+                          <a
+                            key={li}
+                            href={lnk.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-widest text-gray-600 group-hover:text-accent transition-colors border border-offwhite/10 hover:border-accent/40 rounded-full px-2.5 py-1"
+                          >
+                            <span>{lnk.label}</span>
+                            <ArrowUpRight className="h-3 w-3" />
+                          </a>
+                        ))
+                      ) : (project.link && (
                         <a
                           href={project.link}
                           target="_blank"
@@ -177,7 +190,7 @@ export default function SystemArchive() {
                           <span className="hidden sm:inline">{archive.viewProject}</span>
                           <ArrowUpRight className="h-3.5 w-3.5" />
                         </a>
-                      )}
+                      ))}
                     </div>
                   </div>
                 ))}

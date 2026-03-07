@@ -35,7 +35,11 @@ export const en = {
         system: "Built an interactive Streamlit analytics platform with predictive ML models, geospatial maps, and multi-tab operational dashboards.",
         outcome: "Delivered fare prediction with R² > 0.85 and airport classification with 92% accuracy for practical decision support.",
         image: "/img/nyc-ridehailing-dashboard.webp",
-        href: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard",
+        links: [
+          { label: "Live dashboard", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" },
+          { label: "Code", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" }
+        ],
+        href: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/",
       },
       {
         id: "02",
@@ -147,19 +151,19 @@ export const en = {
           { label: "negocios.timeup.mx", url: "https://negocios.timeup.mx" }
         ]
       },
-      { year: "2025", title: "NYC Ride-Hailing Analytics Dashboard", domain: "Data Science / Streamlit", link: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" },
-      { year: "2025", title: "Métodos de Optimización No Lineal", domain: "Optimization / Flask", link: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal" },
-      { year: "2025", title: "Matemáticas Avanzadas - Métodos de Optimización", domain: "Optimization / Education", link: "https://github.com/dvillagrans/Metodos-de-optimizacion" },
-      { year: "2025", title: "Population Dashboard", domain: "Analytics / Power BI", link: "https://github.com/dvillagrans/population-dashboard" },
-      { year: "2025", title: "Global Health Analytics Dashboard", domain: "Analytics / Power BI", link: "https://github.com/dvillagrans/health-analytics-dashboard" },
-      { year: "2025", title: "Video Game Market Intelligence", domain: "Analytics / Power BI", link: "https://github.com/dvillagrans/videogames-dashboard" },
-      { year: "2024", title: "India Air Quality ETL", domain: "Data Engineering / Azure", link: "https://github.com/dvillagrans/india-air-quality-etl" },
-      { year: "2024", title: "Code Master", domain: "EdTech / Full Stack", link: "https://github.com/dvillagrans/Code-Master" },
-      { year: "2024", title: "Technical Portfolio Platform", domain: "Web Development / Next.js", link: "https://github.com/dvillagrans/portfolio" },
-      { year: "2024", title: "Houses Prices Prediction", domain: "Machine Learning / Flask", link: "https://github.com/dvillagrans/Houses-Prices-Prediction" },
-      { year: "2024", title: "Dashboard Financial", domain: "Data Analysis / Excel VBA", link: "https://github.com/dvillagrans/Dashboard-Financial" },
-      { year: "2023", title: "Melari Spa", domain: "Web Development / Astro", link: "https://melarispa.com" },
-      { year: "2023", title: "Prediction of Passengers for Mexican Airlines", domain: "Time Series / Data Science", link: "https://github.com/dvillagrans/Passenger-Volume-Prediction-in-Mexico" }
+      { year: "2025", title: "NYC Ride-Hailing Analytics Dashboard", domain: "Data Science / Streamlit", links: [ { label: "Dashboard", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" }, { label: "Repo", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" } ] },
+      { year: "2025", title: "Métodos de Optimización No Lineal", domain: "Optimization / Flask", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal" } ] },
+      { year: "2025", title: "Matemáticas Avanzadas - Métodos de Optimización", domain: "Optimization / Education", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Metodos-de-optimizacion" } ] },
+      { year: "2025", title: "Population Dashboard", domain: "Analytics / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/population-dashboard" } ] },
+      { year: "2025", title: "Global Health Analytics Dashboard", domain: "Analytics / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/health-analytics-dashboard" } ] },
+      { year: "2025", title: "Video Game Market Intelligence", domain: "Analytics / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/videogames-dashboard" } ] },
+      { year: "2024", title: "India Air Quality ETL", domain: "Data Engineering / Azure", links: [ { label: "Repo", url: "https://github.com/dvillagrans/india-air-quality-etl" } ] },
+      { year: "2024", title: "Code Master", domain: "EdTech / Full Stack", links: [ { label: "Website", url: "https://codemaster-two.vercel.app" }, { label: "Repo", url: "https://github.com/dvillagrans/Code-Master" } ] },
+      { year: "2024", title: "Technical Portfolio Platform", domain: "Web Development / Next.js", links: [ { label: "Website", url: "https://www.dvillagrans.dev/" }, { label: "Repo", url: "https://github.com/dvillagrans/portfolio" } ] },
+      { year: "2024", title: "Houses Prices Prediction", domain: "Machine Learning / Flask", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Houses-Prices-Prediction" } ] },
+      { year: "2024", title: "Dashboard Financial", domain: "Data Analysis / Excel VBA", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Dashboard-Financial" } ] },
+      { year: "2023", title: "Melari Spa", domain: "Web Development / Astro", links: [ { label: "Website", url: "https://melarispa.com" } ] },
+      { year: "2023", title: "Prediction of Passengers for Mexican Airlines", domain: "Time Series / Data Science", links: [ { label: "Dashboard", url: "https://passenger-volume-prediction-in-mexi.vercel.app/" }, { label: "Repo", url: "https://github.com/dvillagrans/Passenger-Volume-Prediction-in-Mexico" } ] }
     ]
   },
   contact: {
@@ -268,7 +272,11 @@ export const es = {
         system: "Desarrollé una plataforma interactiva en Streamlit con modelos predictivos, mapas geoespaciales y tableros operativos.",
         outcome: "Se logró predicción de tarifas con R² > 0.85 y clasificación de viajes al aeropuerto con 92% de accuracy.",
         image: "/img/nyc-ridehailing-dashboard.webp",
-        href: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard",
+        links: [
+          { label: "Dashboard en vivo", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" },
+          { label: "Código", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" }
+        ],
+        href: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/",
       },
       {
         id: "02",
@@ -380,19 +388,19 @@ export const es = {
           { label: "negocios.timeup.mx", url: "https://negocios.timeup.mx" }
         ]
       },
-      { year: "2025", title: "NYC Ride-Hailing Analytics Dashboard", domain: "Data Science / Streamlit", link: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" },
-      { year: "2025", title: "Métodos de Optimización No Lineal", domain: "Optimización / Flask", link: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal" },
-      { year: "2025", title: "Matemáticas Avanzadas - Métodos de Optimización", domain: "Optimización / Educación", link: "https://github.com/dvillagrans/Metodos-de-optimizacion" },
-      { year: "2025", title: "Dashboard de Población por Continente", domain: "Analítica / Power BI", link: "https://github.com/dvillagrans/population-dashboard" },
-      { year: "2025", title: "Global Health Analytics Dashboard", domain: "Analítica / Power BI", link: "https://github.com/dvillagrans/health-analytics-dashboard" },
-      { year: "2025", title: "Video Game Market Intelligence", domain: "Analítica / Power BI", link: "https://github.com/dvillagrans/videogames-dashboard" },
-      { year: "2024", title: "India Air Quality ETL", domain: "Data Engineering / Azure", link: "https://github.com/dvillagrans/india-air-quality-etl" },
-      { year: "2024", title: "Code Master", domain: "EdTech / Full Stack", link: "https://github.com/dvillagrans/Code-Master" },
-      { year: "2024", title: "Technical Portfolio Platform", domain: "Desarrollo Web / Next.js", link: "https://github.com/dvillagrans/portfolio" },
-      { year: "2024", title: "Predicción de precios de casas", domain: "Machine Learning / Flask", link: "https://github.com/dvillagrans/Houses-Prices-Prediction" },
-      { year: "2024", title: "Dashboard Financial", domain: "Análisis de Datos / Excel VBA", link: "https://github.com/dvillagrans/Dashboard-Financial" },
-      { year: "2023", title: "Melari Spa", domain: "Desarrollo Web / Astro", link: "https://melarispa.com" },
-      { year: "2023", title: "Predicción de pasajeros para aerolíneas mexicanas", domain: "Series de tiempo / Data Science", link: "https://github.com/dvillagrans/Passenger-Volume-Prediction-in-Mexico" }
+      { year: "2025", title: "NYC Ride-Hailing Analytics Dashboard", domain: "Data Science / Streamlit", links: [ { label: "Dashboard", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" }, { label: "Repo", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" } ] },
+      { year: "2025", title: "Métodos de Optimización No Lineal", domain: "Optimización / Flask", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal" } ] },
+      { year: "2025", title: "Matemáticas Avanzadas - Métodos de Optimización", domain: "Optimización / Educación", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Metodos-de-optimizacion" } ] },
+      { year: "2025", title: "Dashboard de Población por Continente", domain: "Analítica / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/population-dashboard" } ] },
+      { year: "2025", title: "Global Health Analytics Dashboard", domain: "Analítica / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/health-analytics-dashboard" } ] },
+      { year: "2025", title: "Video Game Market Intelligence", domain: "Analítica / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/videogames-dashboard" } ] },
+      { year: "2024", title: "India Air Quality ETL", domain: "Data Engineering / Azure", links: [ { label: "Repo", url: "https://github.com/dvillagrans/india-air-quality-etl" } ] },
+      { year: "2024", title: "Code Master", domain: "EdTech / Full Stack", links: [ { label: "Website", url: "https://codemaster-two.vercel.app" }, { label: "Repo", url: "https://github.com/dvillagrans/Code-Master" } ] },
+      { year: "2024", title: "Technical Portfolio Platform", domain: "Desarrollo Web / Next.js", links: [ { label: "Website", url: "https://www.dvillagrans.dev/" }, { label: "Repo", url: "https://github.com/dvillagrans/portfolio" } ] },
+      { year: "2024", title: "Predicción de precios de casas", domain: "Machine Learning / Flask", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Houses-Prices-Prediction" } ] },
+      { year: "2024", title: "Dashboard Financial", domain: "Análisis de Datos / Excel VBA", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Dashboard-Financial" } ] },
+      { year: "2023", title: "Melari Spa", domain: "Desarrollo Web / Astro", links: [ { label: "Website", url: "https://melarispa.com" } ] },
+      { year: "2023", title: "Predicción de pasajeros para aerolíneas mexicanas", domain: "Series de tiempo / Data Science", links: [ { label: "Dashboard", url: "https://passenger-volume-prediction-in-mexi.vercel.app/" }, { label: "Repo", url: "https://github.com/dvillagrans/Passenger-Volume-Prediction-in-Mexico" } ] }
     ]
   },
   contact: {
