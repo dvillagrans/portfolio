@@ -13,20 +13,38 @@ export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" })
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const menuItemsRef = useRef<HTMLUListElement>(null);
   const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 50);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Stagger mobile menu items on open
+  useEffect(() => {
+    if (!menuItemsRef.current) return;
+    const items = Array.from(menuItemsRef.current.children) as HTMLElement[];
+    if (mobileMenuOpen) {
+      gsap.fromTo(
+        items,
+        { opacity: 0, y: 12 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.35,
+          stagger: 0.06,
+          ease: "expo.out",
+          delay: 0.12,
+        }
+      );
+    } else {
+      gsap.set(items, { opacity: 0, y: 12 });
+    }
+  }, [mobileMenuOpen]);
 
   return (
     <nav
@@ -87,7 +105,7 @@ export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" })
         aria-hidden={!mobileMenuOpen}
       >
         <div className="overflow-hidden min-h-0">
-          <ul className="flex flex-col items-center gap-1 py-6 px-6 border-t border-charcoal/5">
+        <ul ref={menuItemsRef} className="flex flex-col items-center gap-1 py-6 px-6 border-t border-charcoal/5">
           <li className="w-full">
             <Link href="/#projects" onClick={() => setMobileMenuOpen(false)} tabIndex={mobileMenuOpen ? 0 : -1} className="flex min-h-[44px] w-full items-center justify-center text-sm font-semibold tracking-widest uppercase hover:text-warm transition-colors py-2">
               {t.nav.projects}

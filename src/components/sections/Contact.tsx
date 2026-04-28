@@ -11,6 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Contact() {
   const container = useRef<HTMLElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
   
   const [name, setName] = useState("");
@@ -58,6 +59,23 @@ export default function Contact() {
     }, container);
     return () => ctx.revert();
   }, []);
+
+  // Animate form in when it appears
+  useEffect(() => {
+    if (showForm && formRef.current) {
+      const children = Array.from(formRef.current.children) as HTMLElement[];
+      gsap.fromTo(
+        formRef.current,
+        { opacity: 0, scale: 0.97, y: 16 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: "expo.out" }
+      );
+      gsap.fromTo(
+        children,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.07, ease: "power3.out", delay: 0.1 }
+      );
+    }
+  }, [showForm]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -124,12 +142,15 @@ export default function Contact() {
             </button>
           </div>
         ) : (
-          <div className="mt-8 w-full max-w-lg bg-graphite p-6 sm:p-10 rounded-[2.5rem] border border-white/10 shadow-2xl animate-in fade-in zoom-in-95 duration-500 text-left">
+          <div
+            ref={formRef}
+            className="mt-8 w-full max-w-lg bg-graphite p-6 sm:p-10 rounded-[2.5rem] border border-white/10 shadow-2xl text-left"
+          >
             <div className="flex items-center justify-between mb-8">
-               <span className="font-mono text-xs tracking-widest uppercase text-accent font-bold">
-                 Sys_Message /
+               <span className="font-sans text-[10px] font-bold tracking-[0.25em] uppercase text-warm/80">
+                 New Message /
                </span>
-               <button type="button" onClick={() => setShowForm(false)} aria-label="Close form" className="min-w-[44px] min-h-[44px] flex items-center justify-center text-offwhite/60 hover:text-white text-2xl font-light leading-none">
+               <button type="button" onClick={() => setShowForm(false)} aria-label="Close form" className="min-w-[44px] min-h-[44px] flex items-center justify-center text-offwhite/50 hover:text-white text-2xl font-light leading-none transition-colors">
                  &times;
                </button>
             </div>
@@ -173,10 +194,16 @@ export default function Contact() {
                 </label>
               </div>
               
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={status === 'loading'}
-                className="mt-6 flex min-h-[44px] items-center justify-center gap-3 bg-white text-black px-8 py-4 rounded-xl font-mono text-xs font-bold uppercase tracking-widest hover:bg-accent hover:shadow-lg hover:shadow-accent/20 transition-all disabled:opacity-50 active:scale-[0.98]"
+                className={`mt-6 flex min-h-[44px] items-center justify-center gap-3 px-8 py-4 rounded-xl font-sans text-xs font-bold uppercase tracking-[0.15em] transition-all disabled:opacity-50 active:scale-[0.98] ${
+                  status === 'success'
+                    ? 'bg-warm text-charcoal shadow-lg shadow-warm/20'
+                    : status === 'error'
+                    ? 'bg-red-500/80 text-white'
+                    : 'bg-offwhite text-charcoal hover:bg-warm hover:shadow-lg hover:shadow-warm/20'
+                }`}
               >
                 {status === 'loading' ? t.contact.formLoading : status === 'success' ? t.contact.formSuccess : status === 'error' ? t.contact.formError : t.contact.formSubmit}
                 <ArrowUpRight className="w-4 h-4" />
@@ -188,7 +215,7 @@ export default function Contact() {
         {/* Footer Ribbon */}
         <div className="mt-32 md:mt-48 flex flex-col md:flex-row w-full items-center justify-between border-t border-white/10 pt-10 font-sans text-xs text-gray-400 gap-6">
           <div className="flex items-center gap-3">
-             <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse"></div>
+             <div className="w-1.5 h-1.5 bg-warm rounded-full animate-pulse"></div>
              <span>{new Date().getFullYear()} {t.contact.footerText}</span>
           </div>
           <div className="flex gap-6 text-[11px] uppercase tracking-[0.2em] font-bold">

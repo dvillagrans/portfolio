@@ -4,6 +4,7 @@ import { useChat } from '@ai-sdk/react';
 import { Bot, Maximize2, Minimize2, Send, User, X } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
+import gsap from 'gsap';
 
 const CHAT_INPUT_ID = 'project-chat-input';
 const CHAT_TITLE_ID = 'project-chat-title';
@@ -20,6 +21,8 @@ export function ProjectChat({ context }: { context?: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [input, setInput] = useState('');
+  const [greeting, setGreeting] = useState('');
+  const panelRef = useRef<HTMLDivElement>(null);
 
   const { messages, sendMessage, status } = useChat() as {
     messages?: ChatMessage[];
@@ -29,6 +32,27 @@ export function ProjectChat({ context }: { context?: string }) {
   const isLoading = status === 'streaming' || status === 'submitted';
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Time-of-day greeting
+  useEffect(() => {
+    const hour = new Date().getHours();
+    const lang = typeof navigator !== 'undefined' ? navigator.language.slice(0, 2) : 'en';
+    const isEs = lang === 'es';
+    if (hour < 12) setGreeting(isEs ? 'Buenos días.' : 'Good morning.');
+    else if (hour < 18) setGreeting(isEs ? 'Buenas tardes.' : 'Good afternoon.');
+    else setGreeting(isEs ? 'Buenas noches.' : 'Good evening.');
+  }, []);
+
+  // Animate panel in on open
+  useEffect(() => {
+    if (isOpen && panelRef.current) {
+      gsap.fromTo(
+        panelRef.current,
+        { opacity: 0, scale: 0.92, y: 20, transformOrigin: 'bottom right' },
+        { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: 'expo.out' }
+      );
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -52,9 +76,13 @@ export function ProjectChat({ context }: { context?: string }) {
         type="button"
         onClick={() => setIsOpen(true)}
         aria-label="Open portfolio chat"
-        className="fixed z-50 flex min-h-[44px] min-w-[44px] items-center gap-2 rounded-full border border-charcoal/20 bg-offwhite px-4 py-3 font-mono text-xs text-charcoal shadow-xl transition-all hover:bg-charcoal hover:text-offwhite right-[max(1.5rem,env(safe-area-inset-right))] bottom-[max(1.5rem,env(safe-area-inset-bottom))]"
+        className="fixed z-50 flex min-h-[44px] min-w-[44px] items-center gap-2 rounded-full border border-charcoal/20 bg-offwhite px-4 py-3 font-sans text-xs font-semibold text-charcoal shadow-xl transition-all hover:bg-charcoal hover:text-offwhite hover:border-charcoal right-[max(1.5rem,env(safe-area-inset-right))] bottom-[max(1.5rem,env(safe-area-inset-bottom))]"
       >
-        <Bot className="h-4 w-4" aria-hidden />
+        <span className="relative">
+          <Bot className="h-4 w-4" aria-hidden />
+          <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-warm animate-ping opacity-60" aria-hidden />
+          <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-warm" aria-hidden />
+        </span>
         <span>Ask about my work</span>
       </button>
     );
@@ -62,11 +90,12 @@ export function ProjectChat({ context }: { context?: string }) {
 
   return (
     <div
+      ref={panelRef}
       role="dialog"
       aria-modal="true"
       aria-labelledby={CHAT_TITLE_ID}
       aria-label="Chat about Diego's work"
-      className={`fixed z-50 flex flex-col bg-offwhite shadow-2xl transition-all duration-300 ease-in-out
+      className={`fixed z-50 flex flex-col bg-offwhite shadow-2xl
       ${isExpanded
         ? 'inset-0 rounded-none border-0 pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)]'
         : 'rounded-xl border border-charcoal/20 right-[max(1.5rem,env(safe-area-inset-right))] bottom-[max(1.5rem,env(safe-area-inset-bottom))] h-[min(500px,85vh)] w-[min(350px,calc(100vw-2rem))]'
@@ -109,8 +138,9 @@ export function ProjectChat({ context }: { context?: string }) {
         className={`flex-1 space-y-4 overflow-y-auto p-4 font-sans text-base sm:text-sm ${isExpanded ? 'mx-auto w-full max-w-3xl' : ''}`}
       >
         {!hasMessages && (
-          <div className="mt-10 text-center font-mono text-xs text-charcoal/60">
-            Ask anything about Diego's work.
+          <div className="mt-10 text-center flex flex-col gap-2 px-4">
+            <p className="font-sans text-sm font-medium text-charcoal/80">{greeting}</p>
+            <p className="font-sans text-xs text-charcoal/50">Ask anything about Diego's work, stack, or projects.</p>
           </div>
         )}
 
