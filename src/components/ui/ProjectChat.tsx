@@ -2,9 +2,10 @@
 
 import { useChat } from '@ai-sdk/react';
 import { Bot, Maximize2, Minimize2, Send, User, X } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import gsap from 'gsap';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 const CHAT_INPUT_ID = 'project-chat-input';
 const CHAT_TITLE_ID = 'project-chat-title';
@@ -23,6 +24,26 @@ export function ProjectChat({ context }: { context?: string }) {
   const [input, setInput] = useState('');
   const [greeting, setGreeting] = useState('');
   const panelRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const typingRef = useRef<HTMLSpanElement>(null);
+  const cursorRef = useRef<HTMLSpanElement>(null);
+  const { language } = useLanguage();
+
+  const PROMPTS_EN = useMemo(() => [
+    "Ask about my work...",
+    "What stack do you use?",
+    "Show me your best project.",
+    "What's your background?",
+    "Are you available to hire?",
+  ], []);
+  
+  const PROMPTS_ES = useMemo(() => [
+    "Pregunta sobre mi trabajo...",
+    "¿Qué tecnologías usas?",
+    "Muéstrame tu mejor proyecto.",
+    "¿Cuál es tu experiencia?",
+    "¿Estás disponible para contratar?",
+  ], []);
 
   const { messages, sendMessage, status } = useChat() as {
     messages?: ChatMessage[];
@@ -36,23 +57,146 @@ export function ProjectChat({ context }: { context?: string }) {
   // Time-of-day greeting
   useEffect(() => {
     const hour = new Date().getHours();
-    const lang = typeof navigator !== 'undefined' ? navigator.language.slice(0, 2) : 'en';
-    const isEs = lang === 'es';
+    const isEs = language === 'es';
     if (hour < 12) setGreeting(isEs ? 'Buenos días.' : 'Good morning.');
     else if (hour < 18) setGreeting(isEs ? 'Buenas tardes.' : 'Good afternoon.');
     else setGreeting(isEs ? 'Buenas noches.' : 'Good evening.');
-  }, []);
+  }, [language]);
 
-  // Animate panel in on open
+  // Typewriter cycling animation using GSAP
   useEffect(() => {
-    if (isOpen && panelRef.current) {
-      gsap.fromTo(
-        panelRef.current,
-        { opacity: 0, scale: 0.92, y: 20, transformOrigin: 'bottom right' },
-        { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: 'expo.out' }
-      );
-    }
+    if (isOpen) return;
+    const el = typingRef.current;
+    const cursor = cursorRef.current;
+    if (!el || !cursor) return;
+
+    const PROMPTS = language === 'es' ? PROMPTS_ES : PROMPTS_EN;
+    let promptIdx = 0;
+    let ctx = gsap.context(() => {
+      // Blinking cursor
+      gsap.to(cursor, {
+        opacity: 0,
+        duration: 0.5,
+        repeat: -1,
+        yoyo: true,
+        ease: 'steps(1)',
+      });
+
+      const playNextPrompt = () => {
+        const text = PROMPTS[promptIdx];
+        const timeline = gsap.timeline({
+          onComplete: () => {
+            promptIdx = (promptIdx + 1) % PROMPTS.length;
+            gsap.delayedCall(1.5, playNextPrompt);
+          }
+        });
+
+        // Type in
+        timeline.to({}, {
+          duration: text.length * 0.06,
+          onUpdate: function() {
+            const progress = this.progress();
+            const charCount = Math.floor(progress * text.length);
+            el.textContent = text.slice(0, charCount);
+          },
+          ease: "none"
+        });
+
+        // Pause at end
+        timeline.to({}, { duration: 2 });
+
+        // Type out
+        timeline.to({}, {
+          duration: text.length * 0.03,
+          onUpdate: function() {
+            const progress = this.progress();
+            const charCount = Math.floor((1 - progress) * text.length);
+            el.textContent = text.slice(0, charCount);
+          },
+          ease: "none"
+        });
+      };
+
+      gsap.delayedCall(0.5, playNextPrompt);
+    });
+
+    return () => ctx.revert();
+  }, [isOpen, language, PROMPTS_EN, PROMPTS_ES]);
+
+  // Main Toggle Animation
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      if (isOpen) {
+        // Fade out button
+        if (buttonRef.current) {
+          gsap.to(buttonRef.current, { 
+            opacity: 0, 
+            y: 20, 
+            scale: 0.95,
+            pointerEvents: 'none', 
+            duration: 0.4,
+            ease: 'power2.inOut'
+          });
+        }
+        // Fade in panel
+        if (panelRef.current) {
+          gsap.fromTo(panelRef.current, 
+            { opacity: 0, scale: 0.9, y: 40 },
+            { 
+              opacity: 1, 
+              scale: 1, 
+              y: 0, 
+              duration: 0.7, 
+              ease: 'elastic.out(1, 0.85)',
+              pointerEvents: 'auto',
+              display: 'flex',
+              delay: 0.1
+            }
+          );
+        }
+      } else {
+        // Fade out panel
+        if (panelRef.current) {
+          gsap.to(panelRef.current, { 
+            opacity: 0, 
+            scale: 0.95, 
+            y: 30, 
+            pointerEvents: 'none', 
+            duration: 0.4,
+            ease: 'power2.inOut',
+            onComplete: () => {
+              if (panelRef.current) panelRef.current.style.display = 'none';
+            }
+          });
+        }
+        // Fade in button
+        if (buttonRef.current) {
+          gsap.to(buttonRef.current, { 
+            opacity: 1, 
+            y: 0, 
+            scale: 1,
+            pointerEvents: 'auto', 
+            duration: 0.6, 
+            ease: 'back.out(1.7)',
+            delay: 0.2
+          });
+        }
+      }
+    });
+
+    return () => ctx.revert();
   }, [isOpen]);
+
+  // Entrance animation for the button on initial mount only
+  useEffect(() => {
+    if (!buttonRef.current) return;
+    // We only want this to run once when the whole component mounts
+    gsap.fromTo(
+      buttonRef.current,
+      { opacity: 0, y: 30, scale: 0.9 },
+      { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'expo.out', delay: 1 }
+    );
+  }, []);
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -70,144 +214,173 @@ export function ProjectChat({ context }: { context?: string }) {
   const visibleMessages = (messages ?? []).filter((m) => m.role !== 'system');
   const hasMessages = visibleMessages.length > 0;
 
-  if (!isOpen) {
-    return (
+  return (
+    <>
+      {/* Trigger Button - Always Mounted */}
       <button
+        ref={buttonRef}
         type="button"
         onClick={() => setIsOpen(true)}
         aria-label="Open portfolio chat"
-        className="fixed z-50 flex min-h-[44px] min-w-[44px] items-center gap-3 rounded-full border border-charcoal/10 bg-offwhite px-5 py-3 font-sans text-[11px] font-bold uppercase tracking-[0.15em] text-charcoal shadow-2xl transition-all hover:bg-charcoal hover:text-offwhite hover:border-charcoal hover:shadow-warm/10 right-[max(1.5rem,env(safe-area-inset-right))] bottom-[max(1.5rem,env(safe-area-inset-bottom))] group active:scale-[0.98]"
+        style={{ opacity: 0 }}
+        className="fixed z-50 inset-x-0 mx-auto w-fit bottom-[max(1.5rem,env(safe-area-inset-bottom))] flex min-h-[52px] items-center gap-4 rounded-full border border-white/10 bg-charcoal/80 backdrop-blur-xl pl-2 pr-8 py-2 font-sans text-[12px] font-medium text-offwhite shadow-[0_20px_50px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.1)] hover:shadow-[0_20px_60px_rgba(201,125,53,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] transition-all duration-500 hover:border-warm/50 hover:scale-[1.02] group active:scale-[0.98]"
       >
-        <span className="relative flex items-center justify-center">
-          <Bot className="h-4 w-4" aria-hidden />
-          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-warm/30 animate-ping" aria-hidden />
-          <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-warm shadow-[0_0_8px_rgba(201,125,53,0.5)]" aria-hidden />
+        <span className="relative flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/5 border border-white/10 group-hover:bg-warm group-hover:border-warm transition-all duration-500 shadow-inner">
+          <Bot className="h-5 w-5 text-offwhite/80 group-hover:text-offwhite transition-colors" aria-hidden />
+          <span className="absolute inset-0 rounded-full bg-warm/30 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden />
         </span>
-        <span className="opacity-80 group-hover:opacity-100 transition-opacity">Ask about my work</span>
+
+        <span className="flex items-center min-w-[240px] text-offwhite/60 group-hover:text-offwhite transition-colors duration-500 tracking-tight">
+          <span ref={typingRef} className="mr-1"></span>
+          <span ref={cursorRef} className="inline-block w-[2px] h-[16px] bg-warm rounded-full" aria-hidden />
+        </span>
       </button>
-    );
-  }
 
-  return (
-    <div
-      ref={panelRef}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby={CHAT_TITLE_ID}
-      aria-label="Chat about Diego's work"
-      className={`fixed z-50 flex flex-col bg-offwhite shadow-2xl
-      ${isExpanded
-        ? 'inset-0 rounded-none border-0 pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)]'
-        : 'rounded-xl border border-charcoal/20 right-[max(1.5rem,env(safe-area-inset-right))] bottom-[max(1.5rem,env(safe-area-inset-bottom))] h-[min(500px,85vh)] w-[min(350px,calc(100vw-2rem))]'
-      }`}
-    >
-      <div className="flex items-center justify-between rounded-t-xl border-b border-charcoal/10 bg-charcoal px-4 py-3 text-offwhite">
-        <div className="flex items-center gap-2">
-          <Bot className="h-4 w-4 text-accent" aria-hidden />
-          <span id={CHAT_TITLE_ID} className="font-mono text-xs uppercase tracking-widest">
-            Ask about Diego's work
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="flex min-h-[44px] min-w-[44px] items-center justify-center text-offwhite/70 transition-colors hover:text-offwhite focus-visible:outline-none"
-            aria-label={isExpanded ? 'Minimize chat' : 'Expand chat'}
-            title={isExpanded ? 'Minimize' : 'Expand'}
-          >
-            {isExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setIsOpen(false);
-              setIsExpanded(false);
-            }}
-            className="flex min-h-[44px] min-w-[44px] items-center justify-center text-offwhite/70 transition-colors hover:text-offwhite focus-visible:outline-none"
-            aria-label="Close chat"
-          >
-            <X className="h-4 w-4" aria-hidden />
-          </button>
-        </div>
-      </div>
-
+      {/* Chat Panel - Always Mounted but hidden via GSAP */}
       <div
-        role="log"
-        aria-label="Chat messages"
-        className={`flex-1 space-y-4 overflow-y-auto p-4 font-sans text-base sm:text-sm ${isExpanded ? 'mx-auto w-full max-w-3xl' : ''}`}
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={CHAT_TITLE_ID}
+        aria-label="Chat about Diego's work"
+        style={{ opacity: 0, display: 'none', pointerEvents: 'none' }}
+        className={`fixed z-50 flex flex-col bg-charcoal/95 backdrop-blur-2xl shadow-[0_30px_100px_rgba(0,0,0,0.5)] border border-white/10
+        ${isExpanded
+          ? 'inset-0 rounded-none border-0 pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)]'
+          : 'rounded-2xl inset-x-0 mx-auto bottom-[max(1.5rem,env(safe-area-inset-bottom))] h-[min(600px,80vh)] w-[min(450px,calc(100vw-2rem))]'
+        }`}
       >
-        {!hasMessages && (
-          <div className="mt-10 text-center flex flex-col gap-2 px-4">
-            <p className="font-sans text-sm font-medium text-charcoal/80">{greeting}</p>
-            <p className="font-sans text-xs text-charcoal/50">Ask anything about Diego's work, stack, or projects.</p>
+        <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-warm/20 border border-warm/30">
+              <Bot className="h-4 w-4 text-warm" aria-hidden />
+            </div>
+            <div className="flex flex-col">
+              <span id={CHAT_TITLE_ID} className="font-sans text-xs font-bold uppercase tracking-[0.2em] text-offwhite">
+                Creative AI
+              </span>
+              <span className="text-[10px] text-offwhite/40 uppercase tracking-widest font-mono">
+                Diego's Digital Twin
+              </span>
+            </div>
           </div>
-        )}
-
-        {visibleMessages.map((m) => (
-          <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div
-              className={`max-w-[85%] rounded-lg px-3 py-2 ${m.role === 'user' ? 'bg-charcoal text-offwhite' : 'bg-charcoal/5 text-charcoal border border-charcoal/10'}`}
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="flex h-10 w-10 items-center justify-center rounded-full text-offwhite/40 transition-all hover:text-offwhite hover:bg-white/5"
+              aria-label={isExpanded ? 'Minimize chat' : 'Expand chat'}
             >
-              <div className="mb-1 flex items-center gap-2 opacity-50">
-                {m.role === 'user' ? <User className="h-3 w-3" aria-hidden /> : <Bot className="h-3 w-3" aria-hidden />}
-                <span className="font-mono text-[10px] uppercase tracking-wider">{m.role}</span>
-              </div>
-              <ReactMarkdown
-                components={{
-                  p: ({ children }) => <p className="mb-1 last:mb-0">{children}</p>,
-                  ul: ({ children }) => <ul className="mb-1 list-disc space-y-0.5 pl-4">{children}</ul>,
-                  ol: ({ children }) => <ol className="mb-1 list-decimal space-y-0.5 pl-4">{children}</ol>,
-                  li: ({ children }) => <li>{children}</li>,
-                  strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
-                  code: ({ children }) => <code className="rounded bg-black/10 px-1 font-mono text-xs">{children}</code>,
-                }}
-              >
-                {(m.parts ?? []).filter((p) => p.type === 'text').map((p) => p.text).join('') || m.content || ''}
-              </ReactMarkdown>
-            </div>
+              {isExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setIsOpen(false);
+                setIsExpanded(false);
+              }}
+              className="flex h-10 w-10 items-center justify-center rounded-full text-offwhite/40 transition-all hover:text-offwhite hover:bg-white/5"
+              aria-label="Close chat"
+            >
+              <X className="h-4 w-4" aria-hidden />
+            </button>
           </div>
-        ))}
+        </div>
 
-        {isLoading && (
-          <div className="flex justify-start">
-            <div className="flex max-w-[85%] items-center gap-1 rounded-lg border border-charcoal/10 bg-charcoal/5 px-3 py-2 text-charcoal">
-              <span className="chat-typing-dot h-1.5 w-1.5 rounded-full bg-charcoal/50" />
-              <span className="chat-typing-dot h-1.5 w-1.5 rounded-full bg-charcoal/50" style={{ animationDelay: '0.15s' }} />
-              <span className="chat-typing-dot h-1.5 w-1.5 rounded-full bg-charcoal/50" style={{ animationDelay: '0.3s' }} />
-            </div>
-          </div>
-        )}
-        <div ref={messagesEndRef} />
-      </div>
-
-      <form
-        onSubmit={handleSubmit}
-        className={`flex gap-2 rounded-b-xl border-t border-charcoal/10 bg-white p-3 ${isExpanded ? 'mx-auto w-full max-w-3xl' : ''}`}
-      >
-        <label htmlFor={CHAT_INPUT_ID} className="sr-only">
-          Ask about a project or my stack
-        </label>
-        <input
-          id={CHAT_INPUT_ID}
-          type="text"
-          className="flex-1 min-h-[44px] rounded-md border border-charcoal/20 bg-transparent px-3 py-2 text-base sm:text-sm text-charcoal placeholder:text-charcoal/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-offwhite"
-          value={input}
-          placeholder="Ask about a project or my stack"
-          onChange={(e) => setInput(e.target.value)}
-          disabled={isLoading}
-          autoComplete="off"
-          aria-label="Ask about a project or my stack"
-        />
-        <button
-          type="submit"
-          disabled={isLoading || !input.trim()}
-          className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md bg-accent text-charcoal transition-colors hover:bg-accent/80 disabled:opacity-50 focus-visible:outline-none"
-          aria-label="Send message"
+        <div
+          role="log"
+          aria-label="Chat messages"
+          className={`flex-1 space-y-6 overflow-y-auto px-6 py-8 scrollbar-thin scrollbar-thumb-white/10 ${isExpanded ? 'mx-auto w-full max-w-3xl' : ''}`}
         >
-          <Send className="h-4 w-4" aria-hidden />
-        </button>
-      </form>
-    </div>
+          {!hasMessages && (
+            <div className="mt-12 text-center flex flex-col items-center gap-4 px-4">
+              <div className="h-px w-12 bg-warm/30"></div>
+              <p className="font-garamond text-xl italic text-offwhite/90">{greeting}</p>
+              <p className="font-sans text-[11px] text-offwhite/40 uppercase tracking-[0.2em] max-w-[200px] leading-relaxed">
+                Inquire about projects, technical stack, or availability.
+              </p>
+              <div className="h-px w-12 bg-warm/30"></div>
+            </div>
+          )}
+
+          {visibleMessages.map((m) => (
+            <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div
+                className={`max-w-[85%] group ${m.role === 'user' ? 'items-end' : 'items-start'}`}
+              >
+                <div className={`flex items-center gap-2 mb-2 opacity-30 group-hover:opacity-60 transition-opacity ${m.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                  <div className="h-4 w-4 rounded-full bg-white/10 flex items-center justify-center">
+                    {m.role === 'user' ? <User className="h-2.5 w-2.5 text-offwhite" aria-hidden /> : <Bot className="h-2.5 w-2.5 text-warm" aria-hidden />}
+                  </div>
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-offwhite">{m.role}</span>
+                </div>
+                
+                <div className={`rounded-2xl px-4 py-3 font-sans text-sm leading-relaxed ${
+                  m.role === 'user' 
+                    ? 'bg-warm text-charcoal font-medium shadow-[0_10px_30px_rgba(201,125,53,0.2)]' 
+                    : 'bg-white/5 text-offwhite/90 border border-white/10 backdrop-blur-sm'
+                }`}>
+                  <ReactMarkdown
+                    components={{
+                      p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                      ul: ({ children }) => <ul className="mb-2 list-disc space-y-1 pl-4 opacity-90">{children}</ul>,
+                      ol: ({ children }) => <ol className="mb-2 list-decimal space-y-1 pl-4 opacity-90">{children}</ol>,
+                      li: ({ children }) => <li>{children}</li>,
+                      strong: ({ children }) => <strong className="font-bold text-white">{children}</strong>,
+                      code: ({ children }) => <code className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-[11px] text-warm-light">{children}</code>,
+                    }}
+                  >
+                    {(m.parts ?? []).filter((p) => p.type === 'text').map((p) => p.text).join('') || m.content || ''}
+                  </ReactMarkdown>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {isLoading && (
+            <div className="flex justify-start">
+              <div className="flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-4 py-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-warm animate-pulse" />
+                <span className="h-1.5 w-1.5 rounded-full bg-warm animate-pulse delay-75" />
+                <span className="h-1.5 w-1.5 rounded-full bg-warm animate-pulse delay-150" />
+              </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        <div className={`p-6 ${isExpanded ? 'mx-auto w-full max-w-3xl' : ''}`}>
+          <form
+            onSubmit={handleSubmit}
+            className="relative flex items-center"
+          >
+            <label htmlFor={CHAT_INPUT_ID} className="sr-only">
+              Ask about my work
+            </label>
+            <input
+              id={CHAT_INPUT_ID}
+              type="text"
+              className="w-full h-14 rounded-xl border border-white/10 bg-white/5 pl-5 pr-16 text-offwhite placeholder:text-offwhite/20 focus:outline-none focus:border-warm/50 focus:bg-white/10 transition-all duration-300"
+              value={input}
+              placeholder="Type your question..."
+              onChange={(e) => setInput(e.target.value)}
+              disabled={isLoading}
+              autoComplete="off"
+            />
+            <button
+              type="submit"
+              disabled={isLoading || !input.trim()}
+              className="absolute right-2 h-10 w-10 flex items-center justify-center rounded-lg bg-warm text-charcoal hover:scale-105 active:scale-95 disabled:opacity-30 disabled:grayscale transition-all duration-300 shadow-lg shadow-warm/20"
+              aria-label="Send message"
+            >
+              <Send className="h-4 w-4" aria-hidden />
+            </button>
+          </form>
+          <p className="mt-3 text-center font-mono text-[9px] uppercase tracking-[0.2em] text-offwhite/20">
+            Powered by DeepSeek-V3 • Responses are synthetic
+          </p>
+        </div>
+      </div>
+    </>
   );
 }

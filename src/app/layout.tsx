@@ -64,8 +64,8 @@ export default function RootLayout({
           <ConsoleEasterEgg />
           <div className="noise-overlay pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.03] mix-blend-overlay"></div>
           {children}
+          <ProjectChat />
         </LanguageProvider>
-        <ProjectChat />
       </body>
     </html>
     </ViewTransitions>
