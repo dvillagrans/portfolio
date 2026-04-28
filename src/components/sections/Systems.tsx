@@ -4,41 +4,22 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { Brain, Database, BarChart3, Globe, Cpu, Workflow, Terminal, Layers } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const abstractions = [
-  (
-    <svg className="w-full h-full stroke-offwhite/50 hover:stroke-accent transition-colors duration-500" viewBox="0 0 100 100" aria-hidden>
-      <rect x="10" y="10" width="80" height="20" rx="4" fill="none" strokeWidth="1" />
-      <rect x="10" y="40" width="35" height="50" rx="4" fill="none" strokeWidth="1" />
-      <rect x="55" y="40" width="35" height="50" rx="4" fill="none" strokeWidth="1" />
-      <path d="M50 30 v10" strokeWidth="1" strokeDasharray="2,2" />
-    </svg>
-  ),
-  (
-    <svg className="w-full h-full stroke-offwhite/50 hover:stroke-accent transition-colors duration-500" viewBox="0 0 100 100" aria-hidden>
-      <circle cx="20" cy="50" r="10" fill="none" strokeWidth="1" />
-      <circle cx="80" cy="50" r="10" fill="none" strokeWidth="1" />
-      <path d="M30 50 h40" strokeWidth="1" strokeDasharray="4,2" />
-      <path d="M50 45 l5 5 l-5 5" fill="none" strokeWidth="1" />
-    </svg>
-  ),
-  (
-    <svg className="w-full h-full stroke-offwhite/50 hover:stroke-accent transition-colors duration-500" viewBox="0 0 100 100" aria-hidden>
-      <rect x="20" y="20" width="60" height="60" rx="8" fill="none" strokeWidth="1" />
-      <circle cx="50" cy="50" r="15" fill="none" strokeWidth="1" />
-      <path d="M45 45 l10 10" strokeWidth="1" />
-      <path d="M55 45 l-10 10" strokeWidth="1" />
-    </svg>
-  ),
-  (
-    <svg className="w-full h-full stroke-offwhite/50 hover:stroke-accent transition-colors duration-500" viewBox="0 0 100 100" aria-hidden>
-      <path d="M25 25 L50 15 L75 25 L75 75 L50 85 L25 75 Z" fill="none" strokeWidth="1" />
-      <circle cx="50" cy="50" r="5" fill="none" strokeWidth="1" />
-      <path d="M50 25 V45 m0 10 V75 M25 50 H45 m10 0 H75" strokeWidth="1" strokeDasharray="2,2" />
-    </svg>
-  )
+const icons = [
+  <Brain className="w-full h-full" />,
+  <Database className="w-full h-full" />,
+  <BarChart3 className="w-full h-full" />,
+  <Globe className="w-full h-full" />
+];
+
+const subIcons = [
+  <Workflow className="w-4 h-4" />,
+  <Terminal className="w-4 h-4" />,
+  <Cpu className="w-4 h-4" />,
+  <Layers className="w-4 h-4" />
 ];
 
 export default function Systems() {
@@ -70,30 +51,14 @@ export default function Systems() {
     return () => ctx.revert();
   }, []);
 
-  // Each card gets a distinct visual personality
-  const cardStyles = [
-    // First card — warm amber accent, larger prominence
-    "lg:col-span-2 border-warm/30 hover:border-warm/60 bg-warm/[0.03] hover:bg-warm/[0.06]",
-    // Second card — standard teal
-    "lg:col-span-1 border-offwhite/10 hover:border-accent/40 bg-offwhite/[0.02] hover:bg-offwhite/[0.04]",
-    // Third card — standard teal
-    "lg:col-span-1 border-offwhite/10 hover:border-accent/40 bg-offwhite/[0.02] hover:bg-offwhite/[0.04]",
-    // Fourth card — warm amber, larger prominence
-    "lg:col-span-2 border-warm/20 hover:border-warm/50 bg-offwhite/[0.02] hover:bg-warm/[0.04]",
-  ];
+  // Balanced 2x2 grid on desktop, each card is equal prominence
+  const cardStyles = "lg:col-span-1 border-offwhite/10 hover:border-accent/40 bg-white/[0.02] hover:bg-white/[0.04]";
 
   const glowStyles = [
-    "absolute -right-20 -top-20 h-64 w-64 rounded-full bg-warm/8 blur-[100px] transition-all duration-500 group-hover:bg-warm/18",
-    "absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/5 blur-[100px] transition-all duration-500 group-hover:bg-accent/15",
-    "absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/5 blur-[100px] transition-all duration-500 group-hover:bg-accent/15",
-    "absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-warm/8 blur-[100px] transition-all duration-500 group-hover:bg-warm/18",
-  ];
-
-  const titleHoverColors = [
-    "group-hover:text-warm",
-    "group-hover:text-accent-light",
-    "group-hover:text-accent-light",
-    "group-hover:text-warm",
+    "absolute -right-20 -top-20 h-64 w-64 rounded-full bg-warm/10 blur-[100px] transition-all duration-500 group-hover:bg-warm/20",
+    "absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/8 blur-[100px] transition-all duration-500 group-hover:bg-accent/18",
+    "absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/8 blur-[100px] transition-all duration-500 group-hover:bg-accent/18",
+    "absolute -right-20 -top-20 h-64 w-64 rounded-full bg-warm/10 blur-[100px] transition-all duration-500 group-hover:bg-warm/20",
   ];
 
   return (
@@ -118,36 +83,50 @@ export default function Systems() {
           </h2>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {t.systems.items.map((cap, idx) => {
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {(t.systems.items as any[]).map((cap, idx) => {
             return (
               <div
                 key={cap.title}
                 ref={(el) => {
                   blocksRef.current[idx] = el;
                 }}
-                className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border p-8 lg:p-10 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl ${cardStyles[idx] ?? "border-offwhite/10 bg-offwhite/[0.02]"} ${idx % 2 === 0 ? "mr-4 md:mr-0" : "ml-4 md:ml-0"}`}
+                className={`group relative flex flex-col justify-between overflow-hidden rounded-3xl border p-8 lg:p-12 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] ${cardStyles}`}
               >
                 {/* Background Glow Effect */}
                 <div className={glowStyles[idx] ?? "absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/5 blur-[100px]"}></div>
                 
-                <div className="relative z-10 flex flex-col gap-8 h-full">
+                <div className="relative z-10 flex flex-col gap-10 h-full">
                   <div className="flex items-start justify-between">
-                    <span className={`font-sans text-[10px] font-bold tracking-[0.3em] uppercase mt-2 ${idx % 2 === 0 ? "text-warm/60 group-hover:text-warm/90" : "text-offwhite/50 group-hover:text-offwhite/70"} transition-colors duration-300`}>
-                      SYS_0{idx + 1}
-                    </span>
-                    <div className="h-16 w-16 opacity-30 transition-all duration-500 group-hover:scale-110 group-hover:opacity-80 flex-shrink-0">
-                      {abstractions[idx % abstractions.length]}
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 border border-white/10 group-hover:border-warm/50 group-hover:bg-warm/10 transition-all duration-500">
+                        {subIcons[idx % subIcons.length]}
+                      </div>
+                      <span className={`font-mono text-[10px] font-bold tracking-[0.3em] uppercase ${idx % 2 === 0 ? "text-warm/60 group-hover:text-warm" : "text-accent/60 group-hover:text-accent"} transition-colors duration-300`}>
+                        SYS_0{idx + 1}
+                      </span>
+                    </div>
+                    <div className="h-12 w-12 text-offwhite/20 transition-all duration-700 group-hover:scale-110 group-hover:text-offwhite/80 group-hover:rotate-6 flex-shrink-0">
+                      {icons[idx % icons.length]}
                     </div>
                   </div>
                   
-                  <div className="mt-auto pt-12">
-                    <h3 className={`mb-4 font-sans text-2xl lg:text-3xl font-medium tracking-tight text-offwhite/90 transition-colors duration-300 ${titleHoverColors[idx] ?? "group-hover:text-accent"}`}>
+                  <div>
+                    <h3 className={`mb-4 font-sans text-2xl lg:text-3xl font-medium tracking-tight text-offwhite group-hover:text-white transition-colors duration-300`}>
                       {cap.title}
                     </h3>
-                    <p className="font-sans text-sm leading-relaxed text-offwhite/55 group-hover:text-offwhite/75 transition-colors duration-300">
+                    <p className="font-sans text-sm md:text-base leading-relaxed text-offwhite/50 group-hover:text-offwhite/80 transition-colors duration-300 mb-8">
                       {cap.description}
                     </p>
+                    
+                    {/* Technical Tags / Meta */}
+                    <div className="flex flex-wrap gap-2 pt-6 border-t border-white/5">
+                      {cap.tags?.map((tag: string) => (
+                        <span key={tag} className="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[9px] uppercase tracking-widest font-bold text-offwhite/40 group-hover:text-offwhite/70 group-hover:border-white/10 transition-all duration-300">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -158,4 +137,3 @@ export default function Systems() {
     </section>
   );
 }
-

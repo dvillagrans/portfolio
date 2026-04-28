@@ -1,10 +1,10 @@
 export const en = {
   nav: { projects: "Projects", systems: "Capabilities", contact: "Contact", about: "About" },
   hero: {
-    title1: "Data Science meets",
-    title2: "Full-Stack Execution.",
-    subtitle1: "Diego Villagran Salazar — Data Scientist & Full-Stack Developer.",
-    subtitle2: "I build machine learning systems, analytics products, and scalable web apps that create measurable business impact.",
+    title1: "ML pipelines. LLM automation.",
+    title2: "Production systems.",
+    subtitle1: "Data Science student building real infrastructure —",
+    subtitle2: "from EEG signal processing to open-source LLM clusters.",
     cta: "View Projects",
   },
   work: {
@@ -17,35 +17,57 @@ export const en = {
     projects: [
       {
         id: "00",
-        title: "TimeUp // Time Tracking SaaS",
-        problem: "Businesses and employees needed an agile, frictionless system to manage time logs and payments, replacing paper completely.",
-        system: "Built a two-way architecture (Business Portal & Employee Landing) with dashboards, automated calculations, and cloud infrastructure.",
-        outcome: "Delivered a stable, production-adopted system that reduces payroll administrative work by up to 80%.",
-        image: "/img/timeup-mock.webp",
-        links: [
-          { label: "timeup.mx", url: "https://timeup.mx" },
-          { label: "negocios.timeup.mx", url: "https://negocios.timeup.mx" }
+        type: "special",
+        category: "Professional Experience",
+        title: "EyeNet — AI & Automation",
+        problem: "Full automation infrastructure with LLMs, ETL/ELT pipelines, containerized microservices, AI assistants, and production web/mobile apps.",
+        system: "Multi-layered orchestration: Ingestion (APIs, n8n, ETL), Processing (OpenAI, Gemini, Custom LLM Cluster), and Delivery (Docker, Microservices, Apps).",
+        outcome: "Production system — Partial NDA",
+        image: "eyenet",
+        tags: ["Python", "n8n", "Docker", "FastAPI", "OpenAI", "Gemini", "PostgreSQL", "Redis", "CI/CD"],
+        metrics: [
+          { value: "65%", label: "less manual work" },
+          { value: "300+", label: "docs processed / week" },
+          { value: "10K+", label: "daily requests" },
+          { value: "92%", label: "extraction accuracy" }
         ],
-        href: "/projects/timeup"
+        date: "April 2025 - Present",
+        location: "Remote",
+        links: [],
+        href: "#"
       },
       {
         id: "01",
-        title: "COVID-19 Risk Profiles (Mexico)",
-        problem: "Public health and triage needed multivariate risk profiles from open SSA data—not just isolated factors—to prioritize ICU and resources.",
-        system: "K-Means and Fuzzy C-Means on stratified samples from 30M+ records; reproducible pipeline from raw data to LaTeX report and Next.js portfolio.",
-        outcome: "9 interpretable profiles (K-Means) and 2 risk groups (FCM); documented limitations and reproducible notebooks for Advanced Data Analytics, ESCOM-IPN.",
+        type: "grid",
+        category: "Advanced Analytics / ML",
+        title: "COVID-19 Risk Profiles",
+        problem: "Identifying multivariate risk patterns in 30M+ open health records for ICU prioritization.",
+        system: "K-Means and Fuzzy C-Means on stratified samples; reproducible pipeline from raw data to report.",
+        outcome: "Identified 9 interpretable risk profiles with documented limitations and reproducible notebooks.",
         image: "/img/dashboard-covid-19.webp",
+        tags: ["Python", "K-Means", "Fuzzy C-Means", "Next.js"],
+        metrics: [
+          { value: "30M+", label: "records analyzed" },
+          { value: "9", label: "risk profiles" }
+        ],
         links: [{ label: "Dashboard", url: "https://identificaci-on-de-perfiles-de-ries.vercel.app/" }],
         href: "/projects/covid-perfiles",
         caseStudy: "/projects/covid-perfiles"
       },
       {
         id: "02",
-        title: "NYC Ride-Hailing Analytics Dashboard",
-        problem: "Transportation stakeholders needed reliable insights across Uber and Lyft trip patterns, pricing, and airport operations in New York City.",
-        system: "Built an interactive Streamlit analytics platform with predictive ML models, geospatial maps, and multi-tab operational dashboards.",
-        outcome: "Delivered fare prediction with R² > 0.85 and airport classification with 92% accuracy for practical decision support.",
+        type: "grid",
+        category: "Mobility / Data Viz",
+        title: "NYC Ride-Hailing Analytics",
+        problem: "Stakeholders needed reliable insights across Uber/Lyft trip patterns and airport pricing.",
+        system: "Interactive Streamlit platform with predictive ML models and geospatial operational dashboards.",
+        outcome: "Delivered fare prediction (R² > 0.85) and airport classification (92% accuracy).",
         image: "/img/nyc-ridehailing-dashboard.webp",
+        tags: ["Streamlit", "Scikit-learn", "Python", "Geospatial"],
+        metrics: [
+          { value: "R² .85", label: "fare prediction" },
+          { value: "92%", label: "classification acc." }
+        ],
         links: [
           { label: "Live dashboard", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" },
           { label: "Code", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" }
@@ -54,22 +76,49 @@ export const en = {
       },
       {
         id: "03",
-        title: "India Air Quality ETL Intelligence System",
-        problem: "Raw environmental data from hundreds of IoT sensors was fragmented and difficult to convert into policy-ready insights.",
-        system: "Designed a cloud ETL architecture using Azure Databricks, PySpark, PostgreSQL, and BI reporting for continuous analytics.",
-        outcome: "Processed 2M+ daily records from 500+ sensors and transformed noisy streams into consistent, actionable health indicators.",
-        image: "/img/etl.webp",
-        href: "https://github.com/dvillagrans/india-air-quality-etl",
+        type: "wide",
+        category: "Data Engineering / ETL",
+        title: "India Air Quality Intelligence",
+        problem: "Fragmented IoT data from hundreds of sensors needed policy-ready data consolidation.",
+        system: "Cloud ETL architecture using Azure Databricks, PySpark, and PostgreSQL for continuous analytics.",
+        outcome: "Processed 2M+ daily records from 500+ sensors into consistent health indicators.",
+        image: "/img/india-air-quality.webp",
+        tags: ["Azure", "PySpark", "Databricks", "Power BI"],
+        metrics: [
+          { value: "2M+", label: "daily records" },
+          { value: "500+", label: "IoT sensors" }
+        ],
+        links: [
+          { label: "Live view", url: "https://app.powerbi.com/view?r=eyJrIjoiOTQ4NmZlMjItMDU0YS00YTMxLThkNDEtNWZjYWRmNTM4Njg1IiwidCI6IjY3ZGU4N2FjLWRhYzgtNDYwNy05NGE0LWM4YTM3YmYwMmE2MSIsImMiOjR9" },
+          { label: "Documentation", url: "https://dvillagrans.github.io/India-Air-Quality-ETL-Project/" }
+        ],
+        href: "https://app.powerbi.com/view?r=eyJrIjoiOTQ4NmZlMjItMDU0YS00YTMxLThkNDEtNWZjYWRmNTM4Njg1IiwidCI6IjY3ZGU4N2FjLWRhYzgtNDYwNy05NGE0LWM4YTM3YmYwMmE2MSIsImMiOjR9",
       }
     ]
   },
   systems: {
     title: "Systems & Capabilities",
     items: [
-      { title: "Machine Learning Pipelines", description: "From preprocessing and feature engineering to training, evaluation, and deployment of predictive models." },
-      { title: "Data Engineering", description: "ETL orchestration with Python, PySpark, SQL, and cloud platforms for reliable high-volume analytics workflows." },
-      { title: "Analytics Products", description: "Interactive dashboards and decision systems with Streamlit and Power BI focused on real-world business metrics." },
-      { title: "Web Platform Development", description: "Scalable full-stack applications with Next.js, React, TypeScript, and cloud-ready deployment practices." }
+      { 
+        title: "Machine Learning Pipelines", 
+        description: "End-to-end orchestration: from EEG signal processing and feature engineering to production-ready LLM clusters and model deployment.",
+        tags: ["Scikit-learn", "PyTorch", "MLflow", "GPU Clusters"]
+      },
+      { 
+        title: "Data Engineering & Infrastructure", 
+        description: "ETL pipelines with PySpark and SQL, automated with n8n and Grafana, backed by Redis and high-performance GPU clusters.",
+        tags: ["PySpark", "Redis", "n8n", "Docker"]
+      },
+      { 
+        title: "Analytics Products", 
+        description: "High-accuracy decision systems and predictive dashboards built with FastAPI, Streamlit and Power BI for real-world impact.",
+        tags: ["FastAPI", "Streamlit", "Power BI", "SQL"]
+      },
+      { 
+        title: "Scalable Web Platforms", 
+        description: "Modern full-stack ecosystems using Next.js, React, and TypeScript, optimized for high performance and seamless AI integrations.",
+        tags: ["Next.js", "TypeScript", "Vercel", "Tailwind"]
+      }
     ]
   },
   philosophy: {
@@ -85,15 +134,22 @@ export const en = {
     title: "Technical Stack & Tooling",
     tools: [
       "Python",
+      "FastAPI",
       "Pandas",
       "NumPy",
       "Scikit-learn",
       "TensorFlow",
       "PyTorch",
+      "LLaMA / Mistral",
+      "OpenAI API",
+      "Gemini",
       "PySpark",
       "SQL",
       "PostgreSQL",
+      "Redis",
+      "n8n",
       "Power BI",
+      "Grafana",
       "Streamlit",
       "Next.js",
       "React",
@@ -110,26 +166,32 @@ export const en = {
   },
   about: {
     title: "Diego Villagran Salazar",
-    subtitle: "Data Scientist & Full-Stack Developer",
-    intro: "I specialize in building intelligent systems that connect data science, product thinking, and software engineering. Currently studying Data Science at ESCOM-IPN, I focus on turning complex datasets into products that teams can trust and scale.",
+    subtitle: "AI & Data Engineer · ML Systems Builder",
+    intro: "I build intelligent systems that go from raw data to production — ML pipelines, LLM automation, and scalable infrastructure that teams can actually trust and ship with. Currently studying Data Science at ESCOM-IPN while working full-time on AI automation at EyeNet and managing a private GPU cluster for open-source LLM deployment.",
+    metrics: [
+      { value: "10K+", label: "Daily requests handled" },
+      { value: "2M+", label: "Records processed" },
+      { value: "4+", label: "Production systems deployed" }
+    ],
     sections: {
       systems: {
-        title: "How I build systems",
-        content: "My process is end-to-end: define the business question, build robust data pipelines, train and validate models, and deliver interfaces where non-technical stakeholders can act on insights. I care deeply about reliability, maintainability, and practical adoption."
+        title: "01 // How I build systems",
+        content: "End-to-end: define the problem, engineer the data pipeline, train and validate the model, deploy with monitoring. I don't hand off — I own the full stack from ingestion to the interface where someone makes a decision."
       },
       optimization: {
-        title: "What I optimize for",
+        title: "02 // What I optimize for",
         items: [
-          { label: "Accuracy with explainability", desc: "Strong metrics matter, but model outputs must remain understandable to business users and collaborators." },
-          { label: "Automation with control", desc: "I automate repetitive workflows while preserving visibility, alerting, and quality checks for safe operations." },
-          { label: "Scalable foundations", desc: "The goal is systems that keep working as data volume, users, and product complexity grow." }
+          { label: "Accuracy with explainability", desc: "Strong metrics matter, but outputs need to be understandable to the people acting on them." },
+          { label: "Automation with control", desc: "I automate workflows while keeping visibility, alerting, and quality checks in place." },
+          { label: "Scalable foundations", desc: "Systems that keep working as data volume, users, and complexity grow." }
         ]
       },
       decisions: {
-        title: "Current focus",
+        title: "03 // Current focus",
         items: [
-          { title: "AI & Automation at Eyenet", desc: "Designing automation pipelines with Python, n8n, Docker, and LLM APIs that reduce manual effort and improve data quality." },
-          { title: "Analytics products with measurable value", desc: "Building dashboards and intelligent applications that shorten time-to-insight and support operational decisions." }
+          { title: "AI & Automation at EyeNet", desc: "Building document processing pipelines with LLMs, n8n, and containerized microservices handling 10K+ daily requests." },
+          { title: "Private GPU Cluster", desc: "Deploying and benchmarking open-source models (LLaMA, Mistral) for internal company AI projects — evaluating performance vs. cost vs. proprietary APIs." },
+          { title: "Analytics products with measurable value", desc: "Dashboards and decision systems that shorten time-to-insight for real operational decisions." }
         ]
       }
     },
@@ -173,8 +235,8 @@ export const en = {
     title1: "Let’s build something",
     title2: "intelligent and useful.",
     email: "diegovillasal@gmail.com",
-    bookSession: "Book a Session",
-    bookDesc: "Schedule a 30-min discovery call.",
+    bookSession: "Let's talk",
+    bookDesc: "Reach out for collaborations, job opportunities, or technical inquiries.",
     formName: "Your Name",
     formEmail: "Your Email",
     formMessage: "What would you like to discuss?",
@@ -293,10 +355,10 @@ export const en = {
 export const es = {
   nav: { projects: "Proyectos", systems: "Capacidades", contact: "Contacto", about: "Sobre mí" },
   hero: {
-    title1: "Data Science con",
-    title2: "ejecución Full-Stack.",
-    subtitle1: "Diego Villagran Salazar — Data Scientist & Full-Stack Developer.",
-    subtitle2: "Construyo sistemas de machine learning, productos analíticos y aplicaciones web escalables con impacto medible.",
+    title1: "ML pipelines. LLM automation.",
+    title2: "Sistemas de producción.",
+    subtitle1: "Estudiante de Ciencia de Datos construyendo infraestructura real —",
+    subtitle2: "desde procesamiento de señales EEG hasta clústeres de LLMs de código abierto.",
     cta: "Ver Proyectos",
   },
   work: {
@@ -309,35 +371,57 @@ export const es = {
     projects: [
       {
         id: "00",
-        title: "TimeUp // SaaS para Control de Tiempos",
-        problem: "Negocios y empleados necesitaban un sistema ágil, sin fricción, para gestionar el registro de horas y pagos, reemplazando el papel.",
-        system: "Construimos una arquitectura de dos vías (Portal de Negocios y Landing de Empleados) con dashboards, cálculo automatizado e infraestructura cloud.",
-        outcome: "Entregamos un sistema estable, adoptado en entornos de producción que reduce hasta un 80% el trabajo administrativo de nóminas.",
-        image: "/img/timeup-mock.webp",
-        links: [
-          { label: "timeup.mx", url: "https://timeup.mx" },
-          { label: "negocios.timeup.mx", url: "https://negocios.timeup.mx" }
+        type: "special",
+        category: "Experiencia Profesional",
+        title: "EyeNet — AI & Automation",
+        problem: "Infraestructura completa de automatización con LLMs, pipelines ETL/ELT, microservicios containerizados, asistentes de IA y apps móviles/web en producción.",
+        system: "Arquitectura multicapa: Ingesta (APIs, n8n, ETL), Procesamiento (OpenAI, Gemini, Cluster LLM propio) y Delivery (Docker, Microservicios, Apps).",
+        outcome: "Sistema en producción — NDA parcial",
+        image: "eyenet",
+        tags: ["Python", "n8n", "Docker", "FastAPI", "OpenAI", "Gemini", "PostgreSQL", "Redis", "CI/CD"],
+        metrics: [
+          { value: "65%", label: "menos trabajo manual" },
+          { value: "300+", label: "docs procesados / semana" },
+          { value: "10K+", label: "requests diarios" },
+          { value: "92%", label: "precisión extracción" }
         ],
-        href: "/projects/timeup"
+        date: "Abril 2025 - Presente",
+        location: "Remoto",
+        links: [],
+        href: "#"
       },
       {
         id: "01",
-        title: "Perfiles de riesgo COVID-19 (México)",
-        problem: "Salud pública y triage necesitaban perfiles de riesgo multivariados a partir de datos abiertos SSA—no solo factores aislados—para priorizar UCI y recursos.",
-        system: "K-Means y Fuzzy C-Means sobre muestras estratificadas de 30M+ registros; pipeline reproducible de datos crudos a reporte LaTeX y portfolio Next.js.",
-        outcome: "9 perfiles interpretables (K-Means) y 2 grupos de riesgo (FCM); limitaciones documentadas y notebooks reproducibles para Analítica Avanzada, ESCOM-IPN.",
+        type: "grid",
+        category: "Analítica Avanzada / ML",
+        title: "Perfiles de Riesgo COVID-19",
+        problem: "Identificación de patrones de riesgo multivariados en 30M+ registros para priorización de UCI.",
+        system: "K-Means y Fuzzy C-Means en muestras estratificadas; pipeline reproducible desde datos crudos.",
+        outcome: "9 perfiles de riesgo interpretables con limitaciones documentadas y notebooks reproducibles.",
         image: "/img/dashboard-covid-19.webp",
+        tags: ["Python", "K-Means", "Fuzzy C-Means", "Next.js"],
+        metrics: [
+          { value: "30M+", label: "registros analizados" },
+          { value: "9", label: "perfiles de riesgo" }
+        ],
         links: [{ label: "Dashboard", url: "https://identificaci-on-de-perfiles-de-ries.vercel.app/" }],
         href: "/projects/covid-perfiles",
         caseStudy: "/projects/covid-perfiles"
       },
       {
         id: "02",
-        title: "NYC Ride-Hailing Analytics Dashboard",
-        problem: "Los equipos necesitaban insights confiables sobre patrones de viaje, tarifas y operación aeroportuaria de Uber/Lyft en NYC.",
-        system: "Desarrollé una plataforma interactiva en Streamlit con modelos predictivos, mapas geoespaciales y tableros operativos.",
-        outcome: "Se logró predicción de tarifas con R² > 0.85 y clasificación de viajes al aeropuerto con 92% de accuracy.",
+        type: "grid",
+        category: "Movilidad / Data Viz",
+        title: "Analytics NYC Ride-Hailing",
+        problem: "Necesidad de insights confiables sobre patrones de viaje y precios de aeropuertos en Uber/Lyft.",
+        system: "Plataforma interactiva en Streamlit con modelos predictivos y dashboards geoespaciales.",
+        outcome: "Predicción de tarifas (R² > 0.85) y clasificación de aeropuertos (92% precisión).",
         image: "/img/nyc-ridehailing-dashboard.webp",
+        tags: ["Streamlit", "Scikit-learn", "Python", "Geospatial"],
+        metrics: [
+          { value: "R² .85", label: "predicción tarifa" },
+          { value: "92%", label: "precisión clasif." }
+        ],
         links: [
           { label: "Dashboard en vivo", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" },
           { label: "Código", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" }
@@ -346,22 +430,49 @@ export const es = {
       },
       {
         id: "03",
-        title: "Sistema de Inteligencia ETL de Calidad del Aire (India)",
-        problem: "Los datos ambientales de cientos de sensores IoT estaban fragmentados y eran difíciles de convertir en insights accionables.",
-        system: "Diseñé una arquitectura ETL en la nube con Azure Databricks, PySpark, PostgreSQL y visualización en BI.",
-        outcome: "Procesamiento de más de 2M de registros diarios de 500+ sensores para crear indicadores de salud consistentes.",
-        image: "/img/etl.webp",
-        href: "https://github.com/dvillagrans/india-air-quality-etl",
+        type: "wide",
+        category: "Data Engineering / ETL",
+        title: "IA Calidad del Aire (India)",
+        problem: "Datos IoT fragmentados de cientos de sensores requerían consolidación para políticas públicas.",
+        system: "Arquitectura ETL cloud usando Azure Databricks, PySpark y PostgreSQL para analítica continua.",
+        outcome: "Procesamiento de 2M+ registros diarios de 500+ sensores en indicadores de salud consistentes.",
+        image: "/img/india-air-quality.webp",
+        tags: ["Azure", "PySpark", "Databricks", "Power BI"],
+        metrics: [
+          { value: "2M+", label: "registros diarios" },
+          { value: "500+", label: "sensores IoT" }
+        ],
+        links: [
+          { label: "Vista en vivo", url: "https://app.powerbi.com/view?r=eyJrIjoiOTQ4NmZlMjItMDU0YS00YTMxLThkNDEtNWZjYWRmNTM4Njg1IiwidCI6IjY3ZGU4N2FjLWRhYzgtNDYwNy05NGE0LWM4YTM3YmYwMmE2MSIsImMiOjR9" },
+          { label: "Documentación", url: "https://dvillagrans.github.io/India-Air-Quality-ETL-Project/" }
+        ],
+        href: "https://app.powerbi.com/view?r=eyJrIjoiOTQ4NmZlMjItMDU0YS00YTMxLThkNDEtNWZjYWRmNTM4Njg1IiwidCI6IjY3ZGU4N2FjLWRhYzgtNDYwNy05NGE0LWM4YTM3YmYwMmE2MSIsImMiOjR9",
       }
     ]
   },
   systems: {
     title: "Sistemas y Capacidades",
     items: [
-      { title: "Pipelines de Machine Learning", description: "Desde preprocesamiento e ingeniería de variables hasta entrenamiento, validación y despliegue de modelos." },
-      { title: "Data Engineering", description: "Orquestación ETL con Python, PySpark, SQL y servicios cloud para flujos analíticos confiables a gran escala." },
-      { title: "Productos de Analítica", description: "Dashboards interactivos y sistemas de decisión con Streamlit y Power BI orientados a métricas de negocio." },
-      { title: "Desarrollo Web de Plataforma", description: "Aplicaciones full-stack escalables con Next.js, React, TypeScript y prácticas listas para producción." }
+      { 
+        title: "Pipelines de Machine Learning", 
+        description: "Orquestación de extremo a extremo: desde procesamiento de señales EEG hasta despliegue de clústeres de LLMs en producción.",
+        tags: ["Scikit-learn", "PyTorch", "MLflow", "Clústeres GPU"]
+      },
+      { 
+        title: "Ingeniería de Datos e Infraestructura", 
+        description: "Pipelines ETL con PySpark y SQL, automatizados con n8n y Grafana, respaldados por Redis y clústeres GPU de alto rendimiento.",
+        tags: ["PySpark", "Redis", "n8n", "Docker"]
+      },
+      { 
+        title: "Productos de Analítica", 
+        description: "Sistemas de decisión de alta precisión y dashboards predictivos construidos con FastAPI, Streamlit y Power BI.",
+        tags: ["FastAPI", "Streamlit", "Power BI", "SQL"]
+      },
+      { 
+        title: "Plataformas Web Escalables", 
+        description: "Ecosistemas full-stack modernos usando Next.js, React y TypeScript, optimizados para integraciones de IA sin fricciones.",
+        tags: ["Next.js", "TypeScript", "Vercel", "Tailwind"]
+      }
     ]
   },
   philosophy: {
@@ -377,15 +488,22 @@ export const es = {
     title: "Stack Técnico y Herramientas",
     tools: [
       "Python",
+      "FastAPI",
       "Pandas",
       "NumPy",
       "Scikit-learn",
       "TensorFlow",
       "PyTorch",
+      "LLaMA / Mistral",
+      "OpenAI API",
+      "Gemini",
       "PySpark",
       "SQL",
       "PostgreSQL",
+      "Redis",
+      "n8n",
       "Power BI",
+      "Grafana",
       "Streamlit",
       "Next.js",
       "React",
@@ -402,26 +520,32 @@ export const es = {
   },
   about: {
     title: "Diego Villagran Salazar",
-    subtitle: "Data Scientist & Full-Stack Developer",
-    intro: "Me especializo en construir sistemas inteligentes que conectan ciencia de datos, producto e ingeniería de software. Actualmente estudio Data Science en ESCOM-IPN y me enfoco en convertir datos complejos en productos confiables y escalables.",
+    subtitle: "Ingeniero de IA y Datos · Constructor de Sistemas de ML",
+    intro: "Construyo sistemas inteligentes que van desde los datos crudos hasta la producción: pipelines de ML, automatización con LLMs e infraestructura escalable en la que los equipos realmente pueden confiar. Actualmente estudio Ciencia de Datos en ESCOM-IPN mientras trabajo a tiempo completo en automatización de IA en EyeNet y gestiono un clúster de GPU privado para el despliegue de LLMs de código abierto.",
+    metrics: [
+      { value: "10K+", label: "Solicitudes diarias" },
+      { value: "2M+", label: "Registros procesados" },
+      { value: "4+", label: "Sistemas en producción" }
+    ],
     sections: {
       systems: {
-        title: "Cómo construyo sistemas",
-        content: "Mi proceso es end-to-end: definir la pregunta de negocio, diseñar pipelines robustos, entrenar y validar modelos, y entregar interfaces donde equipos no técnicos puedan actuar sobre los insights. Priorizo confiabilidad, mantenibilidad y adopción real."
+        title: "01 // Cómo construyo sistemas",
+        content: "End-to-end: definir el problema, diseñar el pipeline de datos, entrenar y validar el modelo, y desplegar con monitoreo. No hago entregas parciales: soy dueño del stack completo desde la ingesta hasta la interfaz donde alguien toma una decisión."
       },
       optimization: {
-        title: "Qué optimizo",
+        title: "02 // Qué optimizo",
         items: [
-          { label: "Accuracy con explicabilidad", desc: "Las métricas importan, pero las salidas del modelo deben ser entendibles para negocio y colaboradores." },
-          { label: "Automatización con control", desc: "Automatizo tareas repetitivas manteniendo visibilidad, alertas y validaciones para operación segura." },
-          { label: "Fundamentos escalables", desc: "El objetivo es que el sistema siga funcionando cuando crecen volumen de datos, usuarios y complejidad." }
+          { label: "Precisión con explicabilidad", desc: "Las métricas fuertes importan, pero los resultados deben ser comprensibles para las personas que actúan sobre ellos." },
+          { label: "Automatización con control", desc: "Automatizo flujos de trabajo manteniendo visibilidad, alertas y verificaciones de calidad en todo momento." },
+          { label: "Fundamentos escalables", desc: "Sistemas que siguen funcionando a medida que crecen el volumen de datos, los usuarios y la complejidad." }
         ]
       },
       decisions: {
-        title: "Enfoque actual",
+        title: "03 // Enfoque actual",
         items: [
-          { title: "IA y automatización en Eyenet", desc: "Diseño pipelines de automatización con Python, n8n, Docker y APIs de LLM para reducir trabajo manual y mejorar calidad de datos." },
-          { title: "Productos analíticos con valor medible", desc: "Desarrollo dashboards y aplicaciones inteligentes que aceleran el tiempo a insight y respaldan decisiones operativas." }
+          { title: "IA y Automatización en EyeNet", desc: "Construcción de pipelines de procesamiento de documentos con LLMs, n8n y microservicios containerizados que manejan más de 10K solicitudes diarias." },
+          { title: "Clúster de GPU Privado", desc: "Despliegue y benchmarking de modelos de código abierto (LLaMA, Mistral) para proyectos internos de IA, evaluando rendimiento vs. costo vs. APIs propietarias." },
+          { title: "Productos analíticos con valor medible", desc: "Dashboards y sistemas de decisión que acortan el tiempo de obtención de insights para decisiones operativas reales." }
         ]
       }
     },
@@ -465,8 +589,8 @@ export const es = {
     title1: "Construyamos algo",
     title2: "inteligente y útil.",
     email: "diegovillasal@gmail.com",
-    bookSession: "Agendar Sesión",
-    bookDesc: "Programa una llamada breve de 30 mins conmigo.",
+    bookSession: "Hablemos",
+    bookDesc: "Contáctame para colaboraciones, oportunidades laborales o consultas técnicas.",
     formName: "Tu Nombre",
     formEmail: "Tu Correo",
     formMessage: "¿De qué te gustaría hablar?",

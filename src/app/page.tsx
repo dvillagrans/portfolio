@@ -15,8 +15,8 @@ export default function Home() {
       <FeaturedWork />
       <Marquee />
       <Systems />
-      <Philosophy />
       <Stack />
+      <Philosophy />
       <Contact />
     </main>
   );

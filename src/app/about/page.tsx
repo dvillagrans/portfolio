@@ -96,23 +96,12 @@ export default function About() {
     return () => ctx.revert();
   }, []);
 
-  const about = (t as { about?: Record<string, unknown> }).about as Record<string, unknown> | undefined;
+  const about = (t as { about?: any }).about;
   if (!about) return null;
 
-  const sections = about.sections as Record<string, { title: string; content?: string; items?: Array<{ label: string; desc: string; title?: string }> }>;
-  const closureText = about.closure as string;
-
-  const stats = language === "es"
-    ? [
-        { value: "3+", label: "Años construyendo" },
-        { value: "10k+", label: "Usuarios alcanzados" },
-        { value: "10", label: "Sem. MVP TimeUp" },
-      ]
-    : [
-        { value: "3+", label: "Years building" },
-        { value: "10k+", label: "Users reached" },
-        { value: "10", label: "Wks. TimeUp MVP" },
-      ];
+  const sections = about.sections;
+  const closureText = about.closure;
+  const stats = about.metrics || [];
 
   return (
     <main
@@ -158,55 +147,39 @@ export default function About() {
         {/* Editorial Intro */}
         <section className="mb-32">
 
-          {/* Title + Avatar row */}
-          <div className="flex flex-col-reverse md:flex-row md:items-start md:justify-between gap-8 mb-16">
-            <div className="flex-1">
-              <h1
-                style={{ viewTransitionName: "about-title" }}
-                ref={(el) => { elementsRef.current[0] = el; }}
-                className="font-serif text-5xl italic tracking-tight md:text-7xl mb-6 text-graphite"
-              >
-                {about.title as string}
-              </h1>
-              <p
-                ref={(el) => { elementsRef.current[1] = el; }}
-                className="font-sans text-sm font-medium uppercase tracking-widest text-charcoal/60"
-              >
-                {about.subtitle as string}
-              </p>
-            </div>
-
-            {/* Avatar — warm ring on hover */}
-            <div
-              ref={(el) => { elementsRef.current[7] = el; }}
-              className="group shrink-0 w-20 h-20 md:w-28 md:h-28 rounded-2xl overflow-hidden border border-charcoal/10 shadow-md self-start transition-all duration-500 hover:border-warm/50 hover:shadow-warm/10 hover:shadow-lg"
+          {/* Title Section */}
+          <div className="flex flex-col gap-4 mb-20">
+            <h1
+              style={{ viewTransitionName: "about-title" }}
+              ref={(el) => { elementsRef.current[0] = el; }}
+              className="font-serif text-5xl italic tracking-tight md:text-8xl mb-4 text-graphite"
             >
-              <Image
-                src="/img/optimized/me-128.webp"
-                alt="Diego Villagran"
-                width={128}
-                height={128}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-            </div>
+              {about.title}
+            </h1>
+            <p
+              ref={(el) => { elementsRef.current[1] = el; }}
+              className="font-sans text-sm font-semibold uppercase tracking-[0.3em] text-warm"
+            >
+              {about.subtitle}
+            </p>
           </div>
 
           <div
             ref={(el) => { elementsRef.current[2] = el; }}
-            className="text-2xl md:text-3xl leading-relaxed md:leading-[1.5] text-charcoal font-medium text-balance"
+            className="text-2xl md:text-4xl leading-relaxed md:leading-[1.4] text-charcoal font-medium text-balance"
           >
-            {about.intro as string}
+            {about.intro}
           </div>
 
           {/* Stats strip — animated counters */}
           <div
             ref={(el) => { elementsRef.current[8] = el; }}
-            className="mt-16 grid grid-cols-3 divide-x divide-charcoal/10 border border-charcoal/10 rounded-2xl overflow-hidden"
+            className="mt-20 grid grid-cols-3 divide-x divide-charcoal/10 border border-charcoal/10 rounded-[1.5rem] overflow-hidden shadow-sm"
           >
-            {stats.map((stat, i) => (
-              <div key={i} className="bg-white px-6 py-6 flex flex-col gap-1">
+            {stats.map((stat: any, i: number) => (
+              <div key={i} className="bg-white px-8 py-10 flex flex-col gap-2">
                 <AnimatedStat value={stat.value} label={stat.label} />
-                <span className="font-sans text-[10px] font-bold uppercase tracking-widest text-charcoal/50 leading-tight">
+                <span className="font-sans text-[9px] font-bold uppercase tracking-widest text-charcoal/40 leading-tight">
                   {stat.label}
                 </span>
               </div>
@@ -220,7 +193,7 @@ export default function About() {
           {/* How I build */}
           <section ref={(el) => { elementsRef.current[3] = el; }} className="grid grid-cols-1 md:grid-cols-12 gap-8">
             <h2 className="md:col-span-4 font-sans text-[10px] font-bold uppercase tracking-widest text-warm pt-2 border-t-2 border-warm/30 md:border-transparent md:pt-0">
-              01 // {sections.systems.title}
+              {sections.systems.title}
             </h2>
             <div className="md:col-span-8 font-serif text-xl md:text-2xl leading-relaxed text-charcoal/80">
               {sections.systems.content}
@@ -230,7 +203,7 @@ export default function About() {
           {/* What I optimize for */}
           <section ref={(el) => { elementsRef.current[4] = el; }} className="grid grid-cols-1 md:grid-cols-12 gap-8">
             <h2 className="md:col-span-4 font-sans text-[10px] font-bold uppercase tracking-widest text-charcoal/50 pt-2 border-t border-charcoal/10 md:border-transparent md:pt-0">
-              02 // {sections.optimization.title}
+              {sections.optimization.title}
             </h2>
             <div className="md:col-span-8 flex flex-col divide-y divide-charcoal/10">
               {sections.optimization.items?.map((item, idx) => (
@@ -251,7 +224,7 @@ export default function About() {
             className="grid grid-cols-1 md:grid-cols-12 gap-8 bg-charcoal text-offwhite p-10 md:p-16 rounded-[2rem] shadow-2xl"
           >
             <h2 className="md:col-span-4 font-sans text-[10px] font-bold uppercase tracking-widest text-warm/70 pt-2 border-t border-warm/20 md:border-transparent md:pt-0">
-              03 // {sections.decisions.title}
+              {sections.decisions.title}
             </h2>
             <div className="md:col-span-8 flex flex-col gap-12">
               {sections.decisions.items?.map((item, idx) => (
