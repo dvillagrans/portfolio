@@ -126,14 +126,14 @@ export default function Systems() {
                 ref={(el) => {
                   blocksRef.current[idx] = el;
                 }}
-                className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border p-8 lg:p-10 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl ${cardStyles[idx] ?? "border-offwhite/10 bg-offwhite/[0.02]"}`}
+                className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border p-8 lg:p-10 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl ${cardStyles[idx] ?? "border-offwhite/10 bg-offwhite/[0.02]"} ${idx % 2 === 0 ? "mr-4 md:mr-0" : "ml-4 md:ml-0"}`}
               >
                 {/* Background Glow Effect */}
                 <div className={glowStyles[idx] ?? "absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/5 blur-[100px]"}></div>
                 
                 <div className="relative z-10 flex flex-col gap-8 h-full">
                   <div className="flex items-start justify-between">
-                    <span className={`font-mono text-xs font-bold tracking-widest uppercase mt-2 ${idx % 2 === 0 ? "text-warm/60 group-hover:text-warm/90" : "text-offwhite/50 group-hover:text-offwhite/70"} transition-colors duration-300`}>
+                    <span className={`font-sans text-[10px] font-bold tracking-[0.3em] uppercase mt-2 ${idx % 2 === 0 ? "text-warm/60 group-hover:text-warm/90" : "text-offwhite/50 group-hover:text-offwhite/70"} transition-colors duration-300`}>
                       SYS_0{idx + 1}
                     </span>
                     <div className="h-16 w-16 opacity-30 transition-all duration-500 group-hover:scale-110 group-hover:opacity-80 flex-shrink-0">

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -130,15 +130,15 @@ export default function Contact() {
               <ArrowUpRight className="relative z-10 h-4 w-4 transition-transform group-hover:scale-110 group-hover:rotate-12" />
             </a>
 
-            <div className="h-8 w-[1px] bg-offwhite/20 hidden sm:block"></div>
+            <div className="h-8 w-[1px] bg-warm/30 hidden sm:block"></div>
 
             <button
               onClick={() => setShowForm(true)}
               type="button"
-              className="group inline-flex items-center min-h-[44px] gap-3 px-6 py-4 font-sans text-xs font-semibold uppercase tracking-[0.15em] text-offwhite/60 hover:text-white transition-colors active:scale-[0.98]"
+              className="group inline-flex items-center min-h-[44px] gap-3 px-6 py-4 font-sans text-xs font-bold uppercase tracking-[0.2em] text-offwhite/60 hover:text-warm transition-all duration-300 active:scale-[0.98]"
             >
               {t.contact.bookSession}
-              <span className="block h-[1px] w-8 bg-offwhite/40 transition-all duration-300 group-hover:bg-accent group-hover:w-16"></span>
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </button>
           </div>
         ) : (

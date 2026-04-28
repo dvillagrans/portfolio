@@ -113,7 +113,7 @@ export default function FeaturedWork() {
                       className="w-full h-full object-cover object-top"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                    <span className="absolute bottom-3 left-4 font-mono text-[10px] font-bold text-white/60 uppercase tracking-widest">
+                    <span className="absolute bottom-3 left-4 font-sans text-[10px] font-bold text-white/60 uppercase tracking-[0.2em]">
                       SYS_0{p.id}
                     </span>
                   </div>

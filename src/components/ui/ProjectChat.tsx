@@ -76,14 +76,14 @@ export function ProjectChat({ context }: { context?: string }) {
         type="button"
         onClick={() => setIsOpen(true)}
         aria-label="Open portfolio chat"
-        className="fixed z-50 flex min-h-[44px] min-w-[44px] items-center gap-2 rounded-full border border-charcoal/20 bg-offwhite px-4 py-3 font-sans text-xs font-semibold text-charcoal shadow-xl transition-all hover:bg-charcoal hover:text-offwhite hover:border-charcoal right-[max(1.5rem,env(safe-area-inset-right))] bottom-[max(1.5rem,env(safe-area-inset-bottom))]"
+        className="fixed z-50 flex min-h-[44px] min-w-[44px] items-center gap-3 rounded-full border border-charcoal/10 bg-offwhite px-5 py-3 font-sans text-[11px] font-bold uppercase tracking-[0.15em] text-charcoal shadow-2xl transition-all hover:bg-charcoal hover:text-offwhite hover:border-charcoal hover:shadow-warm/10 right-[max(1.5rem,env(safe-area-inset-right))] bottom-[max(1.5rem,env(safe-area-inset-bottom))] group active:scale-[0.98]"
       >
-        <span className="relative">
+        <span className="relative flex items-center justify-center">
           <Bot className="h-4 w-4" aria-hidden />
-          <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-warm animate-ping opacity-60" aria-hidden />
-          <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-warm" aria-hidden />
+          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-warm/30 animate-ping" aria-hidden />
+          <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-warm shadow-[0_0_8px_rgba(201,125,53,0.5)]" aria-hidden />
         </span>
-        <span>Ask about my work</span>
+        <span className="opacity-80 group-hover:opacity-100 transition-opacity">Ask about my work</span>
       </button>
     );
   }
