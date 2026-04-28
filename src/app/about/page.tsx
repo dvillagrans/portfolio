@@ -206,7 +206,7 @@ export default function About() {
               {sections.optimization.title}
             </h2>
             <div className="md:col-span-8 flex flex-col divide-y divide-charcoal/10">
-              {sections.optimization.items?.map((item, idx) => (
+              {sections.optimization.items?.map((item: any, idx: number) => (
                 <div key={idx} className="flex flex-col gap-2 py-8 first:pt-0 last:pb-0">
                   <div className="flex items-center gap-3">
                     <span className="font-mono text-[10px] font-bold text-warm/80">0{idx + 1}</span>
@@ -227,7 +227,7 @@ export default function About() {
               {sections.decisions.title}
             </h2>
             <div className="md:col-span-8 flex flex-col gap-12">
-              {sections.decisions.items?.map((item, idx) => (
+              {sections.decisions.items?.map((item: any, idx: number) => (
                 <div key={idx} className="flex flex-col gap-4 border-l-2 border-warm/40 pl-6">
                   <h3 className="font-serif text-2xl italic">{item.title}</h3>
                   <p className="font-sans text-sm leading-relaxed text-offwhite/70">{item.desc}</p>
