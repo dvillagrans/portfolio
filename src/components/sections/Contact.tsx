@@ -106,7 +106,7 @@ export default function Contact() {
           <div className="flex flex-col sm:flex-row items-center gap-6 mt-8">
             <a
               href={`mailto:${t.contact.email}`}
-              className="group relative inline-flex items-center min-h-[44px] gap-4 overflow-hidden rounded-full border border-offwhite/20 bg-transparent px-8 py-4 font-mono text-sm tracking-widest text-offwhite transition-all duration-500 hover:border-accent hover:bg-accent hover:text-black active:scale-[0.98]"
+              className="group relative inline-flex items-center min-h-[44px] gap-4 overflow-hidden border border-offwhite/20 bg-transparent px-8 py-4 font-sans text-sm font-semibold tracking-[0.1em] text-offwhite transition-all duration-500 hover:border-warm hover:bg-warm hover:text-charcoal active:scale-[0.98]"
             >
               <span className="relative z-10 font-bold uppercase">{t.contact.email}</span>
               <ArrowUpRight className="relative z-10 h-4 w-4 transition-transform group-hover:scale-110 group-hover:rotate-12" />
@@ -117,7 +117,7 @@ export default function Contact() {
             <button
               onClick={() => setShowForm(true)}
               type="button"
-              className="group inline-flex items-center min-h-[44px] gap-3 px-6 py-4 font-mono text-xs uppercase tracking-widest text-offwhite/70 hover:text-white transition-colors active:scale-[0.98]"
+              className="group inline-flex items-center min-h-[44px] gap-3 px-6 py-4 font-sans text-xs font-semibold uppercase tracking-[0.15em] text-offwhite/60 hover:text-white transition-colors active:scale-[0.98]"
             >
               {t.contact.bookSession}
               <span className="block h-[1px] w-8 bg-offwhite/40 transition-all duration-300 group-hover:bg-accent group-hover:w-16"></span>
@@ -186,7 +186,7 @@ export default function Contact() {
         )}
 
         {/* Footer Ribbon */}
-        <div className="mt-32 md:mt-48 flex flex-col md:flex-row w-full items-center justify-between border-t border-white/10 pt-10 font-mono text-x text-gray-500 gap-6">
+        <div className="mt-32 md:mt-48 flex flex-col md:flex-row w-full items-center justify-between border-t border-white/10 pt-10 font-sans text-xs text-gray-400 gap-6">
           <div className="flex items-center gap-3">
              <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse"></div>
              <span>{new Date().getFullYear()} {t.contact.footerText}</span>

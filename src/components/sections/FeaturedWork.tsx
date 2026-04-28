@@ -55,13 +55,13 @@ export default function FeaturedWork() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="projects" className="relative bg-offwhite py-12 text-charcoal pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] md:px-12 md:py-20 lg:px-24">
+    <section ref={sectionRef} id="projects" className="relative bg-surface-warm py-12 text-charcoal pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] md:px-12 md:py-20 lg:px-24">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <header className="mb-8 md:mb-16 flex flex-col gap-4 md:flex-row md:items-end md:justify-between border-b border-charcoal/10 pb-6 md:pb-8 pl-4 pr-4 md:px-0">
           <div>
             <h2 className="font-serif text-4xl md:text-5xl italic text-graphite">{t.work.title}</h2>
-            <p className="mt-3 max-w-md font-sans text-xs tracking-wide text-gray-500 uppercase">
+            <p className="mt-3 max-w-md font-sans text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase">
               {t.work.subtitle}
             </p>
           </div>
@@ -85,7 +85,7 @@ export default function FeaturedWork() {
             {t.work.projects.map((project, idx) => (
               <div
                 key={project.id}
-                className="snap-start shrink-0 w-[85vw] bg-white rounded-2xl border border-charcoal/5 shadow-sm overflow-hidden flex flex-col"
+                className="snap-start shrink-0 w-[75vw] bg-white rounded-2xl border border-charcoal/5 shadow-sm overflow-hidden flex flex-col"
               >
                 {/* Image */}
                 {(project as any).image ? (

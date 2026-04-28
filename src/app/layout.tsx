@@ -1,4 +1,5 @@
 import { ProjectChat } from '@/components/ui/ProjectChat';
+import { ConsoleEasterEgg } from '@/components/ui/ConsoleEasterEgg';
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Space_Grotesk, EB_Garamond, JetBrains_Mono } from "next/font/google";
@@ -30,6 +31,8 @@ export const metadata: Metadata = {
   description: "Senior Creative Technologist, Lead Frontend Engineer, and Product Systems Designer.",
 };
 
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -58,6 +61,7 @@ export default function RootLayout({
       >
         <LanguageProvider>
           <HtmlLang />
+          <ConsoleEasterEgg />
           <div className="noise-overlay pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.03] mix-blend-overlay"></div>
           {children}
         </LanguageProvider>

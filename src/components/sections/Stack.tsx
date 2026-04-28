@@ -93,11 +93,11 @@ export default function Stack() {
       <div className="mx-auto max-w-7xl relative z-10">
         <header className="mb-20">
           <div className="flex items-center gap-4 mb-6 md:justify-center">
-             <div className="h-[1px] w-12 bg-accent opacity-50 block md:hidden"></div>
-             <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-offwhite/80 font-bold">
+             <div className="h-[1px] w-12 bg-warm opacity-60 block md:hidden"></div>
+             <span className="font-sans text-[10px] font-bold uppercase tracking-[0.3em] text-offwhite/70">
                05. {t.stack.title}
              </span>
-             <div className="h-[1px] w-12 bg-accent opacity-50 block md:hidden"></div>
+             <div className="h-[1px] w-12 bg-warm opacity-60 block md:hidden"></div>
           </div>
           <h2 className="font-serif text-4xl lg:text-5xl tracking-tight text-white mb-4 md:text-center">
              {language === 'es' ? (
@@ -111,9 +111,9 @@ export default function Stack() {
         {/* Structured Grid layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {categories.map((category, cIdx) => (
-             <div key={cIdx} className="stack-category group p-8 rounded-3xl bg-white/[0.02] border border-white/5 hover:border-accent/30 hover:bg-white/[0.04] transition-all duration-500">
-                <h3 className="font-mono text-xs uppercase tracking-widest text-offwhite/70 mb-8 flex items-center gap-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent/50 group-hover:bg-accent transition-colors duration-500"></span>
+             <div key={cIdx} className={`stack-category group p-8 rounded-2xl border transition-all duration-500 ${cIdx % 2 === 0 ? "bg-warm/[0.03] border-warm/15 hover:border-warm/40 hover:bg-warm/[0.06]" : "bg-white/[0.02] border-white/5 hover:border-accent/30 hover:bg-white/[0.04]"}`}>
+                <h3 className={`font-sans text-xs font-bold uppercase tracking-widest mb-8 flex items-center gap-3 ${cIdx % 2 === 0 ? "text-warm/70" : "text-offwhite/60"}`}>
+                  <span className={`w-1.5 h-1.5 rounded-full transition-colors duration-500 ${cIdx % 2 === 0 ? "bg-warm/50 group-hover:bg-warm" : "bg-accent/50 group-hover:bg-accent"}`}></span>
                   {category.name}
                 </h3>
                 <div className="flex flex-wrap gap-2.5">

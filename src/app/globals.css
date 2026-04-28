@@ -1,19 +1,39 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-charcoal: #090a0a;
-  --color-graphite: #1a1b1e;
-  --color-accent: #2b5a5c;
-  --color-offwhite: #f7f6f2;
-  --color-gray-100: #e2e2e2;
-  --color-gray-300: #a3a3a3;
-  --color-gray-400: #737373;
-  --color-gray-500: #525252;
-  --color-gray-700: #262626;
-  
+  /* ─── Core Neutrals — tinted toward cool blue-green for subconscious cohesion ─── */
+  /* oklch(lightness chroma hue) — perceptually uniform, equal steps look equal */
+  --color-charcoal: oklch(8% 0.012 220);       /* was #090a0a — now has cool tint */
+  --color-graphite: oklch(14% 0.014 220);      /* was #1a1b1e */
+  --color-graphite-light: oklch(18% 0.012 220); /* new mid-dark surface */
+  --color-offwhite: oklch(97% 0.008 80);       /* was #f7f6f2 — warm paper */
+  --color-surface-warm: oklch(95% 0.010 80);   /* tinted surface for light sections */
+  --color-surface-cool: oklch(95% 0.008 220);  /* tinted surface for cold sections */
+
+  /* ─── Primary Accent — refined teal (more saturated, OKLCH-calibrated) ─── */
+  --color-accent: oklch(40% 0.085 195);        /* was #2b5a5c — richer, deeper */
+  --color-accent-light: oklch(55% 0.085 195);  /* hover / lighter variant */
+  --color-accent-muted: oklch(40% 0.040 195);  /* subtle backgrounds */
+
+  /* ─── Secondary Accent — warm amber/ochre (breaks monochromatic AI tell) ─── */
+  --color-warm: oklch(70% 0.130 65);           /* rich amber — editorial warmth */
+  --color-warm-muted: oklch(70% 0.060 65);     /* subtle warm accent */
+
+  /* ─── Gray Scale — tinted grays (never pure gray) ─── */
+  --color-gray-100: oklch(90% 0.006 220);
+  --color-gray-300: oklch(72% 0.008 220);
+  --color-gray-400: oklch(56% 0.008 220);
+  --color-gray-500: oklch(44% 0.008 220);
+  --color-gray-700: oklch(28% 0.010 220);
+
   --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-serif: var(--font-eb-garamond), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* ─── Easing — exponential curves, never bounce ─── */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
 }
 
 @layer base {
@@ -42,26 +62,23 @@
   }
 }
 
-/* Subtly textured noise for the whole app */
+/* ─── Noise texture — physical film grain ─── */
 .noise-overlay {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 200px 200px;
 }
 
-/* Custom Utilities for cinematic feel */
-.glass-panel {
-  @apply bg-charcoal/40 backdrop-blur-md border border-offwhite/[0.04];
-}
+/* ─── Typography Utilities ─── */
+.text-balance { text-wrap: balance; }
+.clip-text { background-clip: text; -webkit-background-clip: text; color: transparent; }
 
-.text-balance {
-  text-wrap: balance;
-}
-
-.clip-text {
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
+/* ─── Warm accent underline — for editorial emphasis ─── */
+.accent-underline {
+  text-decoration-line: underline;
+  text-decoration-color: var(--color-warm);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }
 
 /* Chat typing indicator — ease-out pulse (no bounce) */

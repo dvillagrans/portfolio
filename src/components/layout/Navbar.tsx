@@ -89,22 +89,22 @@ export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" })
         <div className="overflow-hidden min-h-0">
           <ul className="flex flex-col items-center gap-1 py-6 px-6 border-t border-charcoal/5">
           <li className="w-full">
-            <Link href="/#projects" onClick={() => setMobileMenuOpen(false)} tabIndex={mobileMenuOpen ? 0 : -1} className="flex min-h-[44px] w-full items-center justify-center text-sm font-semibold tracking-widest uppercase hover:text-accent transition-colors py-2">
+            <Link href="/#projects" onClick={() => setMobileMenuOpen(false)} tabIndex={mobileMenuOpen ? 0 : -1} className="flex min-h-[44px] w-full items-center justify-center text-sm font-semibold tracking-widest uppercase hover:text-warm transition-colors py-2">
               {t.nav.projects}
             </Link>
           </li>
           <li className="w-full">
-            <Link href="/#systems" onClick={() => setMobileMenuOpen(false)} tabIndex={mobileMenuOpen ? 0 : -1} className="flex min-h-[44px] w-full items-center justify-center text-sm font-semibold tracking-widest uppercase hover:text-accent transition-colors py-2">
+            <Link href="/#systems" onClick={() => setMobileMenuOpen(false)} tabIndex={mobileMenuOpen ? 0 : -1} className="flex min-h-[44px] w-full items-center justify-center text-sm font-semibold tracking-widest uppercase hover:text-warm transition-colors py-2">
               {t.nav.systems}
             </Link>
           </li>
           <li className="w-full">
-            <Link href="/about" onClick={() => setMobileMenuOpen(false)} tabIndex={mobileMenuOpen ? 0 : -1} className="flex min-h-[44px] w-full items-center justify-center text-sm font-semibold tracking-widest uppercase hover:text-accent transition-colors py-2">
+            <Link href="/about" onClick={() => setMobileMenuOpen(false)} tabIndex={mobileMenuOpen ? 0 : -1} className="flex min-h-[44px] w-full items-center justify-center text-sm font-semibold tracking-widest uppercase hover:text-warm transition-colors py-2">
               {t.nav.about}
             </Link>
           </li>
           <li className="w-full">
-            <Link href="/#contact" onClick={() => setMobileMenuOpen(false)} tabIndex={mobileMenuOpen ? 0 : -1} className="flex min-h-[44px] w-full items-center justify-center text-sm font-semibold tracking-widest uppercase hover:text-accent transition-colors py-2">
+            <Link href="/#contact" onClick={() => setMobileMenuOpen(false)} tabIndex={mobileMenuOpen ? 0 : -1} className="flex min-h-[44px] w-full items-center justify-center text-sm font-semibold tracking-widest uppercase hover:text-warm transition-colors py-2">
               {t.nav.contact}
             </Link>
           </li>

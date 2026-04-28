@@ -70,6 +70,32 @@ export default function Systems() {
     return () => ctx.revert();
   }, []);
 
+  // Each card gets a distinct visual personality
+  const cardStyles = [
+    // First card — warm amber accent, larger prominence
+    "lg:col-span-2 border-warm/30 hover:border-warm/60 bg-warm/[0.03] hover:bg-warm/[0.06]",
+    // Second card — standard teal
+    "lg:col-span-1 border-offwhite/10 hover:border-accent/40 bg-offwhite/[0.02] hover:bg-offwhite/[0.04]",
+    // Third card — standard teal
+    "lg:col-span-1 border-offwhite/10 hover:border-accent/40 bg-offwhite/[0.02] hover:bg-offwhite/[0.04]",
+    // Fourth card — warm amber, larger prominence
+    "lg:col-span-2 border-warm/20 hover:border-warm/50 bg-offwhite/[0.02] hover:bg-warm/[0.04]",
+  ];
+
+  const glowStyles = [
+    "absolute -right-20 -top-20 h-64 w-64 rounded-full bg-warm/8 blur-[100px] transition-all duration-500 group-hover:bg-warm/18",
+    "absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/5 blur-[100px] transition-all duration-500 group-hover:bg-accent/15",
+    "absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/5 blur-[100px] transition-all duration-500 group-hover:bg-accent/15",
+    "absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-warm/8 blur-[100px] transition-all duration-500 group-hover:bg-warm/18",
+  ];
+
+  const titleHoverColors = [
+    "group-hover:text-warm",
+    "group-hover:text-accent-light",
+    "group-hover:text-accent-light",
+    "group-hover:text-warm",
+  ];
+
   return (
     <section ref={containerRef} id="systems" className="relative bg-charcoal py-24 md:py-32 text-offwhite pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] md:px-12 lg:px-24 overflow-hidden">
       {/* Background ambient line */}
@@ -78,53 +104,48 @@ export default function Systems() {
       <div className="mx-auto max-w-7xl">
         <header className="mb-20">
           <div className="flex items-center gap-4 mb-6">
-             <div className="h-[1px] w-12 bg-accent opacity-50"></div>
-             <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-offwhite/80">
+             <div className="h-[1px] w-12 bg-warm opacity-60"></div>
+             <span className="font-sans text-[10px] font-bold uppercase tracking-[0.3em] text-offwhite/70">
                03. {t.systems.title}
              </span>
           </div>
-          <h2 className="font-serif text-5xl lg:text-6xl tracking-tight text-white mb-4">
+          <h2 className="font-serif text-5xl lg:text-7xl tracking-tight text-offwhite mb-4">
              {language === 'es' ? (
-                <>Arquitectura <span className="italic text-offwhite/60 font-light">&</span> Escala</>
+                <>Arquitectura <span className="italic text-offwhite/50 font-light">&</span> Escala</>
              ) : (
-                <>Architecture <span className="italic text-offwhite/60 font-light">&</span> Scale</>
+                <>Architecture <span className="italic text-offwhite/50 font-light">&</span> Scale</>
              )}
           </h2>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {t.systems.items.map((cap, idx) => {
-            // Asymmetric bento box layout: first and last items span 2 columns on large screens
-            const isLarge = idx === 0 || idx === 3;
-            
             return (
               <div
                 key={cap.title}
                 ref={(el) => {
                   blocksRef.current[idx] = el;
                 }}
-                className={`group relative flex flex-col justify-between overflow-hidden rounded-[2rem] border border-offwhite/10 bg-offwhite/[0.02] p-8 lg:p-10 transition-all duration-500 hover:-translate-y-1 hover:border-accent/30 hover:bg-offwhite/[0.04] hover:shadow-2xl hover:shadow-accent/5 ${
-                  isLarge ? "lg:col-span-2" : "lg:col-span-1"
-                }`}
+                className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border p-8 lg:p-10 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl ${cardStyles[idx] ?? "border-offwhite/10 bg-offwhite/[0.02]"}`}
               >
                 {/* Background Glow Effect */}
-                <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/5 blur-[100px] transition-all duration-500 group-hover:bg-accent/15"></div>
+                <div className={glowStyles[idx] ?? "absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/5 blur-[100px]"}></div>
                 
                 <div className="relative z-10 flex flex-col gap-8 h-full">
                   <div className="flex items-start justify-between">
-                    <span className="font-mono text-xs font-bold text-offwhite/70 tracking-widest uppercase mt-2">
+                    <span className={`font-mono text-xs font-bold tracking-widest uppercase mt-2 ${idx % 2 === 0 ? "text-warm/60 group-hover:text-warm/90" : "text-offwhite/50 group-hover:text-offwhite/70"} transition-colors duration-300`}>
                       SYS_0{idx + 1}
                     </span>
-                    <div className="h-16 w-16 opacity-40 transition-all duration-500 group-hover:scale-110 group-hover:opacity-100 flex-shrink-0">
+                    <div className="h-16 w-16 opacity-30 transition-all duration-500 group-hover:scale-110 group-hover:opacity-80 flex-shrink-0">
                       {abstractions[idx % abstractions.length]}
                     </div>
                   </div>
                   
-                  <div className="mt-auto pt-16">
-                    <h3 className="mb-4 font-sans text-2xl lg:text-3xl font-medium tracking-tight text-white group-hover:text-accent transition-colors">
+                  <div className="mt-auto pt-12">
+                    <h3 className={`mb-4 font-sans text-2xl lg:text-3xl font-medium tracking-tight text-offwhite/90 transition-colors duration-300 ${titleHoverColors[idx] ?? "group-hover:text-accent"}`}>
                       {cap.title}
                     </h3>
-                    <p className="font-sans text-base leading-relaxed text-offwhite/70 group-hover:text-offwhite/90 transition-colors lg:text-base">
+                    <p className="font-sans text-sm leading-relaxed text-offwhite/55 group-hover:text-offwhite/75 transition-colors duration-300">
                       {cap.description}
                     </p>
                   </div>
@@ -137,3 +158,4 @@ export default function Systems() {
     </section>
   );
 }
+
