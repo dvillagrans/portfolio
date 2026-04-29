@@ -32,6 +32,7 @@ function FlowCanvas({
 
   return (
     <ReactFlow
+      id="eyenet-flow"
       nodes={nodes}
       edges={edges}
       onNodesChange={onNodesChange}
@@ -44,7 +45,7 @@ function FlowCanvas({
       proOptions={{ hideAttribution: true }}
       className="bg-transparent"
     >
-      <Background color="#1a1a1a" gap={20} size={1} />
+      <Background color="rgba(255,255,255,0.08)" gap={20} size={1} />
       <MiniMap
         className="!bg-graphite/80 !border-white/10 !rounded-xl"
         nodeColor={(node) => {
