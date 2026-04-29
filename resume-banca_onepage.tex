@@ -1,0 +1,44 @@
+\documentclass[10pt,a4paper,sans]{moderncv}
+\moderncvstyle{classic}
+\moderncvcolor{blue}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[scale=0.72,top=0.7cm,bottom=1.4cm]{geometry}
+\setlength{\hintscolumnwidth}{3cm}
+\recomputelengths
+
+\name{Diego Villagr\'an}{Salazar}
+\title{Data Science \& AI — Banking / Risk}
+\phone{+52 55 7207 1183}
+\email{diegovillasal@gmail.com}
+\homepage{https://www.dvillagrans.dev}
+\social[linkedin]{dvillagrans}
+\address{}{Mexico City, Mexico}
+\extrainfo{Hybrid-ready}
+
+\begin{document}
+\makecvtitle
+
+\section{Summary}
+Production-focused Data Science student (ESCOM-IPN, 2026). Experience building AI pipelines and analytics for decision support: LLM-based extraction (200+ docs/day, 92\% accuracy) and high-throughput data systems (10K+ transactions/day).
+
+\section{Experience}
+\cventry{2025--2026}{AI \& Data Automation Analyst}{EyeNet}{Remote}{}{\begin{itemize}\itemsep0pt
+\item Built LLM-based extraction pipelines (OpenAI/Gemini) achieving 92\% accuracy across 200+ docs/day.
+\item Implemented data-quality CI/CD and alerting, catching >95\% of issues pre-production.
+\item Developed data infra (Postgres, MongoDB, Redis) supporting 10K+ daily transactions.
+\end{itemize}}
+
+\section{Select Projects}
+\cventry{2024}{AML / Compliance Analog}{}{}{}{Prototype clustering and anomaly-detection workflows for transaction monitoring scenarios.}
+\cventry{2024}{COVID-19 Risk Profiles}{}{}{}{Clustering on 30M+ records to derive 9 risk profiles; interactive dashboard.}
+
+\section{Skills}
+\cvitem{Data}{Python, SQL, Pandas, Scikit-learn}
+\cvitem{ML}{XGBoost, TensorFlow, PyTorch, Clustering}
+\cvitem{Infra}{Azure Databricks, Docker, AWS, Postgres}
+
+\vfill
+\end{document}

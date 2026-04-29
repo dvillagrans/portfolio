@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export default function Hero() {
   const container = useRef<HTMLDivElement>(null);
@@ -12,6 +14,7 @@ export default function Hero() {
   const bgRef = useRef<HTMLDivElement>(null);
   const scanRef = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
+  const reduced = useReducedMotion();
 
   // Split headline into animatable word spans
   const title1Words = t.hero.title1.split(" ");
@@ -20,6 +23,17 @@ export default function Hero() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      if (reduced) {
+        // Respect reduced motion: make everything visible instantly
+        gsap.set(bgRef.current, { scale: 1, opacity: 1 });
+        gsap.set(scanRef.current, { opacity: 0 });
+        const validWords = wordsRef.current.filter(Boolean);
+        gsap.set(validWords, { clipPath: "inset(0% 0% 0% 0%)", y: 0, opacity: 1 });
+        gsap.set(sublineRef.current, { y: 0, opacity: 1 });
+        gsap.set(actionRef.current, { y: 0, opacity: 1 });
+        return;
+      }
+
       // Background slow breathe
       gsap.to(bgRef.current, {
         scale: 1.08,
@@ -89,7 +103,7 @@ export default function Hero() {
 
     return () => ctx.revert();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [reduced]);
 
   return (
     <section
@@ -100,9 +114,19 @@ export default function Hero() {
       <div className="absolute inset-0 z-0 bg-charcoal">
         <div
           ref={bgRef}
-          className="absolute inset-0 opacity-80 mix-blend-screen bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/images/bg-water-dark.jpg')" }}
-        />
+          className="absolute inset-0 overflow-hidden"
+        >
+          <Image
+            src="/images/bg-water-dark.jpg"
+            alt=""
+            fill
+            priority
+            fetchPriority="high"
+            quality={75}
+            className="object-cover opacity-80 mix-blend-screen"
+            sizes="100vw"
+          />
+        </div>
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/50 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/20 to-transparent opacity-60" />
       </div>
@@ -153,7 +177,7 @@ export default function Hero() {
         <p
           ref={sublineRef}
           className="mt-6 md:mt-10 max-w-xl font-sans text-base leading-relaxed text-offwhite/55 selection:text-offwhite selection:bg-accent"
-          style={{ opacity: 0 }}
+          style={{ opacity: reduced ? 1 : 0 }}
         >
           {t.hero.subtitle1} <br />
           {t.hero.subtitle2}
@@ -163,7 +187,7 @@ export default function Hero() {
           ref={actionRef}
           href="#projects"
           className="group mt-10 md:mt-16 inline-flex items-center justify-center sm:justify-start w-full sm:w-auto min-h-[44px] gap-3 border border-offwhite/20 px-6 py-4 md:px-8 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-offwhite transition-all hover:bg-offwhite hover:text-charcoal active:scale-[0.98]"
-          style={{ opacity: 0 }}
+          style={{ opacity: reduced ? 1 : 0 }}
         >
           {t.hero.cta}
           <div className="h-[2px] w-4 bg-warm transition-all group-hover:w-8 group-hover:bg-charcoal" />

@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { Brain, Database, BarChart3, Globe, Cpu, Workflow, Terminal, Layers } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -26,9 +27,17 @@ export default function Systems() {
   const containerRef = useRef<HTMLElement>(null);
   const blocksRef = useRef<(HTMLDivElement | null)[]>([]);
   const { t, language } = useLanguage();
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      if (reduced) {
+        blocksRef.current.forEach((block) => {
+          if (!block) return;
+          gsap.set(block, { opacity: 1, y: 0 });
+        });
+        return;
+      }
       blocksRef.current.forEach((block, index) => {
         if (!block) return;
         gsap.fromTo(
@@ -49,7 +58,7 @@ export default function Systems() {
       });
     }, containerRef);
     return () => ctx.revert();
-  }, []);
+  }, [reduced]);
 
   // Balanced 2x2 grid on desktop, each card is equal prominence
   const cardStyles = "lg:col-span-1 border-offwhite/10 hover:border-accent/40 bg-white/[0.02] hover:bg-white/[0.04]";

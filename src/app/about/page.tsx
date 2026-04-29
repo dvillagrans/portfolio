@@ -8,6 +8,7 @@ import Image from "next/image";
 import Navbar from "@/components/layout/Navbar";
 import { ArrowLeft, Github, Linkedin } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,6 +16,7 @@ gsap.registerPlugin(ScrollTrigger);
 function AnimatedStat({ value, label }: { value: string; label: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const hasAnimated = useRef(false);
+  const reduced = useReducedMotion();
 
   // Extract numeric part and suffix (e.g. "10k+" → num=10, suffix="k+")
   const match = value.match(/^(\d+)(.*)$/);
@@ -23,6 +25,11 @@ function AnimatedStat({ value, label }: { value: string; label: string }) {
 
   useEffect(() => {
     if (!ref.current || numericTarget === null) return;
+
+    if (reduced) {
+      ref.current.textContent = value;
+      return;
+    }
 
     const trigger = ScrollTrigger.create({
       trigger: ref.current,
@@ -45,11 +52,11 @@ function AnimatedStat({ value, label }: { value: string; label: string }) {
     });
 
     return () => trigger.kill();
-  }, [numericTarget, suffix]);
+  }, [numericTarget, suffix, value, reduced]);
 
   return (
     <span ref={ref} className="font-serif text-3xl md:text-4xl italic text-charcoal">
-      {numericTarget !== null ? `0${suffix}` : value}
+      {numericTarget !== null ? (reduced ? value : `0${suffix}`) : value}
     </span>
   );
 }
@@ -60,6 +67,7 @@ export default function About() {
   const progressBarRef = useRef<HTMLDivElement>(null);
   const [scrollPct, setScrollPct] = useState(0);
   const { language, t } = useLanguage();
+  const reduced = useReducedMotion();
 
   // Reading progress
   useEffect(() => {
@@ -78,6 +86,13 @@ export default function About() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      if (reduced) {
+        elementsRef.current.forEach((el) => {
+          if (!el) return;
+          gsap.set(el, { opacity: 1, y: 0 });
+        });
+        return;
+      }
       elementsRef.current.forEach((el) => {
         if (!el) return;
         gsap.fromTo(
@@ -94,7 +109,7 @@ export default function About() {
       });
     }, containerRef);
     return () => ctx.revert();
-  }, []);
+  }, [reduced]);
 
   const about = (t as { about?: any }).about;
   if (!about) return null;

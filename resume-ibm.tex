@@ -1,0 +1,55 @@
+\documentclass[11pt,a4paper,sans]{moderncv}
+\moderncvstyle{classic}
+\moderncvcolor{blue}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[scale=0.78,top=0.9cm,bottom=1.6cm]{geometry}
+
+% Datos Personales
+\name{Diego Villagrán}{Salazar}
+\title{Data Science · AI \& Automation Engineer}
+% Usa la sintaxis estándar para evitar conflictos de macros
+\phone{+52 55 7207 1183} 
+\email{diegovillasal@gmail.com}
+\homepage{www.dvillagrans.dev}
+\social[linkedin]{dvillagrans}
+\address{}{Mexico City, Mexico}
+\extrainfo{Hybrid-ready}
+
+\begin{document}
+\makecvtitle
+
+\section{Summary}
+Data Science student at ESCOM-IPN (graduating December 2026). I build production AI and automation systems that drive business outcomes: reduced manual client work by 65\% and process 10K+ daily requests via LLM-powered pipelines. Seeking a client-facing technical role at IBM to translate AI solutions into measurable impact.
+
+\section{Education}
+\cventry{2022--2026}{Bachelor of Science in Data Science}{Escuela Superior de Cómputo (ESCOM-IPN)}{Mexico City}{}{GPA: 8.5/10.0.}
+
+\section{Experience}
+\cventry{Apr 2025 -- May 2026}{AI \& Automation Intern}{EyeNet}{Remote}{}{%
+\begin{itemize}%
+\item Built an end-to-end document automation pipeline (Python, n8n) that reduced manual processing by 65\% (~300+ docs/week).
+\item Automated data extraction with OpenAI and Gemini APIs, achieving ~92\% extraction accuracy.
+\item Architected microservices (PostgreSQL, Redis, MongoDB, Docker) handling 10K+ daily requests with 99.5\% uptime.
+\end{itemize}}
+
+\section{Selected Projects}
+\cventry{2024}{NYC Ride-Hailing Analytics}{}{}{}{Developed predictive model ($R^{2} > 0.85$) and interactive Streamlit dashboard from 30M+ trip records.}
+
+\cventry{2024}{COVID-19 Risk Profiles}{}{}{}{Applied K-Means and Fuzzy C-Means clustering on 30M+ health records to create 9 risk profiles used for ICU triage prioritization.}
+
+\section{Technical Skills}
+\cvitem{Data \& AI}{Python, TensorFlow, PyTorch, Scikit-learn, OpenAI API, Gemini API, LLaMA, Mistral, NLP}
+\cvitem{Automation}{n8n, ETL/ELT, CI/CD, Python scripting, Bash}
+\cvitem{Cloud}{AWS, Azure, Docker, Kubernetes, PostgreSQL, MongoDB, Redis}
+
+\section{Certifications}
+\cvitem{}{Google AI Essentials (Coursera); Build a Data Warehouse with BigQuery (Google Cloud); BigQuery ML for Predictive Modeling; Kubernetes management.}
+
+\section{Interest in IBM Future Club}
+I build technical systems and focus on measurable business impact. IBM's Data \& AI and Automation portfolio maps to my experience; the Future Club is an opportunity to develop commercial and client-facing skills to scale enterprise adoption.
+
+\vfill
+\end{document}

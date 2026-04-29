@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,9 +12,18 @@ export default function Philosophy() {
   const container = useRef<HTMLElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      if (reduced) {
+        gsap.set(".quote-text", { opacity: 1, scale: 1, y: 0 });
+        if (textRef.current) {
+          gsap.set(textRef.current.children, { opacity: 1, y: 0 });
+        }
+        return;
+      }
+
       // Main quote animation
       gsap.fromTo(
         ".quote-text",
@@ -51,7 +61,7 @@ export default function Philosophy() {
       }
     }, container);
     return () => ctx.revert();
-  }, []);
+  }, [reduced]);
 
   return (
     <section ref={container} className="relative bg-surface-warm py-24 md:py-32 text-charcoal pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] md:px-12 lg:px-24 overflow-hidden">

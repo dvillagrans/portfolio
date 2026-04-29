@@ -26,6 +26,14 @@
   --color-gray-500: oklch(44% 0.008 220);
   --color-gray-700: oklch(28% 0.010 220);
 
+  /* ─── Case Study: TimeUp — cyan/teal/indigo palette ─── */
+  --color-timeup-cyan: #00C9FF;
+  --color-timeup-teal: #00E3CC;
+  --color-timeup-indigo: #4B5DFF;
+  --color-timeup-blue: #0088FF;
+  --color-timeup-bg: #020406;
+  --color-timeup-card: #1A1A1A;
+
   --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-serif: var(--font-eb-garamond), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -90,45 +98,264 @@
   animation: chat-typing 1s ease-out infinite;
 }
 
-/* Custom Epic View Transition — shortened when user prefers reduced motion */
+/* ═══════════════════════════════════════════════════════════════
+   CINEMATIC VIEW TRANSITIONS — Professional route-aware system
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Base durations & easing ─── */
 @media (prefers-reduced-motion: no-preference) {
   ::view-transition-old(root),
   ::view-transition-new(root) {
-    animation-duration: 1.2s;
-    animation-timing-function: cubic-bezier(0.87, 0, 0.13, 1);
+    animation-duration: 0.85s;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); /* expo.out */
     animation-fill-mode: both;
   }
-}
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation-duration: 0.15s;
-    animation-timing-function: ease-out;
+
+  ::view-transition-old(nav-header),
+  ::view-transition-new(nav-header) {
+    animation-duration: 0.5s;
+    animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1); /* quart.out */
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-old(nav-header),
+  ::view-transition-new(nav-header) {
+    animation-duration: 0.08s !important;
+    animation-timing-function: ease-out !important;
+  }
+}
+
+/* ─── NAVBAR: always gentle crossfade, never disappears ─── */
+::view-transition-group(nav-header) {
+  z-index: 999;
+}
+
+::view-transition-old(nav-header) {
+  animation-name: nav-fade-out;
+}
+
+::view-transition-new(nav-header) {
+  animation-name: nav-fade-in;
+}
+
+@keyframes nav-fade-out {
+  0%   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  100% { opacity: 0; transform: translateY(-8px) scale(0.98); filter: blur(4px); }
+}
+
+@keyframes nav-fade-in {
+  0%   { opacity: 0; transform: translateY(-8px) scale(0.98); filter: blur(4px); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+/* ─── ROOT: default forward (deepen) ─── */
 ::view-transition-old(root) {
-  animation-name: unmount;
+  animation-name: root-unmount-forward;
   z-index: 1;
 }
 
 ::view-transition-new(root) {
-  animation-name: mount;
+  animation-name: root-mount-forward;
   z-index: 2;
 }
 
-@keyframes unmount {
-  0% { transform: scale(1) translateY(0); filter: grayscale(0) blur(0); opacity: 1; }
-  100% { transform: scale(0.85) translateY(-5vh); filter: grayscale(1) blur(10px); opacity: 0; }
+@keyframes root-unmount-forward {
+  0%   { transform: scale(1) translateY(0); filter: grayscale(0) blur(0) brightness(1); opacity: 1; }
+  60%  { opacity: 0.6; }
+  100% { transform: scale(0.92) translateY(-4vh); filter: grayscale(0.6) blur(8px) brightness(0.7); opacity: 0; }
 }
 
-@keyframes mount {
-  0% { transform: scale(1.1) translateY(100vh); border-radius: 100px; box-shadow: 0 -20px 40px rgba(0,0,0,0.5); opacity: 1; clip-path: inset(0 20% 0 20% round 40px); }
-  100% { transform: scale(1) translateY(0); border-radius: 0; box-shadow: none; opacity: 1; clip-path: inset(0 0% 0 0% round 0px); }
+@keyframes root-mount-forward {
+  0%   { transform: scale(1.06) translateY(100vh); filter: grayscale(0.3) blur(6px); opacity: 0; clip-path: inset(0 0 100% 0); }
+  40%  { opacity: 1; }
+  100% { transform: scale(1) translateY(0); filter: grayscale(0) blur(0); opacity: 1; clip-path: inset(0 0 0% 0); }
 }
 
+/* ─── ROOT: back (shallow) — faster, cleaner ─── */
+html.vt-back ::view-transition-old(root) {
+  animation-name: root-unmount-back;
+  animation-duration: 0.6s;
+}
 
-/* Prevent double animation on swipe back / browser back */
+html.vt-back ::view-transition-new(root) {
+  animation-name: root-mount-back;
+  animation-duration: 0.6s;
+}
+
+@keyframes root-unmount-back {
+  0%   { transform: scale(1) translateY(0); opacity: 1; }
+  100% { transform: scale(1.04) translateY(-3vh); opacity: 0; }
+}
+
+@keyframes root-mount-back {
+  0%   { transform: scale(0.96) translateY(-6vh); opacity: 0; filter: brightness(0.8); }
+  100% { transform: scale(1) translateY(0); opacity: 1; filter: brightness(1); }
+}
+
+/* ─── FORWARD → CASE-STUDY: "Document Zoom" ─── */
+html.vt-to-case-study ::view-transition-old(root) {
+  animation-name: doc-unmount;
+  animation-duration: 0.9s;
+}
+
+html.vt-to-case-study ::view-transition-new(root) {
+  animation-name: doc-mount;
+  animation-duration: 0.9s;
+}
+
+@keyframes doc-unmount {
+  0%   { transform: scale(1) translateY(0); filter: blur(0); opacity: 1; }
+  100% { transform: scale(0.88) translateY(-2vh); filter: blur(12px) brightness(0.5); opacity: 0; }
+}
+
+@keyframes doc-mount {
+  0%   { transform: scale(1.12) translateY(8vh); filter: blur(10px) brightness(0.6); opacity: 0; }
+  100% { transform: scale(1) translateY(0); filter: blur(0) brightness(1); opacity: 1; }
+}
+
+/* ─── FORWARD → ABOUT: "Editorial Page Turn" ─── */
+html.vt-to-about ::view-transition-old(root) {
+  animation-name: editorial-unmount;
+  animation-duration: 0.8s;
+}
+
+html.vt-to-about ::view-transition-new(root) {
+  animation-name: editorial-mount;
+  animation-duration: 0.8s;
+}
+
+@keyframes editorial-unmount {
+  0%   { transform: translateX(0) scale(1); opacity: 1; }
+  100% { transform: translateX(-12vw) scale(0.95); opacity: 0; filter: blur(4px); }
+}
+
+@keyframes editorial-mount {
+  0%   { transform: translateX(12vw) scale(0.95); opacity: 0; filter: blur(4px); }
+  100% { transform: translateX(0) scale(1); opacity: 1; filter: blur(0); }
+}
+
+/* ─── FORWARD → PROJECTS: "Digital Scan" ─── */
+html.vt-to-projects ::view-transition-old(root) {
+  animation-name: scan-unmount;
+  animation-duration: 0.75s;
+}
+
+html.vt-to-projects ::view-transition-new(root) {
+  animation-name: scan-mount;
+  animation-duration: 0.75s;
+}
+
+@keyframes scan-unmount {
+  0%   { opacity: 1; transform: translateY(0); filter: blur(0); }
+  40%  { opacity: 0.8; filter: blur(2px); }
+  100% { opacity: 0; transform: translateY(-6vh); filter: blur(8px) brightness(0.4); }
+}
+
+@keyframes scan-mount {
+  0%   { opacity: 0; transform: translateY(-4vh) scale(1.02); clip-path: inset(0 0 100% 0); filter: blur(6px); }
+  50%  { clip-path: inset(0 0 0% 0); }
+  100% { opacity: 1; transform: translateY(0) scale(1); clip-path: inset(0 0 0% 0); filter: blur(0); }
+}
+
+/* ─── TO HOME (from anywhere): "Elevator Descent" ─── */
+html.vt-to-home ::view-transition-old(root) {
+  animation-name: home-unmount;
+  animation-duration: 0.7s;
+}
+
+html.vt-to-home ::view-transition-new(root) {
+  animation-name: home-mount;
+  animation-duration: 0.7s;
+}
+
+@keyframes home-unmount {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(6vh) scale(0.96); filter: blur(6px); }
+}
+
+@keyframes home-mount {
+  0%   { opacity: 0; transform: translateY(-10vh) scale(1.03); filter: blur(8px) brightness(0.7); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0) brightness(1); }
+}
+
+/* ─── SAME-LEVEL: ultra-snappy swap ─── */
+html.vt-same-level ::view-transition-old(root),
+html.vt-same-level ::view-transition-new(root) {
+  animation-duration: 0.45s;
+}
+
+html.vt-same-level ::view-transition-old(root) {
+  animation-name: swap-out;
+}
+
+html.vt-same-level ::view-transition-new(root) {
+  animation-name: swap-in;
+}
+
+@keyframes swap-out {
+  0%   { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.98); filter: blur(6px); }
+}
+
+@keyframes swap-in {
+  0%   { opacity: 0; transform: scale(1.02); filter: blur(6px); }
+  100% { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+/* ─── PAGE TITLE MORPH: shared between case-studies & archive ─── */
+::view-transition-group(page-title) {
+  z-index: 10;
+}
+
+::view-transition-old(page-title) {
+  animation-name: title-morph-out;
+  animation-duration: 0.7s;
+}
+
+::view-transition-new(page-title) {
+  animation-name: title-morph-in;
+  animation-duration: 0.7s;
+}
+
+@keyframes title-morph-out {
+  0%   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  100% { opacity: 0; transform: translateY(-20px) scale(0.92); filter: blur(6px); }
+}
+
+@keyframes title-morph-in {
+  0%   { opacity: 0; transform: translateY(20px) scale(1.08); filter: blur(6px); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+/* ─── ABOUT TITLE: editorial morph ─── */
+::view-transition-group(about-title) {
+  z-index: 10;
+}
+
+::view-transition-old(about-title) {
+  animation-name: about-title-out;
+  animation-duration: 0.75s;
+}
+
+::view-transition-new(about-title) {
+  animation-name: about-title-in;
+  animation-duration: 0.75s;
+}
+
+@keyframes about-title-out {
+  0%   { opacity: 1; transform: translateX(0); filter: blur(0); }
+  100% { opacity: 0; transform: translateX(-30px); filter: blur(4px); }
+}
+
+@keyframes about-title-in {
+  0%   { opacity: 0; transform: translateX(30px); filter: blur(4px); }
+  100% { opacity: 1; transform: translateX(0); filter: blur(0); }
+}
+
+/* ─── Prevent double animation on browser back / swipe ─── */
 html.back-transition::view-transition-old(*),
 html.back-transition::view-transition-new(*),
 html.back-transition::view-transition-group(*) {
@@ -140,4 +367,35 @@ html.back-transition::view-transition-old(root) {
 }
 html.back-transition::view-transition-new(root) {
   opacity: 1 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   EYENET CARD — CINEMATIC EFFECTS
+   ═══════════════════════════════════════════════════════════════ */
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes glitch-1 {
+  0%   { clip-path: inset(20% 0 60% 0); transform: translate(-2px, 1px); opacity: 0.7; }
+  20%  { clip-path: inset(50% 0 30% 0); transform: translate(2px, -1px); opacity: 0.5; }
+  40%  { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 2px); opacity: 0.8; }
+  60%  { clip-path: inset(70% 0 10% 0); transform: translate(1px, -2px); opacity: 0.4; }
+  80%  { clip-path: inset(30% 0 40% 0); transform: translate(-2px, 1px); opacity: 0.6; }
+  100% { clip-path: inset(20% 0 60% 0); transform: translate(0, 0); opacity: 0.7; }
+}
+
+@keyframes glitch-2 {
+  0%   { clip-path: inset(60% 0 20% 0); transform: translate(2px, -1px); opacity: 0.5; }
+  25%  { clip-path: inset(30% 0 50% 0); transform: translate(-1px, 2px); opacity: 0.7; }
+  50%  { clip-path: inset(80% 0 5% 0); transform: translate(1px, -1px); opacity: 0.4; }
+  75%  { clip-path: inset(15% 0 65% 0); transform: translate(-2px, 1px); opacity: 0.6; }
+  100% { clip-path: inset(60% 0 20% 0); transform: translate(0, 0); opacity: 0.5; }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50%      { opacity: 0.6; transform: scale(1.2); }
 }

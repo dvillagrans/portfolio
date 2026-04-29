@@ -6,14 +6,20 @@ import { Link } from "next-view-transitions";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export default function SystemArchive() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { language, t } = useLanguage();
+  const reduced = useReducedMotion();
   const archive = (t as any).archive;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      if (reduced) {
+        gsap.set(".archive-item", { opacity: 1, y: 0 });
+        return;
+      }
       gsap.fromTo(
         ".archive-item",
         { opacity: 0, y: 18 },
@@ -21,7 +27,7 @@ export default function SystemArchive() {
       );
     }, containerRef);
     return () => ctx.revert();
-  }, []);
+  }, [reduced]);
 
   if (!archive) return null;
 

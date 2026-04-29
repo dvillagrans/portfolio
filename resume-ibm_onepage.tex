@@ -1,0 +1,49 @@
+\documentclass[10pt,a4paper,sans]{moderncv}
+\moderncvstyle{classic}
+\moderncvcolor{blue}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[scale=0.72]{geometry}
+\setlength{\hintscolumnwidth}{3cm}
+\recomputelengths
+
+% Compact lists
+\usepackage{paralist}
+\let\olditemize\itemize
+\renewenvironment{itemize}{\olditemize\small\setlength{\itemsep}{2pt}}{\endolditemize}
+
+\name{Diego Villagr\'an}{Salazar}
+\title{Data Science \& AI Engineer}
+\phone{+52 55 7207 1183}
+\email{diegovillasal@gmail.com}
+\homepage{https://www.dvillagrans.dev}
+\social[linkedin]{dvillagrans}
+\address{}{Mexico City, Mexico}
+\extrainfo{Hybrid-ready}
+
+\begin{document}
+\makecvtitle
+
+\section{Summary}
+Production-focused Data Science student (ESCOM-IPN, 2026). Build AI and automation systems that reduce manual work, scale to thousands of daily requests, and deliver measurable business outcomes.
+
+\section{Experience}
+\cventry{2025--2026}{AI \& Automation Intern}{EyeNet}{Remote}{}{\begin{compactitem}
+\item Built document automation pipeline (Python, n8n) reducing manual processing by 65\% (~300+ docs/week).
+\item Automated structured data extraction using OpenAI/Gemini (~92\% accuracy).
+\item Architected microservices (Postgres, Redis, MongoDB, Docker) handling 10K+ daily requests.
+\end{compactitem}}
+
+\section{Selected Projects}
+\cventry{2024}{TimeUp - Time Tracking SaaS}{}{}{}{Reduced payroll admin work by 80\% for SME clients; implemented payroll automation and dashboards.}
+\cventry{2024}{NYC Ride-Hailing Analytics}{}{}{}{Predictive model ($R^{2}>0.85$) and Streamlit dashboard from 30M+ records.}
+
+\section{Skills}
+\cvitem{Data}{Python, TensorFlow, PyTorch, Scikit-learn, NLP}
+\cvitem{Infra}{Docker, Kubernetes, AWS, Azure, Postgres, MongoDB}
+\cvitem{Automation}{n8n, ETL, CI/CD}
+
+\vfill
+\end{document}

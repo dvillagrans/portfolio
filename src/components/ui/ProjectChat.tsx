@@ -6,6 +6,7 @@ import { useState, useRef, useEffect, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import gsap from 'gsap';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 const CHAT_INPUT_ID = 'project-chat-input';
 const CHAT_TITLE_ID = 'project-chat-title';
@@ -28,6 +29,7 @@ export function ProjectChat({ context }: { context?: string }) {
   const typingRef = useRef<HTMLSpanElement>(null);
   const cursorRef = useRef<HTMLSpanElement>(null);
   const { language } = useLanguage();
+  const reduced = useReducedMotion();
 
   const PROMPTS_EN = useMemo(() => [
     "Ask about my work...",
@@ -71,6 +73,12 @@ export function ProjectChat({ context }: { context?: string }) {
     if (!el || !cursor) return;
 
     const PROMPTS = language === 'es' ? PROMPTS_ES : PROMPTS_EN;
+    if (reduced) {
+      el.textContent = PROMPTS[0];
+      gsap.set(cursor, { opacity: 0 });
+      return;
+    }
+
     let promptIdx = 0;
     let ctx = gsap.context(() => {
       // Blinking cursor
@@ -121,7 +129,7 @@ export function ProjectChat({ context }: { context?: string }) {
     });
 
     return () => ctx.revert();
-  }, [isOpen, language, PROMPTS_EN, PROMPTS_ES]);
+  }, [isOpen, language, PROMPTS_EN, PROMPTS_ES, reduced]);
 
   // Main Toggle Animation
   useEffect(() => {
@@ -129,74 +137,95 @@ export function ProjectChat({ context }: { context?: string }) {
       if (isOpen) {
         // Fade out button
         if (buttonRef.current) {
-          gsap.to(buttonRef.current, { 
-            opacity: 0, 
-            y: 20, 
-            scale: 0.95,
-            pointerEvents: 'none', 
-            duration: 0.4,
-            ease: 'power2.inOut'
-          });
+          if (reduced) {
+            gsap.set(buttonRef.current, { opacity: 0, y: 20, scale: 0.95, pointerEvents: 'none' });
+          } else {
+            gsap.to(buttonRef.current, {
+              opacity: 0,
+              y: 20,
+              scale: 0.95,
+              pointerEvents: 'none',
+              duration: 0.4,
+              ease: 'power2.inOut'
+            });
+          }
         }
         // Fade in panel
         if (panelRef.current) {
-          gsap.fromTo(panelRef.current, 
-            { opacity: 0, scale: 0.9, y: 40 },
-            { 
-              opacity: 1, 
-              scale: 1, 
-              y: 0, 
-              duration: 0.7, 
-              ease: 'elastic.out(1, 0.85)',
-              pointerEvents: 'auto',
-              display: 'flex',
-              delay: 0.1
-            }
-          );
+          if (reduced) {
+            gsap.set(panelRef.current, { opacity: 1, scale: 1, y: 0, pointerEvents: 'auto', display: 'flex' });
+          } else {
+            gsap.fromTo(panelRef.current,
+              { opacity: 0, scale: 0.9, y: 40 },
+              {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                duration: 0.7,
+                ease: 'elastic.out(1, 0.85)',
+                pointerEvents: 'auto',
+                display: 'flex',
+                delay: 0.1
+              }
+            );
+          }
         }
       } else {
         // Fade out panel
         if (panelRef.current) {
-          gsap.to(panelRef.current, { 
-            opacity: 0, 
-            scale: 0.95, 
-            y: 30, 
-            pointerEvents: 'none', 
-            duration: 0.4,
-            ease: 'power2.inOut',
-            onComplete: () => {
-              if (panelRef.current) panelRef.current.style.display = 'none';
-            }
-          });
+          if (reduced) {
+            gsap.set(panelRef.current, { opacity: 0, scale: 0.95, y: 30, pointerEvents: 'none' });
+            if (panelRef.current) panelRef.current.style.display = 'none';
+          } else {
+            gsap.to(panelRef.current, {
+              opacity: 0,
+              scale: 0.95,
+              y: 30,
+              pointerEvents: 'none',
+              duration: 0.4,
+              ease: 'power2.inOut',
+              onComplete: () => {
+                if (panelRef.current) panelRef.current.style.display = 'none';
+              }
+            });
+          }
         }
         // Fade in button
         if (buttonRef.current) {
-          gsap.to(buttonRef.current, { 
-            opacity: 1, 
-            y: 0, 
-            scale: 1,
-            pointerEvents: 'auto', 
-            duration: 0.6, 
-            ease: 'back.out(1.7)',
-            delay: 0.2
-          });
+          if (reduced) {
+            gsap.set(buttonRef.current, { opacity: 1, y: 0, scale: 1, pointerEvents: 'auto' });
+          } else {
+            gsap.to(buttonRef.current, {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              pointerEvents: 'auto',
+              duration: 0.6,
+              ease: 'back.out(1.7)',
+              delay: 0.2
+            });
+          }
         }
       }
     });
 
     return () => ctx.revert();
-  }, [isOpen]);
+  }, [isOpen, reduced]);
 
   // Entrance animation for the button on initial mount only
   useEffect(() => {
     if (!buttonRef.current) return;
+    if (reduced) {
+      gsap.set(buttonRef.current, { opacity: 1, y: 0, scale: 1 });
+      return;
+    }
     // We only want this to run once when the whole component mounts
     gsap.fromTo(
       buttonRef.current,
       { opacity: 0, y: 30, scale: 0.9 },
       { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'expo.out', delay: 1 }
     );
-  }, []);
+  }, [reduced]);
 
   useEffect(() => {
     if (messagesEndRef.current) {

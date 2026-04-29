@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,13 +12,14 @@ export default function Stack() {
   const container = useRef<HTMLElement>(null);
   const itemsRef = useRef<(HTMLSpanElement | null)[]>([]);
   const { t, language } = useLanguage();
+  const reduced = useReducedMotion();
   const tools = t.stack.tools;
 
   // Let's divide tools into intuitive categories just visually based on the list
   const dataScience = ["Python", "Pandas", "Numpy", "Matplotlib", "Seaborn", "Scikit-learn", "Tensorflow", "Keras", "PyTorch", "Yolo", "anaconda", "googlecolab"];
   const backend = ["PostgreSQL", "SQL", "Docker", "Kubernetes", "AmazonAWS", "Azure", "googlecloud"];
   const frontend = ["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Astro", "Vercel"];
-  
+
   // Categorize elements
   const categories = [
     {
@@ -34,9 +36,9 @@ export default function Stack() {
     },
     {
        name: language === 'es' ? 'Herramientas Base' : 'Core Tools',
-       items: tools.filter(tool => 
-         !dataScience.some(i => i.toLowerCase() === tool.toLowerCase()) && 
-         !backend.some(i => i.toLowerCase() === tool.toLowerCase()) && 
+       items: tools.filter(tool =>
+         !dataScience.some(i => i.toLowerCase() === tool.toLowerCase()) &&
+         !backend.some(i => i.toLowerCase() === tool.toLowerCase()) &&
          !frontend.some(i => i.toLowerCase() === tool.toLowerCase())
        )
     }
@@ -44,6 +46,15 @@ export default function Stack() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      if (reduced) {
+        gsap.set(".stack-category", { opacity: 1, y: 0 });
+        itemsRef.current.forEach((item) => {
+          if (!item) return;
+          gsap.set(item, { opacity: 1, scale: 1 });
+        });
+        return;
+      }
+
       // Animate category blocks
       gsap.fromTo(
         ".stack-category",
@@ -76,13 +87,13 @@ export default function Stack() {
               trigger: container.current,
               start: "top 70%",
             },
-            delay: (index % 10) * 0.03, 
+            delay: (index % 10) * 0.03,
           }
         );
       });
     }, container);
     return () => ctx.revert();
-  }, []);
+  }, [reduced]);
 
   return (
     <section ref={container} className="relative bg-charcoal py-24 md:py-32 text-offwhite pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] md:px-12 lg:px-24 overflow-hidden border-t border-offwhite/5 border-b">

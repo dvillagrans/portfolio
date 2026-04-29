@@ -2,13 +2,15 @@
 
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export default function Marquee() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const tweenRef = useRef<gsap.core.Tween | null>(null);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
-    if (!scrollRef.current) return;
+    if (!scrollRef.current || reduced) return;
     const el = scrollRef.current;
 
     tweenRef.current = gsap.to(el, {
@@ -21,7 +23,7 @@ export default function Marquee() {
     return () => {
       tweenRef.current?.kill();
     };
-  }, []);
+  }, [reduced]);
 
   const handleMouseEnter = () => {
     if (tweenRef.current) {

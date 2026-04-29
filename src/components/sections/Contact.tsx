@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ArrowUpRight, ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -13,6 +14,7 @@ export default function Contact() {
   const textRef = useRef<HTMLHeadingElement>(null);
   const formRef = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
+  const reduced = useReducedMotion();
   
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -22,6 +24,17 @@ export default function Contact() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      if (reduced) {
+        if (container.current) {
+          const charcoal = getComputedStyle(document.documentElement).getPropertyValue("--color-charcoal").trim() || "#090a0a";
+          gsap.set(container.current, { backgroundColor: charcoal });
+        }
+        if (textRef.current) {
+          gsap.set(textRef.current.children, { opacity: 1, y: 0, rotateX: 0 });
+        }
+        return;
+      }
+
       const charcoal = getComputedStyle(document.documentElement).getPropertyValue("--color-charcoal").trim() || "#090a0a";
       const graphite = getComputedStyle(document.documentElement).getPropertyValue("--color-graphite").trim() || "#1a1b1e";
       gsap.fromTo(
@@ -58,12 +71,17 @@ export default function Contact() {
       }
     }, container);
     return () => ctx.revert();
-  }, []);
+  }, [reduced]);
 
   // Animate form in when it appears
   useEffect(() => {
     if (showForm && formRef.current) {
       const children = Array.from(formRef.current.children) as HTMLElement[];
+      if (reduced) {
+        gsap.set(formRef.current, { opacity: 1, scale: 1, y: 0 });
+        gsap.set(children, { opacity: 1, y: 0 });
+        return;
+      }
       gsap.fromTo(
         formRef.current,
         { opacity: 0, scale: 0.97, y: 16 },
@@ -75,7 +93,7 @@ export default function Contact() {
         { opacity: 1, y: 0, duration: 0.5, stagger: 0.07, ease: "power3.out", delay: 0.1 }
       );
     }
-  }, [showForm]);
+  }, [showForm, reduced]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -148,7 +166,7 @@ export default function Contact() {
           >
             <div className="flex items-center justify-between mb-8">
                <span className="font-sans text-[10px] font-bold tracking-[0.25em] uppercase text-warm/80">
-                 New Message /
+                 {t.contact.formLabel}
                </span>
                <button type="button" onClick={() => setShowForm(false)} aria-label="Close form" className="min-w-[44px] min-h-[44px] flex items-center justify-center text-offwhite/50 hover:text-white text-2xl font-light leading-none transition-colors">
                  &times;
@@ -159,11 +177,11 @@ export default function Contact() {
             
             <form onSubmit={handleSubmit} className="flex flex-col gap-6">
               <div className="relative group">
-                <input 
+                  <input
                   type="text" required id="name"
                   placeholder=" "
                   value={name} onChange={e => setName(e.target.value)}
-                  className="peer w-full bg-transparent border-b border-white/20 focus:border-accent focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal outline-none py-3 text-white font-sans text-lg transition-colors placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg"
+                  className="peer w-full bg-transparent border-b border-white/20 focus:border-accent focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal focus:outline-none py-3 text-white font-sans text-lg transition-colors placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg"
                 />
                 <label htmlFor="name" className="absolute left-2 top-3 font-mono text-xs text-offwhite/60 uppercase tracking-widest transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-accent peer-valid:-top-4 peer-valid:text-[10px]">
                   {t.contact.formName}
@@ -171,11 +189,11 @@ export default function Contact() {
               </div>
               
               <div className="relative group mt-2">
-                <input 
+                <input
                   type="email" required id="email"
                   placeholder=" "
                   value={email} onChange={e => setEmail(e.target.value)}
-                  className="peer w-full bg-transparent border-b border-white/20 focus:border-accent focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal outline-none py-3 text-white font-sans text-lg transition-colors placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg"
+                  className="peer w-full bg-transparent border-b border-white/20 focus:border-accent focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal focus:outline-none py-3 text-white font-sans text-lg transition-colors placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg"
                 />
                 <label htmlFor="email" className="absolute left-2 top-3 font-mono text-xs text-offwhite/60 uppercase tracking-widest transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-accent peer-valid:-top-4 peer-valid:text-[10px]">
                   {t.contact.formEmail}
@@ -183,11 +201,11 @@ export default function Contact() {
               </div>
 
               <div className="relative group mt-2">
-                <textarea 
+                <textarea
                   required id="message" rows={3}
                   placeholder=" "
                   value={message} onChange={e => setMessage(e.target.value)}
-                  className="peer w-full bg-transparent border-b border-white/20 focus:border-accent focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal outline-none py-3 text-white font-sans text-lg transition-colors resize-none placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg"
+                  className="peer w-full bg-transparent border-b border-white/20 focus:border-accent focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal focus:outline-none py-3 text-white font-sans text-lg transition-colors resize-none placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg"
                 />
                 <label htmlFor="message" className="absolute left-2 top-3 font-mono text-xs text-offwhite/60 uppercase tracking-widest transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-accent peer-valid:-top-4 peer-valid:text-[10px]">
                   {t.contact.formMessage}
@@ -213,7 +231,7 @@ export default function Contact() {
         )}
 
         {/* Footer Ribbon */}
-        <div className="mt-32 md:mt-48 flex flex-col md:flex-row w-full items-center justify-between border-t border-white/10 pt-10 font-sans text-xs text-gray-400 gap-6">
+        <div className="mt-32 md:mt-48 flex flex-col md:flex-row w-full items-center justify-between border-t border-white/10 pt-10 font-sans text-xs text-offwhite/50 gap-6">
           <div className="flex items-center gap-3">
              <div className="w-1.5 h-1.5 bg-warm rounded-full animate-pulse"></div>
              <span>{new Date().getFullYear()} {t.contact.footerText}</span>

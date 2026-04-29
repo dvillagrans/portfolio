@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { Link } from "next-view-transitions";
 import { Menu, X } from "lucide-react";
 
@@ -15,6 +16,7 @@ export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" })
   const navRef = useRef<HTMLElement>(null);
   const menuItemsRef = useRef<HTMLUListElement>(null);
   const { language, setLanguage, t } = useLanguage();
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,26 +31,31 @@ export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" })
     if (!menuItemsRef.current) return;
     const items = Array.from(menuItemsRef.current.children) as HTMLElement[];
     if (mobileMenuOpen) {
-      gsap.fromTo(
-        items,
-        { opacity: 0, y: 12 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.35,
-          stagger: 0.06,
-          ease: "expo.out",
-          delay: 0.12,
-        }
-      );
+      if (reduced) {
+        gsap.set(items, { opacity: 1, y: 0 });
+      } else {
+        gsap.fromTo(
+          items,
+          { opacity: 0, y: 12 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.35,
+            stagger: 0.06,
+            ease: "expo.out",
+            delay: 0.12,
+          }
+        );
+      }
     } else {
       gsap.set(items, { opacity: 0, y: 12 });
     }
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, reduced]);
 
   return (
     <nav
       ref={navRef}
+      style={{ viewTransitionName: 'nav-header' }}
       className={`fixed left-1/2 z-50 flex flex-col -translate-x-1/2 rounded-[2rem] top-[max(1rem,env(safe-area-inset-top))] md:top-6 transition-all duration-500 will-change-transform ${
         (scrolled || mobileMenuOpen)
           ? "w-[95%] sm:w-[90%] max-w-4xl bg-offwhite/95 text-charcoal backdrop-blur-xl border border-charcoal/10 shadow-lg md:w-[600px]"

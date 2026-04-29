@@ -2,13 +2,19 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { Database, Cpu, Send, Zap, MessageSquare, Globe, Activity } from "lucide-react";
 
 export default function SystemDiagram() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      if (reduced) {
+        gsap.set(".diagram-item", { opacity: 1, y: 0 });
+        return;
+      }
       // Animate entry for all elements
       gsap.from(".diagram-item", {
         opacity: 0,
@@ -36,7 +42,7 @@ export default function SystemDiagram() {
       });
     }, containerRef);
     return () => ctx.revert();
-  }, []);
+  }, [reduced]);
 
   return (
     <div ref={containerRef} className="relative h-full w-full bg-black flex flex-col items-center justify-center p-8 overflow-hidden font-mono text-[10px]">

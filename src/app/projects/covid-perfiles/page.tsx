@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "next-view-transitions";
 import Navbar from "@/components/layout/Navbar";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -32,6 +33,7 @@ export default function CovidPerfilesCaseStudy() {
   const { t, language } = useLanguage();
   const dict = t.covidPerfiles;
   const containerRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -50,6 +52,12 @@ export default function CovidPerfilesCaseStudy() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const elements = gsap.utils.toArray(".reveal-fade");
+      if (reduced) {
+        elements.forEach((el: unknown) => {
+          gsap.set(el as HTMLElement, { y: 0, opacity: 1 });
+        });
+        return;
+      }
       elements.forEach((el: unknown) => {
         gsap.fromTo(
           el as HTMLElement,
@@ -59,7 +67,7 @@ export default function CovidPerfilesCaseStudy() {
       });
     }, containerRef);
     return () => ctx.revert();
-  }, []);
+  }, [reduced]);
 
   return (
     <>
@@ -97,7 +105,10 @@ export default function CovidPerfilesCaseStudy() {
         </div>
 
         <header className="mb-12 reveal-fade max-w-5xl">
-          <h1 className="mb-6 text-5xl font-semibold tracking-tight leading-none md:text-7xl font-serif text-white/95" style={{ color: "rgba(255,255,255,0.95)" }}>
+          <h1
+            className="mb-6 text-5xl font-semibold tracking-tight leading-none md:text-7xl font-serif text-white/95"
+            style={{ color: "rgba(255,255,255,0.95)", viewTransitionName: "page-title" }}
+          >
             {language === "es" ? "Perfiles de riesgo " : "Risk profiles "}
             <span style={{ color: ACCENT }}>COVID-19</span>
           </h1>

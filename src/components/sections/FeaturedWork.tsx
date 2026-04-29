@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import EyeNetCard from "../ui/EyeNetCard";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -32,9 +33,17 @@ export default function FeaturedWork() {
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<(HTMLElement | null)[]>([]);
   const { t, language } = useLanguage();
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      if (reduced) {
+        cardsRef.current.forEach((card) => {
+          if (!card) return;
+          gsap.set(card, { opacity: 1, y: 0 });
+        });
+        return;
+      }
       cardsRef.current.forEach((card) => {
         if (!card) return;
         gsap.fromTo(
@@ -55,7 +64,7 @@ export default function FeaturedWork() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [reduced]);
 
   const projects = t.work.projects as unknown as FeaturedProject[];
   let globalIdx = 0;

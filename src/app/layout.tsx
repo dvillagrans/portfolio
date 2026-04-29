@@ -1,5 +1,6 @@
 import { ProjectChat } from '@/components/ui/ProjectChat';
 import { ConsoleEasterEgg } from '@/components/ui/ConsoleEasterEgg';
+import { ViewTransitionDirector } from '@/components/ui/ViewTransitionDirector';
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Space_Grotesk, EB_Garamond, JetBrains_Mono } from "next/font/google";
@@ -59,8 +60,15 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${ebGaramond.variable} ${jetbrainsMono.variable} font-sans bg-charcoal text-offwhite overflow-x-hidden selection:bg-accent selection:text-offwhite`}
       >
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-accent focus:px-5 focus:py-3 focus:text-sm focus:font-bold focus:text-charcoal focus:shadow-lg"
+        >
+          Skip to main content
+        </a>
         <LanguageProvider>
           <HtmlLang />
+          <ViewTransitionDirector />
           <ConsoleEasterEgg />
           <div className="noise-overlay pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.03] mix-blend-overlay"></div>
           {children}
