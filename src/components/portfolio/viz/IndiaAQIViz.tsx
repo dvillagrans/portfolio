@@ -97,14 +97,6 @@ export function IndiaAQIViz() {
         .attr("width", "100%")
         .attr("height", "100%");
 
-      const projection = d3
-        .geoMercator()
-        .center([82.8, 22.5])
-        .scale(width * 1.1)
-        .translate([width / 2, height / 2]);
-
-      const path = d3.geoPath().projection(projection);
-
       const topologyData = topology as { objects: Record<string, unknown> };
       const objectKey = Object.keys(topologyData.objects)[0];
       const topoObject = topologyData.objects[objectKey] as Parameters<
@@ -113,7 +105,13 @@ export function IndiaAQIViz() {
       const geoData = topojson.feature(
         topologyData as Parameters<typeof topojson.feature>[0],
         topoObject
-      ) as { features: Array<{ properties?: { name?: string } }> };
+      ) as { type: "FeatureCollection"; features: Array<{ properties?: { name?: string } }> };
+
+      const projection = d3
+        .geoMercator()
+        .fitExtent([[8, 8], [width - 8, height - 8]], geoData as any);
+
+      const path = d3.geoPath().projection(projection);
 
       svg
         .selectAll<SVGPathElement, (typeof geoData.features)[number]>("path")

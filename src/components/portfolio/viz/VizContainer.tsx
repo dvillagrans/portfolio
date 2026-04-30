@@ -1,11 +1,11 @@
 import { Suspense } from 'react';
 
 interface VizContainerProps {
-  height?: number;
+  height?: number | string;
   children: React.ReactNode;
 }
 
-function Skeleton({ height = 160 }: { height?: number }) {
+function Skeleton({ height = 160 }: { height?: number | string }) {
   return (
     <div
       className="animate-pulse"
