@@ -399,3 +399,12 @@ html.back-transition::view-transition-new(root) {
   0%, 100% { opacity: 0.2; transform: scale(0.8); }
   50%      { opacity: 0.6; transform: scale(1.2); }
 }
+
+/* ─── Modal animation ─── */
+@keyframes modal-enter {
+  0%   { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.modal-enter {
+  animation: modal-enter 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

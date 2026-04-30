@@ -9,6 +9,7 @@ import Navbar from "@/components/layout/Navbar";
 import { ArrowLeft, Github, Linkedin } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import Certifications from "@/components/sections/Certifications";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -251,6 +252,11 @@ export default function About() {
             </div>
           </section>
 
+        </div>
+
+        {/* Certifications Section */}
+        <div className="flex flex-col gap-32 pt-24">
+          <Certifications />
         </div>
 
         {/* Closure */}

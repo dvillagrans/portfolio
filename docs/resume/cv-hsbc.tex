@@ -1,0 +1,226 @@
+\documentclass[9.5pt, letterpaper]{article}
+
+\usepackage[
+  top=0.5cm, bottom=0.5cm,
+  left=1.2cm, right=1.2cm
+]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{parskip}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{multicol}
+
+% --- Colores ---
+\definecolor{primary}{HTML}{1A1E24}
+\definecolor{accent}{HTML}{E53935}
+\definecolor{textdark}{HTML}{222222}
+\definecolor{textlight}{HTML}{555555}
+\definecolor{closed}{HTML}{2E7D32}
+
+\hypersetup{colorlinks=true, urlcolor=accent, linkcolor=accent}
+
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{helvet}
+\linespread{0.95}
+
+\pagestyle{empty}
+
+% --- Secciones compactas ---
+\titleformat{\section}
+  {\normalsize\bfseries\color{primary}}
+  {}{0em}{\MakeUppercase}
+  [\vspace{-4pt}\color{accent}\rule{\linewidth}{1pt}\vspace{2pt}]
+\titlespacing{\section}{0pt}{7pt}{3pt}
+
+% --- Listas compactas ---
+\setlist[itemize]{
+  leftmargin=1.1em,
+  itemsep=0pt,
+  topsep=1pt,
+  parsep=0pt,
+  partopsep=0pt,
+  label=\color{accent}\tiny\faAngleRight
+}
+
+% --- Macros ---
+\newcommand{\entryheader}[4]{%
+  \noindent
+  \begin{tabularx}{\linewidth}{@{}X r@{}}
+    {\normalsize\bfseries\color{primary} #1} & {\small\bfseries\color{accent} #2} \\[-1pt]
+    {\small\color{textdark}\textit{#3}} & {\footnotesize\color{textlight} #4}
+  \end{tabularx}
+  \vspace{1pt}
+}
+
+\newcommand{\entryheaderclosed}[5]{%
+  \noindent
+  \begin{tabularx}{\linewidth}{@{}X r@{}}
+    {\normalsize\bfseries\color{primary} #1}\enspace{\footnotesize\color{closed}\textbf{#5}} & {\small\bfseries\color{accent} #2} \\[-1pt]
+    {\small\color{textdark}\textit{#3}} & {\footnotesize\color{textlight} #4}
+  \end{tabularx}
+  \vspace{1pt}
+}
+
+\newcommand{\projectentry}[3]{%
+  \noindent
+  \begin{tabularx}{\linewidth}{@{}X r@{}}
+    {\normalsize\bfseries\color{primary} #1} & {\small\bfseries\color{accent} #2}
+  \end{tabularx}
+  \vspace{-1pt}
+  {\small\color{textlight}\textit{#3}}\vspace{2pt}
+}
+
+% =============================================================
+\begin{document}
+\enlargethispage{2cm}
+% =============================================================
+
+% --- HEADER ---
+\begin{tikzpicture}[remember picture,overlay]
+  \node[rectangle, fill=primary, anchor=north,
+        minimum width=\paperwidth, minimum height=2.2cm]
+    at (current page.north){};
+  \node[anchor=center, text=white]
+    at ([yshift=-0.8cm]current page.north)
+    {\large\bfseries DIEGO VILLAGRAN SALAZAR};
+  \node[anchor=center, text=white]
+    at ([yshift=-1.55cm]current page.north){
+      \footnotesize
+      \faEnvelope\
+      \href{mailto:diegovillasal@gmail.com}{\color{white}diegovillasal@gmail.com}
+      \enspace\textbar\enspace
+      \faPhone\ \color{white}+52 55 7207 1183
+      \enspace\textbar\enspace
+      \faGlobe\
+      \href{https://dvillagrans.dev}{\color{white}dvillagrans.dev}
+      \enspace\textbar\enspace
+      \faMapMarker*\ \color{white}Ciudad de M\'exico
+    };
+\end{tikzpicture}
+\vspace{0.8cm}
+
+% --- RESUMEN ---
+{\small\color{textdark}
+Estudiante de Ciencia de Datos (ESCOM-IPN, egreso dic.\ 2026) con experiencia en producci\'on
+construyendo pipelines de ML, automatizaci\'on con IA e infraestructura de datos escalable.
+Concluida pasant\'ia en EyeNet \href{https://dvillagrans.dev/projects/eyenet}{\color{accent}\faExternalLink*} (abr.\ 2025\,--\,may.\ 2026): cl\'uster GPU privado para LLMs
+open-source y automatizaci\'on documental. Experiencia en estad\'istica, clustering y modelos
+predictivos sobre datos de gran escala con impacto en decisiones de negocio.
+}
+
+% --- EDUCACI\'ON ---
+\section{Educaci\'on}
+\entryheader
+  {Ing.\ Ciencias de la Computaci\'on --- Ciencia de Datos}
+  {2022 -- Dic.\ 2026}
+  {Escuela Superior de C\'omputo (ESCOM-IPN)}
+  {Ciudad de M\'exico}
+\begin{itemize}
+  \item \textbf{Promedio:} 8.5/10.0 \textbullet\ 45+ cr\'editos avanzados \textbullet\ ML, Modelado Estad\'istico, Big Data, Bases de Datos, Python
+\end{itemize}
+
+% --- EXPERIENCIA ---
+\section{Experiencia Profesional}
+
+\entryheaderclosed
+  {Pasante de IA \& Automatizaci\'on}
+  {Abr.\ 2025 -- May.\ 2026}
+  {EyeNet \href{https://dvillagrans.dev/projects/eyenet}{\color{accent}\faExternalLink*}}
+  {Remoto}
+  {\faCheckCircle\ Concluido}
+\begin{itemize}
+  \item Pipelines de procesamiento documental (Python + n8n): \textbf{65\% menos trabajo manual}, \textbf{300+ docs/semana}
+  \item Integraci\'on APIs OpenAI/Gemini para extracci\'on autom\'atica: \textbf{92\% de precisi\'on}, 200+ docs/d\'ia
+  \item Microservicios containerizados (Docker, PostgreSQL, Redis, MongoDB): \textbf{10K+ solicitudes/d\'ia}, 99.5\% uptime
+  \item CI/CD + alertas Telegram: \textbf{50\% menos tiempo de despliegue}, \textbf{95\%+} incidencias detectadas pre-producci\'on
+  \item Cl\'uster GPU privado: despliegue y evaluaci\'on de LLMs open-source (LLaMA, Mistral, DeepSeek) vs.\ APIs propietarias
+\end{itemize}
+
+\vspace{3pt}
+
+\entryheader
+  {Desarrollador Full-Stack --- Proyecto Propio}
+  {2024 -- 2025}
+  {TimeUp \href{https://dvillagrans.dev/projects/timeup}{\color{accent}\faExternalLink*} --- SaaS de Control de Asistencia}
+  {Ciudad de M\'exico}
+\begin{itemize}
+  \item Plataforma B2B en producci\'on (\href{https://negocios.timeup.mx}{negocios.timeup.mx}): \textbf{80\% menos trabajo administrativo de n\'omina}
+  \item Dashboards de KPIs, c\'alculos autom\'aticos, infraestructura cloud con Supabase + PostgreSQL
+\end{itemize}
+
+% --- PROYECTOS ---
+\section{Proyectos Relevantes}
+
+\projectentry{Perfiles de Riesgo COVID-19 --- M\'exico \href{https://dvillagrans.dev/projects/covid-perfiles}{\color{accent}\faExternalLink*}}{2024}
+  {Ciencia de Datos \textbullet\ Clustering \textbullet\ Salud P\'ublica}
+\begin{itemize}
+  \item K-Means + Fuzzy C-Means sobre muestras estratificadas de \textbf{30M+ registros} SSA: 9 perfiles multivariados (edad, comorbilidades, severidad)
+  \item Pipeline end-to-end: datos crudos $\to$ preprocesamiento $\to$ modelado $\to$ dashboard Next.js \textbullet\ \textbf{An\'alogo a detecci\'on de fraude financiero}
+\end{itemize}
+
+\vspace{2pt}
+
+\projectentry{Dashboard de Anal\'itica --- NYC Ride-Hailing \href{https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/}{\color{accent}\faExternalLink*}}{2024}
+  {ML Predictivo \textbullet\ Streamlit \textbullet\ Estad\'istica Aplicada}
+\begin{itemize}
+  \item Predicci\'on de tarifas ($R^2 > 0.85$) y clasificador de aeropuertos (\textbf{92\% precisi\'on}) \textbullet\ Dashboard geoespacial interactivo en producci\'on
+\end{itemize}
+
+\vspace{2pt}
+
+\projectentry{Sistema ETL de Calidad del Aire --- India \href{https://dvillagrans.github.io/India-Air-Quality-ETL-Project/}{\color{accent}\faExternalLink*}}{2024}
+  {Ingenier\'ia de Datos \textbullet\ Azure Databricks \textbullet\ PySpark}
+\begin{itemize}
+  \item ETL en Azure Databricks: \textbf{2M+ registros/d\'ia} de 500+ sensores IoT \textbullet\ PySpark distribuido + reportes BI continuos
+\end{itemize}
+
+% --- HABILIDADES ---
+\section{Habilidades T\'ecnicas}
+{\small
+\noindent
+\begin{tabularx}{\linewidth}{@{} p{3.5cm} X @{}}
+\textbf{\color{primary}Lenguajes}         & Python (Av.), SQL (Av.), JavaScript/TS, Bash, Java \\[1pt]
+\textbf{\color{primary}ML / Estad\'istica}  & Scikit-learn, TensorFlow, PyTorch, XGBoost, Clustering, Pruebas A/B, NLP \\[1pt]
+\textbf{\color{primary}IA / LLMs}          & OpenAI API, Gemini, LLaMA, Mistral, DeepSeek, Prompt Engineering \\[1pt]
+\textbf{\color{primary}Datos / Cloud}      & PySpark, ETL/ELT, BigQuery, Azure Databricks, AWS, Docker, Kubernetes, CI/CD \\[1pt]
+\textbf{\color{primary}Bases de Datos}     & PostgreSQL, MongoDB, Redis \\[1pt]
+\textbf{\color{primary}Anal\'itica \& BI}  & Power BI, Tableau, Streamlit, Grafana, Git \textbullet\ Ingl\'es B2 \\
+\end{tabularx}
+}
+
+% --- CERTIFICACIONES & OBJETIVO (2 columnas) ---
+\vspace{2pt}
+\begin{minipage}[t]{0.46\textwidth}
+\section{Certificaciones}
+{\footnotesize
+\begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=0pt, parsep=0pt]
+  \item \href{https://dvillagrans.dev/about#google-cloud}{Google Cloud Fundamentals \color{accent}\faExternalLink*}
+  \item \href{https://dvillagrans.dev/about#docker-udemy}{Docker \& Docker Compose --- Udemy \color{accent}\faExternalLink*}
+  \item \href{https://dvillagrans.dev/about#docker-coursera}{Docker Fundamentals --- Coursera \color{accent}\faExternalLink*}
+  \item \href{https://dvillagrans.dev/about#oracle-database}{Oracle Database \color{accent}\faExternalLink*}
+  \item \href{https://dvillagrans.dev/about#github-actions}{GitHub Actions \color{accent}\faExternalLink*}
+  \item \href{https://dvillagrans.dev/about#coursera-specialization}{Especializaci\'on --- Coursera \color{accent}\faExternalLink*}
+\end{itemize}
+}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.50\textwidth}
+\section{Objetivo Profesional}
+{\small\color{textdark}
+El rol de anal\'itica para pagos no reconocidos conecta con mi perfil. Mi experiencia
+en clustering sobre \textbf{30M+ registros} replica la l\'ogica del an\'alisis de fraude:
+identificar anomal\'ias en grandes vol\'umenes con m\'ultiples variables.
+Busco aplicar este rigor estad\'istico en \textbf{HSBC}.
+}
+\end{minipage}
+
+\end{document}
