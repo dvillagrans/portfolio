@@ -239,7 +239,7 @@ export default function FeaturedWork() {
                 </div>
 
                 {p.id === "03" ? (
-                  <div className="lg:w-1/2 h-full flex flex-col">
+                  <div className="lg:w-1/2 flex flex-col min-h-[220px] sm:min-h-[240px] lg:min-h-[320px] xl:min-h-[360px]">
                     <VizContainer height="100%">
                       <IndiaAQIViz />
                     </VizContainer>

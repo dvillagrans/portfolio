@@ -408,3 +408,9 @@ html.back-transition::view-transition-new(root) {
 .modal-enter {
   animation: modal-enter 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* ─── Certification card arrow hover ─── */
+.cert-card:hover .cert-arrow {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+}
