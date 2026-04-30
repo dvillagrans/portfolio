@@ -150,7 +150,7 @@ export const DATA = {
     {
       title: "COVID-19 Risk Profiles (Mexico)",
       caseStudy: true,
-      href: "/projects/covid-perfiles",
+      href: "https://covid.dvillagrans.dev",
       dates: "2025",
       active: true,
       role: "Data Science · Clustering & Analytics",
@@ -178,7 +178,7 @@ export const DATA = {
       links: [
         {
           type: "Dashboard",
-          href: "https://identificaci-on-de-perfiles-de-ries.vercel.app/",
+          href: "https://covid.dvillagrans.dev",
           icon: <Icons.globe className="size-3" />
         }
       ],
@@ -366,7 +366,7 @@ export const DATA = {
     },
     {
       title: "India National Air Quality Intelligence System",
-      href: "https://github.com/dvillagrans/india-air-quality-etl",
+      href: "https://aqi-india.dvillagrans.dev",
       dates: "Dec 2024",
       active: false,
       role: "Data Engineer",
@@ -380,9 +380,9 @@ export const DATA = {
       ],
       links: [
         {
-          type: "Source",
-          href: "https://github.com/dvillagrans/india-air-quality-etl",
-          icon: <Icons.github className="size-3" />,
+          type: "Live",
+          href: "https://aqi-india.dvillagrans.dev",
+          icon: <Icons.globe className="size-3" />,
         },
       ],
       image: {

@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1777532784.44285 "/home/dvillagrans/Documentos/personal/portfolio-v2/docs/resume/cv-hsbc.tex" "cv-hsbc.pdf" "cv-hsbc" 1777532785.18585 0
+["pdflatex"] 1777536966.70577 "/home/dvillagrans/Documentos/personal/portfolio-v2/docs/resume/cv-hsbc.tex" "cv-hsbc.pdf" "cv-hsbc" 1777536967.58689 0
   "/etc/texmf/web2c/texmf.cnf" 1756617243.55752 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/dvillagrans/Documentos/personal/portfolio-v2/docs/resume/cv-hsbc.tex" 1777532299.82432 8494 a86e5573538190ecf8be9d16cc74a561 ""
+  "/home/dvillagrans/Documentos/personal/portfolio-v2/docs/resume/cv-hsbc.tex" 1777536768.85915 8612 894b3618af3099977bd949cad3f39944 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/fontawesome5/fa5free0.enc" 1622837620 3083 a707712f77b073b3833e4b1334a30e99 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/fontawesome5/fa5free1.enc" 1622837620 3042 0e2b14b9be7d01075a4c4591d5d1781b ""
@@ -163,7 +163,6 @@
   "/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty" 1700082560 55487 80a65caedd3722f4c20a14a69e785d8f ""
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
-  "/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc" 1202520719 2840 216e6e45ad352e2456e1149f28885bee ""
   "/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc" 1202520719 2327 9d6df24f9c4f7368395224341a95523a ""
   "/usr/share/texmf/fonts/tfm/public/lm/lmex10.tfm" 1148093231 992 ce925c9346c7613270a79afbee98c070 ""
   "/usr/share/texmf/fonts/tfm/public/lm/lmmi10.tfm" 1148093231 1528 6d36b2385e0ca062a654de6ac59cb34f ""
@@ -184,7 +183,6 @@
   "/usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb" 1254269338 30388 702fae6a5f0e6e9c48a1d872b442ffcf ""
   "/usr/share/texmf/fonts/type1/public/lm/lmr10.pfb" 1255129361 119235 f35b44530a1d90eb90fe15d9cba67ea0 ""
   "/usr/share/texmf/fonts/type1/public/lm/lmr7.pfb" 1255129361 121145 68312a933e2c689ed40ec0aba373e279 ""
-  "/usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb" 1254269338 27863 09ce3735688ffde955e72da27c95b61a ""
   "/usr/share/texmf/tex/latex/lm/lmodern.sty" 1616454256 1608 b00724785a9e9c599e5181bb8729160b ""
   "/usr/share/texmf/tex/latex/lm/omllmm.fd" 1616454256 890 57f5adccd504fb5c98bdf99ed7e7f195 ""
   "/usr/share/texmf/tex/latex/lm/omslmsy.fd" 1616454256 807 3de192f3efa968913bd2f096a7b430d8 ""
@@ -193,9 +191,9 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1756617673.62255 5312232 f3296911be9cc021788f3f879cf0a47d ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1760375777 6822932 a3b682babad52019a9522ce95feda506 ""
-  "cv-hsbc.aux" 1777532785.11231 898 c1cd1ad9222d0da373b7c90e1401910b "pdflatex"
-  "cv-hsbc.out" 1777532785.11231 811 bfd862d6ef4cf6dc6a30e6dafcc89968 "pdflatex"
-  "cv-hsbc.tex" 1777532299.82432 8494 a86e5573538190ecf8be9d16cc74a561 ""
+  "cv-hsbc.aux" 1777536967.47408 898 749280bc04e1ad8016e2145c86e07999 "pdflatex"
+  "cv-hsbc.out" 1777536967.47508 811 bfd862d6ef4cf6dc6a30e6dafcc89968 "pdflatex"
+  "cv-hsbc.tex" 1777536768.85915 8612 894b3618af3099977bd949cad3f39944 ""
   (generated)
   "cv-hsbc.aux"
   "cv-hsbc.log"

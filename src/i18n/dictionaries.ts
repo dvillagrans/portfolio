@@ -50,9 +50,9 @@ export const en = {
           { value: "30M+", label: "records analyzed" },
           { value: "9", label: "risk profiles" }
         ],
-        links: [{ label: "Dashboard", url: "https://identificaci-on-de-perfiles-de-ries.vercel.app/" }],
-        href: "/projects/covid-perfiles",
-        caseStudy: "/projects/covid-perfiles"
+        links: [{ label: "Dashboard", url: "https://covid.dvillagrans.dev" }],
+        href: "https://covid.dvillagrans.dev",
+        caseStudy: "https://covid.dvillagrans.dev"
       },
       {
         id: "02",
@@ -89,10 +89,10 @@ export const en = {
           { value: "500+", label: "IoT sensors" }
         ],
         links: [
-          { label: "Live view", url: "https://app.powerbi.com/view?r=eyJrIjoiOTQ4NmZlMjItMDU0YS00YTMxLThkNDEtNWZjYWRmNTM4Njg1IiwidCI6IjY3ZGU4N2FjLWRhYzgtNDYwNy05NGE0LWM4YTM3YmYwMmE2MSIsImMiOjR9" },
-          { label: "Documentation", url: "https://dvillagrans.github.io/India-Air-Quality-ETL-Project/" }
+          { label: "Live view", url: "https://aqi-india.dvillagrans.dev" },
+          { label: "Repo", url: "https://github.com/dvillagrans/india-air-quality-etl" }
         ],
-        href: "https://app.powerbi.com/view?r=eyJrIjoiOTQ4NmZlMjItMDU0YS00YTMxLThkNDEtNWZjYWRmNTM4Njg1IiwidCI6IjY3ZGU4N2FjLWRhYzgtNDYwNy05NGE0LWM4YTM3YmYwMmE2MSIsImMiOjR9",
+        href: "https://aqi-india.dvillagrans.dev",
       }
     ]
   },
@@ -223,14 +223,14 @@ export const en = {
           { label: "negocios.timeup.mx", url: "https://negocios.timeup.mx" }
         ]
       },
-      { year: "2025", title: "COVID-19 Risk Profiles (Mexico)", domain: "Data Science / Clustering", isFeatured: true, caseStudy: "/projects/covid-perfiles", links: [{ label: "Dashboard", url: "https://identificaci-on-de-perfiles-de-ries.vercel.app/" }] },
+      { year: "2025", title: "COVID-19 Risk Profiles (Mexico)", domain: "Data Science / Clustering", isFeatured: true, caseStudy: "https://covid.dvillagrans.dev", links: [{ label: "Dashboard", url: "https://covid.dvillagrans.dev" }] },
       { year: "2025", title: "NYC Ride-Hailing Analytics Dashboard", domain: "Data Science / Streamlit", links: [ { label: "Dashboard", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" }, { label: "Repo", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" } ] },
       { year: "2025", title: "Métodos de Optimización No Lineal", domain: "Optimization / Flask", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal" } ] },
       { year: "2025", title: "Matemáticas Avanzadas - Métodos de Optimización", domain: "Optimization / Education", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Metodos-de-optimizacion" } ] },
       { year: "2025", title: "Population Dashboard", domain: "Analytics / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/population-dashboard" } ] },
       { year: "2025", title: "Global Health Analytics Dashboard", domain: "Analytics / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/health-analytics-dashboard" } ] },
       { year: "2025", title: "Video Game Market Intelligence", domain: "Analytics / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/videogames-dashboard" } ] },
-      { year: "2024", title: "India Air Quality ETL", domain: "Data Engineering / Azure", links: [ { label: "Repo", url: "https://github.com/dvillagrans/india-air-quality-etl" } ] },
+      { year: "2024", title: "India Air Quality ETL", domain: "Data Engineering / Azure", links: [ { label: "Live", url: "https://aqi-india.dvillagrans.dev" }, { label: "Repo", url: "https://github.com/dvillagrans/india-air-quality-etl" } ] },
       { year: "2024", title: "Code Master", domain: "EdTech / Full Stack", links: [ { label: "Website", url: "https://codemaster-two.vercel.app" }, { label: "Repo", url: "https://github.com/dvillagrans/Code-Master" } ] },
       { year: "2024", title: "Technical Portfolio Platform", domain: "Web Development / Next.js", links: [ { label: "Website", url: "https://www.dvillagrans.dev/" }, { label: "Repo", url: "https://github.com/dvillagrans/portfolio" } ] },
       { year: "2024", title: "Houses Prices Prediction", domain: "Machine Learning / Flask", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Houses-Prices-Prediction" } ] },
@@ -387,7 +387,7 @@ export const en = {
       { label: "Deliverables", value: "LaTeX report, Next.js portfolio" }
     ],
     links: { dashboard: "View Dashboard", repo: "Repository", report: "Report (if available)" },
-    linkDashboard: "https://identificaci-on-de-perfiles-de-ries.vercel.app/",
+    linkDashboard: "https://covid.dvillagrans.dev",
     quote: { text: "What really hurt was not having ", bold: "multivariate risk profiles", text2: ": isolated factors were known (age, diabetes, etc.), but not how they combine in practice.", title: "The Real Pain Point" },
     constraints: {
       title1: "01 // Hard Constraints",
@@ -476,9 +476,9 @@ export const es = {
           { value: "30M+", label: "registros analizados" },
           { value: "9", label: "perfiles de riesgo" }
         ],
-        links: [{ label: "Dashboard", url: "https://identificaci-on-de-perfiles-de-ries.vercel.app/" }],
-        href: "/projects/covid-perfiles",
-        caseStudy: "/projects/covid-perfiles"
+        links: [{ label: "Dashboard", url: "https://covid.dvillagrans.dev" }],
+        href: "https://covid.dvillagrans.dev",
+        caseStudy: "https://covid.dvillagrans.dev"
       },
       {
         id: "02",
@@ -515,10 +515,10 @@ export const es = {
           { value: "500+", label: "sensores IoT" }
         ],
         links: [
-          { label: "Vista en vivo", url: "https://app.powerbi.com/view?r=eyJrIjoiOTQ4NmZlMjItMDU0YS00YTMxLThkNDEtNWZjYWRmNTM4Njg1IiwidCI6IjY3ZGU4N2FjLWRhYzgtNDYwNy05NGE0LWM4YTM3YmYwMmE2MSIsImMiOjR9" },
-          { label: "Documentación", url: "https://dvillagrans.github.io/India-Air-Quality-ETL-Project/" }
+          { label: "Vista en vivo", url: "https://aqi-india.dvillagrans.dev" },
+          { label: "Repo", url: "https://github.com/dvillagrans/india-air-quality-etl" }
         ],
-        href: "https://app.powerbi.com/view?r=eyJrIjoiOTQ4NmZlMjItMDU0YS00YTMxLThkNDEtNWZjYWRmNTM4Njg1IiwidCI6IjY3ZGU4N2FjLWRhYzgtNDYwNy05NGE0LWM4YTM3YmYwMmE2MSIsImMiOjR9",
+        href: "https://aqi-india.dvillagrans.dev",
       }
     ]
   },
@@ -649,14 +649,14 @@ export const es = {
           { label: "negocios.timeup.mx", url: "https://negocios.timeup.mx" }
         ]
       },
-      { year: "2025", title: "Perfiles de riesgo COVID-19 (México)", domain: "Data Science / Clustering", isFeatured: true, caseStudy: "/projects/covid-perfiles", links: [{ label: "Dashboard", url: "https://identificaci-on-de-perfiles-de-ries.vercel.app/" }] },
+      { year: "2025", title: "Perfiles de riesgo COVID-19 (México)", domain: "Data Science / Clustering", isFeatured: true, caseStudy: "https://covid.dvillagrans.dev", links: [{ label: "Dashboard", url: "https://covid.dvillagrans.dev" }] },
       { year: "2025", title: "NYC Ride-Hailing Analytics Dashboard", domain: "Data Science / Streamlit", links: [ { label: "Dashboard", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" }, { label: "Repo", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" } ] },
       { year: "2025", title: "Métodos de Optimización No Lineal", domain: "Optimización / Flask", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal" } ] },
       { year: "2025", title: "Matemáticas Avanzadas - Métodos de Optimización", domain: "Optimización / Educación", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Metodos-de-optimizacion" } ] },
       { year: "2025", title: "Dashboard de Población por Continente", domain: "Analítica / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/population-dashboard" } ] },
       { year: "2025", title: "Global Health Analytics Dashboard", domain: "Analítica / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/health-analytics-dashboard" } ] },
       { year: "2025", title: "Video Game Market Intelligence", domain: "Analítica / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/videogames-dashboard" } ] },
-      { year: "2024", title: "India Air Quality ETL", domain: "Data Engineering / Azure", links: [ { label: "Repo", url: "https://github.com/dvillagrans/india-air-quality-etl" } ] },
+      { year: "2024", title: "India Air Quality ETL", domain: "Data Engineering / Azure", links: [ { label: "Live", url: "https://aqi-india.dvillagrans.dev" }, { label: "Repo", url: "https://github.com/dvillagrans/india-air-quality-etl" } ] },
       { year: "2024", title: "Code Master", domain: "EdTech / Full Stack", links: [ { label: "Website", url: "https://codemaster-two.vercel.app" }, { label: "Repo", url: "https://github.com/dvillagrans/Code-Master" } ] },
       { year: "2024", title: "Technical Portfolio Platform", domain: "Desarrollo Web / Next.js", links: [ { label: "Website", url: "https://www.dvillagrans.dev/" }, { label: "Repo", url: "https://github.com/dvillagrans/portfolio" } ] },
       { year: "2024", title: "Predicción de precios de casas", domain: "Machine Learning / Flask", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Houses-Prices-Prediction" } ] },
@@ -812,7 +812,7 @@ export const es = {
       { label: "Entregables", value: "Reporte LaTeX, portfolio Next.js" }
     ],
     links: { dashboard: "Ver Dashboard", repo: "Repositorio", report: "Reporte (si aplica)" },
-    linkDashboard: "https://identificaci-on-de-perfiles-de-ries.vercel.app/",
+    linkDashboard: "https://covid.dvillagrans.dev",
     quote: { text: "Lo que dolía de verdad era no tener ", bold: "perfiles de riesgo multivariados", text2: ": se conocían factores aislados (edad, diabetes, etc.), pero no cómo se combinan en la realidad.", title: "El Dolor Real" },
     constraints: {
       title1: "01 // Restricciones Duras",
