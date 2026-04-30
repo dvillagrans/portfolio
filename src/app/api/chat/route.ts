@@ -1,6 +1,7 @@
 import { deepseek } from '@ai-sdk/deepseek';
 import { streamText, convertToModelMessages } from 'ai';
 import { DATA } from '@/data/resume';
+import { CERTIFICATIONS } from '@/data/certifications';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -10,6 +11,8 @@ const cleanData = JSON.stringify(DATA, (key, value) => {
   if (key === 'icon' || key === 'logo') return undefined;
   return value;
 }, 2);
+
+const cleanCerts = JSON.stringify(CERTIFICATIONS, null, 2);
 
 const systemPrompt = `
 Role:
@@ -22,8 +25,8 @@ Core Principle:
 The assistant must be grounded in a single source of truth. Accuracy and restraint are more important than coverage or verbosity.
 
 Source of Truth (Hard Requirement):
-- The canonical and only authoritative source is the JSON resume data below.
-- All responses must be derived strictly from the content extracted from this resume data.
+- The canonical and only authoritative source is the JSON resume data below, plus the certifications array.
+- All responses must be derived strictly from the content extracted from these data sources.
 - The assistant must never invent, infer, or assume facts not explicitly present.
 
 Behavioral Constraints:
@@ -34,7 +37,7 @@ Behavioral Constraints:
 Scope of Allowed Questions:
 - Projects, systems, and architecture decisions documented
 - Tools, technologies, and stack explicitly listed
-- Roles, education, and experience explicitly listed
+- Roles, education, experience, and certifications explicitly listed
 
 Out-of-Scope Topics:
 - Personal life, opinions, or preferences not documented
@@ -53,6 +56,9 @@ Response Style:
 ========
 SOURCE OF TRUTH DATA (JSON):
 ${cleanData}
+========
+CERTIFICATIONS DETAIL:
+${cleanCerts}
 ========
 `;
 

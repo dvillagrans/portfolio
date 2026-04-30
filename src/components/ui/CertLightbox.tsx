@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { gsap } from 'gsap';
 
@@ -23,6 +24,11 @@ export function CertLightbox({
   const imageRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<HTMLDivElement>(null);
   const isClosing = useRef(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleClose = useCallback(() => {
     if (isClosing.current) return;
@@ -44,6 +50,8 @@ export function CertLightbox({
   }, [onClose]);
 
   useEffect(() => {
+    if (!mounted) return;
+
     const tl = gsap.timeline();
 
     tl.fromTo(overlayRef.current,
@@ -71,9 +79,9 @@ export function CertLightbox({
       window.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
     };
-  }, [handleClose]);
+  }, [handleClose, mounted]);
 
-  return (
+  const lightboxContent = (
     <div
       ref={overlayRef}
       onClick={handleClose}
@@ -256,4 +264,8 @@ export function CertLightbox({
       </div>
     </div>
   );
+
+  if (!mounted) return null;
+
+  return createPortal(lightboxContent, document.body);
 }
