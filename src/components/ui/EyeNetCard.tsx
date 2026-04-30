@@ -7,10 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import Link from "next/link";
-import {
-  ArrowUpRight,
-  Zap,
-} from "lucide-react";
+import { Zap } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,7 +30,7 @@ interface PipelineNodeConfig {
 function getNodeStyles(type: NodeType) {
   const map: Record<NodeType, { border: string; bg: string; hoverBorder: string; text: string }> = {
     trigger:  { border: "#1e3a1e", bg: "#0a150a", hoverBorder: "#4ade80", text: "#4ade80" },
-    transform: { border: "#2a2a2a", bg: "#111111", hoverBorder: "#888888", text: "#555555" },
+    transform: { border: "#2a2a2a", bg: "#111111", hoverBorder: "#888888", text: "#888888" },
     ai:       { border: "#1e2a3a", bg: "#0a0f15", hoverBorder: "#60a5fa", text: "#60a5fa" },
     storage:  { border: "#2a1a1a", bg: "#150a0a", hoverBorder: "#f87171", text: "#f87171" },
     output:   { border: "#2a2218", bg: "#15150a", hoverBorder: "#c8a96e", text: "#c8a96e" },
@@ -66,7 +63,11 @@ function NodeIcon({ type }: { type: NodeType }) {
       </svg>
     );
   }
-  return <Zap size={14} strokeWidth={1.5} />;
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </svg>
+  );
 }
 
 /* Tooltip montado con portal para evitar overflow clipping */
@@ -148,7 +149,8 @@ function PipelineNodeItem({ node, index }: { node: PipelineNodeConfig; index: nu
         className="relative flex flex-col items-center gap-1.5 px-3 py-3 rounded-[10px] transition-all duration-200 cursor-default select-none"
         style={{
           minWidth: 110,
-          border: `0.5px solid ${hovered ? styles.hoverBorder : styles.border}`,
+          border: "1px solid rgba(255,255,255,0.1)",
+          borderTop: `2px solid ${hovered ? styles.hoverBorder : styles.border}`,
           background: styles.bg,
           transform: hovered ? "translateY(-2px)" : "translateY(0)",
         }}
@@ -159,7 +161,10 @@ function PipelineNodeItem({ node, index }: { node: PipelineNodeConfig; index: nu
         <span className="font-sans text-[13px] font-semibold leading-tight" style={{ color: "#f0ead8" }}>
           {node.label}
         </span>
-        <span className="font-mono text-[9px] uppercase tracking-widest" style={{ color: "#3a3a3a" }}>
+        <span
+          className="font-mono text-[9px] uppercase tracking-widest"
+          style={{ color: styles.text, letterSpacing: "0.15em" }}
+        >
           {node.sublabel}
         </span>
         {node.tag && (
@@ -210,7 +215,19 @@ function PipelineArrow({ delay }: { delay: number }) {
    MÉTRICA ANIMADA
    ────────────────────────────────────────────────────────────── */
 
-function AnimatedMetric({ value, label, delay = 0 }: { value: string; label: string; delay?: number }) {
+function AnimatedMetric({
+  value,
+  label,
+  sublabel,
+  delay = 0,
+  valueClassName = "",
+}: {
+  value: string;
+  label: string;
+  sublabel?: string;
+  delay?: number;
+  valueClassName?: string;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
   const reduced = useReducedMotion();
 
@@ -244,20 +261,21 @@ function AnimatedMetric({ value, label, delay = 0 }: { value: string; label: str
   }, [value, delay, reduced]);
 
   return (
-    <div className="flex flex-col items-center md:items-start gap-1.5">
+    <div className="flex flex-col gap-1">
       <span
         ref={ref}
-        className="font-sans font-semibold tabular-nums"
-        style={{ fontSize: "22px", letterSpacing: "-0.02em", color: "#f0ead8" }}
+        className={`font-mono font-bold tabular-nums text-white ${valueClassName}`}
       >
         {reduced ? value : "0"}
       </span>
-      <span
-        className="font-mono uppercase"
-        style={{ fontSize: "9px", letterSpacing: "0.08em", color: "#2e2e2e" }}
-      >
+      <span className="font-mono text-[10px] text-white/30 tracking-widest uppercase block">
         {label}
       </span>
+      {sublabel && (
+        <span className="font-sans text-[11px] text-white/40 block mt-0.5">
+          {sublabel}
+        </span>
+      )}
     </div>
   );
 }
@@ -273,21 +291,70 @@ export default function EyeNetCard() {
 
   const isEn = language === "en";
 
-  /* GSAP entrance */
+  /* GSAP internal timeline */
   useEffect(() => {
     const ctx = gsap.context(() => {
-      if (reduced) {
-        if (cardRef.current) gsap.set(cardRef.current, { opacity: 1, y: 0 });
-        return;
-      }
-      gsap.from(cardRef.current, {
-        opacity: 0,
-        y: 20,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: { trigger: cardRef.current, start: "top 88%" },
+      if (reduced) return;
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: cardRef.current,
+          start: "top 80%",
+          once: true,
+        },
+        delay: 0.3,
       });
+
+      tl.from(".eyenet-meta", {
+        opacity: 0,
+        y: -8,
+        duration: 0.4,
+        ease: "power2.out",
+      });
+
+      tl.from(".eyenet-title", {
+        opacity: 0,
+        y: 12,
+        duration: 0.5,
+        ease: "power3.out",
+      }, "-=0.1");
+
+      tl.from(".eyenet-desc", {
+        opacity: 0,
+        y: 8,
+        duration: 0.4,
+        ease: "power2.out",
+      }, "-=0.3");
+
+      tl.from(".eyenet-badges", {
+        opacity: 0,
+        y: 6,
+        duration: 0.35,
+        ease: "power2.out",
+      }, "-=0.25");
+
+      tl.from(".eyenet-flow", {
+        opacity: 0,
+        scale: 0.98,
+        duration: 0.6,
+        ease: "power2.out",
+      }, "-=0.2");
+
+      tl.from(".eyenet-metric", {
+        opacity: 0,
+        y: 10,
+        stagger: 0.08,
+        duration: 0.4,
+        ease: "power2.out",
+      }, "-=0.3");
+
+      tl.from(".eyenet-footer", {
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.out",
+      }, "-=0.2");
     }, cardRef);
+
     return () => ctx.revert();
   }, [reduced]);
 
@@ -350,8 +417,33 @@ export default function EyeNetCard() {
   const visibleTags = tags.slice(0, 7);
   const extraCount = tags.length - visibleTags.length;
 
+  const blueTags = ["Python"];
+  const amberTags = ["Docker"];
+
+  const getTagStyle = (tag: string) => {
+    if (blueTags.includes(tag)) {
+      return {
+        color: "rgba(96,165,250,0.8)",
+        border: "1px solid rgba(96,165,250,0.2)",
+        background: "rgba(96,165,250,0.05)",
+      };
+    }
+    if (amberTags.includes(tag)) {
+      return {
+        color: "rgba(251,191,36,0.6)",
+        border: "1px solid rgba(251,191,36,0.15)",
+        background: "rgba(251,191,36,0.05)",
+      };
+    }
+    return {
+      color: "rgba(255,255,255,0.3)",
+      border: "1px solid rgba(255,255,255,0.08)",
+      background: "transparent",
+    };
+  };
+
   return (
-    <article ref={cardRef} className="relative w-full">
+    <article ref={cardRef} className="relative w-full eyenet-card">
       <style>{`
         @keyframes flow {
           0%   { left: -5px; opacity: 0; }
@@ -359,101 +451,107 @@ export default function EyeNetCard() {
           80%  { opacity: 1; }
           100% { left: 32px; opacity: 0; }
         }
-        @keyframes pulse-live {
-          0%, 100% { opacity: 1; }
-          50%       { opacity: 0.3; }
-        }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
       <div
-        className="relative overflow-hidden"
+        className="relative overflow-hidden rounded-2xl transition-all"
         style={{
-          borderRadius: 16,
-          background: "#0d0d0d",
-          border: "0.5px solid #1e1e1e",
+          background: "#0d1117",
+          boxShadow: "0 0 0 1px rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.3)",
+        }}
+        onMouseEnter={(e) => {
+          gsap.to(e.currentTarget, {
+            boxShadow: "0 0 0 1px rgba(255,255,255,0.1), 0 20px 60px rgba(0,0,0,0.4)",
+            duration: 0.3,
+            ease: "power2.out",
+          });
+        }}
+        onMouseLeave={(e) => {
+          gsap.to(e.currentTarget, {
+            boxShadow: "0 0 0 1px rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.3)",
+            duration: 0.4,
+            ease: "power2.inOut",
+          });
         }}
       >
         {/* ═══ HEADER ═══ */}
-        <div
-          className="p-6 md:p-8 flex flex-col md:flex-row md:items-start md:justify-between gap-4"
-          style={{ borderBottom: "0.5px solid #1a1a1a" }}
-        >
-          <div className="flex flex-col gap-2">
-            {/* Meta row */}
-            <div className="flex items-center gap-2.5">
-              <span className="font-mono text-[10px] tracking-[0.1em]" style={{ color: "#3a3a3a" }}>
+        <header className="p-6 pb-4 md:p-8 md:pb-5">
+          {/* Fila superior: metadata técnica */}
+          <div className="eyenet-meta flex items-center justify-between mb-5">
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="font-mono text-[11px] text-white/30 tracking-widest">
                 SYS_000
               </span>
-              <span style={{ color: "#2a2a2a" }}>·</span>
-              <span className="flex items-center gap-1.5">
-                <span
-                  className="block w-[5px] h-[5px] rounded-full bg-green-500"
-                  style={{ animation: "pulse-live 2s infinite" }}
-                />
-                <span className="font-mono text-[10px] tracking-[0.1em]" style={{ color: "#4ade80" }}>
+
+              <span className="text-white/15">·</span>
+
+              {/* Badge LIVE — con pulso real */}
+              <div className="flex items-center gap-1.5">
+                <div className="relative">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <div className="absolute inset-0 w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping opacity-75" />
+                </div>
+                <span className="font-mono text-[11px] text-emerald-400 tracking-widest">
                   LIVE
                 </span>
-              </span>
-              <span style={{ color: "#2a2a2a" }}>·</span>
-              <span className="font-mono text-[10px] tracking-[0.1em]" style={{ color: "#3a3a3a" }}>
+              </div>
+
+              <span className="text-white/15">·</span>
+
+              <span className="font-mono text-[11px] text-white/30 tracking-widest">
                 {isEn ? "PROFESSIONAL EXPERIENCE" : "EXPERIENCIA PROFESIONAL"}
               </span>
             </div>
 
-            {/* Title */}
-            <h3 className="font-sans font-semibold leading-tight" style={{ fontSize: "24px", color: "#f0ead8" }}>
-              EyeNet
-              <span className="font-light ml-2" style={{ color: "#6a6a6a" }}>
-                — AI &amp; Automation
-              </span>
-            </h3>
+            {/* Fecha — derecha */}
+            <span className="font-mono text-[11px] text-emerald-400/70 hidden sm:block">
+              {isEn ? "Apr 2025 — May 2026" : "Abr 2025 — May 2026"}
+            </span>
+          </div>
 
-            {/* Description */}
-            <p className="font-sans text-[13px] leading-relaxed max-w-md" style={{ color: "#4a4a4a" }}>
-              {isEn
-                ? "LLM pipelines · ETL/ELT · containerized microservices · AI assistants · GPU cluster"
-                : "Pipelines LLM · ETL/ELT · microservicios containerizados · asistentes IA · cluster GPU"}
+          {/* Headline — dos líneas con jerarquía clara */}
+          <div className="eyenet-title mb-4">
+            <h2 className="font-sans text-4xl font-black text-white leading-none tracking-tight mb-1">
+              EyeNet
+            </h2>
+            <p className="font-mono text-sm text-white/40 tracking-wide">
+              AI &amp; Automation Platform
             </p>
           </div>
 
-          {/* Badges */}
-          <div className="flex flex-col items-start md:items-end gap-1.5 shrink-0">
-            <span
-              className="font-mono text-[10px] font-medium px-2.5 py-1 rounded-full"
-              style={{ color: "#4ade80", border: "0.5px solid #1e3a1e", background: "#0a150a" }}
-            >
-              {isEn ? "Apr 2025 – May 2026" : "Abr 2025 – May 2026"}
-            </span>
-            <span
-              className="font-mono text-[10px] font-medium px-2.5 py-1 rounded-full"
-              style={{ color: "#6a6a6a", border: "0.5px solid #2a2a2a", background: "#111111" }}
-            >
+          {/* Descripción técnica — más legible */}
+          <p className="eyenet-desc font-sans text-sm text-white/55 leading-relaxed max-w-lg">
+            {isEn
+              ? "LLM pipelines · ETL/ELT · containerized microservices · AI assistants · GPU cluster"
+              : "Pipelines LLM · ETL/ELT · microservicios containerizados · asistentes IA · cluster GPU"}
+          </p>
+
+          {/* Badges de contexto — debajo de la descripción */}
+          <div className="eyenet-badges flex items-center gap-2 mt-3">
+            <span className="font-mono text-[10px] px-2 py-0.5 rounded-sm text-white/40 border border-white/10">
               {isEn ? "Remote" : "Remoto"}
             </span>
-            <span
-              className="font-mono text-[10px] font-medium px-2.5 py-1 rounded-full"
-              style={{ color: "#c8a96e", border: "0.5px solid #2a2218", background: "#15150a" }}
-            >
+            <span className="font-mono text-[10px] px-2 py-0.5 rounded-sm text-amber-400/70 border border-amber-400/20 bg-amber-400/5">
               {isEn ? "Partial NDA" : "NDA Parcial"}
             </span>
           </div>
-        </div>
+        </header>
 
         {/* ═══ PIPELINE ═══ */}
-        <div className="p-6 md:p-8" style={{ borderBottom: "0.5px solid #1a1a1a" }}>
+        <div className="eyenet-flow px-6 md:px-8 pb-6 md:pb-8" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
           {/* Section header */}
-          <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center justify-between mb-5 pt-5">
             <div className="flex items-center gap-2">
-              <Zap size={12} style={{ color: "#2a2a2a" }} />
-              <span className="font-mono text-[10px] tracking-[0.15em] uppercase" style={{ color: "#3a3a3a" }}>
+              <Zap size={12} className="text-white/15" />
+              <span className="font-mono text-[10px] tracking-[0.15em] uppercase text-white/25">
                 {isEn ? "SYSTEM ARCHITECTURE" : "ARQUITECTURA DEL SISTEMA"}
               </span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="block w-[5px] h-[5px] rounded-full" style={{ background: "#c8a96e" }} />
-              <span className="font-mono text-[9px] tracking-widest" style={{ color: "#2a2a2a" }}>
+              <span className="block w-[5px] h-[5px] rounded-full bg-amber-400/60" />
+              <span className="font-mono text-[9px] tracking-widest text-white/15">
                 5 {isEn ? "nodes active" : "nodos activos"}
               </span>
             </div>
@@ -477,12 +575,12 @@ export default function EyeNetCard() {
           <div className="mt-4 flex flex-wrap items-center gap-3">
             {[
               { color: "#4ade80", label: "TRIGGER" },
-              { color: "#555555", label: "TRANSFORM" },
+              { color: "#888888", label: "TRANSFORM" },
               { color: "#60a5fa", label: "AI" },
               { color: "#f87171", label: "STORAGE" },
               { color: "#c8a96e", label: "OUTPUT" },
             ].map((item) => (
-              <span key={item.label} className="flex items-center gap-1.5 font-mono text-[9px] tracking-widest" style={{ color: "#2a2a2a" }}>
+              <span key={item.label} className="flex items-center gap-1.5 font-mono text-[9px] tracking-widest text-white/15">
                 <span className="block w-[5px] h-[5px] rounded-full" style={{ background: item.color }} />
                 {item.label}
               </span>
@@ -490,49 +588,72 @@ export default function EyeNetCard() {
           </div>
         </div>
 
-        {/* ═══ METRICS ═══ */}
-        <div
-          className="grid grid-cols-2 md:grid-cols-4"
-          style={{ borderBottom: "0.5px solid #1a1a1a" }}
-        >
-          {[
-            { value: "65%", label: isEn ? "LESS MANUAL" : "MENOS MANUAL" },
-            { value: "300+", label: isEn ? "DOCS / WEEK" : "DOCS / SEMANA" },
-            { value: "10K+", label: isEn ? "DAILY REQUESTS" : "REQUESTS DIARIOS" },
-            { value: "92%", label: isEn ? "EXTRACTION ACC." : "PRECISIÓN EXTR." },
-          ].map((m, i) => (
-            <div
-              key={m.label}
-              className="flex flex-col items-center md:items-start gap-1 py-4 px-5"
-              style={{
-                borderRight: i < 3 ? "0.5px solid #1a1a1a" : "none",
-                borderBottom: i < 2 ? "0.5px solid #1a1a1a" : "none",
-              }}
-            >
-              <AnimatedMetric value={m.value} label={m.label} delay={i} />
-            </div>
-          ))}
+        {/* ═══ SEPARATOR + METRICS ═══ */}
+        <div className="mx-6 md:mx-8 border-t border-white/[0.08]" />
+
+        <div className="grid grid-cols-2 md:grid-cols-[1.5fr_1fr_1fr_1fr] divide-x divide-white/[0.08]">
+          <div className="eyenet-metric px-5 md:px-6 py-5">
+            <AnimatedMetric
+              value="65%"
+              label={isEn ? "LESS MANUAL WORK" : "MENOS TRABAJO MANUAL"}
+              sublabel={isEn ? "vs. previous process" : "vs. proceso anterior"}
+              delay={0}
+              valueClassName="text-3xl"
+            />
+          </div>
+          <div className="eyenet-metric px-5 md:px-6 py-5">
+            <AnimatedMetric
+              value="300+"
+              label={isEn ? "DOCS / WEEK" : "DOCS / SEMANA"}
+              sublabel={isEn ? "processed automatically" : "procesados automáticamente"}
+              delay={1}
+              valueClassName="text-2xl"
+            />
+          </div>
+          <div className="eyenet-metric px-5 md:px-6 py-5">
+            <AnimatedMetric
+              value="10K+"
+              label={isEn ? "DAILY REQUESTS" : "REQUESTS DIARIOS"}
+              sublabel={isEn ? "to inference cluster" : "al cluster de inferencia"}
+              delay={2}
+              valueClassName="text-2xl"
+            />
+          </div>
+          <div className="eyenet-metric px-5 md:px-6 py-5">
+            <AnimatedMetric
+              value="92%"
+              label={isEn ? "NER ACCURACY" : "PRECISIÓN NER"}
+              sublabel={isEn ? "entity extraction" : "extracción de entidades"}
+              delay={3}
+              valueClassName="text-2xl"
+            />
+          </div>
         </div>
 
-        {/* ═══ FOOTER ═══ */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 md:p-5">
-          <div className="flex flex-wrap items-center gap-1.5">
-            {visibleTags.map((tag) => (
-              <span
-                key={tag}
-                className="font-mono text-[10px] px-2 py-[3px] rounded"
-                style={{
-                  color: "#2e2e2e",
-                  border: "0.5px solid #1e1e1e",
-                }}
-              >
-                {tag}
-              </span>
-            ))}
+        {/* ═══ SEPARATOR + FOOTER ═══ */}
+        <div className="mx-6 md:mx-8 border-t border-white/[0.08]" />
+
+        <footer className="eyenet-footer flex flex-wrap items-center justify-between gap-4 px-6 md:px-8 py-4">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            {visibleTags.map((tag) => {
+              const style = getTagStyle(tag);
+              return (
+                <span
+                  key={tag}
+                  className="font-mono text-[10px] px-2 py-0.5 rounded-sm"
+                  style={{
+                    color: style.color,
+                    border: style.border,
+                    background: style.background,
+                  }}
+                >
+                  {tag}
+                </span>
+              );
+            })}
             {extraCount > 0 && (
               <span
-                className="font-mono text-[10px] px-2 py-[3px] rounded"
-                style={{ color: "#3a3a3a", border: "0.5px solid #1e1e1e" }}
+                className="font-mono text-[10px] px-2 py-0.5 rounded-sm text-white/20 border border-white/[0.06]"
               >
                 +{extraCount} {isEn ? "more" : "más"}
               </span>
@@ -541,25 +662,14 @@ export default function EyeNetCard() {
 
           <Link
             href="/projects/eyenet"
-            className="group inline-flex items-center gap-1.5 font-mono text-[12px] font-medium px-4 py-2 rounded-[6px] transition-all duration-200"
-            style={{
-              color: "#c8a96e",
-              border: "0.5px solid #2a2218",
-              background: "#0f0d07",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "#c8a96e";
-              e.currentTarget.style.background = "#1a1508";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "#2a2218";
-              e.currentTarget.style.background = "#0f0d07";
-            }}
+            className="group flex items-center gap-2 font-mono text-[11px] tracking-widest text-white/50 hover:text-white transition-colors duration-200"
           >
-            {isEn ? "View case study" : "Ver case study"}
-            <ArrowUpRight size={12} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            <span>{isEn ? "VIEW SYSTEM" : "VER SISTEMA"}</span>
+            <span className="transform group-hover:translate-x-1 transition-transform duration-200">
+              →
+            </span>
           </Link>
-        </div>
+        </footer>
       </div>
     </article>
   );

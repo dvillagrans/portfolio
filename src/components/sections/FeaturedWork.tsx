@@ -7,7 +7,12 @@ import { ArrowUpRight, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useVizReveal } from "@/hooks/useVizReveal";
 import EyeNetCard from "../ui/EyeNetCard";
+import { VizContainer } from "../portfolio/viz/VizContainer";
+import { CovidClusterViz } from "../portfolio/viz/CovidClusterViz";
+import { NYCFareViz } from "../portfolio/viz/NYCFareViz";
+import { IndiaAQIViz } from "../portfolio/viz/IndiaAQIViz";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,6 +39,7 @@ export default function FeaturedWork() {
   const cardsRef = useRef<(HTMLElement | null)[]>([]);
   const { t, language } = useLanguage();
   const reduced = useReducedMotion();
+  const vizRevealRef = useVizReveal();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -110,14 +116,14 @@ export default function FeaturedWork() {
           })}
 
           {/* GRID PROJECTS */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+          <div ref={vizRevealRef} className="secondary-cards-grid grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             {projects.filter(p => p.type === 'grid').map((p) => {
               const currentIdx = globalIdx++;
               return (
                 <article 
                   key={p.id}
                   ref={(el) => { cardsRef.current[currentIdx] = el; }}
-                  className="group flex flex-col rounded-[2rem] border border-charcoal/5 bg-white p-8 transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
+                  className="secondary-card group flex flex-col rounded-[2rem] border border-charcoal/5 bg-white p-8 transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
                 >
                   <div className="mb-8 flex items-center justify-between">
                     <span className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-charcoal/30">
@@ -135,13 +141,27 @@ export default function FeaturedWork() {
                     {p.problem}
                   </p>
 
-                  <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-charcoal/[0.03] mb-8 border border-charcoal/5">
-                    <img 
-                      src={p.image} 
-                      alt={p.title} 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                  </div>
+                  {p.id === "01" ? (
+                    <div className="mb-8">
+                      <VizContainer height={180}>
+                        <CovidClusterViz />
+                      </VizContainer>
+                    </div>
+                  ) : p.id === "02" ? (
+                    <div className="mb-8">
+                      <VizContainer height={160}>
+                        <NYCFareViz />
+                      </VizContainer>
+                    </div>
+                  ) : (
+                    <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-charcoal/[0.03] mb-8 border border-charcoal/5">
+                      <img 
+                        src={p.image} 
+                        alt={p.title} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    </div>
+                  )}
 
                   <div className="grid grid-cols-2 gap-4 mb-8">
                     {p.metrics?.map((m, i) => (
@@ -176,7 +196,7 @@ export default function FeaturedWork() {
               <article 
                 key={p.id}
                 ref={(el) => { cardsRef.current[currentIdx] = el; }}
-                className="group relative flex flex-col lg:flex-row gap-12 overflow-hidden rounded-[2.5rem] border border-charcoal/5 bg-charcoal p-8 lg:p-14 shadow-2xl transition-all duration-500 hover:-translate-y-1"
+                className="secondary-card group relative flex flex-col lg:flex-row gap-12 overflow-hidden rounded-[2.5rem] border border-charcoal/5 bg-charcoal p-8 lg:p-14 shadow-2xl transition-all duration-500 hover:-translate-y-1"
               >
                 <div className="flex flex-col lg:w-1/2">
                   <div className="mb-8 flex items-center gap-4">
@@ -218,14 +238,22 @@ export default function FeaturedWork() {
                   </div>
                 </div>
 
-                <div className="relative aspect-video lg:aspect-auto lg:w-1/2 overflow-hidden rounded-2xl border border-white/5 bg-white/5">
-                  <img 
-                    src={p.image} 
-                    alt={p.title} 
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 via-transparent to-transparent"></div>
-                </div>
+                {p.id === "03" ? (
+                  <div className="lg:w-1/2">
+                    <VizContainer height={200}>
+                      <IndiaAQIViz />
+                    </VizContainer>
+                  </div>
+                ) : (
+                  <div className="relative aspect-video lg:aspect-auto lg:w-1/2 overflow-hidden rounded-2xl border border-white/5 bg-white/5">
+                    <img 
+                      src={p.image} 
+                      alt={p.title} 
+                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 via-transparent to-transparent"></div>
+                  </div>
+                )}
               </article>
             );
           })}
