@@ -77,8 +77,8 @@ export function IndiaAQIViz() {
       } catch {
         if (svgRef.current && !destroyed) {
           svgRef.current.innerHTML = `
-            <text x="50%" y="50%" text-anchor="middle" 
-                  font-family="monospace" font-size="11" fill="rgba(128,128,128,0.5)">
+            <text x="50%" y="50%" text-anchor="middle"
+                  font-family="monospace" font-size="11" fill="rgba(255,255,255,0.5)">
               India AQI Map
             </text>`;
         }
@@ -107,8 +107,13 @@ export function IndiaAQIViz() {
 
       const topologyData = topology as { objects: Record<string, unknown> };
       const objectKey = Object.keys(topologyData.objects)[0];
-      const topoObject = topologyData.objects[objectKey] as Parameters<typeof topojson.feature>[1];
-      const geoData = topojson.feature(topologyData as Parameters<typeof topojson.feature>[0], topoObject) as { features: Array<{ properties?: { name?: string } }> };
+      const topoObject = topologyData.objects[objectKey] as Parameters<
+        typeof topojson.feature
+      >[1];
+      const geoData = topojson.feature(
+        topologyData as Parameters<typeof topojson.feature>[0],
+        topoObject
+      ) as { features: Array<{ properties?: { name?: string } }> };
 
       svg
         .selectAll<SVGPathElement, (typeof geoData.features)[number]>("path")
@@ -124,29 +129,76 @@ export function IndiaAQIViz() {
         .attr("stroke-width", 0.5)
         .style("cursor", "pointer")
         .style("transition", "fill-opacity 0.2s")
-        .on("mouseenter", function (event: MouseEvent, d: typeof geoData.features[number]) {
-          const name = d.properties?.name ?? "Estado";
-          const data = STATE_AQI[name] ?? DEFAULT_AQI;
-          d3.select(this).attr("fill-opacity", 1);
+        .on(
+          "mouseenter",
+          function (event: MouseEvent, d: (typeof geoData.features)[number]) {
+            const name = d.properties?.name ?? "Estado";
+            const data = STATE_AQI[name] ?? DEFAULT_AQI;
+            d3.select(this).attr("fill-opacity", 1);
 
-          if (tooltipRef.current && containerRef.current) {
-            const rect = containerRef.current.getBoundingClientRect();
-            const x = event.clientX - rect.left;
-            const y = event.clientY - rect.top;
-            tooltipRef.current.style.opacity = "1";
-            tooltipRef.current.style.left = `${Math.min(x + 8, rect.width - 130)}px`;
-            tooltipRef.current.style.top = `${Math.max(y - 30, 4)}px`;
-            tooltipRef.current.textContent = `${name}: ${data.aqi} (${data.label})`;
+            if (tooltipRef.current && containerRef.current) {
+              const rect = containerRef.current.getBoundingClientRect();
+              const x = event.clientX - rect.left;
+              const y = event.clientY - rect.top;
+              tooltipRef.current.style.opacity = "1";
+              tooltipRef.current.style.left = `${Math.min(x + 8, rect.width - 130)}px`;
+              tooltipRef.current.style.top = `${Math.max(y - 30, 4)}px`;
+              tooltipRef.current.innerHTML = `
+                <span style="color:${data.color}">${name}</span>
+                <span style="color:rgba(255,255,255,0.4)"> · </span>
+                <span style="color:rgba(255,255,255,0.9);font-weight:500">${data.aqi}</span>
+                <span style="color:rgba(255,255,255,0.4)"> · ${data.label}</span>
+              `;
+            }
           }
-        })
+        )
         .on("mouseleave", function () {
           d3.select(this).attr("fill-opacity", 0.75);
           if (tooltipRef.current) tooltipRef.current.style.opacity = "0";
         });
 
+      // Delhi floating label
+      const delhiFeature = geoData.features.find(
+        (f) => f.properties?.name === "Delhi"
+      );
+      if (delhiFeature) {
+        const centroid = path.centroid(delhiFeature as Parameters<typeof path>[0]);
+
+        svg
+          .append("circle")
+          .attr("cx", centroid[0])
+          .attr("cy", centroid[1])
+          .attr("r", 3)
+          .attr("fill", "#c084fc")
+          .attr("stroke", "#ffffff")
+          .attr("stroke-width", 0.8);
+
+        const labelGroup = svg
+          .append("g")
+          .attr("transform", `translate(${centroid[0] + 6}, ${centroid[1] - 4})`);
+
+        labelGroup
+          .append("rect")
+          .attr("x", -2)
+          .attr("y", -11)
+          .attr("width", 62)
+          .attr("height", 14)
+          .attr("rx", 2)
+          .attr("fill", "rgba(0,0,0,0.75)");
+
+        labelGroup
+          .append("text")
+          .attr("x", 0)
+          .attr("y", 0)
+          .attr("font-size", "8px")
+          .attr("font-family", "monospace")
+          .attr("fill", "#c084fc")
+          .text("Delhi · 312 AQI");
+      }
+
       const criticalPaths = svg
-        .selectAll<SVGPathElement, typeof geoData.features[number]>("path")
-        .filter((d: typeof geoData.features[number]) => {
+        .selectAll<SVGPathElement, (typeof geoData.features)[number]>("path")
+        .filter((d: (typeof geoData.features)[number]) => {
           const name = d.properties?.name ?? "";
           return (STATE_AQI[name]?.aqi ?? 0) > CRITICAL_AQI_THRESHOLD;
         });
@@ -154,8 +206,13 @@ export function IndiaAQIViz() {
       const pulse = () => {
         if (destroyed) return;
         criticalPaths
-          .transition().duration(400).attr("fill-opacity", 0.35)
-          .transition().duration(400).attr("fill-opacity", 0.75);
+          .transition()
+          .duration(500)
+          .attr("fill-opacity", 0.15)
+          .transition()
+          .duration(600)
+          .ease(d3.easeCubicOut)
+          .attr("fill-opacity", 0.85);
       };
 
       pulse();
@@ -195,10 +252,7 @@ export function IndiaAQIViz() {
         {AQI_LEGEND.map(({ color, label }) => (
           <div key={label} className="flex items-center gap-1">
             <div className="w-1.5 h-1.5 rounded-full" style={{ background: color }} />
-            <span
-              className="text-[8px] font-mono"
-              style={{ color: "rgba(255,255,255,0.4)" }}
-            >
+            <span className="text-[8px] font-mono" style={{ color: "rgba(255,255,255,0.4)" }}>
               {label}
             </span>
           </div>
@@ -206,10 +260,7 @@ export function IndiaAQIViz() {
       </div>
 
       <div className="absolute top-2 right-2">
-        <span
-          className="text-[8px] font-mono"
-          style={{ color: "rgba(255,255,255,0.25)" }}
-        >
+        <span className="text-[8px] font-mono" style={{ color: "rgba(255,255,255,0.25)" }}>
           hover → AQI
         </span>
       </div>

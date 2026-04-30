@@ -3,15 +3,12 @@
 import { useEffect, useRef, useCallback } from "react";
 import { CLUSTER_DEFS } from "@/data/covidClusters";
 
-function gaussian(mean: number, std: number): number {
-  let u = 0, v = 0;
-  while (!u) u = Math.random();
-  while (!v) v = Math.random();
-  return mean + std * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-}
-
-function clamp(val: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, val));
+function gaussian(mean: number, std: number, min = 2, max = 98): number {
+  const u1 = Math.max(1e-10, Math.random());
+  const u2 = Math.random();
+  const z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+  const clamped = Math.max(-2, Math.min(2, z));
+  return Math.max(min, Math.min(max, mean + std * clamped));
 }
 
 interface ClusterPoint {
@@ -19,29 +16,26 @@ interface ClusterPoint {
   y: number;
 }
 
-interface ClusterWithPoints {
-  id: string;
-  label: string;
-  color: string;
-  n: number;
-  risk: string;
-  points: ClusterPoint[];
-}
+const riskColors: Record<string, string> = {
+  K1: "ALTO", K2: "MODERADO", K3: "CRÍTICO",
+  K4: "ALTO", K5: "ALTO", K6: "MODERADO",
+  K7: "CRÍTICO", K8: "BAJO", K9: "BAJO",
+};
 
 export function CovidClusterViz() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const chartRef = useRef<InstanceType<typeof import("chart.js")["Chart"]> | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const generatePoints = useCallback((): ClusterWithPoints[] => {
-    return CLUSTER_DEFS.map((c) => ({
-      ...c,
-      points: Array.from({ length: c.n }, () => ({
-        x: clamp(gaussian(c.cx, 6), 3, 97),
-        y: clamp(gaussian(c.cy, 5), 3, 97),
-      })),
-    }));
-  }, []);
+  const generateClusterPoints = useCallback(
+    (cluster: (typeof CLUSTER_DEFS)[number]): ClusterPoint[] => {
+      return Array.from({ length: cluster.n }, () => ({
+        x: gaussian(cluster.cx, cluster.std),
+        y: gaussian(cluster.cy, cluster.std),
+      }));
+    },
+    []
+  );
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -54,24 +48,24 @@ export function CovidClusterViz() {
 
       if (destroyed || !canvasRef.current) return;
 
-      const clusters = generatePoints();
+      const datasets = CLUSTER_DEFS.map((c) => ({
+        label: c.label,
+        data: generateClusterPoints(c),
+        backgroundColor: c.color + "cc",
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointHoverBackgroundColor: c.color,
+        pointHoverBorderColor: "#ffffff",
+        pointHoverBorderWidth: 1,
+      }));
 
       chartRef.current = new Chart(canvasRef.current, {
         type: "scatter",
-        data: {
-          datasets: clusters.map((c) => ({
-            label: c.label,
-            data: c.points,
-            backgroundColor: c.color + "bb",
-            pointRadius: 3,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: c.color,
-          })),
-        },
+        data: { datasets },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          animation: { duration: 1000, easing: "easeOutQuart" as const },
+          animation: { duration: 1200, easing: "easeOutQuart" as const },
           plugins: {
             legend: { display: false },
             tooltip: {
@@ -79,14 +73,19 @@ export function CovidClusterViz() {
                 title: (items) => items[0]?.dataset?.label ?? "",
                 label: (item) => {
                   const cluster = CLUSTER_DEFS[item.datasetIndex];
-                  return `Riesgo: ${cluster.risk}`;
+                  return `Riesgo: ${riskColors[cluster.id]}`;
                 },
               },
-              backgroundColor: "rgba(0,0,0,0.85)",
-              titleFont: { family: "monospace", size: 11 },
+              backgroundColor: "rgba(0,0,0,0.9)",
+              titleColor: "#ffffff",
+              bodyColor: "rgba(255,255,255,0.7)",
+              titleFont: { family: "monospace", size: 11, weight: "bold" as const },
               bodyFont: { family: "monospace", size: 10 },
-              padding: 8,
+              padding: 10,
               cornerRadius: 4,
+              displayColors: true,
+              boxWidth: 8,
+              boxHeight: 8,
             },
           },
           scales: {
@@ -95,41 +94,41 @@ export function CovidClusterViz() {
               max: 100,
               title: {
                 display: true,
-                text: "Edad normalizada",
+                text: "Edad normalizada →",
                 font: { size: 10, family: "monospace" },
-                color: "rgba(128,128,128,0.7)",
+                color: "rgba(255,255,255,0.25)",
+                padding: { top: 4 },
               },
               ticks: { display: false },
-              grid: { color: "rgba(128,128,128,0.06)" },
-              border: { color: "rgba(128,128,128,0.12)" },
+              grid: { color: "rgba(255,255,255,0.04)", lineWidth: 1 },
+              border: { color: "rgba(255,255,255,0.08)", dash: [2, 4] },
             },
             y: {
               min: 0,
               max: 100,
               title: {
                 display: true,
-                text: "Comorbilidades",
+                text: "Comorbilidades →",
                 font: { size: 10, family: "monospace" },
-                color: "rgba(128,128,128,0.7)",
+                color: "rgba(255,255,255,0.25)",
+                padding: { bottom: 4 },
               },
               ticks: { display: false },
-              grid: { color: "rgba(128,128,128,0.06)" },
-              border: { color: "rgba(128,128,128,0.12)" },
+              grid: { color: "rgba(255,255,255,0.04)", lineWidth: 1 },
+              border: { color: "rgba(255,255,255,0.08)", dash: [2, 4] },
             },
           },
+          layout: { padding: { top: 8, right: 8, bottom: 8, left: 8 } },
         },
       });
 
       intervalRef.current = setInterval(() => {
         if (!chartRef.current) return;
-        const newClusters = generatePoints();
-        chartRef.current.data.datasets.forEach(
-          (ds, i) => {
-            (ds as { data: ClusterPoint[] }).data = newClusters[i].points;
-          }
-        );
-        chartRef.current.update("active");
-      }, 4000);
+        chartRef.current.data.datasets.forEach((ds, i) => {
+          (ds as { data: ClusterPoint[] }).data = generateClusterPoints(CLUSTER_DEFS[i]);
+        });
+        chartRef.current.update();
+      }, 5000);
     };
 
     loadChart();
@@ -139,7 +138,7 @@ export function CovidClusterViz() {
       chartRef.current?.destroy();
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [generatePoints]);
+  }, [generateClusterPoints]);
 
   return (
     <div className="relative w-full h-full">
@@ -148,21 +147,62 @@ export function CovidClusterViz() {
         role="img"
         aria-label="Scatter plot de 9 clusters de riesgo COVID-19 por edad y comorbilidades"
       />
-      <div className="absolute bottom-2 left-2 flex items-center gap-3">
-        <div className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full" style={{ background: "#86efac" }} />
-          <span className="text-[9px] font-mono" style={{ color: "rgba(128,128,128,0.7)" }}>
-            Bajo
+      <div
+        style={{
+          position: "absolute",
+          bottom: "8px",
+          left: "8px",
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+          <div
+            style={{
+              width: "8px",
+              height: "8px",
+              borderRadius: "50%",
+              background: "#86efac",
+            }}
+          />
+          <span
+            style={{
+              fontSize: "9px",
+              fontFamily: "monospace",
+              color: "rgba(255,255,255,0.4)",
+            }}
+          >
+            Bajo riesgo
           </span>
         </div>
-        <div className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full" style={{ background: "#c084fc" }} />
-          <span className="text-[9px] font-mono" style={{ color: "rgba(128,128,128,0.7)" }}>
-            Crítico
+        <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+          <div
+            style={{
+              width: "8px",
+              height: "8px",
+              borderRadius: "50%",
+              background: "#c084fc",
+            }}
+          />
+          <span
+            style={{
+              fontSize: "9px",
+              fontFamily: "monospace",
+              color: "rgba(255,255,255,0.4)",
+            }}
+          >
+            Crítico UCI
           </span>
         </div>
-        <span className="text-[9px] font-mono" style={{ color: "rgba(128,128,128,0.4)" }}>
-          9 clusters · hover para detalle
+        <span
+          style={{
+            fontSize: "9px",
+            fontFamily: "monospace",
+            color: "rgba(255,255,255,0.2)",
+          }}
+        >
+          9 clusters · K-Means
         </span>
       </div>
     </div>
