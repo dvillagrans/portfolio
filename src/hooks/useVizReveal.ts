@@ -14,21 +14,24 @@ export function useVizReveal() {
   useEffect(() => {
     if (!ref.current || reduced) return;
 
+    const cards = ref.current.querySelectorAll(".secondary-card");
+    const vizContainers = ref.current.querySelectorAll(".viz-container");
+
     const ctx = gsap.context(() => {
-      gsap.from(".secondary-card", {
+      gsap.from(cards, {
         y: 40,
         opacity: 0,
         duration: 0.7,
         stagger: 0.15,
         ease: "power3.out",
         scrollTrigger: {
-          trigger: ".secondary-cards-grid",
+          trigger: ref.current,
           start: "top 80%",
           once: true,
         },
       });
 
-      gsap.from(".viz-container", {
+      gsap.from(vizContainers, {
         opacity: 0,
         scale: 0.98,
         duration: 0.5,
@@ -36,7 +39,7 @@ export function useVizReveal() {
         delay: 0.3,
         ease: "power2.out",
         scrollTrigger: {
-          trigger: ".secondary-cards-grid",
+          trigger: ref.current,
           start: "top 75%",
           once: true,
         },

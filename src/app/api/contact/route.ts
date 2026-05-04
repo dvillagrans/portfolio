@@ -1,10 +1,37 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { rateLimit, getRequestIdentifier } from '@/lib/rate-limit';
 
 const resend = new Resend(process.env.RESEND_API);
 
+// Contact rate limit: 3 requests per hour per IP
+const CONTACT_RATE_LIMIT = 3;
+const CONTACT_WINDOW_MS = 60 * 60 * 1000;
+
 export async function POST(req: Request) {
   try {
+    // Rate limit check
+    const identifier = getRequestIdentifier(req);
+    const { allowed, remaining, resetAt, message: rateLimitMessage } = rateLimit({
+      limit: CONTACT_RATE_LIMIT,
+      windowMs: CONTACT_WINDOW_MS,
+      identifier,
+    });
+
+    if (!allowed) {
+      return NextResponse.json(
+        { error: rateLimitMessage || 'Too many requests. Please try again later.' },
+        {
+          status: 429,
+          headers: {
+            'X-RateLimit-Remaining': String(remaining),
+            'X-RateLimit-Reset': String(resetAt),
+            'Retry-After': String(Math.ceil((resetAt - Date.now()) / 1000)),
+          },
+        }
+      );
+    }
+
     const { name, email, message } = await req.json();
 
     if (!name || !email || !message) {

@@ -5,6 +5,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { ArrowDownToLine } from "lucide-react";
 
 export default function Hero() {
   const container = useRef<HTMLDivElement>(null);
@@ -183,15 +184,25 @@ export default function Hero() {
           {t.hero.subtitle2}
         </p>
 
-        <a
-          ref={actionRef}
-          href="#projects"
-          className="group mt-10 md:mt-16 inline-flex items-center justify-center sm:justify-start w-full sm:w-auto min-h-[44px] gap-3 border border-offwhite/20 px-6 py-4 md:px-8 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-offwhite transition-all hover:bg-offwhite hover:text-charcoal active:scale-[0.98]"
-          style={{ opacity: reduced ? 1 : 0 }}
-        >
-          {t.hero.cta}
-          <div className="h-[2px] w-4 bg-warm transition-all group-hover:w-8 group-hover:bg-charcoal" />
-        </a>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <a
+            ref={actionRef}
+            href="#projects"
+            className="group mt-10 md:mt-16 inline-flex items-center justify-center sm:justify-start w-full sm:w-auto min-h-[44px] gap-3 border border-offwhite/20 px-6 py-4 md:px-8 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-offwhite transition-all hover:bg-offwhite hover:text-charcoal active:scale-[0.98]"
+            style={{ opacity: reduced ? 1 : 0 }}
+          >
+            {t.hero.cta}
+            <div className="h-[2px] w-4 bg-warm transition-all group-hover:w-8 group-hover:bg-charcoal" />
+          </a>
+          <a
+            href="/resume/resume-banca.pdf"
+            download
+            className="group mt-4 md:mt-6 inline-flex items-center justify-center sm:justify-start w-full sm:w-auto min-h-[44px] gap-2 border border-offwhite/10 px-6 py-4 md:px-8 font-sans text-xs font-semibold uppercase tracking-[0.15em] text-offwhite/70 transition-all hover:text-offwhite hover:border-offwhite/30 active:scale-[0.98]"
+          >
+            {t.hero.downloadCv}
+            <ArrowDownToLine className="w-4 h-4" />
+          </a>
+        </div>
       </div>
     </section>
   );

@@ -1,10 +1,11 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { en, es } from "./dictionaries";
+import { sharedEn, sharedEs } from "./dictionaries/shared";
+import type { SharedDict } from "./types";
 
 type Locale = "en" | "es";
-export type Dictionary = typeof es;
+export type Dictionary = SharedDict;
 
 interface LanguageContextType {
   language: Locale;
@@ -23,17 +24,17 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       document.documentElement.classList.add('back-transition');
       setTimeout(() => document.documentElement.classList.remove('back-transition'), 100);
     };
-    
+
     const handleTouchStart = (e: TouchEvent) => {
       if (e.touches[0].clientX < 30 || e.touches[0].clientX > window.innerWidth - 30) {
         document.documentElement.classList.add('back-transition');
-        setTimeout(() => document.documentElement.classList.remove('back-transition'), 1500); 
+        setTimeout(() => document.documentElement.classList.remove('back-transition'), 1500);
       }
     };
 
     window.addEventListener('popstate', handlePopState, { capture: true });
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    
+
     return () => {
       window.removeEventListener('popstate', handlePopState, { capture: true });
       window.removeEventListener('touchstart', handleTouchStart);
@@ -60,7 +61,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const value = {
     language: mounted ? language : "en",
     setLanguage,
-    t: mounted ? (language === "es" ? es : en) : en,
+    t: mounted ? (language === "es" ? sharedEs : sharedEn) : sharedEn,
   };
 
   return (

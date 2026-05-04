@@ -37,6 +37,7 @@ export default function Philosophy() {
           scrollTrigger: {
             trigger: container.current,
             start: "top 70%",
+            once: true,
           },
         }
       );
@@ -55,6 +56,7 @@ export default function Philosophy() {
             scrollTrigger: {
               trigger: textRef.current,
               start: "top 80%",
+              once: true,
             },
           }
         );

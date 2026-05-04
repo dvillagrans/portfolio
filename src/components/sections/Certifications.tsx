@@ -31,14 +31,14 @@ function CertCard({ cert, platformStyle, levelBadge, isTop, onClick }: CertCardP
     const target = e.currentTarget;
     target.style.borderColor = isTop
       ? 'rgba(139,92,246,0.4)'
-      : 'rgba(0,0,0,0.18)';
+      : 'var(--border-color)';
   };
 
   const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget;
     target.style.borderColor = isTop
       ? 'rgba(139,92,246,0.2)'
-      : 'rgba(0,0,0,0.08)';
+      : 'var(--border-color)';
   };
 
   return (
@@ -54,7 +54,7 @@ function CertCard({ cert, platformStyle, levelBadge, isTop, onClick }: CertCardP
         borderRadius: '8px',
         border: isTop
           ? '0.5px solid rgba(139,92,246,0.2)'
-          : '0.5px solid rgba(0,0,0,0.08)',
+          : '0.5px solid var(--border-color)',
         background: isTop ? 'rgba(139,92,246,0.04)' : 'transparent',
         textDecoration: 'none',
         display: 'block',
@@ -103,8 +103,8 @@ function CertCard({ cert, platformStyle, levelBadge, isTop, onClick }: CertCardP
                 fontSize: isTop ? '14px' : '13px',
                 fontWeight: isTop ? 500 : 400,
                 color: isTop
-                  ? 'rgba(0,0,0,0.85)'
-                  : 'rgba(0,0,0,0.65)',
+                  ? 'var(--text-primary)'
+                  : 'var(--text-secondary)',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
@@ -140,28 +140,28 @@ function CertCard({ cert, platformStyle, levelBadge, isTop, onClick }: CertCardP
             >
               {cert.issuer}
             </span>
-            <span style={{ color: 'rgba(0,0,0,0.20)', fontSize: '10px' }}>
+            <span style={{ color: 'var(--text-muted)', fontSize: '10px' }}>
               &middot;
             </span>
             <span
               style={{
                 fontFamily: 'monospace',
                 fontSize: '11px',
-                color: 'rgba(0,0,0,0.30)',
+                color: 'var(--text-muted)',
               }}
             >
               {cert.month} {cert.year}
             </span>
 
             {/* Skills inline */}
-            <span style={{ color: 'rgba(0,0,0,0.20)', fontSize: '10px' }}>
+            <span style={{ color: 'var(--text-muted)', fontSize: '10px' }}>
               &middot;
             </span>
             <span
               style={{
                 fontFamily: 'monospace',
                 fontSize: '10px',
-                color: 'rgba(0,0,0,0.25)',
+                color: 'var(--text-muted)',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
@@ -178,7 +178,7 @@ function CertCard({ cert, platformStyle, levelBadge, isTop, onClick }: CertCardP
           style={{
             fontFamily: 'monospace',
             fontSize: '14px',
-            color: 'rgba(0,0,0,0.3)',
+            color: 'var(--text-muted)',
             opacity: 0,
             transform: 'translateX(-4px)',
             transition: 'opacity 0.2s, transform 0.2s',
@@ -323,7 +323,7 @@ export default function Certifications() {
     <section
       ref={sectionRef}
       id="certificaciones"
-      className="py-24 scroll-mt-24 border-t border-charcoal/10"
+      className="py-24 scroll-mt-24 border-t border-[var(--border-color)]"
     >
       <div className="max-w-5xl mx-auto px-6">
         {/* Header de sección */}
@@ -337,7 +337,7 @@ export default function Certifications() {
             </div>
           </div>
           <div>
-            <p className="text-xl md:text-2xl font-serif text-charcoal/90 leading-snug">
+            <p className="text-xl md:text-2xl font-serif text-[var(--text-primary)] leading-snug">
               {labels.title}
               <br />
               <span className="opacity-50">{labels.subtitle}</span>
@@ -355,7 +355,7 @@ export default function Certifications() {
               top: 0,
               bottom: 0,
               width: '1px',
-              background: 'rgba(0,0,0,0.08)',
+              background: 'var(--border-color)',
             }}
           />
 
@@ -386,8 +386,8 @@ export default function Certifications() {
                       borderRadius: '50%',
                       background: isMaxYear
                         ? '#8b5cf6'
-                        : 'rgba(0,0,0,0.2)',
-                      border: '1px solid rgba(0,0,0,0.15)',
+                        : 'var(--text-muted)',
+                      border: '1px solid var(--border-color)',
                       zIndex: 1,
                     }}
                   />
@@ -398,8 +398,8 @@ export default function Certifications() {
                       fontSize: '28px',
                       fontWeight: 700,
                       color: isMaxYear
-                        ? 'rgba(0,0,0,0.9)'
-                        : 'rgba(0,0,0,0.25)',
+                        ? 'var(--text-primary)'
+                        : 'var(--text-muted)',
                       letterSpacing: '-0.02em',
                       lineHeight: 1,
                     }}
@@ -411,7 +411,7 @@ export default function Certifications() {
                     style={{
                       fontFamily: 'monospace',
                       fontSize: '10px',
-                      color: 'rgba(0,0,0,0.30)',
+                      color: 'var(--text-muted)',
                       letterSpacing: '0.1em',
                       marginTop: '4px',
                     }}
@@ -437,16 +437,16 @@ export default function Certifications() {
                       style={{
                         background: isMaxYear
                           ? '#8b5cf6'
-                          : 'rgba(0,0,0,0.2)',
-                        border: '1px solid rgba(0,0,0,0.15)',
+                          : 'var(--text-muted)',
+                        border: '1px solid var(--border-color)',
                       }}
                     />
                     <span
                       className="font-mono text-2xl font-bold"
                       style={{
                         color: isMaxYear
-                          ? 'rgba(0,0,0,0.9)'
-                          : 'rgba(0,0,0,0.25)',
+                          ? 'var(--text-primary)'
+                          : 'var(--text-muted)',
                         letterSpacing: '-0.02em',
                       }}
                     >
@@ -455,14 +455,14 @@ export default function Certifications() {
                     <span
                       className="font-mono text-[10px]"
                       style={{
-                        color: 'rgba(0,0,0,0.30)',
+                        color: 'var(--text-muted)',
                         letterSpacing: '0.1em',
                       }}
                     >
                       {labels.yearCerts(certsInYear.length)}
                     </span>
                   </div>
-                  <div className="flex flex-col gap-2 pl-5 border-l border-charcoal/10">
+                  <div className="flex flex-col gap-2 pl-5 border-l border-[var(--border-color)]">
                     {certsInYear.map((cert) => (
                       <CertCard
                         key={cert.id}
@@ -500,18 +500,18 @@ export default function Certifications() {
         <div
           className="mt-8 pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2"
           style={{
-            borderTop: '0.5px solid rgba(0,0,0,0.07)',
+            borderTop: '0.5px solid var(--border-color)',
           }}
         >
           <span
             className="font-mono text-[11px]"
-            style={{ color: 'rgba(0,0,0,0.30)' }}
+            style={{ color: 'var(--text-muted)' }}
           >
             {labels.footerCount(CERTIFICATIONS.length, years.length)}
           </span>
           <span
             className="font-mono text-[11px]"
-            style={{ color: 'rgba(0,0,0,0.20)' }}
+            style={{ color: 'var(--text-muted)' }}
           >
             {labels.footerVerify}
           </span>

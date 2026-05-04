@@ -15,12 +15,17 @@ export default function Contact() {
   const formRef = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
   const reduced = useReducedMotion();
-  
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [showForm, setShowForm] = useState(false);
+  const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({});
+  const [touched, setTouched] = useState<{ name: boolean; email: boolean; message: boolean }>({
+    name: false, email: false, message: false
+  });
+  const [shakeForm, setShakeForm] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -95,8 +100,41 @@ export default function Contact() {
     }
   }, [showForm, reduced]);
 
+  function validateField(field: "name" | "email" | "message", value: string): string | undefined {
+    switch (field) {
+      case "name":
+        if (!value.trim()) return t.contact.errorRequired || "Name is required";
+        if (value.trim().length < 2) return t.contact.errorNameShort || "Name must be at least 2 characters";
+        return undefined;
+      case "email":
+        if (!value.trim()) return t.contact.errorRequired || "Email is required";
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return t.contact.errorEmailInvalid || "Please enter a valid email";
+        return undefined;
+      case "message":
+        if (!value.trim()) return t.contact.errorRequired || "Message is required";
+        if (value.trim().length < 10) return t.contact.errorMessageShort || "Message must be at least 10 characters";
+        return undefined;
+    }
+  }
+
+  function validateAll(): boolean {
+    const newErrors: typeof errors = {};
+    newErrors.name = validateField("name", name);
+    newErrors.email = validateField("email", email);
+    newErrors.message = validateField("message", message);
+    setErrors(newErrors);
+    return !newErrors.name && !newErrors.email && !newErrors.message;
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setTouched({ name: true, email: true, message: true });
+
+    if (!validateAll()) {
+      setShakeForm(true);
+      return;
+    }
+
     setStatus("loading");
     try {
       const res = await fetch("/api/contact", {
@@ -107,6 +145,8 @@ export default function Contact() {
       if (!res.ok) throw new Error();
       setStatus("success");
       setName(""); setEmail(""); setMessage("");
+      setErrors({});
+      setTouched({ name: false, email: false, message: false });
       setTimeout(() => { setStatus("idle"); setShowForm(false) }, 3000);
     } catch {
       setStatus("error");
@@ -115,22 +155,22 @@ export default function Contact() {
   };
 
   return (
-    <section 
-      id="contact" 
-      ref={container} 
+    <section
+      id="contact"
+      ref={container}
       className="relative flex min-h-screen flex-col items-center justify-center bg-charcoal py-32 text-offwhite pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] md:px-12 lg:px-24 overflow-hidden"
     >
       {/* Dynamic Grid Overlay for Contact */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:120px_120px] pointer-events-none"></div>
-      
+
       {/* Background Glow */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-96 bg-accent/10 blur-[150px] opacity-50 rounded-full pointer-events-none"></div>
 
       <div className="relative z-10 flex flex-col items-center text-center w-full max-w-5xl">
-        
+
         {/* Typographic Hero */}
-        <h2 
-          ref={textRef} 
+        <h2
+          ref={textRef}
           className="mb-16 flex flex-col gap-2 font-serif text-5xl font-light tracking-tight md:text-7xl lg:text-[7rem] leading-[1.1] perspective-[1000px]"
         >
           <span className="block">{t.contact.title1}</span>
@@ -172,46 +212,104 @@ export default function Contact() {
                  &times;
                </button>
             </div>
-            
+
             <p className="text-base text-offwhite/70 mb-8 font-sans">{t.contact.bookDesc}</p>
-            
-            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+
+            <form onSubmit={handleSubmit} noValidate className={`flex flex-col gap-6 ${shakeForm ? "form-shake" : ""}`} onAnimationEnd={() => setShakeForm(false)}>
               <div className="relative group">
-                  <input
+                <input
                   type="text" required id="name"
                   placeholder=" "
-                  value={name} onChange={e => setName(e.target.value)}
-                  className="peer w-full bg-transparent border-b border-white/20 focus:border-accent focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal focus:outline-none py-3 text-white font-sans text-lg transition-colors placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg"
+                  value={name}
+                  onChange={e => { setName(e.target.value); if (errors.name) setErrors(prev => ({ ...prev, name: undefined })); }}
+                  onBlur={() => {
+                    setTouched(prev => ({ ...prev, name: true }));
+                    setErrors(prev => ({ ...prev, name: validateField("name", name) }));
+                  }}
+                  className={`peer w-full bg-transparent border-b focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal focus:outline-none py-3 text-white font-sans text-lg transition-colors placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg ${
+                    touched.name && errors.name
+                      ? "border-red-400/60 focus:border-red-400"
+                      : "border-white/20 focus:border-accent"
+                  }`}
                 />
                 <label htmlFor="name" className="absolute left-2 top-3 font-mono text-xs text-offwhite/60 uppercase tracking-widest transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-accent peer-valid:-top-4 peer-valid:text-[10px]">
                   {t.contact.formName}
                 </label>
+                {touched.name && errors.name && (
+                  <p className="mt-1.5 text-xs text-red-400/90 font-sans flex items-center gap-1.5">
+                    <AlertCircle className="h-3 w-3 shrink-0" />
+                    {errors.name}
+                  </p>
+                )}
               </div>
-              
+
               <div className="relative group mt-2">
                 <input
                   type="email" required id="email"
                   placeholder=" "
-                  value={email} onChange={e => setEmail(e.target.value)}
-                  className="peer w-full bg-transparent border-b border-white/20 focus:border-accent focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal focus:outline-none py-3 text-white font-sans text-lg transition-colors placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg"
+                  value={email}
+                  onChange={e => { setEmail(e.target.value); if (errors.email) setErrors(prev => ({ ...prev, email: undefined })); }}
+                  onBlur={() => {
+                    setTouched(prev => ({ ...prev, email: true }));
+                    setErrors(prev => ({ ...prev, email: validateField("email", email) }));
+                  }}
+                  className={`peer w-full bg-transparent border-b focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal focus:outline-none py-3 text-white font-sans text-lg transition-colors placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg ${
+                    touched.email && errors.email
+                      ? "border-red-400/60 focus:border-red-400"
+                      : "border-white/20 focus:border-accent"
+                  }`}
                 />
                 <label htmlFor="email" className="absolute left-2 top-3 font-mono text-xs text-offwhite/60 uppercase tracking-widest transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-accent peer-valid:-top-4 peer-valid:text-[10px]">
                   {t.contact.formEmail}
                 </label>
+                {touched.email && errors.email && (
+                  <p className="mt-1.5 text-xs text-red-400/90 font-sans flex items-center gap-1.5">
+                    <AlertCircle className="h-3 w-3 shrink-0" />
+                    {errors.email}
+                  </p>
+                )}
               </div>
 
               <div className="relative group mt-2">
                 <textarea
                   required id="message" rows={3}
                   placeholder=" "
-                  value={message} onChange={e => setMessage(e.target.value)}
-                  className="peer w-full bg-transparent border-b border-white/20 focus:border-accent focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal focus:outline-none py-3 text-white font-sans text-lg transition-colors resize-none placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg"
+                  value={message}
+                  onChange={e => { setMessage(e.target.value); if (errors.message) setErrors(prev => ({ ...prev, message: undefined })); }}
+                  onBlur={() => {
+                    setTouched(prev => ({ ...prev, message: true }));
+                    setErrors(prev => ({ ...prev, message: validateField("message", message) }));
+                  }}
+                  className={`peer w-full bg-transparent border-b focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal focus:outline-none py-3 text-white font-sans text-lg transition-colors resize-none placeholder-transparent focus:bg-white/[0.02] px-2 rounded-t-lg ${
+                    touched.message && errors.message
+                      ? "border-red-400/60 focus:border-red-400"
+                      : "border-white/20 focus:border-accent"
+                  }`}
                 />
                 <label htmlFor="message" className="absolute left-2 top-3 font-mono text-xs text-offwhite/60 uppercase tracking-widest transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-accent peer-valid:-top-4 peer-valid:text-[10px]">
                   {t.contact.formMessage}
                 </label>
+                {touched.message && errors.message && (
+                  <p className="mt-1.5 text-xs text-red-400/90 font-sans flex items-center gap-1.5">
+                    <AlertCircle className="h-3 w-3 shrink-0" />
+                    {errors.message}
+                  </p>
+                )}
               </div>
-              
+
+              {status === "success" && (
+                <div className="flex items-center gap-2 text-sm text-green-400 font-sans">
+                  <CheckCircle2 className="h-4 w-4 shrink-0" />
+                  {t.contact.formSuccess}
+                </div>
+              )}
+              {status === "error" && (
+                <div className="flex items-center gap-2 text-sm text-red-400 font-sans">
+                  <AlertCircle className="h-4 w-4 shrink-0" />
+                  {t.contact.formError}
+                </div>
+              )}
+
               <button
                 type="submit"
                 disabled={status === 'loading'}

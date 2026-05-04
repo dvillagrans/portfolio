@@ -52,6 +52,7 @@ export default function Systems() {
             scrollTrigger: {
               trigger: block,
               start: "top 85%",
+              once: true,
             },
           }
         );
@@ -93,7 +94,7 @@ export default function Systems() {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {(t.systems.items as any[]).map((cap, idx) => {
+          {t.systems.items.map((cap, idx) => {
             return (
               <div
                 key={cap.title}

@@ -5,6 +5,8 @@ import { Link } from "next-view-transitions";
 import Navbar from "@/components/layout/Navbar";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { timeupEn, timeupEs } from "@/i18n/dictionaries/timeup";
+import { TimeUpProjectSchema } from "@/components/ui/SchemaOrg";
 import {
   ArrowLeft, ArrowUpRight,
   Clock, Users, Zap, Shield, Database, LayoutTemplate, Activity, FileCheck2, AlertCircle, Quote, X, ZoomIn, ChevronLeft, ChevronRight, ArrowUp
@@ -102,8 +104,8 @@ function Lightbox({ index, onClose, onPrev, onNext }: { index: number; onClose: 
 }
 
 export default function TimeUpCaseStudy() {
-  const { t, language } = useLanguage();
-  const dict = t.timeup;
+  const { language } = useLanguage();
+  const dict = language === "es" ? timeupEs : timeupEn;
   const containerRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const [lightbox, setLightbox] = useState<number | null>(null);
@@ -168,8 +170,10 @@ export default function TimeUpCaseStudy() {
       >
         <ArrowUp size={16} />
       </button>
-      <main ref={containerRef} className="min-h-screen pt-24 pb-[calc(5rem+env(safe-area-inset-bottom,0px))] md:pt-32 md:pb-[calc(8rem+env(safe-area-inset-bottom,0px))] px-5 md:px-12 lg:px-24 text-zinc-300 bg-timeup-bg selection:bg-timeup-cyan selection:text-timeup-bg">
-      
+      <main ref={containerRef} className="min-h-screen pt-24 pb-[calc(5rem+env(safe-area-inset-bottom,0px))] md:pt-32 md:pb-[calc(8rem+env(safe-area-inset-bottom,0px))] px-5 md:px-12 lg:px-24 selection:bg-timeup-cyan selection:text-timeup-bg"
+        style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
+        <TimeUpProjectSchema />
+
       {/* Navigation */}
       <div className="mb-12 reveal-fade">
         <Link href="/projects" className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-timeup-cyan transition-colors uppercase font-mono tracking-widest"><ArrowLeft size={16} /> {dict.back}</Link>

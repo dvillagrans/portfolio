@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useVizReveal } from "@/hooks/useVizReveal";
@@ -63,6 +64,7 @@ export default function FeaturedWork() {
             scrollTrigger: {
               trigger: card,
               start: "top 85%",
+              once: true,
             },
           }
         );
@@ -72,7 +74,7 @@ export default function FeaturedWork() {
     return () => ctx.revert();
   }, [reduced]);
 
-  const projects = t.work.projects as unknown as FeaturedProject[];
+  const projects = t.work.projects;
   let globalIdx = 0;
 
   return (
@@ -155,10 +157,12 @@ export default function FeaturedWork() {
                     </div>
                   ) : (
                     <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-charcoal/[0.03] mb-8 border border-charcoal/5">
-                      <img 
-                        src={p.image} 
-                        alt={p.title} 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      <Image 
+                        src={p.image}
+                        alt={p.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                     </div>
                   )}
@@ -244,16 +248,18 @@ export default function FeaturedWork() {
                       <IndiaAQIViz />
                     </VizContainer>
                   </div>
-                ) : (
-                  <div className="relative aspect-video lg:aspect-auto lg:w-1/2 overflow-hidden rounded-2xl border border-white/5 bg-white/5">
-                    <img 
-                      src={p.image} 
-                      alt={p.title} 
-                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 via-transparent to-transparent"></div>
-                  </div>
-                )}
+                  ) : (
+                    <div className="relative aspect-video lg:aspect-auto lg:w-1/2 overflow-hidden rounded-2xl border border-white/5 bg-white/5">
+                      <Image 
+                        src={p.image}
+                        alt={p.title}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        className="object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 via-transparent to-transparent"></div>
+                    </div>
+                  )}
               </article>
             );
           })}

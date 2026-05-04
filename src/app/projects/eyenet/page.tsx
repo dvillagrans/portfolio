@@ -5,7 +5,10 @@ import { Link } from "next-view-transitions";
 import Navbar from "@/components/layout/Navbar";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import CountUpMetric from "@/components/ui/CountUpMetric";
 import PipelineFlow from "@/components/ui/PipelineFlow";
+import { EyeNetProjectSchema } from "@/components/ui/SchemaOrg";
+import { eyenetEn, eyenetEs } from "@/i18n/dictionaries/eyenet";
 import {
   ArrowLeft,
   ArrowUp,
@@ -28,55 +31,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ─── Animated metric count-up ─── */
-function MetricValue({ value, label, delay = 0 }: { value: string; label: string; delay?: number }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const reduced = useReducedMotion();
-
-  useEffect(() => {
-    if (!ref.current || reduced) return;
-    const match = value.match(/^(\d+)(.*)$/);
-    const target = match ? parseInt(match[1], 10) : null;
-    const suffix = match ? match[2] : "";
-    if (target === null) {
-      ref.current.textContent = value;
-      return;
-    }
-
-    const trigger = ScrollTrigger.create({
-      trigger: ref.current,
-      start: "top 90%",
-      onEnter: () => {
-        const obj = { val: 0 };
-        gsap.to(obj, {
-          val: target,
-          duration: 1.6,
-          delay: delay * 0.15,
-          ease: "power2.out",
-          onUpdate: () => {
-            if (ref.current) ref.current.textContent = Math.round(obj.val) + suffix;
-          },
-        });
-      },
-    });
-    return () => trigger.kill();
-  }, [value, delay, reduced]);
-
-  return (
-    <div className="flex flex-col items-center md:items-start gap-1.5">
-      <span ref={ref} className="text-3xl md:text-4xl font-bold tracking-tighter text-white font-sans tabular-nums">
-        {reduced ? value : "0"}
-      </span>
-      <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/30 leading-tight text-center md:text-left">
-        {label}
-      </span>
-    </div>
-  );
-}
-
 export default function EyeNetCaseStudy() {
-  const { t, language } = useLanguage();
-  const dict = (t as any).eyenet;
+  const { language } = useLanguage();
+  const dict = language === "es" ? eyenetEs : eyenetEn;
   const containerRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -138,8 +95,11 @@ export default function EyeNetCaseStudy() {
 
       <main
         ref={containerRef}
-        className="min-h-screen pt-24 pb-[calc(5rem+env(safe-area-inset-bottom,0px))] md:pt-32 md:pb-[calc(8rem+env(safe-area-inset-bottom,0px))] px-5 md:px-12 lg:px-24 text-zinc-300 bg-[#0d0d0d] selection:bg-amber-500/30 selection:text-white"
+        className="min-h-screen pt-24 pb-[calc(5rem+env(safe-area-inset-bottom,0px))] md:pt-32 md:pb-[calc(8rem+env(safe-area-inset-bottom,0px))] px-5 md:px-12 lg:px-24 selection:bg-amber-500/30 selection:text-white"
+        style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}
       >
+        <EyeNetProjectSchema />
+
         {/* Navigation */}
         <div className="mb-12 reveal-fade">
           <Link
@@ -191,10 +151,23 @@ export default function EyeNetCaseStudy() {
 
         {/* Metrics */}
         <section className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 border-y border-white/10 py-8 reveal-fade">
-          <MetricValue value="65%" label={isEn ? "Less Manual Work" : "Menos Trabajo Manual"} delay={0} />
-          <MetricValue value="300+" label={isEn ? "Docs / Week" : "Docs / Semana"} delay={1} />
-          <MetricValue value="10K+" label={isEn ? "Daily Requests" : "Requests Diarios"} delay={2} />
-          <MetricValue value="92%" label={isEn ? "Extraction Accuracy" : "Precisión Extracción"} delay={3} />
+          {[
+            { value: "65%", label: isEn ? "Less Manual Work" : "Menos Trabajo Manual", delay: 0 },
+            { value: "300+", label: isEn ? "Docs / Week" : "Docs / Semana", delay: 1 },
+            { value: "10K+", label: isEn ? "Daily Requests" : "Requests Diarios", delay: 2 },
+            { value: "92%", label: isEn ? "Extraction Accuracy" : "Precisión Extracción", delay: 3 },
+          ].map((m) => (
+            <div key={m.value} className="flex flex-col items-center md:items-start gap-1.5">
+              <CountUpMetric
+                value={m.value}
+                delay={m.delay}
+                className="text-3xl md:text-4xl font-bold tracking-tighter text-white font-sans tabular-nums"
+              />
+              <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/30 leading-tight text-center md:text-left">
+                {m.label}
+              </span>
+            </div>
+          ))}
         </section>
 
         {/* TL;DR Cards */}

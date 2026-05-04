@@ -12,7 +12,7 @@ export default function SystemArchive() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { language, t } = useLanguage();
   const reduced = useReducedMotion();
-  const archive = (t as any).archive;
+  const archive = t.archive;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -31,11 +31,11 @@ export default function SystemArchive() {
 
   if (!archive) return null;
 
-  const featuredList: any[] = archive.projects.filter((p: any) => p.isFeatured);
-  const rest: any[] = archive.projects.filter((p: any) => !p.isFeatured);
+  const featuredList = archive.projects.filter((p) => p.isFeatured);
+  const rest = archive.projects.filter((p) => !p.isFeatured);
 
   // Group rest by year, descending
-  const byYear = rest.reduce((acc: Record<string, any[]>, p: any) => {
+  const byYear = rest.reduce<Record<string, typeof rest>>((acc, p) => {
     if (!acc[p.year]) acc[p.year] = [];
     acc[p.year].push(p);
     return acc;
@@ -43,7 +43,7 @@ export default function SystemArchive() {
   const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
 
   return (
-    <main id="main-content" className="min-h-screen w-full bg-charcoal text-offwhite selection:bg-accent selection:text-offwhite font-sans overflow-x-hidden pb-[env(safe-area-inset-bottom)]" tabIndex={-1}>
+    <main id="main-content" className="min-h-screen w-full font-sans overflow-x-hidden selection:bg-accent selection:text-offwhite pb-[env(safe-area-inset-bottom)]" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }} tabIndex={-1}>
 
       <div className="fixed inset-0 z-0 bg-charcoal">
         <div
@@ -88,7 +88,7 @@ export default function SystemArchive() {
         {featuredList.length > 0 && (
           <div className="mb-16 md:mb-20 flex flex-col gap-8">
             <h2 className="sr-only">{language === "es" ? "Proyectos destacados" : "Featured projects"}</h2>
-            {featuredList.map((featured: any, fidx: number) => (
+            {featuredList.map((featured, fidx) => (
               <div
                 key={fidx}
                 className="archive-item group relative rounded-2xl border border-accent/20 bg-accent/[0.04] hover:bg-accent/[0.07] transition-colors duration-300 overflow-hidden"
@@ -128,7 +128,7 @@ export default function SystemArchive() {
                         <ArrowUpRight className="h-3.5 w-3.5 shrink-0" />
                       </Link>
                     )}
-                    {featured.links?.length > 0 && featured.links.map((lnk: any, i: number) => (
+                    {featured.links && featured.links.length > 0 && featured.links.map((lnk, i) => (
                       <a
                         key={i}
                         href={lnk.url}
@@ -160,7 +160,7 @@ export default function SystemArchive() {
 
               {/* Rows */}
               <div className="flex flex-col">
-                {byYear[year].map((project: any, pidx: number) => (
+                {byYear[year].map((project, pidx) => (
                   <div
                     key={pidx}
                     className="archive-item group flex flex-col gap-3 sm:flex-row sm:items-center py-4 md:py-5 border-b border-offwhite/[0.06] hover:border-offwhite/[0.12] border-l-2 border-l-transparent hover:border-l-accent pl-4 md:pl-5 transition-all duration-200 md:gap-8"
@@ -181,7 +181,7 @@ export default function SystemArchive() {
                     {/* Link(s) — 44px touch on mobile, inline on desktop */}
                     <div className="shrink-0 flex flex-wrap items-center gap-2">
                       {project.links ? (
-                        project.links.map((lnk: any, li: number) => (
+                        project.links.map((lnk, li) => (
                           <a
                             key={li}
                             href={lnk.url}

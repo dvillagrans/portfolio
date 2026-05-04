@@ -68,6 +68,7 @@ export default function Stack() {
           scrollTrigger: {
             trigger: container.current,
             start: "top 80%",
+            once: true,
           },
         }
       );
@@ -86,6 +87,7 @@ export default function Stack() {
             scrollTrigger: {
               trigger: container.current,
               start: "top 70%",
+              once: true,
             },
             delay: (index % 10) * 0.03,
           }

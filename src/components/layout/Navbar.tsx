@@ -5,9 +5,10 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useTheme } from "@/hooks/ThemeContext";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,7 +17,7 @@ interface NavItem {
   label: string;
 }
 
-export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" }) {
+export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -25,6 +26,7 @@ export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" })
   const overlayRef = useRef<HTMLDivElement>(null);
   const menuPanelRef = useRef<HTMLDivElement>(null);
   const { language, setLanguage, t } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
   const reduced = useReducedMotion();
   const pathname = usePathname();
 
@@ -194,6 +196,30 @@ export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" })
             </ul>
 
             <div className="flex items-center gap-1.5 md:gap-2">
+              {/* Theme toggle */}
+              <button
+                type="button"
+                onClick={toggleTheme}
+                aria-label={
+                  theme === "dark"
+                    ? "Switch to light mode"
+                    : "Switch to dark mode"
+                }
+                className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full transition-colors ${
+                  scrolled || mobileMenuOpen
+                    ? "text-charcoal hover:bg-charcoal/10"
+                    : theme === "light"
+                    ? "text-charcoal hover:bg-charcoal/10"
+                    : "text-offwhite hover:bg-offwhite/10"
+                }`}
+              >
+                {theme === "dark" ? (
+                  <Sun className="h-4 w-4" />
+                ) : (
+                  <Moon className="h-4 w-4" />
+                )}
+              </button>
+
               {/* Language toggle */}
               <button
                 type="button"
@@ -205,6 +231,8 @@ export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" })
                 }
                 className={`min-w-[44px] min-h-[44px] flex items-center justify-center font-mono text-[10px] md:text-xs border rounded-full px-3 py-2 md:px-3 md:py-1 transition-colors ${
                   scrolled || mobileMenuOpen
+                    ? "border-charcoal/20 hover:bg-charcoal hover:text-offwhite"
+                    : theme === "light"
                     ? "border-charcoal/20 hover:bg-charcoal hover:text-offwhite"
                     : "border-offwhite/20 hover:bg-offwhite hover:text-charcoal"
                 }`}
@@ -296,8 +324,8 @@ export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" })
                         tabIndex={mobileMenuOpen ? 0 : -1}
                         className={`group flex min-h-[56px] w-full items-center justify-between font-sans text-[13px] font-bold tracking-[0.2em] uppercase py-3 px-4 rounded-xl transition-all duration-300 ${
                           active
-                            ? "text-offwhite bg-charcoal/90"
-                            : "text-offwhite/70 hover:text-offwhite hover:bg-white/5"
+                            ? "text-[var(--text-primary)] bg-[var(--bg-secondary)]/90"
+                            : "text-[var(--text-primary)]/70 hover:text-[var(--text-primary)] hover:bg-[var(--bg-primary)]/5"
                         }`}
                       >
                         <span className="flex items-center gap-3">
@@ -309,7 +337,7 @@ export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" })
                           {item.label}
                         </span>
                         {active && (
-                          <span className="block w-2 h-2 rounded-full bg-offwhite/40" />
+                          <span className="block w-2 h-2 rounded-full bg-[var(--text-primary)]/40" />
                         )}
                       </Link>
                     </li>
@@ -318,14 +346,32 @@ export default function Navbar({ theme = "dark" }: { theme?: "light" | "dark" })
               </ul>
 
               {/* Footer info */}
-              <div className="mt-auto pt-6 border-t border-white/10">
+              <div className="mt-auto pt-6 border-t border-[var(--border-color)]">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-white/30">
+                  <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-[var(--text-muted)]">
                     Diego Villagran Salazar
                   </span>
-                  <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-white/30">
-                    {language === "en" ? "EN" : "ES"}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-[var(--text-muted)]">
+                      {language === "en" ? "EN" : "ES"}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={toggleTheme}
+                      aria-label={
+                        theme === "dark"
+                          ? "Switch to light mode"
+                          : "Switch to dark mode"
+                      }
+                      className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]/10 transition-colors"
+                    >
+                      {theme === "dark" ? (
+                        <Sun className="h-4 w-4" />
+                      ) : (
+                        <Moon className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

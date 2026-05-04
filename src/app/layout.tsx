@@ -1,13 +1,16 @@
 import { ProjectChat } from '@/components/ui/ProjectChat';
 import { ConsoleEasterEgg } from '@/components/ui/ConsoleEasterEgg';
 import { ViewTransitionDirector } from '@/components/ui/ViewTransitionDirector';
+import { PersonSchema, WebSiteSchema } from '@/components/ui/SchemaOrg';
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Space_Grotesk, EB_Garamond, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/i18n/LanguageContext";
+import { ThemeProvider } from "@/hooks/ThemeContext";
 import { ViewTransitions } from "next-view-transitions";
 import { HtmlLang } from "@/components/ui/HtmlLang";
+import { Analytics } from "@vercel/analytics/react";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -27,9 +30,74 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
+const BASE_URL = "https://www.dvillagrans.dev";
+
 export const metadata: Metadata = {
-  title: "Diego Villagran | Creative Technologist",
-  description: "Senior Creative Technologist, Lead Frontend Engineer, and Product Systems Designer.",
+  metadataBase: new URL(BASE_URL),
+  title: {
+    default: "Diego Villagran | AI & Data Engineer · ML Systems Builder",
+    template: "%s | Diego Villagran",
+  },
+  description:
+    "Senior AI & Data Engineer building production ML pipelines, LLM automation, and scalable infrastructure. Data Science student at ESCOM-IPN. Portfolio of data engineering, analytics, and full-stack systems.",
+  keywords: [
+    "Diego Villagran",
+    "AI Engineer",
+    "Data Engineer",
+    "Machine Learning",
+    "LLM",
+    "Data Science",
+    "Python",
+    "Next.js",
+    "Full Stack Developer",
+    "portfolio",
+  ],
+  authors: [{ name: "Diego Villagran Salazar", url: BASE_URL }],
+  creator: "Diego Villagran Salazar",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    alternateLocale: "es_MX",
+    url: BASE_URL,
+    siteName: "Diego Villagran — Portfolio",
+    title: "Diego Villagran | AI & Data Engineer · ML Systems Builder",
+    description:
+      "Senior AI & Data Engineer building production ML pipelines, LLM automation, and scalable infrastructure.",
+    images: [
+      {
+        url: "/img/optimized/me-1200.webp",
+        width: 1200,
+        height: 630,
+        alt: "Diego Villagran — AI & Data Engineer",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Diego Villagran | AI & Data Engineer",
+    description:
+      "Building production ML pipelines, LLM automation, and scalable infrastructure.",
+    images: ["/img/optimized/me-1200.webp"],
+    creator: "@dvillagrans",
+  },
+  alternates: {
+    canonical: BASE_URL,
+    languages: {
+      "en-US": `${BASE_URL}/en`,
+      "es-MX": `${BASE_URL}/es`,
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 
@@ -41,8 +109,23 @@ export default function RootLayout({
 }>) {
   return (
     <ViewTransitions>
-      <html lang="en" className="scroll-smooth antialiased" suppressHydrationWarning>
+      <html lang="en" className="scroll-smooth antialiased no-transition" suppressHydrationWarning>
         <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('theme');
+                  if (!theme || (theme !== 'dark' && theme !== 'light')) {
+                    theme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+                  }
+                  document.documentElement.setAttribute('data-theme', theme);
+                } catch(e) {}
+              })();
+            `,
+          }}
+        />
         {process.env.NODE_ENV === "development" && (
           <Script
             src="//unpkg.com/react-grab/dist/index.global.js"
@@ -58,7 +141,7 @@ export default function RootLayout({
         )}
       </head>
       <body
-        className={`${spaceGrotesk.variable} ${ebGaramond.variable} ${jetbrainsMono.variable} font-sans bg-charcoal text-offwhite overflow-x-hidden selection:bg-accent selection:text-offwhite`}
+        className={`${spaceGrotesk.variable} ${ebGaramond.variable} ${jetbrainsMono.variable} font-sans overflow-x-hidden selection:bg-accent selection:text-offwhite`}
       >
         <a
           href="#main-content"
@@ -66,14 +149,19 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <LanguageProvider>
-          <HtmlLang />
-          <ViewTransitionDirector />
-          <ConsoleEasterEgg />
-          <div className="noise-overlay pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.03] mix-blend-overlay"></div>
-          {children}
-          <ProjectChat />
-        </LanguageProvider>
+        <ThemeProvider>
+          <LanguageProvider>
+            <Analytics />
+            <HtmlLang />
+            <ViewTransitionDirector />
+            <ConsoleEasterEgg />
+            <PersonSchema />
+            <WebSiteSchema />
+            <div className="noise-overlay pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.03] mix-blend-overlay"></div>
+            {children}
+            <ProjectChat />
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
     </ViewTransitions>

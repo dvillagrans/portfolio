@@ -1,5 +1,42 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════════
+   THEME SYSTEM — CSS custom properties for dark/light mode
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Dark theme (default) */
+  --bg-primary: oklch(8% 0.012 220);
+  --bg-secondary: oklch(14% 0.014 220);
+  --text-primary: oklch(97% 0.008 80);
+  --text-secondary: oklch(97% 0.008 80 / 0.55);
+  --text-muted: oklch(97% 0.008 80 / 0.4);
+  --border-color: oklch(100% 0 0 / 0.1);
+  --surface: oklch(14% 0.014 220);
+  --card: oklch(18% 0.012 220);
+}
+
+[data-theme="light"] {
+  --bg-primary: oklch(97% 0.008 80);
+  --bg-secondary: oklch(95% 0.010 80);
+  --text-primary: oklch(14% 0.014 220);
+  --text-secondary: oklch(14% 0.014 220 / 0.55);
+  --text-muted: oklch(14% 0.014 220 / 0.4);
+  --border-color: oklch(0% 0 0 / 0.08);
+  --surface: oklch(100% 0 0);
+  --card: oklch(100% 0 0);
+}
+
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Disable transitions on page load to prevent flash */
+html.no-transition,
+html.no-transition * {
+  transition: none !important;
+}
+
 @theme inline {
   /* ─── Core Neutrals — tinted toward cool blue-green for subconscious cohesion ─── */
   /* oklch(lightness chroma hue) — perceptually uniform, equal steps look equal */
@@ -46,7 +83,9 @@
 
 @layer base {
   body {
-    @apply font-sans bg-charcoal text-offwhite;
+    @apply font-sans;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
   }
 
   /* Focus visible: anillo consistente para teclado (no en click) */
@@ -55,7 +94,8 @@
   input:focus-visible,
   textarea:focus-visible,
   [tabindex]:focus-visible {
-    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-charcoal;
+    outline: none;
+    box-shadow: 0 0 0 2px var(--bg-primary), 0 0 0 4px var(--color-accent);
   }
 
   /* Reduced motion: acortar/desactivar animaciones */
@@ -413,4 +453,16 @@ html.back-transition::view-transition-new(root) {
 .cert-card:hover .cert-arrow {
   opacity: 1 !important;
   transform: translateX(0) !important;
+}
+
+/* ─── Form shake on validation error ─── */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+.form-shake {
+  animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }

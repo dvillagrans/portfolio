@@ -14,6 +14,7 @@
     "@ai-sdk/react": "^3.0.107",
     "@dagrejs/dagre": "^3.0.0",
     "@gsap/react": "^2.1.2",
+    "@vercel/analytics": "^2.0.1",
     "@xyflow/react": "^12.10.2",
     "ai": "^6.0.105",
     "chart.js": "^4.5.1",

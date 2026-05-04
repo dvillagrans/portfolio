@@ -43,3 +43,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# LaTeX auxiliary files (in assets)
+assets/resume/*.aux
+assets/resume/*.log
+assets/resume/*.out
+assets/resume/*.fls
+assets/resume/*.fdb_latexmk
+assets/resume/*.synctex.gz
+
+# Output logs
+.output.log

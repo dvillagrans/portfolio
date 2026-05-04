@@ -1,10 +1,16 @@
 import { deepseek } from '@ai-sdk/deepseek';
 import { streamText, convertToModelMessages } from 'ai';
+import { NextResponse } from 'next/server';
 import { DATA } from '@/data/resume';
 import { CERTIFICATIONS } from '@/data/certifications';
+import { rateLimit, getRequestIdentifier } from '@/lib/rate-limit';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
+
+// Chat rate limit: 15 requests per minute per IP
+const CHAT_RATE_LIMIT = 15;
+const CHAT_WINDOW_MS = 60 * 1000;
 
 // Filter out non-serializable fields (JSX nodes) before stringifying
 const cleanData = JSON.stringify(DATA, (key, value) => {
@@ -63,6 +69,28 @@ ${cleanCerts}
 `;
 
 export async function POST(req: Request) {
+  // Rate limit check
+  const identifier = getRequestIdentifier(req);
+  const { allowed, remaining, resetAt, message } = rateLimit({
+    limit: CHAT_RATE_LIMIT,
+    windowMs: CHAT_WINDOW_MS,
+    identifier,
+  });
+
+  if (!allowed) {
+    return NextResponse.json(
+      { error: message },
+      {
+        status: 429,
+        headers: {
+          'X-RateLimit-Remaining': String(remaining),
+          'X-RateLimit-Reset': String(resetAt),
+          'Retry-After': String(Math.ceil((resetAt - Date.now()) / 1000)),
+        },
+      }
+    );
+  }
+
   const { messages } = await req.json();
   const modelMessages = await convertToModelMessages(messages);
 
