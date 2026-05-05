@@ -37,6 +37,18 @@ export default function Marquee() {
     }
   };
 
+  const handleFocus = () => {
+    if (tweenRef.current) {
+      gsap.to(tweenRef.current, { timeScale: 0.12, duration: 0.6, ease: "power2.out" });
+    }
+  };
+
+  const handleBlur = () => {
+    if (tweenRef.current) {
+      gsap.to(tweenRef.current, { timeScale: 1, duration: 0.8, ease: "power2.inOut" });
+    }
+  };
+
   // Words with visual variation — alternating warm accent for editorial rhythm
   const segments = [
     { text: "SYSTEMS ARCHITECTURE", warm: false },
@@ -54,6 +66,11 @@ export default function Marquee() {
       className="w-full overflow-hidden bg-graphite border-y border-offwhite/5 py-4 cursor-default select-none"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      tabIndex={0}
+      role="marquee"
+      aria-label="Technology keywords"
     >
       <div
         ref={scrollRef}

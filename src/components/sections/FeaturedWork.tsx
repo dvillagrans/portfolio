@@ -78,7 +78,7 @@ export default function FeaturedWork() {
   let globalIdx = 0;
 
   return (
-    <section ref={sectionRef} id="projects" className="relative bg-[#fbfaf8] py-24 text-charcoal pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] md:px-12 lg:px-24">
+    <section ref={sectionRef} id="projects" className="relative bg-offwhite py-24 text-charcoal pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] md:px-12 lg:px-24">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <header className="mb-20 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
@@ -98,7 +98,7 @@ export default function FeaturedWork() {
           </div>
           <Link
             href="/projects"
-            className="group flex items-center justify-center min-h-[44px] gap-3 border border-charcoal/10 px-8 py-4 font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-charcoal transition-all hover:bg-charcoal hover:text-offwhite rounded-full bg-white shadow-sm active:scale-[0.98]"
+            className="group flex items-center justify-center min-h-[44px] gap-3 border border-charcoal/10 px-8 py-4 font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-charcoal transition-all hover:bg-charcoal hover:text-offwhite rounded-full bg-white shadow-sm spring-press"
           >
             {language === 'en' ? 'Full Systems Archive' : 'Archivo de Sistemas'}
             <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -163,6 +163,7 @@ export default function FeaturedWork() {
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        style={{ viewTransitionName: `project-img-${p.id}` }}
                       />
                     </div>
                   )}
@@ -230,7 +231,7 @@ export default function FeaturedWork() {
                     <a 
                       href={p.href} 
                       target="_blank"
-                      className="inline-flex min-h-[44px] items-center justify-center gap-3 bg-white px-8 py-4 rounded-2xl font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-charcoal transition-all hover:bg-offwhite active:scale-[0.98]"
+                      className="inline-flex min-h-[44px] items-center justify-center gap-3 bg-white px-8 py-4 rounded-2xl font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-charcoal transition-all hover:bg-offwhite spring-press"
                     >
                       {language === 'en' ? 'Live System' : 'Sistema en Vivo'} <ArrowUpRight className="w-4 h-4" />
                     </a>
@@ -256,6 +257,7 @@ export default function FeaturedWork() {
                         fill
                         sizes="(max-width: 768px) 100vw, 50vw"
                         className="object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
+                        style={{ viewTransitionName: `project-img-${p.id}` }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 via-transparent to-transparent" aria-hidden="true"></div>
                     </div>

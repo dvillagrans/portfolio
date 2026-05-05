@@ -116,7 +116,7 @@ export default function Systems() {
                         SYS_0{idx + 1}
                       </span>
                     </div>
-                    <div className="h-12 w-12 text-offwhite/20 transition-all duration-700 group-hover:scale-110 group-hover:text-offwhite/80 group-hover:rotate-6 flex-shrink-0">
+                    <div className="h-12 w-12 text-offwhite/20 transition-all duration-700 group-hover:scale-110 group-hover:text-offwhite/80 group-hover:rotate-6 flex-shrink-0" aria-hidden="true">
                       {icons[idx % icons.length]}
                     </div>
                   </div>

@@ -61,7 +61,7 @@ export default function SystemArchive() {
         <header className="mb-12 md:mb-20 mt-20 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <Link
             href="/"
-            className="group flex items-center min-h-[44px] gap-3 font-mono text-xs uppercase tracking-widest text-offwhite/70 transition-colors hover:text-offwhite active:scale-[0.98] w-fit"
+            className="group flex items-center min-h-[44px] gap-3 font-mono text-xs uppercase tracking-widest text-offwhite/70 transition-colors hover:text-offwhite spring-press w-fit"
           >
             <ArrowLeft className="h-4 w-4 shrink-0 transition-transform group-hover:-translate-x-1" />
             {archive.back}
@@ -122,7 +122,7 @@ export default function SystemArchive() {
                     {featured.caseStudy && (
                       <Link
                         href={featured.caseStudy}
-                        className="inline-flex items-center justify-center min-h-[44px] gap-2 bg-accent text-offwhite font-mono text-[11px] font-bold uppercase tracking-widest px-5 py-2.5 rounded-full hover:bg-accent/90 transition-colors active:scale-[0.98]"
+                        className="inline-flex items-center justify-center min-h-[44px] gap-2 bg-accent text-offwhite font-mono text-[11px] font-bold uppercase tracking-widest px-5 py-2.5 rounded-full hover:bg-accent/90 transition-colors spring-press"
                       >
                         {language === "es" ? "Caso de Estudio" : "Case Study"}
                         <ArrowUpRight className="h-3.5 w-3.5 shrink-0" />
@@ -134,7 +134,7 @@ export default function SystemArchive() {
                         href={lnk.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center min-h-[44px] gap-2 border border-offwhite/15 text-offwhite/70 font-mono text-[11px] uppercase tracking-widest px-5 py-2.5 rounded-full hover:border-offwhite/40 hover:text-offwhite transition-colors active:scale-[0.98]"
+                        className="inline-flex items-center justify-center min-h-[44px] gap-2 border border-offwhite/15 text-offwhite/70 font-mono text-[11px] uppercase tracking-widest px-5 py-2.5 rounded-full hover:border-offwhite/40 hover:text-offwhite transition-colors spring-press"
                       >
                         {lnk.label}
                         <ArrowUpRight className="h-3.5 w-3.5 shrink-0" />
@@ -187,7 +187,7 @@ export default function SystemArchive() {
                             href={lnk.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center min-h-[44px] gap-1 font-mono text-xs md:text-[10px] uppercase tracking-widest text-offwhite/70 group-hover:text-accent transition-colors border border-offwhite/10 hover:border-accent/40 rounded-full px-3 py-2 md:px-2.5 md:py-1 active:scale-[0.98]"
+                            className="inline-flex items-center justify-center min-h-[44px] gap-1 font-mono text-xs md:text-[10px] uppercase tracking-widest text-offwhite/70 group-hover:text-accent transition-colors border border-offwhite/10 hover:border-accent/40 rounded-full px-3 py-2 md:px-2.5 md:py-1 spring-press"
                           >
                             <span>{lnk.label}</span>
                             <ArrowUpRight className="h-3 w-3 shrink-0" />
@@ -198,7 +198,7 @@ export default function SystemArchive() {
                           href={project.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center min-h-[44px] gap-1.5 font-mono text-xs md:text-[10px] uppercase tracking-widest text-offwhite/70 group-hover:text-accent transition-colors px-3 py-2 md:px-0 md:py-0 active:scale-[0.98]"
+                          className="inline-flex items-center justify-center min-h-[44px] gap-1.5 font-mono text-xs md:text-[10px] uppercase tracking-widest text-offwhite/70 group-hover:text-accent transition-colors px-3 py-2 md:px-0 md:py-0 spring-press"
                         >
                           <span className="hidden sm:inline">{archive.viewProject}</span>
                           <ArrowUpRight className="h-3.5 w-3.5 shrink-0" />

@@ -147,6 +147,7 @@ export const sharedEn = {
   },
   philosophy: {
     tag: "Working Principles",
+    title: "How I Think",
     quote: "\"I don't build demos. I build systems that survive Monday morning.\"",
     items: [
       { title: "01. Ship the pipeline, not the notebook", description: "A Jupyter notebook is a prototype. A pipeline with monitoring, alerting, and a rollback plan is a product. I optimize for the person who gets paged at 3 AM, not the one clapping at the demo." },
@@ -422,6 +423,7 @@ export const sharedEs = {
   },
   philosophy: {
     tag: "Principios de trabajo",
+    title: "Cómo Pienso",
     quote: "\"No construyo demos. Construyo sistemas que sobreviven al lunes por la mañana.\"",
     items: [
       { title: "01. Shippeá el pipeline, no el notebook", description: "Un Jupyter notebook es un prototipo. Un pipeline con monitoreo, alertas y un plan de rollback es un producto. Optimizo para la persona a la que le llega la alerta a las 3 AM, no para la que aplaude en la demo." },

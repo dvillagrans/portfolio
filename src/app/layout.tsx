@@ -1,6 +1,7 @@
 import { ProjectChat } from '@/components/ui/ProjectChat';
 import { ConsoleEasterEgg } from '@/components/ui/ConsoleEasterEgg';
 import { ViewTransitionDirector } from '@/components/ui/ViewTransitionDirector';
+import GridOverlay from '@/components/ui/GridOverlay';
 import { PersonSchema, WebSiteSchema } from '@/components/ui/SchemaOrg';
 import type { Metadata } from "next";
 import Script from "next/script";
@@ -170,6 +171,7 @@ export default function RootLayout({
             <ConsoleEasterEgg />
             <PersonSchema />
             <WebSiteSchema />
+            <GridOverlay />
             <div className="noise-overlay pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.03] mix-blend-overlay" aria-hidden="true"></div>
             {children}
             <ProjectChat />

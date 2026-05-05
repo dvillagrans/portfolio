@@ -287,7 +287,7 @@ export function ProjectChat({ context }: { context?: string }) {
         onClick={() => setIsOpen(true)}
         aria-label="Open portfolio chat"
         style={{ opacity: 0 }}
-        className="fixed z-50 inset-x-0 mx-auto w-fit bottom-[max(1.5rem,env(safe-area-inset-bottom))] flex min-h-[52px] items-center gap-4 rounded-full border border-white/10 bg-charcoal/80 backdrop-blur-xl pl-2 pr-8 py-2 font-mono text-[12px] font-medium text-offwhite shadow-[0_20px_50px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.1)] hover:shadow-[0_20px_60px_rgba(201,125,53,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] transition-all duration-500 hover:border-warm/50 hover:scale-[1.02] group active:scale-[0.98]"
+        className="fixed z-50 inset-x-0 mx-auto w-fit bottom-[max(1.5rem,env(safe-area-inset-bottom))] flex min-h-[52px] items-center gap-4 rounded-full border border-white/10 bg-charcoal/80 backdrop-blur-xl pl-2 pr-8 py-2 font-mono text-[12px] font-medium text-offwhite shadow-[0_20px_50px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.1)] hover:shadow-[0_20px_60px_rgba(201,125,53,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] transition-all duration-500 hover:border-warm/50 hover:scale-[1.02] group spring-press"
       >
         {/* Scan-line texture on hover */}
         <span
@@ -361,7 +361,7 @@ export function ProjectChat({ context }: { context?: string }) {
             <button
               type="button"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="flex h-10 w-10 items-center justify-center rounded-full text-offwhite/40 transition-all hover:text-offwhite hover:bg-white/5"
+              className="flex min-w-[44px] min-h-[44px] items-center justify-center rounded-full text-offwhite/40 transition-all hover:text-offwhite hover:bg-white/5"
               aria-label={isExpanded ? 'Minimize chat' : 'Expand chat'}
             >
               {isExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
@@ -372,7 +372,7 @@ export function ProjectChat({ context }: { context?: string }) {
                 setIsOpen(false);
                 setIsExpanded(false);
               }}
-              className="flex h-10 w-10 items-center justify-center rounded-full text-offwhite/40 transition-all hover:text-offwhite hover:bg-white/5"
+              className="flex min-w-[44px] min-h-[44px] items-center justify-center rounded-full text-offwhite/40 transition-all hover:text-offwhite hover:bg-white/5"
               aria-label="Close chat"
             >
               <X className="h-4 w-4" aria-hidden />
@@ -484,7 +484,7 @@ export function ProjectChat({ context }: { context?: string }) {
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="absolute right-2 h-10 w-10 flex items-center justify-center rounded-lg bg-warm text-charcoal hover:scale-105 active:scale-95 disabled:opacity-30 disabled:grayscale transition-all duration-300 shadow-lg shadow-warm/20"
+              className="absolute right-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg bg-warm text-charcoal hover:scale-105 active:scale-95 disabled:opacity-30 disabled:grayscale transition-all duration-300 shadow-lg shadow-warm/20"
               aria-label="Send message"
             >
               <Send className="h-4 w-4" aria-hidden />

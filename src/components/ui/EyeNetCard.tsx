@@ -7,7 +7,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import Link from "next/link";
-import { Zap } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -129,6 +128,8 @@ function PipelineNodeItem({ node, index }: { node: PipelineNodeConfig; index: nu
   const [hovered, setHovered] = useState(false);
   const [rect, setRect] = useState<DOMRect | null>(null);
   const ref = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
   const styles = getNodeStyles(node.type);
 
   const handleEnter = useCallback(() => {
@@ -140,40 +141,74 @@ function PipelineNodeItem({ node, index }: { node: PipelineNodeConfig; index: nu
     setHovered(false);
   }, []);
 
+  useEffect(() => {
+    if (!glowRef.current || reduced) return;
+    const el = glowRef.current;
+    const tl = gsap.timeline({ repeat: -1, yoyo: true });
+    tl.to(el, { opacity: 0.15, duration: 2 + index * 0.3, ease: "sine.inOut" });
+    tl.to(el, { opacity: 0.45, duration: 2 + index * 0.3, ease: "sine.inOut" });
+    return () => { tl.kill(); };
+  }, [index, reduced]);
+
   return (
     <>
       <div
         ref={ref}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
-        className="relative flex flex-col items-center gap-1.5 px-3 py-3 rounded-[10px] transition-all duration-200 cursor-default select-none"
+        className="relative flex flex-col items-center gap-2.5 px-4 py-4 rounded-xl transition-all duration-300 cursor-default select-none group"
         style={{
-          minWidth: 110,
-          border: "1px solid rgba(255,255,255,0.1)",
-          borderTop: `2px solid ${hovered ? styles.hoverBorder : styles.border}`,
-          background: styles.bg,
-          transform: hovered ? "translateY(-2px)" : "translateY(0)",
+          minWidth: 118,
+          border: `1px solid ${hovered ? `${styles.hoverBorder}60` : "rgba(255,255,255,0.07)"}`,
+          background: hovered
+            ? `linear-gradient(180deg, ${styles.bg} 0%, rgba(13,17,23,0.95) 100%)`
+            : "rgba(13,17,23,0.6)",
+          backdropFilter: "blur(12px)",
+          transform: hovered ? "translateY(-4px) scale(1.03)" : "translateY(0) scale(1)",
+          boxShadow: hovered
+            ? `0 0 20px ${styles.hoverBorder}15, 0 4px 24px rgba(0,0,0,0.3)`
+            : "0 2px 8px rgba(0,0,0,0.2)",
         }}
       >
-        <div style={{ color: styles.text }}>
+        {/* Subtle pulse glow behind */}
+        <div
+          ref={glowRef}
+          className="absolute inset-0 rounded-xl opacity-0 pointer-events-none"
+          style={{
+            background: `radial-gradient(ellipse at center, ${styles.hoverBorder}08 0%, transparent 70%)`,
+          }}
+        />
+
+        {/* Top accent line */}
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 h-[2px] rounded-full transition-all duration-300"
+          style={{
+            width: hovered ? "70%" : "30%",
+            background: hovered
+              ? `linear-gradient(90deg, transparent, ${styles.hoverBorder}, transparent)`
+              : `linear-gradient(90deg, transparent, ${styles.border}, transparent)`,
+          }}
+        />
+
+        <div className="relative z-10" style={{ color: hovered ? styles.hoverBorder : styles.text }}>
           <NodeIcon type={node.type} />
         </div>
-        <span className="font-sans text-[13px] font-semibold leading-tight" style={{ color: "#f0ead8" }}>
+        <span className="font-sans text-[13px] font-semibold leading-tight text-center" style={{ color: "#f0ead8" }}>
           {node.label}
         </span>
         <span
-          className="font-mono text-[9px] uppercase tracking-widest"
-          style={{ color: styles.text, letterSpacing: "0.15em" }}
+          className="font-mono text-[9px] uppercase tracking-[0.15em] text-center"
+          style={{ color: hovered ? styles.hoverBorder : styles.text }}
         >
           {node.sublabel}
         </span>
         {node.tag && (
           <span
-            className="font-mono text-[8px] uppercase tracking-wider px-1.5 py-0.5 rounded"
+            className="font-mono text-[8px] uppercase tracking-wider px-1.5 py-0.5 rounded-full transition-all duration-300"
             style={{
-              color: styles.text,
-              background: `${styles.text}15`,
-              border: `0.5px solid ${styles.text}25`,
+              color: hovered ? styles.hoverBorder : `${styles.text}99`,
+              background: hovered ? `${styles.hoverBorder}15` : `${styles.text}10`,
+              border: `0.5px solid ${hovered ? styles.hoverBorder + "30" : styles.text + "15"}`,
             }}
           >
             {node.tag}
@@ -196,15 +231,45 @@ function PipelineNodeItem({ node, index }: { node: PipelineNodeConfig; index: nu
    FLECHA CON PARTÍCULA ANIMADA
    ────────────────────────────────────────────────────────────── */
 
-function PipelineArrow({ delay }: { delay: number }) {
+function PipelineArrow({ delay, colorFrom, colorTo }: { delay: number; colorFrom: string; colorTo: string }) {
   return (
-    <div className="relative flex-shrink-0" style={{ width: 32, height: 2 }}>
-      <div className="absolute inset-0" style={{ background: "#1e1e1e", height: 1.5, top: "50%", transform: "translateY(-50%)" }} />
+    <div className="relative flex-shrink-0 flex items-center" style={{ width: 38, height: 2 }}>
+      {/* Background line with gradient */}
       <div
-        className="absolute top-1/2 -translate-y-1/2 w-[5px] h-[5px] rounded-full"
+        className="absolute inset-0"
         style={{
-          background: delay === 0 ? "#4ade80" : "#c8a96e",
-          animation: `flow 2s linear ${delay}s infinite`,
+          height: 1.5,
+          top: "50%",
+          transform: "translateY(-50%)",
+          background: `linear-gradient(90deg, ${colorFrom}40, ${colorTo}40)`,
+        }}
+      />
+      {/* Particle 1 — main flow */}
+      <div
+        className="absolute top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full"
+        style={{
+          background: colorFrom,
+          boxShadow: `0 0 6px ${colorFrom}80, 0 0 12px ${colorFrom}30`,
+          animation: `flowParticle 2.2s linear ${delay}s infinite`,
+        }}
+      />
+      {/* Particle 2 — trailing */}
+      <div
+        className="absolute top-1/2 -translate-y-1/2 w-1 h-1 rounded-full"
+        style={{
+          background: colorTo,
+          boxShadow: `0 0 4px ${colorTo}60`,
+          animation: `flowParticle 2.2s linear ${delay + 0.7}s infinite`,
+        }}
+      />
+      {/* Particle 3 — fast ghost */}
+      <div
+        className="absolute top-1/2 -translate-y-1/2 w-[4px] h-[4px] rounded-full"
+        style={{
+          background: colorFrom,
+          opacity: 0.6,
+          filter: "blur(1px)",
+          animation: `flowParticle 1.4s linear ${delay + 1.1}s infinite`,
         }}
       />
     </div>
@@ -444,6 +509,13 @@ export default function EyeNetCard() {
     },
   ];
 
+  const connectionColors: [string, string][] = [
+    ["#4ade80", "#888888"],
+    ["#888888", "#60a5fa"],
+    ["#60a5fa", "#f87171"],
+    ["#f87171", "#c8a96e"],
+  ];
+
   const tags = ["Python", "n8n", "Docker", "FastAPI", "OpenAI", "Gemini", "PostgreSQL", "Redis", "CI/CD"];
   const visibleTags = tags.slice(0, 7);
   const extraCount = tags.length - visibleTags.length;
@@ -476,11 +548,15 @@ export default function EyeNetCard() {
   return (
     <article ref={cardRef} className="relative w-full eyenet-card">
       <style>{`
-        @keyframes flow {
-          0%   { left: -5px; opacity: 0; }
-          20%  { opacity: 1; }
-          80%  { opacity: 1; }
-          100% { left: 32px; opacity: 0; }
+        @keyframes flowParticle {
+          0%   { left: -6px; opacity: 0; }
+          15%  { opacity: 1; }
+          85%  { opacity: 1; }
+          100% { left: 38px; opacity: 0; }
+        }
+        @keyframes dataPulse {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 0.7; }
         }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
@@ -610,18 +686,26 @@ export default function EyeNetCard() {
 
         {/* ═══ PIPELINE ═══ */}
         <div className="eyenet-flow px-6 md:px-8 pb-6 md:pb-8" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-          {/* Section header */}
-          <div className="flex items-center justify-between mb-5 pt-5">
+          {/* Section header — modern dash layout */}
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-5 mb-6">
             <div className="flex items-center gap-2">
-              <Zap size={12} className="text-white/15" />
-              <span className="font-mono text-[10px] tracking-[0.15em] uppercase text-white/25">
+              {/* Accent dash graphic */}
+              <svg width="20" height="12" viewBox="0 0 20 12" fill="none" className="shrink-0">
+                <rect x="0" y="5" width="20" height="2" rx="1" fill="oklch(40% 0.085 195 / 0.3)" />
+                <rect x="0" y="5" width="8" height="2" rx="1" fill="oklch(40% 0.085 195)" />
+                <circle cx="10" cy="6" r="1.5" fill="oklch(40% 0.085 195)" />
+              </svg>
+              <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-white/35">
                 {isEn ? "SYSTEM ARCHITECTURE" : "ARQUITECTURA DEL SISTEMA"}
               </span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <span className="block w-[5px] h-[5px] rounded-full bg-amber-400/60" />
-              <span className="font-mono text-[9px] tracking-widest text-white/15">
-                5 {isEn ? "nodes active" : "nodos activos"}
+            {/* Status pill */}
+            <div className="flex items-center gap-1.5 px-2 py-1 rounded-full border border-white/[0.06] bg-white/[0.02]">
+              <div className="relative">
+                <div className="w-[5px] h-[5px] rounded-full bg-amber-400/80" style={{ animation: "dataPulse 2s ease-in-out infinite" }} />
+              </div>
+              <span className="font-mono text-[9px] tracking-widest text-white/15 leading-none">
+                5 {isEn ? "NODES ACTIVE" : "NODOS ACTIVOS"}
               </span>
             </div>
           </div>
@@ -633,15 +717,15 @@ export default function EyeNetCard() {
                 <div key={node.id} className="flex items-center">
                   <PipelineNodeItem node={node} index={i} />
                   {i < pipelineNodes.length - 1 && (
-                    <PipelineArrow delay={i * 0.6} />
+                    <PipelineArrow delay={i * 0.6} colorFrom={connectionColors[i][0]} colorTo={connectionColors[i][1]} />
                   )}
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Legend */}
-          <div className="mt-4 flex flex-wrap items-center gap-3">
+          {/* Legend — inline minimal with glow dots */}
+          <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1.5">
             {[
               { color: "#4ade80", label: "TRIGGER" },
               { color: "#888888", label: "TRANSFORM" },
@@ -649,8 +733,14 @@ export default function EyeNetCard() {
               { color: "#f87171", label: "STORAGE" },
               { color: "#c8a96e", label: "OUTPUT" },
             ].map((item) => (
-              <span key={item.label} className="flex items-center gap-1.5 font-mono text-[9px] tracking-widest text-white/15">
-                <span className="block w-[5px] h-[5px] rounded-full" style={{ background: item.color }} />
+              <span key={item.label} className="flex items-center gap-1.5 font-mono text-[8px] tracking-[0.12em] text-white/20">
+                <span
+                  className="block w-[5px] h-[5px] rounded-full"
+                  style={{
+                    background: item.color,
+                    boxShadow: `0 0 4px ${item.color}40`,
+                  }}
+                />
                 {item.label}
               </span>
             ))}

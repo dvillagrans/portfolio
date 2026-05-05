@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ArrowDownToLine } from "lucide-react";
+import ParallaxLayer from "@/components/ui/ParallaxLayer";
 
 export default function Hero() {
   const container = useRef<HTMLDivElement>(null);
@@ -113,21 +114,23 @@ export default function Hero() {
     >
       {/* Background cinematic layers */}
       <div className="absolute inset-0 z-0 bg-charcoal">
-        <div
-          ref={bgRef}
-          className="absolute inset-0 overflow-hidden"
-        >
-          <Image
-            src="/img/bg-water-dark.jpg"
-            alt=""
-            fill
-            priority
-            fetchPriority="high"
-            quality={75}
-            className="object-cover opacity-80 mix-blend-screen"
-            sizes="100vw"
-          />
-        </div>
+        <ParallaxLayer speed={0.15} className="absolute inset-0 overflow-hidden">
+          <div
+            ref={bgRef}
+            className="absolute inset-0 overflow-hidden"
+          >
+            <Image
+              src="/img/bg-water-dark.jpg"
+              alt=""
+              fill
+              priority
+              fetchPriority="high"
+              quality={75}
+              className="object-cover opacity-80 mix-blend-screen"
+              sizes="100vw"
+            />
+          </div>
+        </ParallaxLayer>
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/50 to-transparent" aria-hidden="true" />
         <div className="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/20 to-transparent opacity-60" aria-hidden="true" />
       </div>
@@ -143,8 +146,8 @@ export default function Hero() {
       <div className="relative z-10 max-w-4xl">
         {/* Headline with word-by-word split animation */}
         <h1
-          className="font-sans text-5xl sm:text-6xl lg:text-7xl xl:text-[6rem] font-medium tracking-tight text-offwhite md:leading-[1.02] break-words"
-          style={{ textWrap: "balance" }}
+          className="font-sans font-medium tracking-tight text-offwhite break-words leading-[1.02]"
+          style={{ fontSize: "clamp(2.5rem, 6vw, 5.25rem)", textWrap: "balance" }}
           aria-label={`${t.hero.title1} ${t.hero.title2}`}
         >
           {/* Line 1 */}
@@ -191,7 +194,7 @@ export default function Hero() {
         >
           <a
             href="/#projects"
-            className="group inline-flex items-center justify-center sm:justify-start w-full sm:w-auto min-h-[44px] gap-3 border border-offwhite/20 px-6 py-4 md:px-8 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-offwhite transition-all hover:bg-offwhite hover:text-charcoal active:scale-[0.98]"
+            className="group inline-flex items-center justify-center sm:justify-start w-full sm:w-auto min-h-[44px] gap-3 border border-offwhite/20 px-6 py-4 md:px-8 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-offwhite transition-all hover:bg-offwhite hover:text-charcoal spring-press"
           >
             {t.hero.cta}
             <div className="h-[2px] w-4 bg-warm transition-all group-hover:w-8 group-hover:bg-charcoal" />
@@ -199,7 +202,7 @@ export default function Hero() {
           <a
             href="/resume/resume-banca.pdf"
             download
-            className="group inline-flex items-center justify-center sm:justify-start w-full sm:w-auto min-h-[44px] gap-2 border border-offwhite/10 px-6 py-4 md:px-8 font-sans text-xs font-semibold uppercase tracking-[0.15em] text-offwhite/70 transition-all hover:text-offwhite hover:border-offwhite/30 active:scale-[0.98]"
+            className="group inline-flex items-center justify-center sm:justify-start w-full sm:w-auto min-h-[44px] gap-2 border border-offwhite/10 px-6 py-4 md:px-8 font-sans text-xs font-semibold uppercase tracking-[0.15em] text-offwhite/70 transition-all hover:text-offwhite hover:border-offwhite/30 spring-press"
           >
             {t.hero.downloadCv}
             <ArrowDownToLine className="w-4 h-4" />

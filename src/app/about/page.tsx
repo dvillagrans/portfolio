@@ -92,7 +92,7 @@ export default function About() {
         <header className="mb-24 mt-20 flex items-center justify-between">
           <Link
             href="/"
-            className="group flex items-center min-h-[44px] gap-3 font-sans text-xs font-semibold uppercase tracking-widest text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)] active:scale-[0.98]"
+            className="group flex items-center min-h-[44px] gap-3 font-sans text-xs font-semibold uppercase tracking-widest text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)] spring-press"
           >
             <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
             {language === "en" ? "Return" : "Volver"}
@@ -103,7 +103,7 @@ export default function About() {
             <a
               href="/resume/resume-banca.pdf"
               download
-              className="group inline-flex items-center justify-center min-h-[44px] gap-2 border border-[var(--border-color)] rounded-full px-4 py-2 bg-[var(--card)] shadow-sm font-sans text-[10px] font-bold uppercase tracking-widest text-[var(--text-secondary)] transition-all hover:text-[var(--text-primary)] hover:border-[var(--border-color)] active:scale-[0.98]"
+              className="group inline-flex items-center justify-center min-h-[44px] gap-2 border border-[var(--border-color)] rounded-full px-4 py-2 bg-[var(--card)] shadow-sm font-sans text-[10px] font-bold uppercase tracking-widest text-[var(--text-secondary)] transition-all hover:text-[var(--text-primary)] hover:border-[var(--border-color)] spring-press"
             >
               {language === "en" ? "Download CV" : "Descargar CV"}
               <ArrowDownToLine className="h-3.5 w-3.5" />
@@ -237,7 +237,7 @@ export default function About() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               href="/#contact"
-              className="group inline-flex items-center gap-3 bg-[var(--bg-secondary)] text-[var(--text-primary)] border border-[var(--border-color)] px-8 py-4 font-sans text-xs font-semibold uppercase tracking-[0.18em] transition-all hover:bg-warm hover:text-charcoal rounded-full active:scale-[0.98]"
+              className="group inline-flex items-center gap-3 bg-[var(--bg-secondary)] text-[var(--text-primary)] border border-[var(--border-color)] px-8 py-4 font-sans text-xs font-semibold uppercase tracking-[0.18em] transition-all hover:bg-warm hover:text-charcoal rounded-full spring-press"
             >
               {language === "en" ? "Start a conversation" : "Iniciar conversación"}
               <span className="h-1.5 w-1.5 rounded-full bg-warm group-hover:bg-charcoal animate-pulse transition-colors" />

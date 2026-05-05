@@ -70,6 +70,7 @@ export interface PhilosophyItem {
 
 export interface PhilosophyDict {
   tag: string;
+  title: string;
   quote: string;
   items: PhilosophyItem[];
 }

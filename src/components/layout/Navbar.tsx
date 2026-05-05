@@ -19,8 +19,10 @@ interface NavItem {
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const lastScrollY = useRef(0);
   const navRef = useRef<HTMLElement>(null);
   const menuItemsRef = useRef<HTMLUListElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -30,12 +32,40 @@ export default function Navbar() {
   const reduced = useReducedMotion();
   const pathname = usePathname();
 
-  /* Scroll handler */
+  /* Scroll handler with direction tracking */
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const currentY = window.scrollY;
+          setScrolled(currentY > 50);
+
+          if (reduced) {
+            setHidden(false);
+          } else {
+            const scrollingDown = currentY > lastScrollY.current;
+            const pastThreshold = currentY > 300;
+            const atTop = currentY < 10;
+
+            if (atTop) {
+              setHidden(false);
+            } else if (pastThreshold && scrollingDown && !mobileMenuOpen) {
+              setHidden(true);
+            } else if (!scrollingDown) {
+              setHidden(false);
+            }
+          }
+
+          lastScrollY.current = currentY;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [reduced, mobileMenuOpen]);
 
   /* Lock body scroll when menu open */
   useEffect(() => {
@@ -160,6 +190,10 @@ export default function Navbar() {
         ref={navRef}
         style={{ viewTransitionName: "nav-header" }}
         className={`fixed left-1/2 z-50 flex flex-col -translate-x-1/2 rounded-[2rem] top-[max(1rem,env(safe-area-inset-top))] md:top-6 transition-all duration-500 will-change-transform ${
+          hidden && !reduced
+            ? "-translate-y-[calc(100%+2rem)] opacity-0 pointer-events-none"
+            : "translate-y-0 opacity-100"
+        } ${
           scrolled || mobileMenuOpen
             ? "w-[95%] sm:w-[90%] max-w-4xl bg-offwhite/95 text-charcoal backdrop-blur-xl border border-charcoal/10 shadow-lg md:w-[600px]"
             : `w-[95%] sm:w-[90%] max-w-4xl bg-transparent ${theme === "light" ? "text-charcoal" : "text-offwhite"} border border-transparent md:w-[600px]`

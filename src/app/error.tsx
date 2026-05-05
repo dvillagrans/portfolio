@@ -34,7 +34,7 @@ export default function Error({
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <button
             onClick={reset}
-            className="inline-flex items-center gap-2 min-h-[44px] px-6 py-3 bg-warm text-charcoal font-sans text-xs font-bold uppercase tracking-[0.15em] rounded-full hover:bg-warm/90 transition-colors active:scale-[0.98]"
+            className="inline-flex items-center gap-2 min-h-[44px] px-6 py-3 bg-warm text-charcoal font-sans text-xs font-bold uppercase tracking-[0.15em] rounded-full hover:bg-warm/90 transition-colors spring-press"
           >
             <RefreshCw className="h-4 w-4" />
             Try again
@@ -42,7 +42,7 @@ export default function Error({
 
           <Link
             href="/"
-            className="inline-flex items-center gap-2 min-h-[44px] px-6 py-3 border border-offwhite/20 text-offwhite/70 font-sans text-xs font-bold uppercase tracking-[0.15em] rounded-full hover:border-offwhite/40 hover:text-offwhite transition-colors active:scale-[0.98]"
+            className="inline-flex items-center gap-2 min-h-[44px] px-6 py-3 border border-offwhite/20 text-offwhite/70 font-sans text-xs font-bold uppercase tracking-[0.15em] rounded-full hover:border-offwhite/40 hover:text-offwhite transition-colors spring-press"
           >
             <ArrowLeft className="h-4 w-4" />
             Go home

@@ -54,7 +54,17 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const toggleTheme = useCallback(() => {
-    setThemeState(prev => prev === "dark" ? "light" : "dark");
+    if (!document.startViewTransition) {
+      setThemeState(prev => prev === "dark" ? "light" : "dark");
+      return;
+    }
+    document.documentElement.classList.add("theme-toggling");
+    const transition = document.startViewTransition(() => {
+      setThemeState(prev => prev === "dark" ? "light" : "dark");
+    });
+    transition.finished.then(() => {
+      document.documentElement.classList.remove("theme-toggling");
+    });
   }, []);
 
   const setTheme = useCallback((t: Theme) => setThemeState(t), []);

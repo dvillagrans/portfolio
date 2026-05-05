@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -14,6 +14,7 @@ export default function Stack() {
   const { t, language } = useLanguage();
   const reduced = useReducedMotion();
   const tools = t.stack.tools;
+  const [activeByCategory, setActiveByCategory] = useState<Record<number, string | null>>({});
 
   // Let's divide tools into intuitive categories just visually based on the list
   const dataScience = ["Python", "Pandas", "Numpy", "Matplotlib", "Seaborn", "Scikit-learn", "Tensorflow", "Keras", "PyTorch", "Yolo", "anaconda", "googlecolab"];
@@ -130,17 +131,28 @@ export default function Stack() {
                   {category.name}
                 </h3>
                 <div className="flex flex-wrap gap-2.5">
-                   {category.items.map((tool, iIdx) => (
-                      <span
-                        key={tool}
-                        ref={(el) => {
-                           if (cIdx === 0) itemsRef.current[iIdx] = el;
-                        }}
-                        className="inline-flex items-center px-3 py-1.5 rounded-lg bg-black/40 border border-white/10 font-sans text-[13px] text-offwhite/80 hover:text-white hover:border-accent/50 hover:bg-accent/10 transition-all duration-300 cursor-default"
-                      >
-                        {tool}
-                      </span>
-                   ))}
+                   {category.items.map((tool, iIdx) => {
+                      const isActive = activeByCategory[cIdx] === tool;
+                      return (
+                        <button
+                          key={tool}
+                          type="button"
+                          onClick={() =>
+                            setActiveByCategory((prev) => ({
+                              ...prev,
+                              [cIdx]: isActive ? null : tool,
+                            }))
+                          }
+                          className={`inline-flex items-center px-3 py-1.5 rounded-lg border font-sans text-[13px] transition-all duration-300 ${
+                            isActive
+                              ? "bg-accent/20 border-accent/50 text-white scale-105"
+                              : "bg-black/40 border-white/10 text-offwhite/80 hover:text-white hover:border-accent/50 hover:bg-accent/10"
+                          }`}
+                        >
+                          {tool}
+                        </button>
+                      );
+                   })}
                 </div>
              </div>
           ))}

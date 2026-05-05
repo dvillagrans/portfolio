@@ -323,6 +323,23 @@ export default function Philosophy() {
         );
       }
 
+      /* Restart SMIL animations on re-enter */
+      if (container.current) {
+        const restartSvgs = () => {
+          const animates = container.current!.querySelectorAll("animate, animateMotion");
+          animates.forEach((el) => {
+            (el as SVGAnimationElement).beginElement?.();
+          });
+        };
+
+        ScrollTrigger.create({
+          trigger: container.current,
+          start: "top 80%",
+          onEnter: restartSvgs,
+          onEnterBack: restartSvgs,
+        });
+      }
+
       /* Principle 3 description: blur-to-clear (the "explainability" metaphor) */
       gsap.fromTo(
         ".principle-card:last-child .principle-desc",
@@ -374,13 +391,16 @@ export default function Philosophy() {
       />
 
       <div className="relative z-10 mx-auto max-w-7xl pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] md:px-12 lg:px-16">
-        {/* Section tag */}
-        <div className="flex items-center gap-4 mb-16 md:mb-24">
-          <span className="font-sans text-[10px] font-bold uppercase tracking-[0.3em] text-warm/70">
+        {/* Section heading */}
+        <div className="flex items-center gap-4 mb-6">
+          <h2 className="font-sans text-[10px] font-bold uppercase tracking-[0.3em] text-warm/70">
             04. {t.philosophy.tag}
-          </span>
+          </h2>
           <div className="h-[1px] flex-1 max-w-24 bg-warm/15" />
         </div>
+        <h3 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight text-warm/90 mb-16 md:mb-24">
+          {t.philosophy.title}
+        </h3>
 
         {/* ═══ Massive Manifesto Quote ═══ */}
         <div ref={quoteRef} className="mb-24 md:mb-36 lg:mb-44 max-w-6xl">

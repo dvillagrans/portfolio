@@ -64,16 +64,17 @@ export function IndiaAQIViz() {
     const loadMap = async () => {
       if (destroyed) return;
 
-      const TOPO_URL = "https://cdn.jsdelivr.net/npm/datamaps@0.5.10/src/js/data/ind.topo.json";
-
+      const TOPO_URL = "/data/india.topo.json";
+      
       let topology: any;
       try {
         const response = await fetch(TOPO_URL);
-        if (!response.ok) throw new Error("Failed to fetch topology");
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         topology = await response.json();
-      } catch {
+      } catch (err) {
+        console.error("IndiaAQIViz: Error loading map data:", err);
         if (svgRef.current && !destroyed) {
-          svgRef.current.innerHTML = `<text x="50%" y="50%" text-anchor="middle" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.5)">India AQI Map</text>`;
+          svgRef.current.innerHTML = `<text x="50%" y="50%" text-anchor="middle" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.5)">India AQI Map (Error Loading)</text>`;
         }
         return;
       }

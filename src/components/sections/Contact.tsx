@@ -182,7 +182,7 @@ export default function Contact() {
           <div className="flex flex-col sm:flex-row items-center gap-6 mt-8">
             <a
               href={`mailto:${t.contact.email}`}
-              className="group relative inline-flex items-center min-h-[44px] gap-4 overflow-hidden border border-offwhite/20 bg-transparent px-8 py-4 font-sans text-sm font-semibold tracking-[0.1em] text-offwhite transition-all duration-500 hover:border-warm hover:bg-warm hover:text-charcoal active:scale-[0.98]"
+              className="group relative inline-flex items-center min-h-[44px] gap-4 overflow-hidden border border-offwhite/20 bg-transparent px-8 py-4 font-sans text-sm font-semibold tracking-[0.1em] text-offwhite transition-all duration-500 hover:border-warm hover:bg-warm hover:text-charcoal spring-press"
             >
               <span className="relative z-10 font-bold uppercase">{t.contact.email}</span>
               <ArrowUpRight className="relative z-10 h-4 w-4 transition-transform group-hover:scale-110 group-hover:rotate-12" />
@@ -193,7 +193,7 @@ export default function Contact() {
             <button
               onClick={() => setShowForm(true)}
               type="button"
-              className="group inline-flex items-center min-h-[44px] gap-3 px-6 py-4 font-sans text-xs font-bold uppercase tracking-[0.2em] text-offwhite/60 hover:text-warm transition-all duration-300 active:scale-[0.98]"
+              className="group inline-flex items-center min-h-[44px] gap-3 px-6 py-4 font-sans text-xs font-bold uppercase tracking-[0.2em] text-offwhite/60 hover:text-warm transition-all duration-300 spring-press"
             >
               {t.contact.bookSession}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -221,7 +221,12 @@ export default function Contact() {
                   type="text" required id="name"
                   placeholder=" "
                   value={name}
-                  onChange={e => { setName(e.target.value); if (errors.name) setErrors(prev => ({ ...prev, name: undefined })); }}
+                  onChange={e => {
+                    const val = e.target.value;
+                    setName(val);
+                    const err = validateField("name", val);
+                    setErrors(prev => ({ ...prev, name: err }));
+                  }}
                   onBlur={() => {
                     setTouched(prev => ({ ...prev, name: true }));
                     setErrors(prev => ({ ...prev, name: validateField("name", name) }));
@@ -248,7 +253,12 @@ export default function Contact() {
                   type="email" required id="email"
                   placeholder=" "
                   value={email}
-                  onChange={e => { setEmail(e.target.value); if (errors.email) setErrors(prev => ({ ...prev, email: undefined })); }}
+                  onChange={e => {
+                    const val = e.target.value;
+                    setEmail(val);
+                    const err = validateField("email", val);
+                    setErrors(prev => ({ ...prev, email: err }));
+                  }}
                   onBlur={() => {
                     setTouched(prev => ({ ...prev, email: true }));
                     setErrors(prev => ({ ...prev, email: validateField("email", email) }));
@@ -275,7 +285,12 @@ export default function Contact() {
                   required id="message" rows={3}
                   placeholder=" "
                   value={message}
-                  onChange={e => { setMessage(e.target.value); if (errors.message) setErrors(prev => ({ ...prev, message: undefined })); }}
+                  onChange={e => {
+                    const val = e.target.value;
+                    setMessage(val);
+                    const err = validateField("message", val);
+                    setErrors(prev => ({ ...prev, message: err }));
+                  }}
                   onBlur={() => {
                     setTouched(prev => ({ ...prev, message: true }));
                     setErrors(prev => ({ ...prev, message: validateField("message", message) }));
@@ -313,7 +328,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={status === 'loading'}
-                className={`mt-6 flex min-h-[44px] items-center justify-center gap-3 px-8 py-4 rounded-xl font-sans text-xs font-bold uppercase tracking-[0.15em] transition-all disabled:opacity-50 active:scale-[0.98] ${
+                className={`mt-6 flex min-h-[44px] items-center justify-center gap-3 px-8 py-4 rounded-xl font-sans text-xs font-bold uppercase tracking-[0.15em] transition-all disabled:opacity-50 spring-press ${
                   status === 'success'
                     ? 'bg-warm text-charcoal shadow-lg shadow-warm/20'
                     : status === 'error'
