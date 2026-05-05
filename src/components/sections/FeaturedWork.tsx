@@ -121,73 +121,170 @@ export default function FeaturedWork() {
           <div ref={vizRevealRef} className="secondary-cards-grid grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             {projects.filter(p => p.type === 'grid').map((p) => {
               const currentIdx = globalIdx++;
+              const accentMap: Record<string, { color: string; gradient: string }> = {
+                "01": { color: "oklch(54% 0.18 265)", gradient: "linear-gradient(135deg, oklch(54% 0.18 265 / 0.06), oklch(54% 0.18 265 / 0.01))" },
+                "02": { color: "oklch(65% 0.15 145)", gradient: "linear-gradient(135deg, oklch(65% 0.15 145 / 0.06), oklch(65% 0.15 145 / 0.01))" },
+                "04": { color: "oklch(60% 0.16 35)",  gradient: "linear-gradient(135deg, oklch(60% 0.16 35 / 0.06), oklch(60% 0.16 35 / 0.01))" },
+              };
+              const accent = accentMap[p.id] ?? { color: "oklch(50% 0.12 240)", gradient: "linear-gradient(135deg, oklch(50% 0.12 240 / 0.06), oklch(50% 0.12 240 / 0.01))" };
+
               return (
                 <article 
                   key={p.id}
                   ref={(el) => { cardsRef.current[currentIdx] = el; }}
-                  className="secondary-card group flex flex-col rounded-[2rem] border border-charcoal/5 bg-white p-5 sm:p-6 md:p-8 transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
+                  className="secondary-card group relative flex flex-col rounded-[2.5rem] border border-charcoal/8 bg-white/90 backdrop-blur-sm overflow-hidden transition-all duration-700 hover:shadow-2xl hover:-translate-y-1.5"
                 >
-                  <div className="mb-8 flex items-center justify-between">
-                    <span className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-charcoal/30">
-                      SYS_0{p.id}
-                    </span>
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-charcoal/40">
-                      {p.category}
+                  {/* Decorative accent gradient on hover */}
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                    style={{ background: accent.gradient }}
+                  />
+
+                  {/* Giant SYS watermark */}
+                  <div className="absolute -bottom-6 right-4 select-none pointer-events-none" aria-hidden="true">
+                    <span className="font-mono text-[6rem] md:text-[8rem] font-black leading-none text-charcoal/[0.03] tracking-tighter">
+                      {p.id}
                     </span>
                   </div>
 
-                  <h3 className="font-sans text-2xl font-medium tracking-tight text-charcoal mb-4 transition-colors break-words">
-                    {p.title}
-                  </h3>
-                  <p className="text-sm text-charcoal/60 leading-relaxed mb-8 flex-1 break-words">
-                    {p.problem}
-                  </p>
-
-                  {p.id === "01" ? (
-                    <div className="mb-8">
-                      <VizContainer height={180}>
-                        <CovidClusterViz />
-                      </VizContainer>
-                    </div>
-                  ) : p.id === "02" ? (
-                    <div className="mb-8">
-                      <VizContainer height={160}>
-                        <NYCFareViz />
-                      </VizContainer>
-                    </div>
-                  ) : (
-                    <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-charcoal/[0.03] mb-8 border border-charcoal/5">
-                      <Image 
-                        src={p.image}
-                        alt={p.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        style={{ viewTransitionName: `project-img-${p.id}` }}
-                      />
-                    </div>
-                  )}
-
-                  <div className="grid grid-cols-2 gap-4 mb-8">
-                    {p.metrics?.map((m, i) => (
-                      <div key={i} className="min-w-0">
-                        <p className="text-xl font-bold text-charcoal break-words">{m.value}</p>
-                        <p className="text-[9px] font-bold uppercase tracking-widest text-charcoal/40 break-words">{m.label}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="flex items-center justify-between mt-auto pt-6 border-t border-charcoal/5">
-                    <div className="flex flex-wrap gap-1.5">
-                      {p.tags?.slice(0, 3).map(tag => (
-                        <span key={tag} className="px-2 py-0.5 rounded bg-charcoal/[0.03] text-[8px] font-bold uppercase tracking-widest text-charcoal/40">
-                          {tag}
+                  <div className="relative z-10 flex flex-col flex-1 p-5 sm:p-6 md:p-8">
+                    {/* Header metadata */}
+                    <div className="mb-8 flex items-center justify-between">
+                      <span className="font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-charcoal/25">
+                        SYS_0{p.id}
+                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <span
+                          className="block w-1.5 h-1.5 rounded-full"
+                          style={{ background: accent.color, boxShadow: `0 0 6px ${accent.color}` }}
+                        />
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-charcoal/35">
+                          {p.category}
                         </span>
-                      ))}
+                      </div>
                     </div>
-                    <Link href={p.href} className="flex h-10 w-10 items-center justify-center rounded-full bg-charcoal text-white transition-all hover:bg-accent hover:scale-110 active:scale-95">
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
+
+                    {/* Title with subtle accent underline */}
+                    <h3 className="font-sans text-2xl md:text-3xl font-semibold tracking-tight text-charcoal mb-4 leading-tight transition-colors break-words">
+                      {p.title}
+                    </h3>
+
+                    {/* Problem statement with left accent bar */}
+                    <div className="flex gap-3 mb-8">
+                      <div
+                        className="w-[3px] shrink-0 rounded-full transition-all duration-500 group-hover:h-12"
+                        style={{ background: accent.color, height: "1.5rem" }}
+                      />
+                      <p className="text-sm text-charcoal/55 leading-relaxed flex-1 break-words">
+                        {p.problem}
+                      </p>
+                    </div>
+
+                    {/* Visualization */}
+                    {p.id === "01" ? (
+                      <div className="mb-8">
+                        <VizContainer height={180}>
+                          <CovidClusterViz />
+                        </VizContainer>
+                      </div>
+                    ) : p.id === "02" ? (
+                      <div className="mb-8">
+                        <VizContainer height={160}>
+                          <NYCFareViz />
+                        </VizContainer>
+                      </div>
+                    ) : (
+                      <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-charcoal/[0.03] mb-8 border border-charcoal/5">
+                        <Image 
+                          src={p.image}
+                          alt={p.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover transition-transform duration-700 group-hover:scale-105"
+                          style={{ viewTransitionName: `project-img-${p.id}` }}
+                        />
+                      </div>
+                    )}
+
+                    {/* Metrics — hero stat + secondary roll */}
+                    {p.metrics && p.metrics.length > 0 && (
+                      <div className="mb-8">
+                        <div className="flex items-baseline gap-3 mb-4">
+                          <span
+                            className="font-mono text-5xl font-black tabular-nums tracking-tighter transition-colors duration-500"
+                            style={{ color: accent.color }}
+                          >
+                            {p.metrics[0].value}
+                          </span>
+                          <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/35">
+                            {p.metrics[0].label}
+                          </span>
+                        </div>
+                        {p.metrics.length > 1 && (
+                          <div className="flex flex-wrap gap-4">
+                            {p.metrics.slice(1).map((m, i) => (
+                              <div key={i} className="min-w-0">
+                                <p className="text-lg font-bold text-charcoal break-words">{m.value}</p>
+                                <p className="text-[8px] font-bold uppercase tracking-widest text-charcoal/30 break-words">{m.label}</p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Footer — tags + expanding arrow button */}
+                    <div className="flex items-center justify-between mt-auto pt-6 border-t border-charcoal/[0.06]">
+                      <div className="flex flex-wrap gap-1.5">
+                        {p.tags?.slice(0, 3).map(tag => (
+                          <span
+                            key={tag}
+                            className="px-2.5 py-1 rounded-full text-[8px] font-bold uppercase tracking-widest transition-all duration-300 group-hover:border-charcoal/20"
+                            style={{
+                              color: "oklch(30% 0.02 100 / 0.5)",
+                              background: "oklch(30% 0.02 100 / 0.04)",
+                              border: "1px solid oklch(30% 0.02 100 / 0.06)",
+                            }}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <Link
+                        href={p.href}
+                        className="relative flex items-center justify-center rounded-full transition-all duration-500 overflow-hidden spring-press"
+                        style={{
+                          background: "oklch(30% 0.02 100 / 0.06)",
+                          width: "44px",
+                          height: "44px",
+                          minWidth: "44px",
+                          minHeight: "44px",
+                        }}
+                        onMouseEnter={(e) => {
+                          gsap.to(e.currentTarget, {
+                            width: 120,
+                            borderRadius: "999px",
+                            background: "oklch(30% 0.02 100 / 0.9)",
+                            duration: 0.35,
+                            ease: "power3.out",
+                          });
+                        }}
+                        onMouseLeave={(e) => {
+                          gsap.to(e.currentTarget, {
+                            width: 44,
+                            borderRadius: "999px",
+                            background: "oklch(30% 0.02 100 / 0.06)",
+                            duration: 0.35,
+                            ease: "power3.out",
+                          });
+                        }}
+                      >
+                        <ArrowRight className="h-4 w-4 text-charcoal shrink-0 absolute right-3.5" />
+                        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-white whitespace-nowrap opacity-0 group-hover/link:opacity-100 transition-opacity duration-300 ml-1 mr-8">
+                          {language === 'en' ? 'Explore' : 'Explorar'}
+                        </span>
+                      </Link>
+                    </div>
                   </div>
                 </article>
               );

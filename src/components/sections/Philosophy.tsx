@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useMemo } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -14,155 +14,204 @@ gsap.registerPlugin(ScrollTrigger);
    principle. Cinematic scroll-driven entrances.
    ═══════════════════════════════════════════════════════════════ */
 
-/* ─── Animated SVG Visual: Pipeline Flow ─── */
+/* ─── Static SVG Visual: Connected Nodes ─── */
 function PipelineVisual({ reduced }: { reduced: boolean }) {
+  const teal = "oklch(40% 0.085 195)";
+  const amber = "oklch(70% 0.130 65)";
+  const lineColor = "oklch(100% 0 0 / 0.12)";
+
   if (reduced) {
     return (
-      <svg viewBox="0 0 320 200" className="w-full h-full" aria-hidden="true">
-        <path d="M20 100 C80 40, 140 160, 200 80 S300 120, 300 100" fill="none" stroke="oklch(70% 0.130 65 / 0.25)" strokeWidth="2" strokeDasharray="6 8" />
-        <circle cx="100" cy="70" r="5" fill="oklch(40% 0.085 195)" opacity="0.6" />
-        <circle cx="200" cy="80" r="6" fill="oklch(70% 0.130 65)" opacity="0.5" />
-        <circle cx="280" cy="105" r="4" fill="oklch(40% 0.085 195)" opacity="0.5" />
+      <svg viewBox="0 0 320 160" className="w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <circle cx="50" cy="80" r="4" fill={teal} opacity="0.5" />
+        <circle cx="105" cy="55" r="4" fill={amber} opacity="0.4" />
+        <circle cx="165" cy="90" r="6" fill={teal} opacity="0.5" />
+        <circle cx="225" cy="60" r="4" fill={amber} opacity="0.4" />
+        <circle cx="280" cy="80" r="4" fill={teal} opacity="0.5" />
+        <path d="M50 80 L105 55 M105 55 L165 90 M165 90 L225 60 M225 60 L280 80" fill="none" stroke={lineColor} strokeWidth="1.5" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 320 160" className="w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="2" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+
+      {/* Connection lines */}
+      <path d="M50 80 L105 55" fill="none" stroke={lineColor} strokeWidth="1.5" />
+      <path d="M105 55 L165 90" fill="none" stroke={lineColor} strokeWidth="1.5" />
+      <path d="M165 90 L225 60" fill="none" stroke={lineColor} strokeWidth="1.5" />
+      <path d="M225 60 L280 80" fill="none" stroke={lineColor} strokeWidth="1.5" />
+
+      {/* Node 1 — teal */}
+      <circle cx="50" cy="80" r="5" fill={teal} opacity="0.15" />
+      <circle cx="50" cy="80" r="5" stroke={teal} strokeWidth="1.5" fill="none" opacity="0.7" />
+
+      {/* Node 2 — amber */}
+      <circle cx="105" cy="55" r="5" fill={amber} opacity="0.12" />
+      <circle cx="105" cy="55" r="5" stroke={amber} strokeWidth="1.5" fill="none" opacity="0.7" />
+
+      {/* Node 3 — active, teal, larger */}
+      <circle cx="165" cy="90" r="9" fill={teal} opacity="0.08" filter="url(#nodeGlow)" />
+      <circle cx="165" cy="90" r="9" stroke={teal} strokeWidth="2" fill="none" opacity="0.8" />
+      <circle cx="165" cy="90" r="3" fill={teal} opacity="0.9" />
+
+      {/* Node 4 — amber */}
+      <circle cx="225" cy="60" r="5" fill={amber} opacity="0.12" />
+      <circle cx="225" cy="60" r="5" stroke={amber} strokeWidth="1.5" fill="none" opacity="0.7" />
+
+      {/* Node 5 — teal */}
+      <circle cx="280" cy="80" r="5" fill={teal} opacity="0.15" />
+      <circle cx="280" cy="80" r="5" stroke={teal} strokeWidth="1.5" fill="none" opacity="0.7" />
+    </svg>
+  );
+}
+
+
+/* ─── Static SVG Visual: Infrastructure Matrix ─── */
+function GridVisual({ reduced }: { reduced: boolean }) {
+  const teal = "oklch(40% 0.085 195)";
+  const amber = "oklch(70% 0.130 65)";
+  const borderColor = "oklch(100% 0 0 / 0.12)";
+
+  const cells = [
+    { x: 35, y: 22, dot: false, fill: teal, dotColor: "" },
+    { x: 125, y: 22, dot: true, fill: "", dotColor: amber },
+    { x: 215, y: 22, dot: false, fill: "", dotColor: "" },
+    { x: 35, y: 82, dot: false, fill: "", dotColor: "" },
+    { x: 125, y: 82, dot: false, fill: amber, dotColor: "" },
+    { x: 215, y: 82, dot: true, fill: "", dotColor: teal },
+    { x: 35, y: 142, dot: true, fill: "", dotColor: teal },
+    { x: 125, y: 142, dot: false, fill: "", dotColor: "" },
+    { x: 215, y: 142, dot: false, fill: teal, dotColor: "" },
+  ];
+
+  if (reduced) {
+    return (
+      <svg viewBox="0 0 320 200" className="w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        {cells.map((c, i) => (
+          <rect
+            key={i}
+            x={c.x} y={c.y} width="70" height="48" rx="4"
+            fill="none"
+            stroke={borderColor}
+            strokeWidth="1.5"
+            opacity="0.35"
+          />
+        ))}
       </svg>
     );
   }
 
   return (
     <svg viewBox="0 0 320 200" className="w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <linearGradient id="pipeGrad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="oklch(40% 0.085 195)" stopOpacity="0.3" />
-          <stop offset="50%" stopColor="oklch(70% 0.130 65)" stopOpacity="0.5" />
-          <stop offset="100%" stopColor="oklch(40% 0.085 195)" stopOpacity="0.3" />
-        </linearGradient>
-      </defs>
-
-      {/* Curved pipeline paths */}
-      <path d="M20 100 C80 40, 140 160, 200 80 S300 120, 300 100" fill="none" stroke="url(#pipeGrad)" strokeWidth="2" strokeDasharray="6 8" opacity="0.6" />
-      <path d="M20 140 C60 100, 120 180, 180 120 S280 160, 300 140" fill="none" stroke="oklch(40% 0.085 195 / 0.2)" strokeWidth="1.5" strokeDasharray="4 10" />
-      <path d="M20 60 C70 20, 130 100, 190 40 S290 80, 300 60" fill="none" stroke="oklch(70% 0.130 65 / 0.15)" strokeWidth="1.5" strokeDasharray="8 12" />
-
-      {/* Flowing particles — SMIL, zero JS overhead */}
-      <circle r="4" fill="oklch(40% 0.085 195)">
-        <animateMotion path="M20 100 C80 40, 140 160, 200 80 S300 120, 300 100" dur="3.2s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0;1;1;0" dur="3.2s" repeatCount="indefinite" />
-      </circle>
-      <circle r="3" fill="oklch(70% 0.130 65)">
-        <animateMotion path="M20 100 C80 40, 140 160, 200 80 S300 120, 300 100" dur="3.2s" begin="1.6s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0;1;1;0" dur="3.2s" begin="1.6s" repeatCount="indefinite" />
-      </circle>
-      <circle r="3.5" fill="oklch(40% 0.085 195)">
-        <animateMotion path="M20 140 C60 100, 120 180, 180 120 S280 160, 300 140" dur="4.5s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0;1;1;0" dur="4.5s" repeatCount="indefinite" />
-      </circle>
-      <circle r="2.5" fill="oklch(70% 0.130 65)">
-        <animateMotion path="M20 60 C70 20, 130 100, 190 40 S290 80, 300 60" dur="5s" begin="2s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0;0.8;0.8;0" dur="5s" begin="2s" repeatCount="indefinite" />
-      </circle>
-
-      {/* Node pulses */}
-      <circle cx="200" cy="80" r="8" fill="oklch(70% 0.130 65)" opacity="0.2">
-        <animate attributeName="r" values="6;10;6" dur="2.5s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0.2;0.05;0.2" dur="2.5s" repeatCount="indefinite" />
-      </circle>
-    </svg>
-  );
-}
-
-/* ─── Animated SVG Visual: Infrastructure Grid ─── */
-function GridVisual({ reduced }: { reduced: boolean }) {
-  const cells = useMemo(() => [
-    { x: 40, y: 30, w: 70, h: 50, r: 8 },
-    { x: 125, y: 30, w: 70, h: 50, r: 8 },
-    { x: 210, y: 30, w: 70, h: 50, r: 8 },
-    { x: 40, y: 95, w: 70, h: 50, r: 8 },
-    { x: 125, y: 95, w: 70, h: 50, r: 8 },
-    { x: 210, y: 95, w: 70, h: 50, r: 8 },
-    { x: 40, y: 160, w: 70, h: 50, r: 8 },
-    { x: 125, y: 160, w: 70, h: 50, r: 8 },
-    { x: 210, y: 160, w: 70, h: 50, r: 8 },
-  ], []);
-
-  return (
-    <svg viewBox="0 0 320 240" className="w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <linearGradient id="gridGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="oklch(40% 0.085 195)" stopOpacity="0.5" />
-          <stop offset="100%" stopColor="oklch(70% 0.130 65)" stopOpacity="0.3" />
-        </linearGradient>
-      </defs>
       {cells.map((c, i) => (
         <g key={i}>
+          {c.fill && (
+            <rect
+              x={c.x} y={c.y} width="70" height="48" rx="4"
+              fill={c.fill}
+              fillOpacity="0.05"
+            />
+          )}
           <rect
-            x={c.x} y={c.y} width={c.w} height={c.h} rx={c.r}
+            x={c.x} y={c.y} width="70" height="48" rx="4"
             fill="none"
-            stroke="url(#gridGrad)"
+            stroke={borderColor}
             strokeWidth="1.5"
-            opacity={reduced ? 0.35 : 0.25}
-            className={reduced ? "" : "grid-cell-rect"}
           />
-          {!reduced && (
-            <circle cx={c.x + c.w / 2} cy={c.y + c.h / 2} r="2.5" fill="oklch(40% 0.085 195)" opacity="0">
-              <animate attributeName="opacity" values="0;0.6;0" dur={`${2 + (i % 3) * 0.7}s`} begin={`${i * 0.15}s`} repeatCount="indefinite" />
-            </circle>
+          {c.dot && c.dotColor && (
+            <circle
+              cx={c.x + 35}
+              cy={c.y + 24}
+              r="2.5"
+              fill={c.dotColor}
+              opacity="0.7"
+            />
           )}
         </g>
       ))}
-      {/* Connection lines */}
-      <path d="M110 55h15M195 55h15M75 95v15M160 95v15M245 95v15" stroke="oklch(40% 0.085 195 / 0.2)" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   );
 }
 
-/* ─── Animated SVG Visual: Clarity / Explainability ─── */
+/* ─── Static SVG Visual: Signal to Noise ─── */
 function ClarityVisual({ reduced }: { reduced: boolean }) {
-  const lines = [
-    { text: "accuracy = 0.97", x: 40, y: 55, opacity: 0.25 },
-    { text: "if !explained:", x: 40, y: 90, opacity: 0.4 },
-    { text: "  model = BROKEN", x: 40, y: 125, opacity: 0.6 },
-    { text: "// clarity is design", x: 40, y: 175, opacity: 1, accent: true },
-  ];
+  const teal = "oklch(40% 0.085 195)";
+  const amber = "oklch(70% 0.130 65)";
+  const lineColor = "oklch(100% 0 0 / 0.12)";
+
+  if (reduced) {
+    return (
+      <svg viewBox="0 0 320 160" className="w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <circle cx="50" cy="60" r="3" fill={teal} opacity="0.3" />
+        <circle cx="85" cy="100" r="3" fill={amber} opacity="0.3" />
+        <circle cx="70" cy="130" r="3" fill={teal} opacity="0.3" />
+        <path d="M120 80 L185 80" fill="none" stroke={lineColor} strokeWidth="1.5" />
+        <path d="M178 74 L185 80 L178 86" fill="none" stroke={amber} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="215" cy="55" r="3" fill={teal} opacity="0.7" />
+        <circle cx="215" cy="80" r="3" fill={teal} opacity="0.7" />
+        <circle cx="215" cy="105" r="3" fill={teal} opacity="0.7" />
+        <circle cx="250" cy="55" r="3" fill={amber} opacity="0.7" />
+        <circle cx="250" cy="80" r="3" fill={amber} opacity="0.7" />
+        <circle cx="250" cy="105" r="3" fill={amber} opacity="0.7" />
+        <circle cx="285" cy="55" r="3" fill={teal} opacity="0.7" />
+        <circle cx="285" cy="80" r="3" fill={teal} opacity="0.7" />
+        <circle cx="285" cy="105" r="3" fill={teal} opacity="0.7" />
+      </svg>
+    );
+  }
 
   return (
-    <svg viewBox="0 0 320 200" className="w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <svg viewBox="0 0 320 160" className="w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <defs>
-        <filter id="clarityBlur">
-          <feGaussianBlur stdDeviation={reduced ? "0" : "1.5"} />
+        <filter id="chaosBlur" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="2.2" />
         </filter>
       </defs>
 
-      {lines.map((line, i) => (
-        <text
-          key={i}
-          x={line.x}
-          y={line.y}
-          fontFamily="var(--font-jetbrains-mono), ui-monospace, monospace"
-          fontSize="15"
-          fill={line.accent ? "oklch(70% 0.130 65)" : "oklch(97% 0.008 80 / 0.55)"}
-          opacity={line.opacity}
-          filter={reduced ? undefined : "url(#clarityBlur)"}
-          className={reduced ? "" : "clarity-line"}
-          style={{ fontVariantLigatures: "none" }}
-        >
-          {line.text}
-          {!reduced && line.accent && (
-            <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" />
-          )}
-        </text>
-      ))}
+      {/* Chaos — left side: scattered, blurred dots */}
+      <g filter="url(#chaosBlur)" opacity="0.35">
+        <circle cx="45" cy="50" r="4" fill={teal} />
+        <circle cx="80" cy="75" r="3" fill={amber} />
+        <circle cx="60" cy="110" r="5" fill={teal} />
+        <circle cx="95" cy="130" r="3" fill={amber} />
+        <circle cx="35" cy="85" r="3.5" fill={amber} />
+        <circle cx="110" cy="55" r="2.5" fill={teal} />
+        <circle cx="75" cy="145" r="4" fill={teal} />
+      </g>
 
-      {/* Scanning highlight line */}
-      {!reduced && (
-        <>
-          <rect x="35" y="42" width="250" height="2" fill="oklch(70% 0.130 65 / 0.15)">
-            <animate attributeName="y" values="42;190;42" dur="4s" repeatCount="indefinite" />
-          </rect>
-          <circle cx="30" cy="42" r="3" fill="oklch(70% 0.130 65)">
-            <animate attributeName="cy" values="42;190;42" dur="4s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0.6;0.2;0.6" dur="4s" repeatCount="indefinite" />
-          </circle>
-        </>
-      )}
+      {/* Faint chaotic connections */}
+      <path d="M45 50 Q60 70 80 75" fill="none" stroke={lineColor} strokeWidth="1" opacity="0.15" filter="url(#chaosBlur)" />
+      <path d="M60 110 Q80 100 95 130" fill="none" stroke={lineColor} strokeWidth="1" opacity="0.15" filter="url(#chaosBlur)" />
+
+      {/* Transition arrow */}
+      <path d="M135 80 L185 80" fill="none" stroke={amber} strokeWidth="1.5" opacity="0.5" />
+      <path d="M178 74 L185 80 L178 86" fill="none" stroke={amber} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.5" />
+
+      {/* Order — right side: crisp, aligned grid */}
+      <g opacity="0.9">
+        <circle cx="215" cy="55" r="3.5" fill={teal} />
+        <circle cx="215" cy="80" r="3.5" fill={teal} />
+        <circle cx="215" cy="105" r="3.5" fill={teal} />
+        <circle cx="250" cy="55" r="3.5" fill={amber} />
+        <circle cx="250" cy="80" r="3.5" fill={amber} />
+        <circle cx="250" cy="105" r="3.5" fill={amber} />
+        <circle cx="285" cy="55" r="3.5" fill={teal} />
+        <circle cx="285" cy="80" r="3.5" fill={teal} />
+        <circle cx="285" cy="105" r="3.5" fill={teal} />
+      </g>
+
+      {/* Crisp connections */}
+      <path d="M215 55 L250 55 M250 55 L285 55" fill="none" stroke={lineColor} strokeWidth="1.5" opacity="0.25" />
+      <path d="M215 80 L250 80 M250 80 L285 80" fill="none" stroke={lineColor} strokeWidth="1.5" opacity="0.25" />
+      <path d="M215 105 L250 105 M250 105 L285 105" fill="none" stroke={lineColor} strokeWidth="1.5" opacity="0.25" />
+      <path d="M250 55 L250 80 M250 80 L250 105" fill="none" stroke={lineColor} strokeWidth="1.5" opacity="0.25" />
     </svg>
   );
 }
@@ -321,23 +370,6 @@ export default function Philosophy() {
             },
           }
         );
-      }
-
-      /* Restart SMIL animations on re-enter */
-      if (container.current) {
-        const restartSvgs = () => {
-          const animates = container.current!.querySelectorAll("animate, animateMotion");
-          animates.forEach((el) => {
-            (el as SVGAnimationElement).beginElement?.();
-          });
-        };
-
-        ScrollTrigger.create({
-          trigger: container.current,
-          start: "top 80%",
-          onEnter: restartSvgs,
-          onEnterBack: restartSvgs,
-        });
       }
 
       /* Principle 3 description: blur-to-clear (the "explainability" metaphor) */

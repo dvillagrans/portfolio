@@ -54,6 +54,7 @@ export function IndiaAQIViz() {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const pulseIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const particlesIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
 
   useEffect(() => {
@@ -86,15 +87,26 @@ export function IndiaAQIViz() {
       const width = container.clientWidth || 280;
       const height = container.clientHeight || 180;
 
-      // Reset and add Filter for Glow
+      // Reset and add Filters for Glow and Pollution
       svg.selectAll("*").remove();
       const defs = svg.append("defs");
-      const filter = defs.append("filter").attr("id", "state-glow").attr("x", "-20%").attr("y", "-20%").attr("width", "140%").attr("height", "140%");
-      filter.append("feGaussianBlur").attr("in", "SourceAlpha").attr("stdDeviation", "2").attr("result", "blur");
-      filter.append("feOffset").attr("in", "blur").attr("dx", "0").attr("dy", "0").attr("result", "offsetBlur");
-      filter.append("feFlood").attr("flood-color", "white").attr("flood-opacity", "0.3").attr("result", "color");
-      filter.append("feComposite").attr("in", "color").attr("in2", "offsetBlur").attr("operator", "in").attr("result", "shadow");
-      filter.append("feMerge").selectAll("feMergeNode").data(["shadow", "SourceGraphic"]).enter().append("feMergeNode").attr("in", (d) => d);
+
+      // State hover glow
+      const stateFilter = defs.append("filter").attr("id", "state-glow").attr("x", "-30%").attr("y", "-30%").attr("width", "160%").attr("height", "160%");
+      stateFilter.append("feGaussianBlur").attr("in", "SourceAlpha").attr("stdDeviation", "3").attr("result", "blur");
+      stateFilter.append("feOffset").attr("in", "blur").attr("dx", "0").attr("dy", "0").attr("result", "offsetBlur");
+      stateFilter.append("feFlood").attr("flood-color", "white").attr("flood-opacity", "0.5").attr("result", "color");
+      stateFilter.append("feComposite").attr("in", "color").attr("in2", "offsetBlur").attr("operator", "in").attr("result", "shadow");
+      stateFilter.append("feMerge").selectAll("feMergeNode").data(["shadow", "SourceGraphic"]).enter().append("feMergeNode").attr("in", (d: string) => d);
+
+      // Particle blur
+      const particleFilter = defs.append("filter").attr("id", "particle-blur");
+      particleFilter.append("feGaussianBlur").attr("stdDeviation", "1.5");
+
+      // Pollution particle glow
+      const particleGlow = defs.append("filter").attr("id", "particle-glow");
+      particleGlow.append("feGaussianBlur").attr("in", "SourceGraphic").attr("stdDeviation", "2").attr("result", "blur");
+      particleGlow.append("feMerge").selectAll("feMergeNode").data(["blur", "SourceGraphic"]).enter().append("feMergeNode").attr("in", (d: string) => d);
 
       svg.attr("viewBox", `0 0 ${width} ${height}`).attr("width", "100%").attr("height", "100%");
 
@@ -146,13 +158,17 @@ export function IndiaAQIViz() {
             tooltipRef.current.style.left = `${Math.min(x + 12, rect.width - 140)}px`;
             tooltipRef.current.style.top = `${Math.max(y - 45, 10)}px`;
             tooltipRef.current.innerHTML = `
-              <div style="display:flex; flex-direction:column; gap:2px">
-                <div style="display:flex; align-items:center; gap:6px">
-                  <div style="width:6px; height:6px; border-radius:50%; background:${data.color}"></div>
-                  <span style="color:${data.color}; font-weight:bold">${name}</span>
+              <div style="display:flex; flex-direction:column; gap:3px">
+                <div style="display:flex; align-items:center; gap:6px; margin-bottom:2px">
+                  <div style="width:7px; height:7px; border-radius:50%; background:${data.color}; box-shadow: 0 0 8px ${data.color}"></div>
+                  <span style="color:${data.color}; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">${name}</span>
                 </div>
-                <div style="font-size:9px; color:rgba(255,255,255,0.6)">
-                  AQI Index: <span style="color:white">${data.aqi}</span> · ${data.label}
+                <div style="display:flex; align-items:baseline; gap:4px">
+                  <span style="font-size:18px; font-weight:900; color:white; line-height:1">${data.aqi}</span>
+                  <span style="font-size:9px; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.05em">AQI</span>
+                </div>
+                <div style="font-size:8px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.08em; padding:2px 6px; border-radius:3px; background:${data.color}15; border:0.5px solid ${data.color}25; display:inline-block; width:fit-content">
+                  ${data.label}
                 </div>
               </div>
             `;
@@ -216,6 +232,82 @@ export function IndiaAQIViz() {
       };
 
       pulseIntervalRef.current = setInterval(pulse, 3000);
+
+      // Pollution particles over critical states
+      const particlesGroup = svg.append("g").attr("filter", "url(#particle-glow)");
+      const criticalStates = geoData.features.filter((f: any) => {
+        const d = STATE_AQI[f.properties?.name];
+        return d && d.aqi > CRITICAL_AQI_THRESHOLD;
+      });
+
+      const pollutionParticles: { id: number; cx: number; cy: number; life: number; maxLife: number; size: number; color: string }[] = [];
+
+      const addParticle = (cx: number, cy: number, color: string) => {
+        pollutionParticles.push({
+          id: Math.random(),
+          cx,
+          cy,
+          life: 0,
+          maxLife: 60 + Math.random() * 80,
+          size: 1 + Math.random() * 2.5,
+          color,
+        });
+      };
+
+      const updateParticles = () => {
+        if (destroyed) return;
+        criticalStates.forEach((f: any) => {
+          const centroid = path.centroid(f);
+          const d = STATE_AQI[f.properties?.name];
+          if (d && Math.random() < 0.25) {
+            addParticle(centroid[0] + (Math.random() - 0.5) * 30, centroid[1] + (Math.random() - 0.5) * 20, d.color);
+          }
+        });
+
+        const circles = particlesGroup.selectAll("circle").data(pollutionParticles, (d: any) => d.id);
+
+        circles.join(
+          (enter) =>
+            enter
+              .append("circle")
+              .attr("cx", (d: any) => d.cx)
+              .attr("cy", (d: any) => d.cy)
+              .attr("r", 0)
+              .attr("fill", (d: any) => d.color)
+              .attr("opacity", 0.6)
+              .call((sel) =>
+                sel
+                  .transition()
+                  .duration(300)
+                  .attr("r", (d: any) => d.size)
+              ),
+          (update) =>
+            update
+              .attr("cx", (d: any) => d.cx)
+              .attr("cy", (d: any) => d.cy),
+          (exit) =>
+            exit
+              .transition()
+              .duration(600)
+              .attr("r", 0)
+              .attr("opacity", 0)
+              .remove()
+        );
+
+        pollutionParticles.forEach((p) => {
+          p.life++;
+          p.cy -= 0.3;
+          p.cx += (Math.random() - 0.5) * 0.5;
+        });
+
+        for (let i = pollutionParticles.length - 1; i >= 0; i--) {
+          if (pollutionParticles[i].life > pollutionParticles[i].maxLife) {
+            pollutionParticles.splice(i, 1);
+          }
+        }
+      };
+
+      particlesIntervalRef.current = setInterval(updateParticles, 50);
     };
 
     loadMap();
@@ -223,6 +315,7 @@ export function IndiaAQIViz() {
     return () => {
       destroyed = true;
       if (pulseIntervalRef.current) clearInterval(pulseIntervalRef.current);
+      if (particlesIntervalRef.current) clearInterval(particlesIntervalRef.current);
     };
   }, []);
 
