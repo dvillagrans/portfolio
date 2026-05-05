@@ -101,7 +101,7 @@ export default function Stack() {
     <section ref={container} className="relative bg-charcoal py-24 md:py-32 text-offwhite pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] md:px-12 lg:px-24 overflow-hidden border-t border-offwhite/5 border-b">
       
       {/* Background radial gradient */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl aspect-square rounded-full bg-accent/5 blur-[120px] pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl aspect-square rounded-full bg-accent/5 blur-[120px] pointer-events-none" aria-hidden="true"></div>
 
       <div className="mx-auto max-w-7xl relative z-10">
         <header className="mb-20">
@@ -112,7 +112,7 @@ export default function Stack() {
              </span>
              <div className="h-[1px] w-12 bg-warm opacity-60 block md:hidden"></div>
           </div>
-          <h2 className="font-serif text-4xl lg:text-5xl tracking-tight text-white mb-4 md:text-center">
+           <h2 className="font-serif text-4xl md:text-4xl lg:text-5xl tracking-tight text-white mb-4 md:text-center break-words">
              {language === 'es' ? (
                 <>Tecnologías <span className="italic text-offwhite/60 font-light">&</span> Herramientas</>
              ) : (
@@ -122,9 +122,9 @@ export default function Stack() {
         </header>
 
         {/* Structured Grid layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {categories.map((category, cIdx) => (
-             <div key={cIdx} className={`stack-category group p-8 rounded-2xl border transition-all duration-500 ${cIdx % 2 === 0 ? "bg-warm/[0.03] border-warm/15 hover:border-warm/40 hover:bg-warm/[0.06]" : "bg-white/[0.02] border-white/5 hover:border-accent/30 hover:bg-white/[0.04]"}`}>
+             <div key={cIdx} className={`stack-category group p-5 sm:p-6 md:p-8 rounded-2xl border transition-all duration-500 ${cIdx % 2 === 0 ? "bg-warm/[0.03] border-warm/15 hover:border-warm/40 hover:bg-warm/[0.06]" : "bg-white/[0.02] border-white/5 hover:border-accent/30 hover:bg-white/[0.04]"}`}>
                 <h3 className={`font-sans text-xs font-bold uppercase tracking-widest mb-8 flex items-center gap-3 ${cIdx % 2 === 0 ? "text-warm/70" : "text-offwhite/60"}`}>
                   <span className={`w-1.5 h-1.5 rounded-full transition-colors duration-500 ${cIdx % 2 === 0 ? "bg-warm/50 group-hover:bg-warm" : "bg-accent/50 group-hover:bg-accent"}`}></span>
                   {category.name}

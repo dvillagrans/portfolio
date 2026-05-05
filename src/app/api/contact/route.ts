@@ -105,6 +105,7 @@ export async function POST(req: Request) {
     `;
 
     const { data, error } = await resend.emails.send({
+      // TODO: Verify domain in Resend and change to contacto@dvillagrans.dev for production
       from: 'Portfolio Contact <onboarding@resend.dev>', // Resend's test domain for default use, adjust if domain is verified
       to: ['dvillagrans11@gmail.com'], // Deliver straight to the user's verified resend email
       subject: `New Session Request from ${name}`,

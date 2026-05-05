@@ -182,7 +182,7 @@ export default function TimeUpCaseStudy() {
           
           <div className="md:col-span-12 relative h-[35vh] sm:h-[50vh] md:h-[75vh] w-full bg-[#1A1A1A] rounded-3xl overflow-hidden group border border-white/5">
             <Image 
-              src="/images/timeup/admin-analytics.png" 
+              src="/img/timeup/admin-analytics.png" 
               alt="Administrador TimeUp" 
               fill 
               className="object-cover object-left-top opacity-50 mix-blend-screen scale-105 group-hover:scale-100 transition-all duration-1000 group-hover:opacity-100" 
@@ -195,7 +195,7 @@ export default function TimeUpCaseStudy() {
 
           <div className="md:col-span-6 relative h-[30vh] sm:h-[40vh] md:h-[55vh] w-full bg-[#1A1A1A] rounded-3xl overflow-hidden group border border-white/5">
             <Image 
-              src="/images/timeup/owner-finance.png" 
+              src="/img/timeup/owner-finance.png" 
               alt="Finanzas Dueño" 
               fill 
               className="object-cover object-left-top opacity-50 mix-blend-screen scale-105 group-hover:scale-100 transition-all duration-1000 group-hover:opacity-100" 
@@ -208,7 +208,7 @@ export default function TimeUpCaseStudy() {
 
           <div className="md:col-span-6 relative h-[30vh] sm:h-[40vh] md:h-[55vh] w-full bg-[#1A1A1A] rounded-3xl overflow-hidden group border border-white/5">
             <Image 
-              src="/images/timeup/staff-dashboard.png" 
+              src="/img/timeup/staff-dashboard.png" 
               alt="Agenda Staff" 
               fill 
               className="object-cover object-left-top opacity-50 mix-blend-screen scale-105 group-hover:scale-100 transition-all duration-1000 group-hover:opacity-100" 

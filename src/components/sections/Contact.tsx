@@ -161,17 +161,17 @@ export default function Contact() {
       className="relative flex min-h-screen flex-col items-center justify-center bg-charcoal py-32 text-offwhite pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] md:px-12 lg:px-24 overflow-hidden"
     >
       {/* Dynamic Grid Overlay for Contact */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:120px_120px] pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:120px_120px] pointer-events-none" aria-hidden="true"></div>
 
       {/* Background Glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-96 bg-accent/10 blur-[150px] opacity-50 rounded-full pointer-events-none"></div>
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-96 bg-accent/10 blur-[150px] opacity-50 rounded-full pointer-events-none" aria-hidden="true"></div>
 
       <div className="relative z-10 flex flex-col items-center text-center w-full max-w-5xl">
 
         {/* Typographic Hero */}
         <h2
           ref={textRef}
-          className="mb-16 flex flex-col gap-2 font-serif text-5xl font-light tracking-tight md:text-7xl lg:text-[7rem] leading-[1.1] perspective-[1000px]"
+          className="mb-16 flex flex-col gap-2 font-serif text-4xl sm:text-5xl md:text-6xl font-light tracking-tight lg:text-[7rem] leading-[1.1] perspective-[1000px]"
         >
           <span className="block">{t.contact.title1}</span>
           <span className="block text-offwhite/60 italic">{t.contact.title2}</span>
@@ -202,7 +202,7 @@ export default function Contact() {
         ) : (
           <div
             ref={formRef}
-            className="mt-8 w-full max-w-lg bg-graphite p-6 sm:p-10 rounded-[2.5rem] border border-white/10 shadow-2xl text-left"
+            className="mt-8 w-full max-w-lg bg-graphite p-5 sm:p-8 md:p-10 rounded-[2.5rem] border border-white/10 shadow-2xl text-left"
           >
             <div className="flex items-center justify-between mb-8">
                <span className="font-sans text-[10px] font-bold tracking-[0.25em] uppercase text-warm/80">
@@ -329,7 +329,7 @@ export default function Contact() {
         )}
 
         {/* Footer Ribbon */}
-        <div className="mt-32 md:mt-48 flex flex-col md:flex-row w-full items-center justify-between border-t border-white/10 pt-10 font-sans text-xs text-offwhite/50 gap-6">
+        <div className="mt-32 md:mt-48 flex flex-col sm:flex-row w-full items-center justify-between border-t border-white/10 pt-10 font-sans text-xs text-offwhite/50 gap-6">
           <div className="flex items-center gap-3">
              <div className="w-1.5 h-1.5 bg-warm rounded-full animate-pulse"></div>
              <span>{new Date().getFullYear()} {t.contact.footerText}</span>

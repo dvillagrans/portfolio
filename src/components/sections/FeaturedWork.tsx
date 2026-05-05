@@ -118,14 +118,14 @@ export default function FeaturedWork() {
           })}
 
           {/* GRID PROJECTS */}
-          <div ref={vizRevealRef} className="secondary-cards-grid grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+          <div ref={vizRevealRef} className="secondary-cards-grid grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             {projects.filter(p => p.type === 'grid').map((p) => {
               const currentIdx = globalIdx++;
               return (
                 <article 
                   key={p.id}
                   ref={(el) => { cardsRef.current[currentIdx] = el; }}
-                  className="secondary-card group flex flex-col rounded-[2rem] border border-charcoal/5 bg-white p-8 transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
+                  className="secondary-card group flex flex-col rounded-[2rem] border border-charcoal/5 bg-white p-5 sm:p-6 md:p-8 transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
                 >
                   <div className="mb-8 flex items-center justify-between">
                     <span className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-charcoal/30">
@@ -136,10 +136,10 @@ export default function FeaturedWork() {
                     </span>
                   </div>
 
-                  <h3 className="font-sans text-2xl font-medium tracking-tight text-charcoal mb-4 transition-colors">
+                  <h3 className="font-sans text-2xl font-medium tracking-tight text-charcoal mb-4 transition-colors break-words">
                     {p.title}
                   </h3>
-                  <p className="text-sm text-charcoal/60 leading-relaxed mb-8 flex-1">
+                  <p className="text-sm text-charcoal/60 leading-relaxed mb-8 flex-1 break-words">
                     {p.problem}
                   </p>
 
@@ -169,9 +169,9 @@ export default function FeaturedWork() {
 
                   <div className="grid grid-cols-2 gap-4 mb-8">
                     {p.metrics?.map((m, i) => (
-                      <div key={i}>
-                        <p className="text-xl font-bold text-charcoal">{m.value}</p>
-                        <p className="text-[9px] font-bold uppercase tracking-widest text-charcoal/40">{m.label}</p>
+                      <div key={i} className="min-w-0">
+                        <p className="text-xl font-bold text-charcoal break-words">{m.value}</p>
+                        <p className="text-[9px] font-bold uppercase tracking-widest text-charcoal/40 break-words">{m.label}</p>
                       </div>
                     ))}
                   </div>
@@ -200,9 +200,9 @@ export default function FeaturedWork() {
               <article 
                 key={p.id}
                 ref={(el) => { cardsRef.current[currentIdx] = el; }}
-                className="secondary-card group relative flex flex-col lg:flex-row gap-12 overflow-hidden rounded-[2.5rem] border border-charcoal/5 bg-charcoal p-8 lg:p-14 shadow-2xl transition-all duration-500 hover:-translate-y-1"
+                className="secondary-card group relative flex flex-col md:flex-row gap-8 md:gap-12 overflow-hidden rounded-[2.5rem] border border-charcoal/5 bg-charcoal p-5 sm:p-6 md:p-8 lg:p-14 shadow-2xl transition-all duration-500 hover:-translate-y-1"
               >
-                <div className="flex flex-col lg:w-1/2">
+                <div className="flex flex-col md:w-1/2">
                   <div className="mb-8 flex items-center gap-4">
                     <span className="font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-white/30">
                       SYS_0{p.id}
@@ -210,18 +210,18 @@ export default function FeaturedWork() {
                     <div className="h-[1px] flex-1 bg-white/10"></div>
                   </div>
 
-                  <h3 className="font-serif text-4xl md:text-5xl italic tracking-tight text-white mb-6">
+                  <h3 className="font-serif text-4xl md:text-5xl italic tracking-tight text-white mb-6 break-words">
                     {p.title}
                   </h3>
-                  <p className="text-lg text-white/60 leading-relaxed mb-10">
+                  <p className="text-lg text-white/60 leading-relaxed mb-10 break-words">
                     {p.system}
                   </p>
 
                   <div className="grid grid-cols-2 gap-8 mb-10">
                     {p.metrics?.map((m, i) => (
-                      <div key={i}>
-                        <p className="text-3xl font-bold text-white">{m.value}</p>
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-white/30">{m.label}</p>
+                      <div key={i} className="min-w-0">
+                        <p className="text-3xl font-bold text-white break-words">{m.value}</p>
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-white/30 break-words">{m.label}</p>
                       </div>
                     ))}
                   </div>
@@ -243,21 +243,21 @@ export default function FeaturedWork() {
                 </div>
 
                 {p.id === "03" ? (
-                  <div className="lg:w-1/2 flex flex-col min-h-[220px] sm:min-h-[240px] lg:min-h-[320px] xl:min-h-[360px]">
+                  <div className="md:w-1/2 flex flex-col min-h-[220px] sm:min-h-[240px] md:min-h-[280px] lg:min-h-[320px] xl:min-h-[360px]">
                     <VizContainer height="100%">
                       <IndiaAQIViz />
                     </VizContainer>
                   </div>
                   ) : (
-                    <div className="relative aspect-video lg:aspect-auto lg:w-1/2 overflow-hidden rounded-2xl border border-white/5 bg-white/5">
-                      <Image 
+                    <div className="relative aspect-video md:aspect-auto md:w-1/2 overflow-hidden rounded-2xl border border-white/5 bg-white/5">
+                      <Image
                         src={p.image}
                         alt={p.title}
                         fill
-                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        sizes="(max-width: 768px) 100vw, 50vw"
                         className="object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 via-transparent to-transparent"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 via-transparent to-transparent" aria-hidden="true"></div>
                     </div>
                   )}
               </article>

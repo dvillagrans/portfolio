@@ -74,7 +74,7 @@ export default function Systems() {
   return (
     <section ref={containerRef} id="systems" className="relative bg-charcoal py-24 md:py-32 text-offwhite pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] md:px-12 lg:px-24 overflow-hidden">
       {/* Background ambient line */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[1px] bg-gradient-to-r from-transparent via-offwhite/10 to-transparent"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[1px] bg-gradient-to-r from-transparent via-offwhite/10 to-transparent" aria-hidden="true"></div>
       
       <div className="mx-auto max-w-7xl">
         <header className="mb-20">
@@ -93,7 +93,7 @@ export default function Systems() {
           </h2>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-6">
           {t.systems.items.map((cap, idx) => {
             return (
               <div
@@ -101,10 +101,10 @@ export default function Systems() {
                 ref={(el) => {
                   blocksRef.current[idx] = el;
                 }}
-                className={`group relative flex flex-col justify-between overflow-hidden rounded-3xl border p-8 lg:p-12 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] ${cardStyles}`}
+                className={`group relative flex flex-col justify-between overflow-hidden rounded-3xl border p-6 md:p-8 lg:p-12 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] ${cardStyles}`}
               >
                 {/* Background Glow Effect */}
-                <div className={glowStyles[idx] ?? "absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/5 blur-[100px]"}></div>
+                <div className={glowStyles[idx] ?? "absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/5 blur-[100px]"} aria-hidden="true"></div>
                 
                 <div className="relative z-10 flex flex-col gap-10 h-full">
                   <div className="flex items-start justify-between">
@@ -122,10 +122,10 @@ export default function Systems() {
                   </div>
                   
                   <div>
-                    <h3 className={`mb-4 font-sans text-2xl lg:text-3xl font-medium tracking-tight text-offwhite group-hover:text-white transition-colors duration-300`}>
+                    <h3 className={`mb-4 font-sans text-2xl md:text-2xl lg:text-3xl font-medium tracking-tight text-offwhite group-hover:text-white transition-colors duration-300 break-words`}>
                       {cap.title}
                     </h3>
-                    <p className="font-sans text-sm md:text-base leading-relaxed text-offwhite/50 group-hover:text-offwhite/80 transition-colors duration-300 mb-8">
+                    <p className="font-sans text-sm md:text-base leading-relaxed text-offwhite/50 group-hover:text-offwhite/80 transition-colors duration-300 mb-8 break-words">
                       {cap.description}
                     </p>
                     

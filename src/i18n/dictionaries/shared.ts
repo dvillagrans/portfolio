@@ -147,11 +147,11 @@ export const sharedEn = {
   },
   philosophy: {
     tag: "Working Principles",
-    quote: "\"Turn complex data into clear decisions and scalable products.\"",
+    quote: "\"I don't build demos. I build systems that survive Monday morning.\"",
     items: [
-      { title: "01. Impact over output", description: "I prioritize measurable outcomes: model accuracy, decision quality, processing speed, and business value." },
-      { title: "02. End-to-end ownership", description: "I build complete systems, from data collection and cleaning to production deployment and monitoring." },
-      { title: "03. Clarity at scale", description: "Good architecture keeps complexity contained so teams can iterate quickly without breaking reliability." }
+      { title: "01. Ship the pipeline, not the notebook", description: "A Jupyter notebook is a prototype. A pipeline with monitoring, alerting, and a rollback plan is a product. I optimize for the person who gets paged at 3 AM, not the one clapping at the demo." },
+      { title: "02. Infrastructure is a feature", description: "Fast models mean nothing if your deployment takes 45 minutes and your GPU cluster idles at 12%. I treat provisioning, orchestration, and cost control as first-class engineering problems." },
+      { title: "03. Explain it to the CEO or it didn't happen", description: "If a stakeholder can't understand why the model made that decision, the model is broken — regardless of its accuracy. Clarity is not documentation. Clarity is design." }
     ]
   },
   stack: {
@@ -422,11 +422,11 @@ export const sharedEs = {
   },
   philosophy: {
     tag: "Principios de trabajo",
-    quote: "\"Convertir datos complejos en decisiones claras y productos escalables.\"",
+    quote: "\"No construyo demos. Construyo sistemas que sobreviven al lunes por la mañana.\"",
     items: [
-      { title: "01. Impacto sobre volumen", description: "Priorizo resultados medibles: accuracy, calidad de decisión, velocidad de procesamiento y valor de negocio." },
-      { title: "02. Ownership de extremo a extremo", description: "Construyo sistemas completos: captura de datos, limpieza, modelado, despliegue y monitoreo." },
-      { title: "03. Claridad al escalar", description: "Una buena arquitectura encapsula complejidad para que los equipos iteren rápido sin perder confiabilidad." }
+      { title: "01. Shippeá el pipeline, no el notebook", description: "Un Jupyter notebook es un prototipo. Un pipeline con monitoreo, alertas y un plan de rollback es un producto. Optimizo para la persona a la que le llega la alerta a las 3 AM, no para la que aplaude en la demo." },
+      { title: "02. La infraestructura es un feature", description: "Modelos rápidos no sirven de nada si tu deploy tarda 45 minutos y tu clúster de GPU está al 12% de uso. Trato el provisioning, la orquestación y el control de costos como problemas de ingeniería de primer nivel." },
+      { title: "03. Explicalo al CEO o no pasó", description: "Si un stakeholder no puede entender por qué el modelo tomó esa decisión, el modelo está roto — sin importar su accuracy. La claridad no es documentación. La claridad es diseño." }
     ]
   },
   stack: {

@@ -281,6 +281,37 @@ function AnimatedMetric({
 }
 
 /* ──────────────────────────────────────────────────────────────
+   ORB VISUAL — decorative tech anchor for EyeNet header
+   ────────────────────────────────────────────────────────────── */
+
+function OrbVisual({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="absolute top-4 right-4 md:top-6 md:right-8 hidden md:block pointer-events-none" aria-hidden="true">
+      <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+        {/* Static rings */}
+        <circle cx="36" cy="36" r="34" stroke="oklch(40% 0.085 195)" strokeWidth="0.5" opacity="0.12" />
+        <circle cx="36" cy="36" r="24" stroke="oklch(40% 0.085 195)" strokeWidth="0.5" opacity="0.2" />
+        <circle cx="36" cy="36" r="14" stroke="oklch(70% 0.130 65)" strokeWidth="0.5" opacity="0.3" />
+        <circle cx="36" cy="36" r="3" fill="oklch(70% 0.130 65)" opacity="0.5" />
+        {/* Animated pulse rings */}
+        {!reduced && (
+          <>
+            <circle cx="36" cy="36" r="34" stroke="oklch(40% 0.085 195)" strokeWidth="0.5" opacity="0">
+              <animate attributeName="r" values="28;38;28" dur="4s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.2;0;0.2" dur="4s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="36" cy="36" r="24" stroke="oklch(70% 0.130 65)" strokeWidth="0.5" opacity="0">
+              <animate attributeName="r" values="16;28;16" dur="3s" repeatCount="indefinite" begin="0.5s" />
+              <animate attributeName="opacity" values="0.15;0;0.15" dur="3s" repeatCount="indefinite" begin="0.5s" />
+            </circle>
+          </>
+        )}
+      </svg>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────
    MAIN COMPONENT
    ────────────────────────────────────────────────────────────── */
 
@@ -477,65 +508,103 @@ export default function EyeNetCard() {
         }}
       >
         {/* ═══ HEADER ═══ */}
-        <header className="p-6 pb-4 md:p-8 md:pb-5">
-          {/* Fila superior: metadata técnica */}
-          <div className="eyenet-meta flex items-center justify-between mb-5">
-            <div className="flex items-center gap-3 flex-wrap">
-              <span className="font-mono text-[11px] text-white/30 tracking-widest">
-                SYS_000
-              </span>
+        <header className="relative p-6 pb-4 md:p-8 md:pb-5 overflow-hidden">
+          {/* Subtle depth gradient */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: "linear-gradient(180deg, #0d1117 0%, #0a0f14 100%)" }}
+          />
+          {/* Subtle scan-line texture */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px)",
+            }}
+          />
+          {/* Decorative orb */}
+          <OrbVisual reduced={reduced} />
 
-              <span className="text-white/15">·</span>
+          <div className="relative z-10">
+            {/* Metadata row — terminal-like with left accent */}
+            <div
+              className="eyenet-meta flex items-center justify-between mb-6 pl-3"
+              style={{ borderLeft: "2px solid oklch(40% 0.085 195 / 0.25)" }}
+            >
+              <div className="flex items-center gap-3 flex-wrap">
+                <span className="font-mono text-[11px] text-white/30 tracking-widest">
+                  SYS_000
+                </span>
 
-              {/* Badge LIVE — con pulso real */}
-              <div className="flex items-center gap-1.5">
-                <div className="relative">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                  <div className="absolute inset-0 w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping opacity-75" />
+                <span className="text-white/15">·</span>
+
+                {/* Badge LIVE — con pulso real */}
+                <div className="flex items-center gap-1.5">
+                  <div className="relative">
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                    <div className="absolute inset-0 w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping opacity-75" />
+                  </div>
+                  <span className="font-mono text-[11px] text-emerald-400 tracking-widest">
+                    LIVE
+                  </span>
                 </div>
-                <span className="font-mono text-[11px] text-emerald-400 tracking-widest">
-                  LIVE
+
+                <span className="text-white/15">·</span>
+
+                <span className="font-mono text-[11px] text-white/30 tracking-widest">
+                  {isEn ? "PROFESSIONAL EXPERIENCE" : "EXPERIENCIA PROFESIONAL"}
                 </span>
               </div>
 
-              <span className="text-white/15">·</span>
-
-              <span className="font-mono text-[11px] text-white/30 tracking-widest">
-                {isEn ? "PROFESSIONAL EXPERIENCE" : "EXPERIENCIA PROFESIONAL"}
+              {/* Fecha — derecha */}
+              <span className="font-mono text-[11px] text-emerald-400/70 hidden sm:block">
+                {isEn ? "Apr 2025 — May 2026" : "Abr 2025 — May 2026"}
               </span>
             </div>
 
-            {/* Fecha — derecha */}
-            <span className="font-mono text-[11px] text-emerald-400/70 hidden sm:block">
-              {isEn ? "Apr 2025 — May 2026" : "Abr 2025 — May 2026"}
-            </span>
-          </div>
+            {/* Headline — dramatic scale with glow */}
+            <div className="eyenet-title mb-5">
+              <h2
+                className="font-sans text-5xl sm:text-6xl md:text-7xl font-black text-white leading-none tracking-tight mb-2"
+                style={{ textShadow: "0 0 40px rgba(96,165,250,0.15)" }}
+              >
+                EyeNet
+              </h2>
+              <p className="font-mono text-sm text-white/40 tracking-wide">
+                AI &amp; Automation Platform
+              </p>
+            </div>
 
-          {/* Headline — dos líneas con jerarquía clara */}
-          <div className="eyenet-title mb-4">
-            <h2 className="font-sans text-4xl font-black text-white leading-none tracking-tight mb-1">
-              EyeNet
-            </h2>
-            <p className="font-mono text-sm text-white/40 tracking-wide">
-              AI &amp; Automation Platform
-            </p>
-          </div>
+            {/* Description — visual hierarchy with color-coded dots */}
+            <div className="eyenet-desc flex flex-col gap-1.5 mb-4">
+              <div className="flex items-center gap-2.5">
+                <span className="block w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "oklch(40% 0.085 195)" }} />
+                <span className="font-sans text-sm text-white/55">
+                  {isEn ? "LLM pipelines · ETL/ELT" : "Pipelines LLM · ETL/ELT"}
+                </span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <span className="block w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "oklch(70% 0.130 65)" }} />
+                <span className="font-sans text-sm text-white/55">
+                  {isEn ? "Containerized microservices · AI assistants" : "Microservicios containerizados · asistentes IA"}
+                </span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <span className="block w-1.5 h-1.5 rounded-full shrink-0 bg-white/25" />
+                <span className="font-sans text-sm text-white/55">
+                  {isEn ? "GPU cluster inference" : "Inferencia en cluster GPU"}
+                </span>
+              </div>
+            </div>
 
-          {/* Descripción técnica — más legible */}
-          <p className="eyenet-desc font-sans text-sm text-white/55 leading-relaxed max-w-lg">
-            {isEn
-              ? "LLM pipelines · ETL/ELT · containerized microservices · AI assistants · GPU cluster"
-              : "Pipelines LLM · ETL/ELT · microservicios containerizados · asistentes IA · cluster GPU"}
-          </p>
-
-          {/* Badges de contexto — debajo de la descripción */}
-          <div className="eyenet-badges flex items-center gap-2 mt-3">
-            <span className="font-mono text-[10px] px-2 py-0.5 rounded-sm text-white/40 border border-white/10">
-              {isEn ? "Remote" : "Remoto"}
-            </span>
-            <span className="font-mono text-[10px] px-2 py-0.5 rounded-sm text-amber-400/70 border border-amber-400/20 bg-amber-400/5">
-              {isEn ? "Partial NDA" : "NDA Parcial"}
-            </span>
+            {/* Badges de contexto */}
+            <div className="eyenet-badges flex items-center gap-2.5 mt-3">
+              <span className="font-mono text-[11px] px-2.5 py-1 rounded-sm text-white/40 border border-white/10">
+                {isEn ? "Remote" : "Remoto"}
+              </span>
+              <span className="font-mono text-[11px] px-2.5 py-1 rounded-sm text-amber-400/70 border border-amber-400/20 bg-amber-400/5">
+                {isEn ? "Partial NDA" : "NDA Parcial"}
+              </span>
+            </div>
           </div>
         </header>
 

@@ -33,7 +33,7 @@ The layout relies heavily on typographic contrast, strict nesting, and negative 
   - Typography: Pure white, but entirely controlled via alpha channels (`text-white/30`, `text-white/60`, `text-white/90`).
   
 - **Atmosphere (The "Dark Water"):**
-  - An underlying abstract, organic image (`/images/bg-water-dark.jpg`) is placed behind the entire application.
+  - An underlying abstract, organic image (`/img/bg-water-dark.jpg`) is placed behind the entire application.
   - Setup: Absolute positioning, `-z-10`, forced `object-cover`.
   - Effect: Handled using a `mix-blend-screen` with `opacity-80`. This ensures the organic texture is visible as a subtle physical presence without breaking the stark contrast of the typography.
 

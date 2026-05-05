@@ -1,0 +1,12 @@
+/* TEAM */
+Developer: Diego Villagran Salazar
+Contact: diegovillasal@gmail.com
+GitHub: https://github.com/dvillagrans
+LinkedIn: https://linkedin.com/in/dvillagrans
+Location: Mexico City, MX
+
+/* SITE */
+Last update: 2026-05-04
+Language: English, Spanish
+Standards: HTML5, CSS3, WCAG 2.1 AA
+Components: Next.js, React, GSAP, Tailwind CSS

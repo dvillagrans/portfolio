@@ -11,7 +11,7 @@ export default function Hero() {
   const container = useRef<HTMLDivElement>(null);
   const wordsRef = useRef<(HTMLSpanElement | null)[]>([]);
   const sublineRef = useRef<HTMLParagraphElement>(null);
-  const actionRef = useRef<HTMLAnchorElement>(null);
+  const actionRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const scanRef = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
@@ -109,7 +109,7 @@ export default function Hero() {
   return (
     <section
       ref={container}
-      className="relative flex h-[100dvh] w-full flex-col justify-end overflow-hidden pb-[max(5rem,calc(1.25rem+env(safe-area-inset-bottom)))] md:pb-32 pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] sm:pl-8 md:pl-24"
+      className="relative flex h-[100dvh] w-full flex-col justify-end overflow-hidden pt-[max(5rem,calc(4rem+env(safe-area-inset-top)))] sm:pt-24 md:pt-28 pb-[max(5rem,calc(1.25rem+env(safe-area-inset-bottom)))] sm:pb-24 md:pb-32 pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] sm:pl-8 md:pl-24"
     >
       {/* Background cinematic layers */}
       <div className="absolute inset-0 z-0 bg-charcoal">
@@ -118,7 +118,7 @@ export default function Hero() {
           className="absolute inset-0 overflow-hidden"
         >
           <Image
-            src="/images/bg-water-dark.jpg"
+            src="/img/bg-water-dark.jpg"
             alt=""
             fill
             priority
@@ -128,8 +128,8 @@ export default function Hero() {
             sizes="100vw"
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/50 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/20 to-transparent opacity-60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/50 to-transparent" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/20 to-transparent opacity-60" aria-hidden="true" />
       </div>
 
       {/* Cinematic scan line — sweeps once on load */}
@@ -143,7 +143,7 @@ export default function Hero() {
       <div className="relative z-10 max-w-4xl">
         {/* Headline with word-by-word split animation */}
         <h1
-          className="font-sans text-5xl sm:text-6xl font-medium tracking-tight text-offwhite md:text-[6rem] md:leading-[1.02]"
+          className="font-sans text-5xl sm:text-6xl lg:text-7xl xl:text-[6rem] font-medium tracking-tight text-offwhite md:leading-[1.02] break-words"
           style={{ textWrap: "balance" }}
           aria-label={`${t.hero.title1} ${t.hero.title2}`}
         >
@@ -184,12 +184,14 @@ export default function Hero() {
           {t.hero.subtitle2}
         </p>
 
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+        <div 
+          ref={actionRef}
+          className="mt-10 md:mt-16 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3"
+          style={{ opacity: reduced ? 1 : 0 }}
+        >
           <a
-            ref={actionRef}
-            href="#projects"
-            className="group mt-10 md:mt-16 inline-flex items-center justify-center sm:justify-start w-full sm:w-auto min-h-[44px] gap-3 border border-offwhite/20 px-6 py-4 md:px-8 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-offwhite transition-all hover:bg-offwhite hover:text-charcoal active:scale-[0.98]"
-            style={{ opacity: reduced ? 1 : 0 }}
+            href="/#projects"
+            className="group inline-flex items-center justify-center sm:justify-start w-full sm:w-auto min-h-[44px] gap-3 border border-offwhite/20 px-6 py-4 md:px-8 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-offwhite transition-all hover:bg-offwhite hover:text-charcoal active:scale-[0.98]"
           >
             {t.hero.cta}
             <div className="h-[2px] w-4 bg-warm transition-all group-hover:w-8 group-hover:bg-charcoal" />
@@ -197,7 +199,7 @@ export default function Hero() {
           <a
             href="/resume/resume-banca.pdf"
             download
-            className="group mt-4 md:mt-6 inline-flex items-center justify-center sm:justify-start w-full sm:w-auto min-h-[44px] gap-2 border border-offwhite/10 px-6 py-4 md:px-8 font-sans text-xs font-semibold uppercase tracking-[0.15em] text-offwhite/70 transition-all hover:text-offwhite hover:border-offwhite/30 active:scale-[0.98]"
+            className="group inline-flex items-center justify-center sm:justify-start w-full sm:w-auto min-h-[44px] gap-2 border border-offwhite/10 px-6 py-4 md:px-8 font-sans text-xs font-semibold uppercase tracking-[0.15em] text-offwhite/70 transition-all hover:text-offwhite hover:border-offwhite/30 active:scale-[0.98]"
           >
             {t.hero.downloadCv}
             <ArrowDownToLine className="w-4 h-4" />

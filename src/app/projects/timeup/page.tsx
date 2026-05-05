@@ -19,9 +19,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 
 const IMAGES = [
-  { src: "/images/timeup/admin-analytics.png", alt: "Administrador TimeUp" },
-  { src: "/images/timeup/owner-finance.png", alt: "Finanzas Dueño" },
-  { src: "/images/timeup/staff-dashboard.png", alt: "Agenda Staff" },
+  { src: "/img/timeup/admin-analytics.png", alt: "Administrador TimeUp" },
+  { src: "/img/timeup/owner-finance.png", alt: "Finanzas Dueño" },
+  { src: "/img/timeup/staff-dashboard.png", alt: "Agenda Staff" },
 ];
 
 function Lightbox({ index, onClose, onPrev, onNext }: { index: number; onClose: () => void; onPrev: () => void; onNext: () => void }) {
@@ -290,7 +290,7 @@ export default function TimeUpCaseStudy() {
             onClick={() => openLightbox(0)}
           >
             <Image 
-              src="/images/timeup/admin-analytics.png" 
+              src="/img/timeup/admin-analytics.png" 
               alt="Administrador TimeUp" 
               fill 
               className="object-cover object-left-top opacity-50 mix-blend-screen scale-105 group-hover:scale-100 transition-all duration-1000 group-hover:opacity-100" 
@@ -308,7 +308,7 @@ export default function TimeUpCaseStudy() {
             onClick={() => openLightbox(1)}
           >
             <Image 
-              src="/images/timeup/owner-finance.png" 
+              src="/img/timeup/owner-finance.png" 
               alt="Finanzas Dueño" 
               fill 
               className="object-cover object-left-top opacity-50 mix-blend-screen scale-105 group-hover:scale-100 transition-all duration-1000 group-hover:opacity-100" 
@@ -326,7 +326,7 @@ export default function TimeUpCaseStudy() {
             onClick={() => openLightbox(2)}
           >
             <Image 
-              src="/images/timeup/staff-dashboard.png" 
+              src="/img/timeup/staff-dashboard.png" 
               alt="Agenda Staff" 
               fill 
               className="object-cover object-left-top opacity-50 mix-blend-screen scale-105 group-hover:scale-100 transition-all duration-1000 group-hover:opacity-100" 

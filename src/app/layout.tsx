@@ -63,6 +63,8 @@ export const metadata: Metadata = {
     title: "Diego Villagran | AI & Data Engineer · ML Systems Builder",
     description:
       "Senior AI & Data Engineer building production ML pipelines, LLM automation, and scalable infrastructure.",
+    // TODO: Consider a designed OG image (1200×630) with name + title + branding
+    // For now using profile photo which works but isn't optimal for social sharing
     images: [
       {
         url: "/img/optimized/me-1200.webp",
@@ -127,16 +129,27 @@ export default function RootLayout({
           }}
         />
         {process.env.NODE_ENV === "development" && (
-          <Script
-            src="//unpkg.com/react-grab/dist/index.global.js"
+          <link
+            rel="stylesheet"
+            href="https://unpkg.com/react-grab/dist/styles.css"
             crossOrigin="anonymous"
-            strategy="beforeInteractive"
           />
         )}
         {process.env.NODE_ENV === "development" && (
-          <Script
-            src="//unpkg.com/@react-grab/mcp/dist/client.global.js"
-            strategy="lazyOnload"
+          <script
+            id="react-grab"
+            src="https://unpkg.com/react-grab/dist/index.global.js"
+            crossOrigin="anonymous"
+            data-options={JSON.stringify(
+              { activationMode: "toggle", allowActivationInsideInput: true, maxContextLines: 3 }
+            )}
+          />
+        )}
+        {process.env.NODE_ENV === "development" && (
+          <script
+            id="react-grab-mcp"
+            src="https://unpkg.com/@react-grab/mcp/dist/client.global.js"
+            crossOrigin="anonymous"
           />
         )}
       </head>
@@ -157,7 +170,7 @@ export default function RootLayout({
             <ConsoleEasterEgg />
             <PersonSchema />
             <WebSiteSchema />
-            <div className="noise-overlay pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.03] mix-blend-overlay"></div>
+            <div className="noise-overlay pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.03] mix-blend-overlay" aria-hidden="true"></div>
             {children}
             <ProjectChat />
           </LanguageProvider>

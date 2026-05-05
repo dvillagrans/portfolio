@@ -322,7 +322,7 @@ export default function Navbar() {
                         href={item.href}
                         onClick={() => setMobileMenuOpen(false)}
                         tabIndex={mobileMenuOpen ? 0 : -1}
-                        className={`group flex min-h-[56px] w-full items-center justify-between font-sans text-[13px] font-bold tracking-[0.2em] uppercase py-3 px-4 rounded-xl transition-all duration-300 ${
+                        className={`group flex min-h-[56px] w-full items-center justify-between font-sans text-sm font-bold tracking-[0.2em] uppercase py-3 px-4 rounded-xl transition-all duration-300 ${
                           active
                             ? "text-[var(--text-primary)] bg-[var(--bg-secondary)]/90"
                             : "text-[var(--text-primary)]/70 hover:text-[var(--text-primary)] hover:bg-[var(--bg-primary)]/5"

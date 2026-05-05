@@ -48,7 +48,7 @@ export default function SystemArchive() {
       <div className="fixed inset-0 z-0 bg-charcoal">
         <div
           className="absolute inset-0 opacity-60 mix-blend-screen bg-cover bg-center"
-          style={{ backgroundImage: "url('/images/bg-water-dark.jpg')" }}
+          style={{ backgroundImage: "url('/img/bg-water-dark.jpg')" }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/60 to-charcoal/20" />
       </div>

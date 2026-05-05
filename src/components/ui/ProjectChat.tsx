@@ -1,7 +1,7 @@
 "use client";
 
 import { useChat } from '@ai-sdk/react';
-import { Bot, Maximize2, Minimize2, Send, User, X } from 'lucide-react';
+import { Terminal, Maximize2, Minimize2, Send, User, X } from 'lucide-react';
 import { useState, useRef, useEffect, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import gsap from 'gsap';
@@ -38,13 +38,27 @@ export function ProjectChat({ context }: { context?: string }) {
     "What's your background?",
     "Are you available to hire?",
   ], []);
-  
+
   const PROMPTS_ES = useMemo(() => [
     "Pregunta sobre mi trabajo...",
     "¿Qué tecnologías usas?",
     "Muéstrame tu mejor proyecto.",
     "¿Cuál es tu experiencia?",
     "¿Estás disponible para contratar?",
+  ], []);
+
+  const CHIP_LABELS_EN = useMemo(() => [
+    "What's your tech stack?",
+    "Best project?",
+    "Background & experience",
+    "Available to hire?",
+  ], []);
+
+  const CHIP_LABELS_ES = useMemo(() => [
+    "¿Qué tecnologías usas?",
+    "¿Mejor proyecto?",
+    "Experiencia y trayectoria",
+    "¿Disponible para contratar?",
   ], []);
 
   const { messages, sendMessage, status } = useChat() as {
@@ -162,7 +176,7 @@ export function ProjectChat({ context }: { context?: string }) {
                 scale: 1,
                 y: 0,
                 duration: 0.7,
-                ease: 'elastic.out(1, 0.85)',
+                ease: 'expo.out',
                 pointerEvents: 'auto',
                 display: 'flex',
                 delay: 0.1
@@ -201,7 +215,7 @@ export function ProjectChat({ context }: { context?: string }) {
               scale: 1,
               pointerEvents: 'auto',
               duration: 0.6,
-              ease: 'back.out(1.7)',
+              ease: 'power3.out',
               delay: 0.2
             });
           }
@@ -240,8 +254,29 @@ export function ProjectChat({ context }: { context?: string }) {
     setInput('');
   };
 
+  const handleChipClick = (prompt: string) => {
+    if (isLoading) return;
+    sendMessage({ text: prompt });
+  };
+
   const visibleMessages = (messages ?? []).filter((m) => m.role !== 'system');
   const hasMessages = visibleMessages.length > 0;
+
+  const chipLabels = language === 'es' ? CHIP_LABELS_ES : CHIP_LABELS_EN;
+  const chipPrompts = language === 'es' ? PROMPTS_ES : PROMPTS_EN;
+
+  const emptyGreetingLine1 = language === 'es' ? '> Sistema listo.' : '> System ready.';
+  const emptyGreetingLine2 = language === 'es'
+    ? '> Pregúntame sobre pipelines, arquitectura o disponibilidad.'
+    : '> Ask me about pipelines, architecture, or availability.';
+  const inputHint = language === 'es'
+    ? 'Presiona Enter para enviar · Shift+Enter para nueva línea'
+    : 'Press Enter to send · Shift+Enter for new line';
+  const footerLabel = language === 'es'
+    ? 'Powered by DeepSeek-V3 · Respuestas sintéticas'
+    : 'Powered by DeepSeek-V3 · Responses are synthetic';
+  const ariaChatLabel = language === 'es' ? 'Chat sobre el trabajo de Diego' : "Chat about Diego's work";
+  const srInputLabel = language === 'es' ? 'Pregunta sobre mi trabajo' : 'Ask about my work';
 
   return (
     <>
@@ -252,11 +287,23 @@ export function ProjectChat({ context }: { context?: string }) {
         onClick={() => setIsOpen(true)}
         aria-label="Open portfolio chat"
         style={{ opacity: 0 }}
-        className="fixed z-50 inset-x-0 mx-auto w-fit bottom-[max(1.5rem,env(safe-area-inset-bottom))] flex min-h-[52px] items-center gap-4 rounded-full border border-white/10 bg-charcoal/80 backdrop-blur-xl pl-2 pr-8 py-2 font-sans text-[12px] font-medium text-offwhite shadow-[0_20px_50px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.1)] hover:shadow-[0_20px_60px_rgba(201,125,53,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] transition-all duration-500 hover:border-warm/50 hover:scale-[1.02] group active:scale-[0.98]"
+        className="fixed z-50 inset-x-0 mx-auto w-fit bottom-[max(1.5rem,env(safe-area-inset-bottom))] flex min-h-[52px] items-center gap-4 rounded-full border border-white/10 bg-charcoal/80 backdrop-blur-xl pl-2 pr-8 py-2 font-mono text-[12px] font-medium text-offwhite shadow-[0_20px_50px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.1)] hover:shadow-[0_20px_60px_rgba(201,125,53,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] transition-all duration-500 hover:border-warm/50 hover:scale-[1.02] group active:scale-[0.98]"
       >
+        {/* Scan-line texture on hover */}
+        <span
+          className="pointer-events-none absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{
+            backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px)',
+          }}
+          aria-hidden
+        />
+
         <span className="relative flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/5 border border-white/10 group-hover:bg-warm group-hover:border-warm transition-all duration-500 shadow-inner">
-          <Bot className="h-5 w-5 text-offwhite/80 group-hover:text-offwhite transition-colors" aria-hidden />
+          <Terminal className="h-5 w-5 text-offwhite/80 group-hover:text-offwhite transition-colors" aria-hidden />
+          {/* Warm amber glow on hover */}
           <span className="absolute inset-0 rounded-full bg-warm/30 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden />
+          {/* Idle pulsing ring */}
+          <span className="absolute inset-[-4px] rounded-full border border-warm/30 opacity-60 group-hover:opacity-0 animate-ping transition-opacity duration-500" style={{ animationDuration: '2.5s' }} aria-hidden />
         </span>
 
         <span className="flex items-center min-w-[240px] text-offwhite/60 group-hover:text-offwhite transition-colors duration-500 tracking-tight">
@@ -271,25 +318,42 @@ export function ProjectChat({ context }: { context?: string }) {
         role="dialog"
         aria-modal="true"
         aria-labelledby={CHAT_TITLE_ID}
-        aria-label="Chat about Diego's work"
+        aria-label={ariaChatLabel}
         style={{ opacity: 0, display: 'none', pointerEvents: 'none' }}
-        className={`fixed z-50 flex flex-col bg-charcoal/95 backdrop-blur-2xl shadow-[0_30px_100px_rgba(0,0,0,0.5)] border border-white/10
+        className={`fixed z-50 flex flex-col bg-charcoal/95 backdrop-blur-2xl shadow-[0_30px_100px_rgba(0,0,0,0.5)] border border-white/10 overflow-hidden
         ${isExpanded
           ? 'inset-0 rounded-none border-0 pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)]'
           : 'rounded-2xl inset-x-0 mx-auto bottom-[max(1.5rem,env(safe-area-inset-bottom))] h-[min(600px,80vh)] w-[min(450px,calc(100vw-2rem))]'
         }`}
       >
-        <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+        {/* Top accent bar */}
+        <div
+          className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none z-20"
+          style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(201,125,53,0.6) 20%, rgba(201,125,53,0.8) 50%, rgba(201,125,53,0.6) 80%, transparent 100%)' }}
+          aria-hidden
+        />
+
+        {/* Subtle scan lines across panel */}
+        <div
+          className="absolute inset-0 pointer-events-none z-0"
+          style={{
+            backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.012) 2px, rgba(255,255,255,0.012) 4px)',
+          }}
+          aria-hidden
+        />
+
+        {/* Terminal title bar */}
+        <div className="relative z-10 flex items-center justify-between border-b border-white/10 px-6 py-4 bg-charcoal/60">
           <div className="flex items-center gap-3">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-warm/20 border border-warm/30">
-              <Bot className="h-4 w-4 text-warm" aria-hidden />
+              <Terminal className="h-4 w-4 text-warm" aria-hidden />
             </div>
             <div className="flex flex-col">
-              <span id={CHAT_TITLE_ID} className="font-sans text-xs font-bold uppercase tracking-[0.2em] text-offwhite">
-                Creative AI
+              <span id={CHAT_TITLE_ID} className="font-mono text-xs font-bold uppercase tracking-[0.15em] text-offwhite">
+                DV-OS Terminal
               </span>
               <span className="text-[10px] text-offwhite/40 uppercase tracking-widest font-mono">
-                Diego's Digital Twin
+                System Console v2.0
               </span>
             </div>
           </div>
@@ -319,15 +383,36 @@ export function ProjectChat({ context }: { context?: string }) {
         <div
           role="log"
           aria-label="Chat messages"
-          className={`flex-1 space-y-6 overflow-y-auto px-6 py-8 scrollbar-thin scrollbar-thumb-white/10 ${isExpanded ? 'mx-auto w-full max-w-3xl' : ''}`}
+          className={`relative z-10 flex-1 space-y-6 overflow-y-auto px-6 py-8 scrollbar-thin scrollbar-thumb-white/10 ${isExpanded ? 'mx-auto w-full max-w-3xl' : ''}`}
         >
           {!hasMessages && (
-            <div className="mt-12 text-center flex flex-col items-center gap-4 px-4">
+            <div className="mt-12 flex flex-col items-center gap-5 px-4">
               <div className="h-px w-12 bg-warm/30"></div>
               <p className="font-garamond text-xl italic text-offwhite/90">{greeting}</p>
-              <p className="font-sans text-[11px] text-offwhite/40 uppercase tracking-[0.2em] max-w-[200px] leading-relaxed">
-                Inquire about projects, technical stack, or availability.
-              </p>
+
+              {/* Terminal-style empty state */}
+              <div className="flex flex-col items-start gap-1 font-mono text-[11px] text-offwhite/50 leading-relaxed max-w-[260px]">
+                <span>{emptyGreetingLine1}</span>
+                <span className="flex items-center">
+                  {emptyGreetingLine2}
+                  <span className="ml-1 inline-block w-[2px] h-[12px] bg-warm rounded-full animate-pulse" aria-hidden />
+                </span>
+              </div>
+
+              {/* Suggestion chips */}
+              <div className="flex flex-wrap justify-center gap-2 mt-1 max-w-[320px]">
+                {chipLabels.map((label, i) => (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={() => handleChipClick(chipPrompts[i])}
+                    className="font-mono text-[11px] px-3 py-1.5 rounded-full border border-white/10 text-offwhite/50 hover:text-offwhite hover:border-warm/40 hover:bg-warm/10 transition-all duration-300"
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+
               <div className="h-px w-12 bg-warm/30"></div>
             </div>
           )}
@@ -339,15 +424,15 @@ export function ProjectChat({ context }: { context?: string }) {
               >
                 <div className={`flex items-center gap-2 mb-2 opacity-30 group-hover:opacity-60 transition-opacity ${m.role === 'user' ? 'flex-row-reverse' : ''}`}>
                   <div className="h-4 w-4 rounded-full bg-white/10 flex items-center justify-center">
-                    {m.role === 'user' ? <User className="h-2.5 w-2.5 text-offwhite" aria-hidden /> : <Bot className="h-2.5 w-2.5 text-warm" aria-hidden />}
+                    {m.role === 'user' ? <User className="h-2.5 w-2.5 text-offwhite" aria-hidden /> : <Terminal className="h-2.5 w-2.5 text-warm" aria-hidden />}
                   </div>
                   <span className="font-mono text-[9px] uppercase tracking-widest text-offwhite">{m.role}</span>
                 </div>
-                
+
                 <div className={`rounded-2xl px-4 py-3 font-sans text-sm leading-relaxed ${
-                  m.role === 'user' 
-                    ? 'bg-warm text-charcoal font-medium shadow-[0_10px_30px_rgba(201,125,53,0.2)]' 
-                    : 'bg-white/5 text-offwhite/90 border border-white/10 backdrop-blur-sm'
+                  m.role === 'user'
+                    ? 'bg-warm text-charcoal font-medium shadow-[0_10px_30px_rgba(201,125,53,0.25)]'
+                    : 'bg-white/5 text-offwhite/90 border border-white/10 backdrop-blur-sm border-l-[2px] border-l-[var(--color-accent)]/30'
                 }`}>
                   <ReactMarkdown
                     components={{
@@ -368,30 +453,30 @@ export function ProjectChat({ context }: { context?: string }) {
 
           {isLoading && (
             <div className="flex justify-start">
-              <div className="flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-4 py-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-warm animate-pulse" />
-                <span className="h-1.5 w-1.5 rounded-full bg-warm animate-pulse delay-75" />
-                <span className="h-1.5 w-1.5 rounded-full bg-warm animate-pulse delay-150" />
+              <div className="flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-4 py-2.5">
+                <span className="chat-typing-dot h-1.5 w-1.5 rounded-full bg-warm" style={{ animationDelay: '0ms' }} />
+                <span className="chat-typing-dot h-1.5 w-1.5 rounded-full bg-warm" style={{ animationDelay: '150ms' }} />
+                <span className="chat-typing-dot h-1.5 w-1.5 rounded-full bg-warm" style={{ animationDelay: '300ms' }} />
               </div>
             </div>
           )}
           <div ref={messagesEndRef} />
         </div>
 
-        <div className={`p-6 ${isExpanded ? 'mx-auto w-full max-w-3xl' : ''}`}>
+        <div className={`relative z-10 p-6 ${isExpanded ? 'mx-auto w-full max-w-3xl' : ''}`}>
           <form
             onSubmit={handleSubmit}
             className="relative flex items-center"
           >
             <label htmlFor={CHAT_INPUT_ID} className="sr-only">
-              Ask about my work
+              {srInputLabel}
             </label>
             <input
               id={CHAT_INPUT_ID}
               type="text"
               className="w-full h-14 rounded-xl border border-white/10 bg-white/5 pl-5 pr-16 text-offwhite placeholder:text-offwhite/20 focus:outline-none focus:border-warm/50 focus:bg-white/10 transition-all duration-300"
               value={input}
-              placeholder="Type your question..."
+              placeholder={language === 'es' ? 'Escribe tu pregunta...' : 'Type your question...'}
               onChange={(e) => setInput(e.target.value)}
               disabled={isLoading}
               autoComplete="off"
@@ -405,9 +490,14 @@ export function ProjectChat({ context }: { context?: string }) {
               <Send className="h-4 w-4" aria-hidden />
             </button>
           </form>
-          <p className="mt-3 text-center font-mono text-[9px] uppercase tracking-[0.2em] text-offwhite/20">
-            Powered by DeepSeek-V3 • Responses are synthetic
-          </p>
+          <div className="mt-2 flex flex-col items-center gap-1">
+            <p className="text-center font-mono text-[9px] uppercase tracking-[0.15em] text-offwhite/25">
+              {inputHint}
+            </p>
+            <p className="text-center font-mono text-[9px] uppercase tracking-[0.2em] text-offwhite/20">
+              {footerLabel}
+            </p>
+          </div>
         </div>
       </div>
     </>
