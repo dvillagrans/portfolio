@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -315,13 +315,125 @@ function PrincipleCard({
   );
 }
 
+/* ─── Mobile Principle Card (compact, no SVG) ─── */
+function MobilePrincipleCard({
+  index,
+  item,
+}: {
+  index: number;
+  item: { title: string; description: string };
+}) {
+  const [, ...titleRest] = item.title.split(". ");
+  const pureTitle = titleRest.join(". ");
+
+  const borderColors = [
+    "border-l-warm",
+    "border-l-accent",
+    "border-l-warm/70",
+  ];
+
+  const numberColors = [
+    "text-warm/10",
+    "text-accent/10",
+    "text-warm/8",
+  ];
+
+  const dotColors = [
+    "bg-warm",
+    "bg-accent",
+    "bg-warm/80",
+  ];
+
+  return (
+    <div
+      className={`relative flex flex-col gap-4 p-6 bg-graphite/40 backdrop-blur-sm border border-white/[0.06] ${borderColors[index]} border-l-[3px] rounded-2xl overflow-hidden`}
+    >
+      {/* Watermark number */}
+      <span
+        className={`absolute top-2 right-4 font-serif text-7xl font-medium leading-none select-none pointer-events-none ${numberColors[index]}`}
+        aria-hidden="true"
+      >
+        0{index + 1}
+      </span>
+
+      <div className="relative z-10 flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <div className={`w-2 h-2 rounded-full ${dotColors[index]}`} />
+          <span className="font-mono text-[10px] font-bold tracking-[0.25em] uppercase text-white/30">
+            PRINCIPLE_0{index + 1}
+          </span>
+        </div>
+
+        <h3 className="font-sans text-xl font-semibold tracking-tight text-offwhite leading-[1.15]">
+          {pureTitle}
+        </h3>
+
+        <p className="font-sans text-base leading-[1.7] text-white/60">
+          {item.description}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Main Section ─── */
 export default function Philosophy() {
   const container = useRef<HTMLElement>(null);
   const quoteRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+  const mobileCardRef = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
   const reduced = useReducedMotion();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+
+  /* Mobile card transition */
+  useEffect(() => {
+    if (reduced) return;
+    const el = mobileCardRef.current;
+    if (!el) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        el,
+        { opacity: 0, y: 16, scale: 0.98 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power2.out" }
+      );
+    }, el);
+    return () => ctx.revert();
+  }, [activeIndex, reduced]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.changedTouches[0].screenX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    touchEndX.current = e.changedTouches[0].screenX;
+    const diff = touchStartX.current - touchEndX.current;
+    if (Math.abs(diff) > 50) {
+      setActiveIndex((prev) =>
+        diff > 0 ? (prev + 1) % 3 : (prev - 1 + 3) % 3
+      );
+    }
+  };
+
+  const handleTabKeyDown = (e: React.KeyboardEvent, idx: number) => {
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      const next = (idx + 1) % 3;
+      setActiveIndex(next);
+      setTimeout(() => {
+        document.getElementById(`principle-tab-${next}`)?.focus();
+      }, 0);
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      const prev = (idx - 1 + 3) % 3;
+      setActiveIndex(prev);
+      setTimeout(() => {
+        document.getElementById(`principle-tab-${prev}`)?.focus();
+      }, 0);
+    }
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -446,11 +558,92 @@ export default function Philosophy() {
           </div>
         </div>
 
-        {/* ═══ Principle Cards ═══ */}
-        <div ref={cardsRef} className="space-y-6 md:space-y-8">
+        {/* ═══ Desktop Principle Cards ═══ */}
+        <div ref={cardsRef} className="hidden md:block space-y-6 md:space-y-8">
           {t.philosophy.items.map((item, idx) => (
             <PrincipleCard key={idx} index={idx} item={item} reduced={reduced} />
           ))}
+        </div>
+
+        {/* ═══ Mobile Principle Cards ═══ */}
+        <div className="md:hidden space-y-5">
+          {/* Tabs */}
+          <div
+            className="flex gap-2 overflow-x-auto scrollbar-hide pb-2"
+            role="tablist"
+            aria-label="Principles"
+          >
+            {t.philosophy.items.map((item, idx) => {
+              const isActive = activeIndex === idx;
+              const [, ...titleRest] = item.title.split(". ");
+              const pureTitle = titleRest.join(". ");
+              return (
+                <button
+                  key={idx}
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`principle-panel-${idx}`}
+                  id={`principle-tab-${idx}`}
+                  tabIndex={isActive ? 0 : -1}
+                  onClick={() => setActiveIndex(idx)}
+                  onKeyDown={(e) => handleTabKeyDown(e, idx)}
+                  className={`flex-shrink-0 min-w-[130px] px-4 py-3 rounded-xl text-left transition-all duration-300 min-h-[44px] border ${
+                    isActive
+                      ? "bg-warm/10 border-warm/40 text-warm shadow-[0_0_20px_-5px_rgba(251,191,36,0.15)]"
+                      : "bg-white/[0.03] border-white/[0.06] text-white/40 hover:text-white/60 hover:bg-white/[0.06]"
+                  }`}
+                >
+                  <span className="block font-mono text-[9px] font-bold tracking-[0.2em] uppercase opacity-70">
+                    PRINCIPLE_0{idx + 1}
+                  </span>
+                  <span
+                    className={`block text-sm font-medium mt-0.5 truncate ${
+                      isActive ? "text-warm" : "text-white/50"
+                    }`}
+                  >
+                    {pureTitle}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Active Card */}
+          <div
+            ref={mobileCardRef}
+            key={activeIndex}
+            role="tabpanel"
+            id={`principle-panel-${activeIndex}`}
+            aria-labelledby={`principle-tab-${activeIndex}`}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            <MobilePrincipleCard
+              index={activeIndex}
+              item={t.philosophy.items[activeIndex]}
+            />
+          </div>
+
+          {/* Pagination Dots */}
+          <div
+            className="flex justify-center gap-2 pt-2"
+            role="group"
+            aria-label="Principle pagination"
+          >
+            {t.philosophy.items.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActiveIndex(idx)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  activeIndex === idx
+                    ? "bg-warm w-6"
+                    : "bg-white/20 w-2 hover:bg-white/40"
+                }`}
+                aria-label={`Go to principle ${idx + 1}`}
+                aria-current={activeIndex === idx ? "true" : undefined}
+              />
+            ))}
+          </div>
         </div>
       </div>
 

@@ -89,33 +89,33 @@ export default function About() {
       <div className="relative z-10 mx-auto max-w-4xl px-8 py-16 md:px-12 md:py-32" ref={containerRef}>
 
         {/* Header */}
-        <header className="mb-24 mt-20 flex items-center justify-between">
+        <header className="mb-24 mt-20 flex items-center justify-between flex-wrap gap-3">
           <Link
             href="/"
             className="group flex items-center min-h-[44px] gap-3 font-sans text-xs font-semibold uppercase tracking-widest text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)] spring-press"
           >
             <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-            {language === "en" ? "Return" : "Volver"}
+            <span className="hidden sm:inline">{language === "en" ? "Return" : "Volver"}</span>
           </Link>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* Download CV button */}
             <a
               href="/resume/resume-banca.pdf"
               download
-              className="group inline-flex items-center justify-center min-h-[44px] gap-2 border border-[var(--border-color)] rounded-full px-4 py-2 bg-[var(--card)] shadow-sm font-sans text-[10px] font-bold uppercase tracking-widest text-[var(--text-secondary)] transition-all hover:text-[var(--text-primary)] hover:border-[var(--border-color)] spring-press"
+              className="group inline-flex items-center justify-center min-h-[40px] sm:min-h-[44px] gap-1.5 sm:gap-2 border border-[var(--border-color)] rounded-full px-2.5 sm:px-4 py-1.5 sm:py-2 bg-[var(--card)] shadow-sm font-sans text-[9px] sm:text-[10px] font-bold uppercase tracking-wider sm:tracking-widest text-[var(--text-secondary)] transition-all hover:text-[var(--text-primary)] hover:border-[var(--border-color)] spring-press"
             >
               {language === "en" ? "Download CV" : "Descargar CV"}
-              <ArrowDownToLine className="h-3.5 w-3.5" />
+              <ArrowDownToLine className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
             </a>
 
             {/* Live status badge */}
-            <div className="flex items-center gap-2 border border-[var(--border-color)] rounded-full px-4 py-2 bg-[var(--card)] shadow-sm">
-              <span className="relative flex h-2 w-2">
+            <div className="flex items-center gap-1.5 sm:gap-2 border border-[var(--border-color)] rounded-full px-2.5 sm:px-4 py-1.5 sm:py-2 bg-[var(--card)] shadow-sm">
+              <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-warm opacity-70" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-warm" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-warm" />
               </span>
-              <span className="font-sans text-[10px] font-bold uppercase tracking-widest text-[var(--text-secondary)]">
+              <span className="font-sans text-[9px] sm:text-[10px] font-bold uppercase tracking-wider sm:tracking-widest text-[var(--text-secondary)]">
                 {language === "en" ? "Open to work" : "Disponible"}
               </span>
             </div>

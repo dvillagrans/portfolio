@@ -287,7 +287,7 @@ export function ProjectChat({ context }: { context?: string }) {
         onClick={() => setIsOpen(true)}
         aria-label="Open portfolio chat"
         style={{ opacity: 0 }}
-        className="fixed z-50 inset-x-0 mx-auto w-fit bottom-[max(1.5rem,env(safe-area-inset-bottom))] flex min-h-[52px] items-center gap-4 rounded-full border border-white/10 bg-charcoal/80 backdrop-blur-xl pl-2 pr-8 py-2 font-mono text-[12px] font-medium text-offwhite shadow-[0_20px_50px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.1)] hover:shadow-[0_20px_60px_rgba(201,125,53,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] transition-all duration-500 hover:border-warm/50 hover:scale-[1.02] group spring-press"
+        className="project-chat-trigger fixed z-50 inset-x-0 mx-auto w-fit bottom-[max(1.5rem,env(safe-area-inset-bottom))] flex min-h-[52px] items-center gap-4 rounded-full border border-white/10 bg-charcoal/80 backdrop-blur-xl pl-2 pr-8 py-2 font-mono text-[12px] font-medium text-offwhite shadow-[0_20px_50px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.1)] hover:shadow-[0_20px_60px_rgba(201,125,53,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] transition-all duration-500 hover:border-warm/50 hover:scale-[1.02] group spring-press"
       >
         {/* Scan-line texture on hover */}
         <span

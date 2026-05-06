@@ -8,7 +8,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useTheme } from "@/hooks/ThemeContext";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X, Sun, Moon, FolderGit2, Cpu, User, Mail } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -67,17 +67,19 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [reduced, mobileMenuOpen]);
 
-  /* Lock body scroll when menu open */
+  /* Lock body scroll when menu open + hide chat */
   useEffect(() => {
     if (mobileMenuOpen) {
       const scrollY = window.scrollY;
       document.body.style.position = "fixed";
       document.body.style.top = `-${scrollY}px`;
       document.body.style.width = "100%";
+      document.body.setAttribute("data-mobile-menu-open", "");
       return () => {
         document.body.style.position = "";
         document.body.style.top = "";
         document.body.style.width = "";
+        document.body.removeAttribute("data-mobile-menu-open");
         window.scrollTo(0, scrollY);
       };
     }
@@ -124,12 +126,13 @@ export default function Navbar() {
       } else {
         gsap.fromTo(
           items,
-          { opacity: 0, y: 30 },
+          { opacity: 0, y: 30, rotateX: -20, transformPerspective: 800 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.4,
-            stagger: 0.07,
+            rotateX: 0,
+            duration: 0.5,
+            stagger: 0.08,
             ease: "power3.out",
             delay: 0.15,
             onComplete: () => setIsAnimating(false),
@@ -157,7 +160,8 @@ export default function Navbar() {
         gsap.to(items, {
           opacity: 0,
           y: -15,
-          duration: 0.2,
+          rotateX: 10,
+          duration: 0.25,
           stagger: 0.03,
           ease: "power2.in",
         });
@@ -347,32 +351,54 @@ export default function Navbar() {
           >
             <div className="h-full flex flex-col px-6 pb-8">
               {/* Nav items */}
-              <ul ref={menuItemsRef} className="flex-1 flex flex-col justify-center gap-1">
+              <ul ref={menuItemsRef} className="flex-1 flex flex-col justify-center gap-3">
                 {navItems.map((item, i) => {
                   const active = isActive(item.href);
+                  const Icon = [FolderGit2, Cpu, User, Mail][i];
+                  const subtitle = [
+                    { en: "Systems & case studies", es: "Sistemas y casos de estudio" },
+                    { en: "Architecture & scale", es: "Arquitectura y escala" },
+                    { en: "Background & philosophy", es: "Trayectoria y filosofía" },
+                    { en: "Let's work together", es: "Trabajemos juntos" },
+                  ][i];
                   return (
                     <li key={item.href} className="w-full">
                       <Link
                         href={item.href}
                         onClick={() => setMobileMenuOpen(false)}
                         tabIndex={mobileMenuOpen ? 0 : -1}
-                        className={`group flex min-h-[56px] w-full items-center justify-between font-sans text-sm font-bold tracking-[0.2em] uppercase py-3 px-4 rounded-xl transition-all duration-300 ${
-                          active
-                            ? "text-[var(--text-primary)] bg-[var(--bg-secondary)]/90"
-                            : "text-[var(--text-primary)]/70 hover:text-[var(--text-primary)] hover:bg-[var(--bg-primary)]/5"
-                        }`}
+                        className="group relative flex min-h-[72px] w-full items-center gap-4 overflow-hidden rounded-2xl border border-[var(--border-color)] backdrop-blur-sm bg-[var(--bg-secondary)]/30 hover:bg-[var(--bg-secondary)]/50 transition-all duration-300 hover:translate-x-1"
                       >
-                        <span className="flex items-center gap-3">
-                          <span
-                            className="font-mono text-[10px] tracking-widest opacity-30"
-                          >
-                            0{i + 1}
-                          </span>
-                          {item.label}
+                        {/* Watermark number */}
+                        <span
+                          className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 select-none font-serif text-6xl font-medium opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-300"
+                        >
+                          0{i + 1}
                         </span>
-                        {active && (
-                          <span className="block w-2 h-2 rounded-full bg-[var(--text-primary)]/40" />
-                        )}
+
+                        {/* Icon circle */}
+                        <div
+                          className={`relative ml-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-colors duration-300 ${
+                            active
+                              ? "border-warm/30 bg-warm/10"
+                              : "border-[var(--border-color)] bg-[var(--bg-primary)]/40"
+                          }`}
+                        >
+                          <Icon className="h-[18px] w-[18px]" />
+                          {active && (
+                            <span className="absolute inset-[-2px] rounded-full ring-2 ring-warm/25 animate-pulse" />
+                          )}
+                        </div>
+
+                        {/* Label + subtitle */}
+                        <div className="relative z-10 flex flex-col py-3 pr-4">
+                          <span className="font-sans text-base font-bold tracking-[0.15em] uppercase">
+                            {item.label}
+                          </span>
+                          <span className="font-mono text-[10px] tracking-wider opacity-40">
+                            {language === "en" ? subtitle.en : subtitle.es}
+                          </span>
+                        </div>
                       </Link>
                     </li>
                   );
