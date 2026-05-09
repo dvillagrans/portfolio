@@ -129,7 +129,7 @@ export default function TimeUpCaseStudy() {
   }, []);
 
   useEffect(() => {
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
       const elements = gsap.utils.toArray(".reveal-fade");
       if (reduced) {
         elements.forEach((el: any) => {

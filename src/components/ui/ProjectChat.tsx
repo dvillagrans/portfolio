@@ -94,7 +94,7 @@ export function ProjectChat({ context }: { context?: string }) {
     }
 
     let promptIdx = 0;
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
       // Blinking cursor
       gsap.to(cursor, {
         opacity: 0,
