@@ -6,14 +6,41 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useVizReveal } from "@/hooks/useVizReveal";
-import EyeNetCard from "../ui/EyeNetCard";
-import { VizContainer } from "../portfolio/viz/VizContainer";
-import { CovidClusterViz } from "../portfolio/viz/CovidClusterViz";
-import { NYCFareViz } from "../portfolio/viz/NYCFareViz";
-import { IndiaAQIViz } from "../portfolio/viz/IndiaAQIViz";
+
+// Lazy-load heavy viz components (D3, Chart.js) — only loaded when scrolled into view
+const EyeNetCard = dynamic(() => import("../ui/EyeNetCard"), { ssr: false });
+const VizContainer = dynamic(
+  () =>
+    import("../portfolio/viz/VizContainer").then((m) => ({
+      default: m.VizContainer,
+    })),
+  { ssr: false }
+);
+const CovidClusterViz = dynamic(
+  () =>
+    import("../portfolio/viz/CovidClusterViz").then((m) => ({
+      default: m.CovidClusterViz,
+    })),
+  { ssr: false }
+);
+const NYCFareViz = dynamic(
+  () =>
+    import("../portfolio/viz/NYCFareViz").then((m) => ({
+      default: m.NYCFareViz,
+    })),
+  { ssr: false }
+);
+const IndiaAQIViz = dynamic(
+  () =>
+    import("../portfolio/viz/IndiaAQIViz").then((m) => ({
+      default: m.IndiaAQIViz,
+    })),
+  { ssr: false }
+);
 
 gsap.registerPlugin(ScrollTrigger);
 
