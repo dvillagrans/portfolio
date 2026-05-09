@@ -115,6 +115,11 @@ src/
 
 Deployed on [Vercel](https://vercel.com). Push to `main` for automatic deployment.
 
+> **Production checklist:**
+> 1. Verify your domain in [Resend](https://resend.com/domains) and update `from` in `src/app/api/contact/route.ts` from `onboarding@resend.dev` to your verified domain (e.g. `contacto@dvillagrans.dev`)
+> 2. Set `RESEND_API` and `DEEPSEEK_API_KEY` in Vercel Environment Variables
+> 3. The OG image is generated dynamically at `/og` — no static asset needed
+
 ```bash
 npm run build
 ```

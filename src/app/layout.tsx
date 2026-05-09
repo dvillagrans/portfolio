@@ -64,11 +64,9 @@ export const metadata: Metadata = {
     title: "Diego Villagran | AI & Data Engineer · ML Systems Builder",
     description:
       "Senior AI & Data Engineer building production ML pipelines, LLM automation, and scalable infrastructure.",
-    // TODO: Consider a designed OG image (1200×630) with name + title + branding
-    // For now using profile photo which works but isn't optimal for social sharing
     images: [
       {
-        url: "/img/optimized/me-1200.webp",
+        url: "/og",
         width: 1200,
         height: 630,
         alt: "Diego Villagran — AI & Data Engineer",
