@@ -505,7 +505,7 @@ export default function Philosophy() {
     return () => ctx.revert();
   }, [reduced]);
 
-  const quote = t.philosophy.quote.replace(/[\'"]/g, "");
+  const quote = t.philosophy.quote.replace(/['"]/g, "");
 
   return (
     <section

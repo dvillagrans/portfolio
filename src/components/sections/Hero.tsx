@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ArrowDownToLine } from "lucide-react";
+import Link from "next/link";
 import ParallaxLayer from "@/components/ui/ParallaxLayer";
 
 export default function Hero() {
@@ -192,13 +193,13 @@ export default function Hero() {
           className="mt-10 md:mt-16 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3"
           style={{ opacity: reduced ? 1 : 0 }}
         >
-          <a
+          <Link
             href="/#projects"
             className="group inline-flex items-center justify-center sm:justify-start w-full sm:w-auto min-h-[44px] gap-3 border border-offwhite/20 px-6 py-4 md:px-8 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-offwhite transition-all hover:bg-offwhite hover:text-charcoal spring-press"
           >
             {t.hero.cta}
             <div className="h-[2px] w-4 bg-warm transition-all group-hover:w-8 group-hover:bg-charcoal" />
-          </a>
+          </Link>
           <a
             href="/resume/resume-banca.pdf"
             download

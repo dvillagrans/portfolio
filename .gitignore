@@ -36,6 +36,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -51,6 +52,14 @@ assets/resume/*.out
 assets/resume/*.fls
 assets/resume/*.fdb_latexmk
 assets/resume/*.synctex.gz
+
+# LaTeX auxiliary files (in docs)
+docs/resume/*.aux
+docs/resume/*.log
+docs/resume/*.out
+docs/resume/*.fls
+docs/resume/*.fdb_latexmk
+docs/resume/*.synctex.gz
 
 # Output logs
 .output.log

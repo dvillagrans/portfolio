@@ -4,6 +4,14 @@ import { rateLimit, getRequestIdentifier } from '@/lib/rate-limit';
 
 const resend = new Resend(process.env.RESEND_API);
 
+// Resend sender — verified domain required in production
+const RESEND_FROM =
+  process.env.RESEND_FROM || "Portfolio Contact <onboarding@resend.dev>";
+
+// Destination email for contact form submissions
+const CONTACT_EMAIL =
+  process.env.CONTACT_EMAIL || "dvillagrans11@gmail.com";
+
 // Contact rate limit: 3 requests per hour per IP
 const CONTACT_RATE_LIMIT = 3;
 const CONTACT_WINDOW_MS = 60 * 60 * 1000;
@@ -105,9 +113,8 @@ export async function POST(req: Request) {
     `;
 
     const { data, error } = await resend.emails.send({
-      // TODO: Verify domain in Resend and change to contacto@dvillagrans.dev for production
-      from: 'Portfolio Contact <onboarding@resend.dev>', // Resend's test domain for default use, adjust if domain is verified
-      to: ['dvillagrans11@gmail.com'], // Deliver straight to the user's verified resend email
+      from: RESEND_FROM,
+      to: [CONTACT_EMAIL],
       subject: `New Session Request from ${name}`,
       html: htmlTemplate,
       replyTo: email,
