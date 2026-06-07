@@ -46,7 +46,7 @@ export default function CvBuilderPage() {
     if (state.status === "success" && resultRef.current) {
       resultRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }, [state]);
+  }, [state.status]);
 
   const isInputValid = jd.trim().length >= 10 && jd.length <= 10_000;
 
