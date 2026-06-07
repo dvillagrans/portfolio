@@ -87,6 +87,55 @@ export const DATA = {
 
   projects: [
     {
+      title: "Bouquet — Hospitality OS",
+      caseStudy: true,
+      href: "https://bouquet-psi.vercel.app/",
+      dates: "Jan 2026 – Dec 2026",
+      active: true,
+      role: "Full-Stack Architect · Thesis Project (ESCOM-IPN 2026-B142)",
+      badges: ["Thesis", "Multi-tenant SaaS", "Production-ready", "Team of 2"],
+      metrics: [
+        { value: "52", label: "KPIs across 3 roles" },
+        { value: "3", label: "Role-based dashboards" },
+        { value: "<30s", label: "Data refresh latency" }
+      ],
+      features: [
+        { name: "Architecture", value: "Multi-tenant: Chain → Zone → Restaurant with RLS" },
+        { name: "Analytics", value: "Apache Spark pipeline with Gold tables + 52 operational KPIs" },
+        { name: "Guest Experience", value: "QR menu, real-time orders, split-bill, digital receipt" }
+      ],
+      description: "Full-stack Hospitality OS for restaurant chain management. Multi-tenant architecture with role-based dashboards (Super Admin, Zone Manager, Branch Manager), real-time order tracking, Apache Spark analytics pipeline, and guest-facing QR menu with digital payments. Thesis project at ESCOM-IPN.",
+      technologies: [
+        "Next.js 16",
+        "React 19",
+        "TypeScript",
+        "PostgreSQL",
+        "Prisma 7",
+        "Supabase",
+        "Apache Spark",
+        "Tailwind CSS 4",
+        "shadcn/ui",
+        "Recharts",
+        "GSAP",
+        "Framer Motion",
+        "Docker",
+        "Vercel",
+        "Zod",
+        "Vercel AI SDK",
+        "DeepSeek",
+        "OpenAI"
+      ],
+      links: [
+        {
+          type: "Landing",
+          href: "https://bouquet-psi.vercel.app/",
+          icon: <Icons.globe className="size-3" />
+        }
+      ],
+      image: { src: "/img/bouquet.webp" },
+      video: ""
+    },
+    {
       title: "TimeUp",
       caseStudy: true,
       href: "/projects/timeup",
