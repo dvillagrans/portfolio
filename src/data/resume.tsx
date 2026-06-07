@@ -89,7 +89,7 @@ export const DATA = {
     {
       title: "Bouquet — Hospitality OS",
       caseStudy: true,
-      href: "https://bouquet-psi.vercel.app/",
+      href: "/projects/bouquet",
       dates: "Jan 2026 – Dec 2026",
       active: true,
       role: "Full-Stack Architect · Thesis Project (ESCOM-IPN 2026-B142)",
