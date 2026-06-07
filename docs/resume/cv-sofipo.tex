@@ -1,0 +1,212 @@
+\documentclass[9.5pt, letterpaper]{article}
+
+\usepackage[
+  top=0.5cm, bottom=0.5cm,
+  left=1.2cm, right=1.2cm
+]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{parskip}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{multicol}
+
+% --- Colores ---
+\definecolor{primary}{HTML}{1A1E24}
+\definecolor{accent}{HTML}{E53935}
+\definecolor{textdark}{HTML}{222222}
+\definecolor{textlight}{HTML}{555555}
+\definecolor{closed}{HTML}{2E7D32}
+
+\hypersetup{colorlinks=true, urlcolor=accent, linkcolor=accent}
+
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{helvet}
+\linespread{0.9}
+
+\pagestyle{empty}
+
+% --- Secciones compactas ---
+\titleformat{\section}
+  {\normalsize\bfseries\color{primary}}
+  {}{0em}{\MakeUppercase}
+  [\vspace{-4pt}\color{accent}\rule{\linewidth}{1pt}\vspace{2pt}]
+\titlespacing{\section}{0pt}{3pt}{1pt}
+
+% --- Listas compactas ---
+\setlist[itemize]{
+  leftmargin=1.1em,
+  itemsep=0pt,
+  topsep=1pt,
+  parsep=0pt,
+  partopsep=0pt,
+  label=\color{accent}\tiny\faAngleRight
+}
+
+% --- Macros ---
+\newcommand{\entryheader}[4]{%
+  \noindent
+  \begin{tabularx}{\linewidth}{@{}X r@{}}
+    {\normalsize\bfseries\color{primary} #1} & {\small\bfseries\color{accent} #2} \\[-1pt]
+    {\small\color{textdark}\textit{#3}} & {\footnotesize\color{textlight} #4}
+  \end{tabularx}
+  \vspace{1pt}
+}
+
+\newcommand{\entryheaderclosed}[5]{%
+  \noindent
+  \begin{tabularx}{\linewidth}{@{}X r@{}}
+    {\normalsize\bfseries\color{primary} #1}\enspace{\footnotesize\color{closed}\textbf{#5}} & {\small\bfseries\color{accent} #2} \\[-1pt]
+    {\small\color{textdark}\textit{#3}} & {\footnotesize\color{textlight} #4}
+  \end{tabularx}
+  \vspace{1pt}
+}
+
+\newcommand{\projectentry}[3]{%
+  \noindent
+  \begin{tabularx}{\linewidth}{@{}X r@{}}
+    {\normalsize\bfseries\color{primary} #1} & {\small\bfseries\color{accent} #2}
+  \end{tabularx}
+  \vspace{-1pt}
+  {\small\color{textlight}\textit{#3}}\vspace{2pt}
+}
+
+% =============================================================
+\begin{document}
+\enlargethispage{3.5cm}
+% =============================================================
+
+% --- HEADER ---
+\begin{tikzpicture}[remember picture,overlay]
+  \node[rectangle, fill=primary, anchor=north,
+        minimum width=\paperwidth, minimum height=2.2cm]
+    at (current page.north){};
+  \node[anchor=center, text=white]
+    at ([yshift=-0.8cm]current page.north)
+    {\large\bfseries DIEGO VILLAGRAN SALAZAR};
+  \node[anchor=center, text=white]
+    at ([yshift=-1.55cm]current page.north){
+      \footnotesize
+      \faEnvelope\
+      \href{mailto:diegovillasal@gmail.com}{\color{white}diegovillasal@gmail.com}
+      \enspace\textbar\enspace
+      \faPhone\ \color{white}+52 55 7207 1183
+      \enspace\textbar\enspace
+      \faGlobe\
+      \href{https://dvillagrans.dev}{\color{white}dvillagrans.dev}
+      \enspace\textbar\enspace
+      \faMapMarker*\ \color{white}Ciudad de M\'exico
+    };
+\end{tikzpicture}
+\vspace{1.6cm}
+
+% --- RESUMEN ---
+{\small\color{textdark}
+Estudiante de Ciencia de Datos (ESCOM-IPN, egreso feb.\ 2027) con experiencia en producci\'on
+construyendo pipelines de ML, automatizaci\'on con IA e infraestructura de datos escalable.
+Concluida pasant\'ia en EyeNet \href{https://dvillagrans.dev/projects/eyenet}{\color{accent}\faExternalLink*} (abr.\ 2025\,--\,may.\ 2026): cl\'uster GPU privado para LLMs
+open-source y automatizaci\'on documental. Experiencia en estad\'istica, clustering y modelos
+predictivos sobre datos de gran escala con impacto en decisiones de negocio.
+}
+
+% --- EDUCACI\'ON ---
+\section{Educaci\'on}
+\entryheader
+  {Lic. en Ciencia de Datos}
+  {2022 -- Feb.\ 2027}
+  {Escuela Superior de C\'omputo (ESCOM-IPN)}
+  {Ciudad de M\'exico}
+\begin{itemize}
+  \item Promedio: 8.5/10.0 \textbullet\ 45+ cr\'editos avanzados \textbullet\ ML, Modelado Estad\'istico, Big Data, Bases de Datos, Python
+\end{itemize}
+
+% --- EXPERIENCIA ---
+\section{Experiencia Profesional}
+
+\entryheader
+  {Pasante de IA \& Automatizaci\'on}
+  {Abr.\ 2025 -- May.\ 2026}
+  {EyeNet \href{https://dvillagrans.dev/projects/eyenet}{\color{accent}\faExternalLink*}}
+  {Remoto}
+\begin{itemize}
+  \item Pipelines de procesamiento documental (Python + n8n): 65\% menos trabajo manual, 300+ docs/semana
+  \item Integraci\'on APIs OpenAI/Gemini para extracci\'on autom\'atica: 92\% de precisi\'on, 200+ docs/d\'ia
+  \item Arquitectura de microservicios (Docker, PostgreSQL, Redis): 10K+ solicitudes/d\'ia, escalabilidad y 99.5\% uptime
+  \item Cl\'uster GPU privado: despliegue y evaluaci\'on de LLMs open-source (LLaMA, Mistral) vs.\ APIs propietarias
+\end{itemize}
+
+% --- PROYECTOS ---
+\section{Proyectos Relevantes}
+
+\projectentry{Perfiles de Riesgo COVID-19 --- M\'exico \href{https://dvillagrans.dev/projects/covid-perfiles}{\color{accent}\faExternalLink*}}{2024}
+  {Ciencia de Datos \textbullet\ Clustering \textbullet\ Salud P\'ublica}
+\begin{itemize}
+  \item K-Means + Fuzzy C-Means sobre muestras estratificadas de 30M+ registros SSA: 9 perfiles multivariados.
+  \item Limpieza y preprocesamiento masivo: manejo de datos faltantes, normalizaci\'on y reducci\'on de dimensionalidad (PCA).
+  \item Pipeline end-to-end con dashboard interactivo: an\'alogo a la l\'ogica de segmentaci\'on de riesgo y fraude.
+\end{itemize}
+
+\projectentry{Dashboard de Anal\'itica --- NYC Ride-Hailing \href{https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/}{\color{accent}\faExternalLink*}}{2024}
+  {ML Predictivo \textbullet\ Streamlit \textbullet\ Estad\'istica Aplicada}
+\begin{itemize}
+  \item Predicci\'on de tarifas ($R^2 > 0.85$) y clasificador de aeropuertos (92\% precisi\'on) sobre datos masivos de TLC NYC.
+  \item Ingenier\'ia de caracter\'isticas: variables temporales, geoespaciales y detecci\'on de valores at\'ipicos en precios.
+  \item Despliegue de dashboard interactivo en Streamlit con visualizaciones geoespaciales para soporte a decisiones.
+\end{itemize}
+
+\projectentry{Sistema ETL de Calidad del Aire --- India \href{https://aqi-india.dvillagrans.dev}{\color{accent}\faExternalLink*}}{2024}
+  {Ingenier\'ia de Datos \textbullet\ Azure Databricks \textbullet\ PySpark}
+\begin{itemize}
+  \item ETL en Azure Databricks: 2M+ registros/d\'ia de 500+ sensores IoT procesados de forma distribuida con PySpark.
+  \item Arquitectura de datos: dise\~no de esquemas optimizados para consultas anal\'iticas y almacenamiento eficiente.
+  \item Automatizaci\'on de flujos de trabajo y generaci\'on de reportes BI para monitoreo ambiental continuo.
+\end{itemize}
+
+% --- HABILIDADES ---
+\section{Habilidades T\'ecnicas}
+{\small
+\noindent
+\begin{tabularx}{\linewidth}{@{} p{3.5cm} X @{}}
+{\color{primary}Ciencia de Datos \& IA} & Python, SQL, Scikit-learn, TensorFlow, XGBoost, Clustering, NLP, LLMs (OpenAI, LLaMA) \\
+{\color{primary}Ingenier\'ia \& Cloud}  & PySpark, Databricks, BigQuery, Azure, AWS, Docker, Kubernetes, CI/CD, ETL/ELT \\
+{\color{primary}Herramientas \& BI}     & PostgreSQL, Redis, Power BI, Streamlit, Git, Bash, Pruebas A/B \textbullet\ Ingl\'es B2 \\
+\end{tabularx}
+}
+
+% --- CERTIFICACIONES & OBJETIVO (2 columnas) ---
+\vspace{-2pt}
+\begin{minipage}[t]{0.46\textwidth}
+\section{Certificaciones}
+{\footnotesize
+\begin{multicols}{2}
+\begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=0pt, parsep=0pt]
+  \item \href{https://dvillagrans.dev/about#google-cloud}{Google Cloud \color{accent}\faExternalLink*}
+  \item \href{https://dvillagrans.dev/about#udemy-docker}{Docker --- Udemy \color{accent}\faExternalLink*}
+  \item \href{https://dvillagrans.dev/about#coursera-docker}{Docker --- Coursera \color{accent}\faExternalLink*}
+  \item \href{https://dvillagrans.dev/about#oracle-db}{Oracle DB \color{accent}\faExternalLink*}
+  \item \href{https://dvillagrans.dev/about#github-actions}{GitHub Actions \color{accent}\faExternalLink*}
+  \item \href{https://dvillagrans.dev/about#aws-deeplearning}{Especializaci\'on \color{accent}\faExternalLink*}
+\end{itemize}
+\end{multicols}
+}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.50\textwidth}
+\section{Objetivo Profesional}
+{\small\color{textdark}
+Mi experiencia en clustering sobre 30M+ registros y modelado estad\'istico
+conecta con los desaf\'ios del sector financiero y la inclusi\'on financiera:
+identificar patrones, anomal\'ias y oportunidades en grandes vol\'umenes
+de datos. Busco aplicar este rigor anal\'itico en una instituci\'on financiera con foco en inclusi\'on y crecimiento responsable.
+}
+\end{minipage}
+
+\end{document}

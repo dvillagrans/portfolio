@@ -71,6 +71,13 @@ html.no-transition * {
   --color-timeup-bg: #020406;
   --color-timeup-card: #1A1A1A;
 
+  /* ─── Case Study: Bouquet — rose/burgundy/sage palette ─── */
+  --color-bouquet-rose: #E8A0BF;
+  --color-bouquet-burgundy: #8B2252;
+  --color-bouquet-sage: #8FBC8F;
+  --color-bouquet-bg: #0A0608;
+  --color-bouquet-card: #1A1218;
+
   --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-serif: var(--font-eb-garamond), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;

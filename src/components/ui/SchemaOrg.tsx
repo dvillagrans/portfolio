@@ -95,6 +95,31 @@ export function TimeUpProjectSchema() {
   );
 }
 
+export function BouquetProjectSchema() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Bouquet — Hospitality OS",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    description:
+      "Full-stack multi-tenant platform for restaurant chain management with role-based dashboards, Apache Spark analytics, and guest-facing QR ordering.",
+    url: "https://www.dvillagrans.dev/projects/bouquet",
+    author: {
+      "@type": "Person",
+      name: "Diego Villagran Salazar",
+    },
+  };
+
+  return (
+    <Script
+      id="schema-bouquet"
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
 export function WebSiteSchema() {
   const jsonLd = {
     "@context": "https://schema.org",

@@ -416,6 +416,65 @@ export interface CovidDict {
   footer: CaseStudyFooter;
 }
 
+/* ─── Bouquet ─── */
+
+export interface BouquetTldr {
+  challenge: TldrCard;
+  solution: TldrCard & { cyan: string; text3: string };
+  impact: TldrCard & { bold: string };
+}
+
+export interface BouquetLinks {
+  landing: string;
+}
+
+export interface BouquetDashboards {
+  title1: string;
+  title2: string;
+  superAdmin: { tag: string; desc: string };
+  zoneManager: { tag: string; desc: string };
+  branchManager: { tag: string; desc: string };
+}
+
+export interface BouquetArchitecture {
+  title1: string;
+  title2: string;
+  d1: ArchitectureDecision;
+  d2: ArchitectureDecision;
+  d3: ArchitectureDecision;
+}
+
+export interface BouquetLessons {
+  title1: string;
+  title2: string;
+  desc: string;
+  l1: LessonItem;
+  l2: LessonItem;
+  l3: LessonItem;
+}
+
+export interface BouquetDict {
+  back: string;
+  subtitle: string;
+  tldr: BouquetTldr;
+  meta: MetaItem[];
+  links: BouquetLinks;
+  quote: QuoteBlock;
+  constraints: {
+    title1: string;
+    title2: string;
+    desc: string;
+    c1: ConstraintItem;
+    c2: ConstraintItem;
+    c3: ConstraintItem;
+    c4: ConstraintItem;
+  };
+  dashboards: BouquetDashboards;
+  architecture: BouquetArchitecture;
+  lessons: BouquetLessons;
+  footer: CaseStudyFooter;
+}
+
 /* ─── CV Builder ─── */
 
 export interface CvBuilderDict {
@@ -453,6 +512,7 @@ export interface LanguageDict {
   timeup: TimeUpDict;
   eyenet: EyeNetDict;
   covidPerfiles: CovidDict;
+  bouquet: BouquetDict;
   cvBuilder: CvBuilderDict;
 }
 
