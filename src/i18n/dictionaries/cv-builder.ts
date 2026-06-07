@@ -1,0 +1,41 @@
+import type { CvBuilderDict } from "../types";
+
+export const cvBuilderEn = {
+  title: "CV Builder",
+  subtitle: "Generate a tailored CV from any job description using AI.",
+  inputLabel: "Job Description",
+  inputPlaceholder: "Paste a job description here... (minimum 10 characters)",
+  generateButton: "Generate CV",
+  generating: "Generating your CV...",
+  copyButton: "Copy Markdown",
+  copied: "Copied!",
+  generateAgain: "Generate Again",
+  back: "Back",
+  errorRateLimit: "Too many requests. Please try again in {seconds}s.",
+  errorGeneric: "Something went wrong. Please try again.",
+  errorEmpty: "Please enter a job description (minimum 10 characters).",
+  errorTooLong: "Job description too long — please shorten to 10,000 characters.",
+  poweredBy: "Powered by DeepSeek",
+  charCount: "{current}/{max} characters",
+  retryAfter: "Try again in {seconds}s",
+} satisfies CvBuilderDict;
+
+export const cvBuilderEs = {
+  title: "Constructor de CV",
+  subtitle: "Genera un CV personalizado a partir de cualquier descripci\u00f3n de puesto usando IA.",
+  inputLabel: "Descripci\u00f3n del Puesto",
+  inputPlaceholder: "Pega aqu\u00ed la descripci\u00f3n del puesto... (m\u00ednimo 10 caracteres)",
+  generateButton: "Generar CV",
+  generating: "Generando tu CV...",
+  copyButton: "Copiar Markdown",
+  copied: "\u00a1Copiado!",
+  generateAgain: "Generar de Nuevo",
+  back: "Volver",
+  errorRateLimit: "Demasiadas solicitudes. Intenta de nuevo en {seconds}s.",
+  errorGeneric: "Algo sali\u00f3 mal. Por favor, intenta de nuevo.",
+  errorEmpty: "Ingresa una descripci\u00f3n del puesto (m\u00ednimo 10 caracteres).",
+  errorTooLong: "Descripci\u00f3n demasiado larga \u2014 ac\u00f3rtala a 10,000 caracteres.",
+  poweredBy: "Desarrollado con DeepSeek",
+  charCount: "{current}/{max} caracteres",
+  retryAfter: "Intenta de nuevo en {seconds}s",
+} satisfies CvBuilderDict;

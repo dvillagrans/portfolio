@@ -416,6 +416,28 @@ export interface CovidDict {
   footer: CaseStudyFooter;
 }
 
+/* ─── CV Builder ─── */
+
+export interface CvBuilderDict {
+  title: string;
+  subtitle: string;
+  inputLabel: string;
+  inputPlaceholder: string;
+  generateButton: string;
+  generating: string;
+  copyButton: string;
+  copied: string;
+  generateAgain: string;
+  back: string;
+  errorRateLimit: string;
+  errorGeneric: string;
+  errorEmpty: string;
+  errorTooLong: string;
+  poweredBy: string;
+  charCount: string;
+  retryAfter: string;
+}
+
 /* ─── Top-level Language dictionary ─── */
 
 export interface LanguageDict {
@@ -431,6 +453,7 @@ export interface LanguageDict {
   timeup: TimeUpDict;
   eyenet: EyeNetDict;
   covidPerfiles: CovidDict;
+  cvBuilder: CvBuilderDict;
 }
 
 /* ─── Shared dictionary (loaded into context) ─── */
