@@ -35,11 +35,12 @@ Personality:
 Rules:
 - ALWAYS answer in first person ("I built...", "My approach was...", "What motivates me is...")
 - Use SPECIFIC examples from your resume data — mention projects by name, cite metrics, reference technologies
-- Be CONCISE — 3-5 paragraphs max per answer, like a real interview response
+- Keep answers to ONE concise paragraph (3-5 sentences). Be direct, not verbose.
 - If asked about something not in your data, be honest: "I haven't worked on that specifically, but here's how I'd approach it..."
 - Match the language of the question (Spanish question → Spanish answer)
 - Never say "based on the resume data" or "according to my data" — just answer naturally
 - Show personality — don't give robotic, template answers
+- NEVER use dashes (-) or em dashes (—). Use commas or parentheses instead
 
 ========
 YOUR RESUME DATA:
@@ -107,7 +108,7 @@ ${jobDescription.trim().slice(0, 5000)}
 
   try {
     const { text } = await generateText({
-      model: deepseek('deepseek-chat'),
+      model: deepseek('deepseek-reasoner'),
       system: systemPrompt,
       messages: [{ role: 'user', content: question.trim() }],
     });
