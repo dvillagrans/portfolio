@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Link } from "next-view-transitions";
 import Navbar from "@/components/layout/Navbar";
-import { ArrowLeft, Copy, Check, RotateCcw, Sparkles, Printer } from "lucide-react";
+import { ArrowLeft, Copy, Check, RotateCcw, Sparkles, FileDown } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { cvBuilderEn, cvBuilderEs } from "@/i18n/dictionaries/cv-builder";
 import type { CvBuilderDict } from "@/i18n/types";
@@ -109,9 +109,26 @@ export default function CvBuilderPage() {
     }
   }, [state]);
 
-  const handlePrint = useCallback(() => {
-    window.print();
-  }, []);
+  const handleDownloadPdf = useCallback(async () => {
+    if (state.status !== "success") return;
+    try {
+      const { pdf } = await import("@react-pdf/renderer");
+      const { CvPdfDocument } = await import("@/components/ui/CvPdf");
+      const blob = await pdf(
+        <CvPdfDocument markdown={state.markdown} />
+      ).toBlob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "diego-villagran-cv.pdf";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+    }
+  }, [state]);
 
   const handleReset = useCallback(() => {
     setState({ status: "idle" });
@@ -287,7 +304,7 @@ export default function CvBuilderPage() {
               </button>
 
               <button
-                onClick={handlePrint}
+                onClick={handleDownloadPdf}
                 className="group inline-flex items-center justify-center gap-2 min-h-[44px] px-6 rounded-full font-sans text-xs font-bold uppercase tracking-widest transition-all spring-press border"
                 style={{
                   backgroundColor: "var(--card)",
@@ -295,7 +312,7 @@ export default function CvBuilderPage() {
                   color: "var(--text-secondary)",
                 }}
               >
-                <Printer className="h-4 w-4" />
+                <FileDown className="h-4 w-4" />
                 {dict.printButton}
               </button>
 
