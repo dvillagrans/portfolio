@@ -238,7 +238,17 @@ function stripMarkdown(text: string): string {
 
 export function CvPdfDocument({ markdown }: { markdown: string }) {
   const sections = parseMarkdown(markdown);
-  const nameSection = sections.find((s) => s.type === "name");
+
+  // Deduplicate sections by type — DeepBoost sometimes generates duplicates
+  const seenTypes = new Set<string>();
+  const uniqueSections = sections.filter((s) => {
+    if (s.type === "name") return true;
+    if (seenTypes.has(s.type)) return false;
+    seenTypes.add(s.type);
+    return true;
+  });
+
+  const nameSection = uniqueSections.find((s) => s.type === "name");
 
   // Split name from contact
   const rawName = nameSection?.content || "Diego Villagran Salazar";
@@ -337,7 +347,7 @@ export function CvPdfDocument({ markdown }: { markdown: string }) {
       <Page size="LETTER" style={styles.page}>
         <Text style={styles.name}>{stripMarkdown(name)}</Text>
         {contact && <Text style={styles.contactLine}>{contact}</Text>}
-        {sections.map((section, index) => renderSection(section, index))}
+        {uniqueSections.map((section, index) => renderSection(section, index))}
       </Page>
     </Document>
   );
