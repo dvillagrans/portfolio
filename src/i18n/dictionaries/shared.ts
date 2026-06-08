@@ -248,6 +248,14 @@ export const sharedEn = {
         ]
       },
       {
+        year: "2026",
+        title: "ARIA — Personal AI OS",
+        domain: "AI / PWA / RAG",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/ARIA" }
+        ]
+      },
+      {
         year: "2025",
         title: "EyeNet — AI & Automation Systems",
         domain: "AI / Automation",
@@ -539,6 +547,14 @@ export const sharedEs = {
         domain: "IA / Inteligencia Deportiva",
         links: [
           { label: "Repo", url: "https://github.com/dvillagrans/analisis-apuestas-futbol" }
+        ]
+      },
+      {
+        year: "2026",
+        title: "ARIA — Personal AI OS",
+        domain: "IA / PWA / RAG",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/ARIA" }
         ]
       },
       {

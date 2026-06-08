@@ -136,6 +136,52 @@ export const DATA = {
       video: ""
     },
     {
+      title: "ARIA — Personal AI OS",
+      href: "https://github.com/dvillagrans/ARIA",
+      dates: "2026",
+      active: true,
+      role: "Full-Stack Dev · AI-Powered Productivity System",
+      badges: ["PWA", "RAG", "Production-ready", "229 tests"],
+      metrics: [
+        { value: "7", label: "Chat intent types" },
+        { value: "4096", label: "dim embeddings (Qwen3)" },
+        { value: "229", label: "Backend tests" }
+      ],
+      features: [
+        { name: "AI Engine", value: "DeepSeek classifier + reasoner with parallel classify+embed via asyncio.gather" },
+        { name: "RAG Memory", value: "Semantic search over all captured data via pgvector, context-aware Q&A" },
+        { name: "Study Tools", value: "Plans, quizzes, flashcards, explanations from PDFs, arXiv, and HTML articles" }
+      ],
+      description: "Personal AI operating system built as a PWA. Captures tasks, notes, events, and reminders in natural language, classifies automatically, and surfaces what matters via daily briefings. RAG over full knowledge base with 4096-dim embeddings. Study assistant with plans, quizzes, and flashcards. Connectors for GitHub, Gmail, and Google Calendar. Observable via Prometheus + Grafana.",
+      technologies: [
+        "Next.js 16",
+        "React 19",
+        "TypeScript",
+        "FastAPI",
+        "Python",
+        "Supabase",
+        "PostgreSQL",
+        "pgvector",
+        "DeepSeek",
+        "Qwen3 Embeddings",
+        "OpenRouter",
+        "Docker",
+        "Prometheus",
+        "Grafana",
+        "Tailwind CSS 4",
+        "PWA"
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/ARIA",
+          icon: <Icons.github className="size-3" />
+        }
+      ],
+      image: { src: "/img/aria.webp" },
+      video: ""
+    },
+    {
       title: "Sports Analytics Platform",
       href: "https://github.com/dvillagrans/analisis-apuestas-futbol",
       dates: "May 2026",
