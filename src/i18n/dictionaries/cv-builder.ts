@@ -19,6 +19,12 @@ export const cvBuilderEn = {
   poweredBy: "Powered by DeepSeek",
   charCount: "{current}/{max} characters",
   retryAfter: "Try again in {seconds}s",
+  interviewTitle: "Interview Prep",
+  interviewSubtitle: "Practice answering interview questions as yourself. If you generated a CV above, answers will be tailored to that job description.",
+  interviewPlaceholder: "Ask an interview question... e.g. \"What motivates you to work in Healthtech?\"",
+  interviewSend: "Ask",
+  interviewThinking: "Thinking...",
+  interviewPoweredBy: "Answers powered by DeepSeek",
 } satisfies CvBuilderDict;
 
 export const cvBuilderEs = {
@@ -40,4 +46,10 @@ export const cvBuilderEs = {
   poweredBy: "Desarrollado con DeepSeek",
   charCount: "{current}/{max} caracteres",
   retryAfter: "Intenta de nuevo en {seconds}s",
+  interviewTitle: "Preparación de Entrevista",
+  interviewSubtitle: "Practica respondiendo preguntas de entrevista como tú mismo. Si generaste un CV arriba, las respuestas se adaptarán a esa vacante.",
+  interviewPlaceholder: "Haz una pregunta de entrevista... ej. \"¿Qué te motiva a trabajar en Healthtech?\"",
+  interviewSend: "Preguntar",
+  interviewThinking: "Pensando...",
+  interviewPoweredBy: "Respuestas con DeepSeek",
 } satisfies CvBuilderDict;

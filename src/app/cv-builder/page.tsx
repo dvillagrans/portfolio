@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Link } from "next-view-transitions";
 import Navbar from "@/components/layout/Navbar";
-import { ArrowLeft, Copy, Check, RotateCcw, Sparkles, FileDown } from "lucide-react";
+import { ArrowLeft, Copy, Check, RotateCcw, Sparkles, FileDown, Send, User, Bot } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { cvBuilderEn, cvBuilderEs } from "@/i18n/dictionaries/cv-builder";
 import type { CvBuilderDict } from "@/i18n/types";
@@ -136,6 +136,52 @@ export default function CvBuilderPage() {
     setCountdown(0);
     setCopied(false);
   }, []);
+
+  // Interview prep state
+  type InterviewMessage = { role: "user" | "assistant"; content: string };
+  const [interviewMessages, setInterviewMessages] = useState<InterviewMessage[]>([]);
+  const [interviewInput, setInterviewInput] = useState("");
+  const [interviewLoading, setInterviewLoading] = useState(false);
+  const interviewEndRef = useRef<HTMLDivElement>(null);
+
+  const handleInterviewAsk = useCallback(async () => {
+    const q = interviewInput.trim();
+    if (!q || interviewLoading) return;
+
+    setInterviewMessages((prev) => [...prev, { role: "user", content: q }]);
+    setInterviewInput("");
+    setInterviewLoading(true);
+
+    try {
+      // Pass the JD if one was used for CV generation
+      const jobDescription = jd.trim().length > 10 ? jd.trim() : undefined;
+      const res = await fetch("/api/cv-builder/interview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: q, jobDescription }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Failed to get response");
+      }
+
+      const data = await res.json();
+      setInterviewMessages((prev) => [...prev, { role: "assistant", content: data.answer }]);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : dict.errorGeneric;
+      setInterviewMessages((prev) => [...prev, { role: "assistant", content: `⚠ ${msg}` }]);
+    } finally {
+      setInterviewLoading(false);
+    }
+  }, [interviewInput, interviewLoading, jd, dict]);
+
+  // Scroll to bottom of interview chat
+  useEffect(() => {
+    if (interviewEndRef.current) {
+      interviewEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [interviewMessages]);
 
   const charCountText = dict.charCount
     .replace("{current}", String(jd.length))
@@ -415,6 +461,159 @@ export default function CvBuilderPage() {
             </p>
           </section>
         )}
+
+        {/* ── Interview Prep Section ── */}
+        <section className="mt-16 border-t pt-12" style={{ borderColor: "var(--border-color)" }}>
+          <h2
+            className="font-serif text-2xl md:text-3xl mb-2"
+            style={{ color: "var(--text-primary)" }}
+          >
+            {dict.interviewTitle}
+          </h2>
+          <p
+            className="font-sans text-sm mb-8 max-w-xl"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            {dict.interviewSubtitle}
+          </p>
+
+          {/* Chat messages */}
+          {interviewMessages.length > 0 && (
+            <div
+              className="rounded-2xl border mb-6 max-h-[50vh] overflow-y-auto"
+              style={{
+                backgroundColor: "var(--card)",
+                borderColor: "var(--border-color)",
+              }}
+            >
+              {interviewMessages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`flex gap-3 px-5 py-4 ${
+                    i > 0 ? "border-t" : ""
+                  }`}
+                  style={{ borderColor: "var(--border-color)" }}
+                >
+                  <div
+                    className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center mt-0.5"
+                    style={{
+                      backgroundColor:
+                        msg.role === "user"
+                          ? "rgba(37, 99, 235, 0.1)"
+                          : "rgba(34, 197, 94, 0.1)",
+                    }}
+                  >
+                    {msg.role === "user" ? (
+                      <User className="h-3.5 w-3.5" style={{ color: "#2563eb" }} />
+                    ) : (
+                      <Bot className="h-3.5 w-3.5" style={{ color: "#22c55e" }} />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <span
+                      className="font-mono text-[10px] uppercase tracking-widest block mb-1.5"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      {msg.role === "user"
+                        ? language === "es"
+                          ? "Tú"
+                          : "You"
+                        : "Diego"}
+                    </span>
+                    <div
+                      className="font-sans text-sm leading-relaxed"
+                      style={{ color: "var(--text-primary)" }}
+                    >
+                      <ReactMarkdown
+                        components={{
+                          p: ({ children }) => (
+                            <p className="mb-2 last:mb-0">{children}</p>
+                          ),
+                          strong: ({ children }) => (
+                            <strong className="font-bold">{children}</strong>
+                          ),
+                          ul: ({ children }) => (
+                            <ul className="list-disc pl-4 mb-2 space-y-1">{children}</ul>
+                          ),
+                          li: ({ children }) => <li>{children}</li>,
+                        }}
+                      >
+                        {msg.content}
+                      </ReactMarkdown>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {interviewLoading && (
+                <div
+                  className="flex gap-3 px-5 py-4 border-t"
+                  style={{ borderColor: "var(--border-color)" }}
+                >
+                  <div
+                    className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: "rgba(34, 197, 94, 0.1)" }}
+                  >
+                    <Bot className="h-3.5 w-3.5" style={{ color: "#22c55e" }} />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="h-3 w-3 animate-spin rounded-full border-2"
+                      style={{
+                        borderColor: "var(--border-color)",
+                        borderTopColor: "var(--text-primary)",
+                      }}
+                    />
+                    <span
+                      className="font-sans text-sm"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      {dict.interviewThinking}
+                    </span>
+                  </div>
+                </div>
+              )}
+              <div ref={interviewEndRef} />
+            </div>
+          )}
+
+          {/* Input */}
+          <div
+            className="flex gap-3 rounded-full border px-4 py-2"
+            style={{
+              backgroundColor: "var(--card)",
+              borderColor: "var(--border-color)",
+            }}
+          >
+            <input
+              type="text"
+              value={interviewInput}
+              onChange={(e) => setInterviewInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleInterviewAsk()}
+              placeholder={dict.interviewPlaceholder}
+              className="flex-1 bg-transparent outline-none font-sans text-sm min-h-[40px]"
+              style={{ color: "var(--text-primary)" }}
+              disabled={interviewLoading}
+            />
+            <button
+              onClick={handleInterviewAsk}
+              disabled={!interviewInput.trim() || interviewLoading}
+              className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all disabled:opacity-30"
+              style={{
+                backgroundColor: interviewInput.trim() ? "var(--text-primary)" : "transparent",
+                color: interviewInput.trim() ? "var(--bg-primary)" : "var(--text-muted)",
+              }}
+            >
+              <Send className="h-4 w-4" />
+            </button>
+          </div>
+
+          <p
+            className="mt-4 text-center font-mono text-[10px] uppercase tracking-widest"
+            style={{ color: "var(--text-muted)" }}
+          >
+            {dict.interviewPoweredBy}
+          </p>
+        </section>
       </div>
     </main>
   );

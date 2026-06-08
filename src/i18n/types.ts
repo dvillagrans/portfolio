@@ -499,6 +499,12 @@ export interface CvBuilderDict {
   poweredBy: string;
   charCount: string;
   retryAfter: string;
+  interviewTitle: string;
+  interviewSubtitle: string;
+  interviewPlaceholder: string;
+  interviewSend: string;
+  interviewThinking: string;
+  interviewPoweredBy: string;
 }
 
 /* ─── Top-level Language dictionary ─── */
