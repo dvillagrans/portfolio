@@ -87,6 +87,39 @@ export const DATA = {
 
   projects: [
     {
+      title: "Qalma — Personal Wellness Agent",
+      href: "",
+      dates: "2026",
+      active: true,
+      role: "AI Developer · Eyenet (Part-time)",
+      badges: ["AI Agent", "React Native", "EEG", "In Development"],
+      metrics: [
+        { value: "6", label: "Agent tools defined" },
+        { value: "4", label: "Development phases" },
+        { value: "3", label: "EEG data sources" }
+      ],
+      features: [
+        { name: "Agent Architecture", value: "Tools-based approach — agent requests data dynamically per turn instead of full context" },
+        { name: "EEG Integration", value: "Muse + Flowtime brainwave data with Apple HealthKit for holistic wellness tracking" },
+        { name: "Hypothesis-First", value: "Agent proposes interpretations, user validates — not the other way around" }
+      ],
+      description: "Personal wellness agent that accompanies users in self-discovery through EEG data, biometrics, and conversational AI. Unlike metric-first apps, Qalma proposes interpretations and the user validates them. Built with React Native, Supabase, Claude API, and EEG device integration (Muse, Flowtime).",
+      technologies: [
+        "React Native",
+        "Expo",
+        "Supabase",
+        "PostgreSQL",
+        "Claude API",
+        "Muse EEG",
+        "Flowtime EEG",
+        "Apple HealthKit",
+        "TypeScript"
+      ],
+      links: [],
+      image: { src: "/img/qalma.webp" },
+      video: ""
+    },
+    {
       title: "RAG Conversacional CIC",
       href: "",
       dates: "2026",

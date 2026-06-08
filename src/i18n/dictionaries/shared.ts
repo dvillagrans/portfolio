@@ -231,6 +231,18 @@ export const sharedEn = {
     projects: [
       {
         year: "2026",
+        title: "Qalma — Personal Wellness Agent",
+        domain: "AI / Wellness / React Native",
+        links: [],
+        description: "Personal wellness agent with EEG integration (Muse, Flowtime) and Apple HealthKit. Hypothesis-first approach — agent proposes, user validates.",
+        technologies: ["React Native", "Claude API", "Supabase", "EEG", "HealthKit"],
+        metrics: [
+          { value: "6", label: "Agent tools" },
+          { value: "4", label: "Phases" }
+        ]
+      },
+      {
+        year: "2026",
         title: "RAG Conversacional CIC",
         domain: "AI / Multi-Agent / RAG",
         links: [],
@@ -753,6 +765,18 @@ export const sharedEs = {
     headers: { year: "Año", project: "Proyecto", domain: "Dominio", link: "Enlace" },
     viewProject: "Visitar",
     projects: [
+      {
+        year: "2026",
+        title: "Qalma — Agente de Bienestar Personal",
+        domain: "IA / Wellness / React Native",
+        links: [],
+        description: "Agente de bienestar personal con integración EEG (Muse, Flowtime) y Apple HealthKit. Enfoque de hipótesis primero — el agente propone interpretaciones, el usuario valida.",
+        technologies: ["React Native", "Claude API", "Supabase", "EEG", "HealthKit"],
+        metrics: [
+          { value: "6", label: "Herramientas" },
+          { value: "4", label: "Fases" }
+        ]
+      },
       {
         year: "2026",
         title: "RAG Conversacional CIC",
