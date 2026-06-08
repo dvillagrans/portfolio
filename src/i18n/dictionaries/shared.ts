@@ -230,6 +230,18 @@ export const sharedEn = {
     viewProject: "Visit",
     projects: [
       {
+        year: "2025",
+        title: "InfraPilot — Network Infrastructure Manager",
+        domain: "Networking / NETCONF / 6WIND",
+        links: [],
+        description: "Web platform for managing 6WIND network devices. Real-time metrics via Telegraf + InfluxDB, BGP/CGNAT monitoring, and NETCONF-based configuration with checkpoints and rollback.",
+        technologies: ["React", "NETCONF", "InfluxDB", "Grafana", "PostgreSQL"],
+        metrics: [
+          { value: "5", label: "Dashboards" },
+          { value: "4", label: "CGNAT tabs" }
+        ]
+      },
+      {
         year: "2026",
         title: "Qalma — Personal Wellness Agent",
         domain: "AI / Wellness / React Native",
@@ -765,6 +777,18 @@ export const sharedEs = {
     headers: { year: "Año", project: "Proyecto", domain: "Dominio", link: "Enlace" },
     viewProject: "Visitar",
     projects: [
+      {
+        year: "2025",
+        title: "InfraPilot — Gestor de Infraestructura de Red",
+        domain: "Redes / NETCONF / 6WIND",
+        links: [],
+        description: "Plataforma web para gestión de dispositivos 6WIND en producción. Métricas en tiempo real con Telegraf + InfluxDB, monitoreo BGP/CGNAT, y configuración NETCONF con checkpoints y rollback.",
+        technologies: ["React", "NETCONF", "InfluxDB", "Grafana", "PostgreSQL"],
+        metrics: [
+          { value: "5", label: "Dashboards" },
+          { value: "4", label: "Tabs CGNAT" }
+        ]
+      },
       {
         year: "2026",
         title: "Qalma — Agente de Bienestar Personal",

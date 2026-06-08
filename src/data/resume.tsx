@@ -87,6 +87,40 @@ export const DATA = {
 
   projects: [
     {
+      title: "InfraPilot — Network Infrastructure Manager",
+      href: "",
+      dates: "2025",
+      active: false,
+      role: "Full-Stack Developer · Eyenet",
+      badges: ["NETCONF", "6WIND", "Production", "Completed"],
+      metrics: [
+        { value: "5", label: "Grafana dashboards" },
+        { value: "4", label: "CGNAT management tabs" },
+        { value: "0", label: "CLI access needed" }
+      ],
+      features: [
+        { name: "NETCONF Integration", value: "Declarative configuration and rollback via XML/YANG — no explicit deletion commands needed" },
+        { name: "Checkpoints", value: "Git-diff style comparison between config snapshots with safe rollback flow" },
+        { name: "Real-time Metrics", value: "Telegraf → InfluxDB pipeline with embedded Grafana dashboards for CPU, RAM, throughput, sessions" }
+      ],
+      description: "Web platform for managing 6WIND network devices in production. Centralizes real-time metrics (Telegraf + InfluxDB), BGP and CGNAT monitoring, and NETCONF-based configuration with checkpoints and rollback. Replaced manual CLI workflows with a unified operational interface for the network team.",
+      technologies: [
+        "React",
+        "Recharts",
+        "Grafana",
+        "REST API",
+        "Telegraf",
+        "InfluxDB",
+        "NETCONF",
+        "XML/YANG",
+        "PostgreSQL",
+        "6WIND"
+      ],
+      links: [],
+      image: { src: "/img/infrapilot.webp" },
+      video: ""
+    },
+    {
       title: "Qalma — Personal Wellness Agent",
       href: "",
       dates: "2026",
