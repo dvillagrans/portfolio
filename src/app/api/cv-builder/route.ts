@@ -93,7 +93,13 @@ Instructions:
 (grouped by category: "Languages: ... | ML/AI: ... | Data: ... | DevOps: ... | Frontend: ...")
 
 ## Professional Experience
-(2-3 entries, each with: **Job Title — Company** on one line, dates on next, then 2-3 bullet points with metrics)
+(2-3 entries, each with:)
+**Job Title — Company** (dates)
+Brief 1-line role description highlighting what was built/achieved
+• Bullet with metric: action verb + what + result (e.g., "Designed automation pipelines that reduced manual processing by 70%")
+• Bullet with metric: technical achievement relevant to the JD
+• Bullet with scale/impact: systems built, users served, transactions processed
+(Each bullet MUST connect to a skill or responsibility from the JD)
 
 ## Featured Projects
 (3-4 projects, each as a separate block:)

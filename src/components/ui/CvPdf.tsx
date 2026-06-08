@@ -283,11 +283,16 @@ export function CvPdfDocument({ markdown }: { markdown: string }) {
         {section.type === "technical skills" && (
           <>
             {section.items.length > 0
-              ? section.items.map((item, i) => (
-                  <Text key={i} style={styles.skillLine}>
-                    {renderInline(item)}
-                  </Text>
-                ))
+              ? section.items.map((item, i) => {
+                  const clean = item.startsWith("__BOLD__")
+                    ? item.replace("__BOLD__", "")
+                    : item;
+                  return (
+                    <Text key={i} style={styles.skillLine}>
+                      {renderInline(clean)}
+                    </Text>
+                  );
+                })
               : section.content && (
                   <Text style={styles.skillLine}>{section.content}</Text>
                 )}
@@ -307,7 +312,7 @@ export function CvPdfDocument({ markdown }: { markdown: string }) {
             }
             return (
               <Text key={i} style={styles.bullet}>
-                • {stripMarkdown(item)}
+                • {renderInline(item)}
               </Text>
             );
           })}
@@ -320,11 +325,16 @@ export function CvPdfDocument({ markdown }: { markdown: string }) {
         {/* Education */}
         {section.type === "education" && (
           <View style={styles.educationBlock}>
-            {section.items.map((item, i) => (
-              <Text key={i} style={styles.educationLine}>
-                {renderInline(item)}
-              </Text>
-            ))}
+            {section.items.map((item, i) => {
+              const clean = item.startsWith("__BOLD__")
+                ? item.replace("__BOLD__", "")
+                : item;
+              return (
+                <Text key={i} style={styles.educationLine}>
+                  {renderInline(clean)}
+                </Text>
+              );
+            })}
             {section.content && (
               <Text style={styles.educationLine}>{section.content}</Text>
             )}
@@ -333,11 +343,16 @@ export function CvPdfDocument({ markdown }: { markdown: string }) {
 
         {/* Certifications */}
         {section.type === "certifications" &&
-          section.items.map((item, i) => (
-            <Text key={i} style={styles.certLine}>
-              • {stripMarkdown(item)}
-            </Text>
-          ))}
+          section.items.map((item, i) => {
+            const clean = item.startsWith("__BOLD__")
+              ? item.replace("__BOLD__", "")
+              : item;
+            return (
+              <Text key={i} style={styles.certLine}>
+                • {renderInline(clean)}
+              </Text>
+            );
+          })}
       </View>
     );
   };
