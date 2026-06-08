@@ -174,9 +174,9 @@ function parseMarkdown(md: string): CvSection[] {
       continue;
     }
 
-    // Bullet
-    if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
-      currentItems.push(trimmed.replace(/^[-*] /, ""));
+    // Bullet (- or •)
+    if (trimmed.startsWith("- ") || trimmed.startsWith("* ") || trimmed.startsWith("• ")) {
+      currentItems.push(trimmed.replace(/^[-*•]\s*/, ""));
       continue;
     }
 
