@@ -119,6 +119,8 @@ Constraints:
 - EVERY bullet point must have a metric or quantified outcome
 - Professional, confident tone
 - Clean single-column layout for ATS compatibility
+- NEVER use dashes (-) or em dashes (—) as separators. Use commas, colons, or parentheses instead
+- Write like a human, not a chatbot. No filler phrases ("leveraged", "spearheaded", "utilized"). Use direct, concrete language: "built", "deployed", "designed", "reduced"
 
 ========
 SOURCE OF TRUTH DATA (JSON):
