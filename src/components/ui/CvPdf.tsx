@@ -8,9 +8,9 @@ import {
   View,
   StyleSheet,
   Font,
+  Link,
 } from "@react-pdf/renderer";
 
-// Register a clean font
 Font.register({
   family: "Helvetica",
   fonts: [
@@ -19,6 +19,8 @@ Font.register({
     { src: "Helvetica-Oblique", fontStyle: "italic" },
   ],
 });
+
+const ACCENT = "#2563eb"; // blue accent for links/highlights
 
 const styles = StyleSheet.create({
   page: {
@@ -40,38 +42,44 @@ const styles = StyleSheet.create({
   contactLine: {
     fontSize: 8,
     color: "#555",
-    marginBottom: 10,
+    marginBottom: 8,
+  },
+  contactLink: {
+    fontSize: 8,
+    color: ACCENT,
+    textDecoration: "none",
   },
   sectionTitle: {
     fontSize: 9.5,
     fontWeight: "bold",
     textTransform: "uppercase",
     letterSpacing: 0.8,
-    marginTop: 10,
-    marginBottom: 4,
+    marginTop: 9,
+    marginBottom: 3,
     paddingBottom: 2,
-    borderBottomWidth: 0.5,
-    borderBottomColor: "#ccc",
+    borderBottomWidth: 0.75,
+    borderBottomColor: "#d1d5db",
     borderBottomStyle: "solid",
     color: "#1a1a1a",
   },
   summary: {
     fontSize: 9.5,
     lineHeight: 1.4,
-    marginBottom: 4,
+    marginBottom: 3,
     color: "#333",
   },
   skillLine: {
     fontSize: 9,
     lineHeight: 1.35,
-    marginBottom: 2,
+    marginBottom: 1.5,
     color: "#333",
   },
   jobTitle: {
     fontSize: 10,
     fontWeight: "bold",
     color: "#1a1a1a",
-    marginBottom: 1,
+    marginBottom: 0,
+    marginTop: 3,
   },
   jobMeta: {
     fontSize: 8.5,
@@ -81,26 +89,39 @@ const styles = StyleSheet.create({
   bullet: {
     fontSize: 9,
     lineHeight: 1.3,
-    marginLeft: 10,
+    marginLeft: 8,
     marginBottom: 1.5,
     color: "#333",
+  },
+  projectBlock: {
+    marginBottom: 5,
   },
   projectTitle: {
     fontSize: 9.5,
     fontWeight: "bold",
     color: "#1a1a1a",
+    marginBottom: 0,
+  },
+  projectStack: {
+    fontSize: 8,
+    color: "#666",
+    marginBottom: 1,
+    marginLeft: 0,
+  },
+  projectBullet: {
+    fontSize: 9,
+    color: "#333",
+    lineHeight: 1.3,
+    marginLeft: 8,
     marginBottom: 1,
   },
-  projectDesc: {
-    fontSize: 9,
-    color: "#444",
-    lineHeight: 1.3,
-    marginBottom: 3,
+  educationBlock: {
+    marginBottom: 2,
   },
   educationLine: {
     fontSize: 9.5,
     color: "#333",
-    marginBottom: 2,
+    marginBottom: 1,
   },
   certLine: {
     fontSize: 9,
@@ -109,57 +130,102 @@ const styles = StyleSheet.create({
   },
 });
 
-// Simple markdown parser for the CV
-function parseMarkdown(md: string) {
-  const lines = md.split("\n");
-  const sections: {
-    type: string;
-    content: string;
-    items?: string[];
-  }[] = [];
+interface CvSection {
+  type: string;
+  content: string;
+  items: string[];
+}
 
-  let currentSection = "";
+function parseMarkdown(md: string): CvSection[] {
+  const lines = md.split("\n");
+  const sections: CvSection[] = [];
+  let currentType = "";
   let currentContent = "";
   let currentItems: string[] = [];
 
+  const flush = () => {
+    if (currentType) {
+      sections.push({
+        type: currentType,
+        content: currentContent.trim(),
+        items: currentItems,
+      });
+    }
+    currentType = "";
+    currentContent = "";
+    currentItems = [];
+  };
+
   for (const line of lines) {
     const trimmed = line.trim();
+    if (!trimmed) continue;
 
+    // H1 — name
     if (trimmed.startsWith("# ") && !trimmed.startsWith("## ")) {
-      // Name
-      sections.push({ type: "name", content: trimmed.replace(/^# /, "") });
-    } else if (trimmed.startsWith("## ")) {
-      // Save previous section
-      if (currentSection) {
-        sections.push({
-          type: currentSection,
-          content: currentContent.trim(),
-          items: currentItems.length > 0 ? currentItems : undefined,
-        });
-      }
-      currentSection = trimmed.replace(/^## /, "").toLowerCase();
-      currentContent = "";
-      currentItems = [];
-    } else if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
+      flush();
+      sections.push({ type: "name", content: trimmed.replace(/^# /, ""), items: [] });
+      continue;
+    }
+
+    // H2 — section header
+    if (trimmed.startsWith("## ")) {
+      flush();
+      currentType = trimmed.replace(/^## /, "").toLowerCase();
+      continue;
+    }
+
+    // Bullet
+    if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
       currentItems.push(trimmed.replace(/^[-*] /, ""));
-    } else if (trimmed.startsWith("**") && trimmed.endsWith("**")) {
-      // Bold line — job title or similar
-      currentItems.push("__BOLD__" + trimmed.replace(/\*\*/g, ""));
-    } else if (trimmed) {
+      continue;
+    }
+
+    // Bold line (job title, project title, etc.)
+    if (trimmed.startsWith("**")) {
+      currentItems.push("__BOLD__" + trimmed);
+      continue;
+    }
+
+    // Stack: line
+    if (trimmed.toLowerCase().startsWith("stack:")) {
+      currentItems.push("__STACK__" + trimmed.replace(/^stack:\s*/i, ""));
+      continue;
+    }
+
+    // Regular text
+    if (currentType) {
       currentContent += (currentContent ? " " : "") + trimmed;
     }
   }
 
-  // Push last section
-  if (currentSection) {
-    sections.push({
-      type: currentSection,
-      content: currentContent.trim(),
-      items: currentItems.length > 0 ? currentItems : undefined,
-    });
+  flush();
+  return sections;
+}
+
+function renderInline(text: string): React.ReactNode[] {
+  // Split text by **bold** markers and render bold/normal segments
+  const parts: React.ReactNode[] = [];
+  const regex = /\*\*(.*?)\*\*/g;
+  let lastIndex = 0;
+  let match;
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+    parts.push(
+      <Text key={match.index} style={{ fontWeight: "bold" }}>
+        {match[1]}
+      </Text>
+    );
+    lastIndex = match.index + match[0].length;
   }
 
-  return sections;
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+
+  return parts.length > 0 ? parts : [text];
 }
 
 function stripMarkdown(text: string): string {
@@ -172,62 +238,60 @@ function stripMarkdown(text: string): string {
 
 export function CvPdfDocument({ markdown }: { markdown: string }) {
   const sections = parseMarkdown(markdown);
-
   const nameSection = sections.find((s) => s.type === "name");
-  const contactLine = sections.find(
-    (s) => s.type === "name" && s.content.includes("·")
-  );
 
-  // Find name without contact info
-  const name = nameSection?.content.split("\n")[0] || "Diego Villagran Salazar";
-  const contact =
-    contactLine?.content.includes("·") && contactLine.content !== name
-      ? contactLine.content
-      : "";
+  // Split name from contact
+  const rawName = nameSection?.content || "Diego Villagran Salazar";
+  const nameParts = rawName.split(/\n|(?=·)/);
+  const name = nameParts[0]?.trim() || rawName;
+  const contact = nameParts.length > 1 ? nameParts.slice(1).join(" ").trim() : "";
 
-  const renderSection = (
-    section: (typeof sections)[0],
-    index: number
-  ): React.ReactNode => {
-    const titleMap: Record<string, string> = {
-      "professional summary": "Professional Summary",
-      "technical skills": "Technical Skills",
-      "professional experience": "Professional Experience",
-      "featured projects": "Featured Projects",
-      education: "Education",
-      certifications: "Certifications",
-    };
+  const titleMap: Record<string, string> = {
+    "professional summary": "Professional Summary",
+    "technical skills": "Technical Skills",
+    "professional experience": "Professional Experience",
+    "featured projects": "Featured Projects",
+    education: "Education",
+    certifications: "Certifications",
+  };
+
+  const renderSection = (section: CvSection, index: number): React.ReactNode => {
+    if (section.type === "name") return null;
 
     const title = titleMap[section.type] || section.type;
 
-    if (section.type === "name") return null;
-
     return (
-      <View key={index}>
+      <View key={index} wrap={false}>
         <Text style={styles.sectionTitle}>{title}</Text>
 
+        {/* Summary */}
         {section.type === "professional summary" && section.content && (
           <Text style={styles.summary}>{stripMarkdown(section.content)}</Text>
         )}
 
-        {section.type === "technical skills" && section.items
-          ? section.items.map((item, i) => (
-              <Text key={i} style={styles.skillLine}>
-                {stripMarkdown(item)}
-              </Text>
-            ))
-          : section.content && (
-              <Text style={styles.skillLine}>
-                {stripMarkdown(section.content)}
-              </Text>
-            )}
+        {/* Skills — single line or grouped */}
+        {section.type === "technical skills" && (
+          <>
+            {section.items.length > 0
+              ? section.items.map((item, i) => (
+                  <Text key={i} style={styles.skillLine}>
+                    {renderInline(item)}
+                  </Text>
+                ))
+              : section.content && (
+                  <Text style={styles.skillLine}>{section.content}</Text>
+                )}
+          </>
+        )}
 
+        {/* Experience */}
         {section.type === "professional experience" &&
-          section.items?.map((item, i) => {
+          section.items.map((item, i) => {
             if (item.startsWith("__BOLD__")) {
+              const raw = item.replace("__BOLD__", "");
               return (
                 <Text key={i} style={styles.jobTitle}>
-                  {item.replace("__BOLD__", "")}
+                  {renderInline(raw)}
                 </Text>
               );
             }
@@ -238,31 +302,28 @@ export function CvPdfDocument({ markdown }: { markdown: string }) {
             );
           })}
 
-        {section.type === "featured projects" &&
-          section.items?.map((item, i) => {
-            if (item.startsWith("__BOLD__")) {
-              return (
-                <Text key={i} style={styles.projectTitle}>
-                  {item.replace("__BOLD__", "")}
-                </Text>
-              );
-            }
-            return (
-              <Text key={i} style={styles.projectDesc}>
-                • {stripMarkdown(item)}
+        {/* Projects — grouped blocks */}
+        {section.type === "featured projects" && (
+          <ProjectBlocks items={section.items} />
+        )}
+
+        {/* Education */}
+        {section.type === "education" && (
+          <View style={styles.educationBlock}>
+            {section.items.map((item, i) => (
+              <Text key={i} style={styles.educationLine}>
+                {renderInline(item)}
               </Text>
-            );
-          })}
+            ))}
+            {section.content && (
+              <Text style={styles.educationLine}>{section.content}</Text>
+            )}
+          </View>
+        )}
 
-        {section.type === "education" &&
-          section.items?.map((item, i) => (
-            <Text key={i} style={styles.educationLine}>
-              {stripMarkdown(item)}
-            </Text>
-          ))}
-
+        {/* Certifications */}
         {section.type === "certifications" &&
-          section.items?.map((item, i) => (
+          section.items.map((item, i) => (
             <Text key={i} style={styles.certLine}>
               • {stripMarkdown(item)}
             </Text>
@@ -279,5 +340,49 @@ export function CvPdfDocument({ markdown }: { markdown: string }) {
         {sections.map((section, index) => renderSection(section, index))}
       </Page>
     </Document>
+  );
+}
+
+// Separate component for project blocks with better formatting
+function ProjectBlocks({ items }: { items: string[] }) {
+  // Group items into project blocks: BOLD title, optional STACK, then bullets
+  const blocks: {
+    title: string;
+    stack: string;
+    bullets: string[];
+  }[] = [];
+
+  let current: { title: string; stack: string; bullets: string[] } | null = null;
+
+  for (const item of items) {
+    if (item.startsWith("__BOLD__")) {
+      if (current) blocks.push(current);
+      current = {
+        title: item.replace("__BOLD__", "").replace(/\*\*/g, ""),
+        stack: "",
+        bullets: [],
+      };
+    } else if (item.startsWith("__STACK__")) {
+      if (current) current.stack = item.replace("__STACK__", "");
+    } else if (current) {
+      current.bullets.push(item);
+    }
+  }
+  if (current) blocks.push(current);
+
+  return (
+    <>
+      {blocks.map((block, i) => (
+        <View key={i} style={styles.projectBlock}>
+          <Text style={styles.projectTitle}>{block.title}</Text>
+          {block.stack && <Text style={styles.projectStack}>Stack: {block.stack}</Text>}
+          {block.bullets.map((b, bi) => (
+            <Text key={bi} style={styles.projectBullet}>
+              • {stripMarkdown(b)}
+            </Text>
+          ))}
+        </View>
+      ))}
+    </>
   );
 }
