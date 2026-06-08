@@ -230,6 +230,16 @@ export const sharedEn = {
     viewProject: "Visit",
     projects: [
       {
+        year: "2026",
+        title: "Bouquet — Hospitality OS",
+        domain: "Full Stack / Multi-tenant SaaS",
+        isFeatured: true,
+        caseStudy: "/projects/bouquet",
+        links: [
+          { label: "bouquet-psi.vercel.app", url: "https://bouquet-psi.vercel.app/" }
+        ]
+      },
+      {
         year: "2025",
         title: "EyeNet — AI & Automation Systems",
         domain: "AI / Automation",
@@ -505,6 +515,16 @@ export const sharedEs = {
     headers: { year: "Año", project: "Proyecto", domain: "Dominio", link: "Enlace" },
     viewProject: "Visitar",
     projects: [
+      {
+        year: "2026",
+        title: "Bouquet — Hospitality OS",
+        domain: "Full Stack / SaaS Multi-tenant",
+        isFeatured: true,
+        caseStudy: "/projects/bouquet",
+        links: [
+          { label: "bouquet-psi.vercel.app", url: "https://bouquet-psi.vercel.app/" }
+        ]
+      },
       {
         year: "2025",
         title: "EyeNet — Sistemas de IA y Automatización",
