@@ -195,9 +195,9 @@ export default function CvBuilderPage() {
       tabIndex={-1}
     >
       <Navbar />
-      <div className="relative z-10 mx-auto max-w-4xl px-8 py-16 md:px-12 md:py-32">
+      <div className="relative z-10 mx-auto max-w-4xl px-8 py-12 md:py-32">
         {/* Header */}
-        <header className="mb-16 mt-20 flex items-center justify-between flex-wrap gap-3">
+        <header className="mb-12 md:mb-16 mt-24 md:mt-20 flex items-center justify-between flex-wrap gap-3">
           <Link
             href="/"
             className="group flex items-center min-h-[44px] gap-3 font-sans text-xs font-semibold uppercase tracking-widest text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)] spring-press"
