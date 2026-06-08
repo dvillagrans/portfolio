@@ -137,7 +137,7 @@ export const DATA = {
     },
     {
       title: "ARIA — Personal AI OS",
-      href: "https://github.com/dvillagrans/ARIA",
+      href: "",
       dates: "2026",
       active: true,
       role: "Full-Stack Dev · AI-Powered Productivity System",
@@ -171,19 +171,13 @@ export const DATA = {
         "Tailwind CSS 4",
         "PWA"
       ],
-      links: [
-        {
-          type: "Source",
-          href: "https://github.com/dvillagrans/ARIA",
-          icon: <Icons.github className="size-3" />
-        }
-      ],
+      links: [],
       image: { src: "/img/aria.webp" },
       video: ""
     },
     {
       title: "Sports Analytics Platform",
-      href: "https://github.com/dvillagrans/analisis-apuestas-futbol",
+      href: "",
       dates: "May 2026",
       active: true,
       role: "Full-Stack Dev · AI-Powered Sports Intelligence",
@@ -215,13 +209,7 @@ export const DATA = {
         "Framer Motion",
         "Vercel"
       ],
-      links: [
-        {
-          type: "Source",
-          href: "https://github.com/dvillagrans/analisis-apuestas-futbol",
-          icon: <Icons.github className="size-3" />
-        }
-      ],
+      links: [],
       image: { src: "/img/sports-analytics.webp" },
       video: ""
     },

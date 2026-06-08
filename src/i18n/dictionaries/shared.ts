@@ -248,16 +248,20 @@ export const sharedEn = {
       {
         year: "2026",
         title: "Sports Analytics Platform",
-        domain: "AI / Sports Intelligence",
-        links: [
-          { label: "Repo", url: "https://github.com/dvillagrans/analisis-apuestas-futbol" }
-        ],
-        description: "AI-powered sports betting analysis platform with real-time stats, DeepSeek-generated picks, SSE streaming, and World Cup 2026 bracket visualization.",
-        technologies: ["Turborepo", "Next.js 16", "Express", "Supabase", "DeepSeek"],
-        metrics: [
-          { value: "7", label: "Leagues" },
-          { value: "$2-3", label: "USD/month" }
-        ]
+        domain: "IA / Inteligencia Deportiva",
+        links: []
+      },
+      {
+        year: "2026",
+        title: "ARIA — Personal AI OS",
+        domain: "IA / PWA / RAG",
+        links: []
+      },
+      {
+        year: "2026",
+        title: "ARIA — Personal AI OS",
+        domain: "AI / PWA / RAG",
+        links: []
       },
       {
         year: "2026",
