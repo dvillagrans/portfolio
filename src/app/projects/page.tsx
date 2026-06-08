@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { Link } from "next-view-transitions";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ChevronDown } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -13,6 +13,11 @@ export default function SystemArchive() {
   const { language, t } = useLanguage();
   const reduced = useReducedMotion();
   const archive = t.archive;
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  const toggleExpand = useCallback((key: string) => {
+    setExpanded((prev) => (prev === key ? null : key));
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -67,7 +72,7 @@ export default function SystemArchive() {
             {archive.back}
           </Link>
           <span className="font-mono text-xs uppercase tracking-widest text-offwhite/60 sm:text-[10px]">
-            {archive.projects.length} {language === "es" ? "proyectos" : "projects"} · 2023—2025
+            {archive.projects.length} {language === "es" ? "proyectos" : "projects"} · 2023—2026
           </span>
         </header>
 
@@ -88,62 +93,123 @@ export default function SystemArchive() {
         {featuredList.length > 0 && (
           <div className="mb-16 md:mb-20 flex flex-col gap-8">
             <h2 className="sr-only">{language === "es" ? "Proyectos destacados" : "Featured projects"}</h2>
-            {featuredList.map((featured, fidx) => (
-              <div
-                key={fidx}
-                className="archive-item group relative rounded-2xl border border-accent/20 bg-accent/[0.04] hover:bg-accent/[0.07] transition-colors duration-300 overflow-hidden"
-              >
-                <div className="p-7 md:p-10">
-                  {/* Top meta */}
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="flex items-center gap-2.5">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-50" />
-                        <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-                      </span>
-                      <span className="font-mono text-[10px] uppercase tracking-widest text-offwhite/80">
-                        {language === "es" ? "Proyecto Destacado" : "Featured Project"} · {featured.year}
-                      </span>
+            {featuredList.map((featured, fidx) => {
+              const key = `featured-${fidx}`;
+              const isOpen = expanded === key;
+              const hasDetails = featured.description || (featured.technologies && featured.technologies.length > 0) || (featured.metrics && featured.metrics.length > 0);
+
+              return (
+                <div
+                  key={fidx}
+                  className="archive-item group relative rounded-2xl border border-accent/20 bg-accent/[0.04] hover:bg-accent/[0.07] transition-colors duration-300 overflow-hidden"
+                >
+                  <div
+                    className={`p-7 md:p-10 ${hasDetails ? "cursor-pointer" : ""}`}
+                    onClick={() => hasDetails && toggleExpand(key)}
+                  >
+                    {/* Top meta */}
+                    <div className="flex items-center justify-between mb-5">
+                      <div className="flex items-center gap-2.5">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-50" />
+                          <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+                        </span>
+                        <span className="font-mono text-[10px] uppercase tracking-widest text-offwhite/80">
+                          {language === "es" ? "Proyecto Destacado" : "Featured Project"} · {featured.year}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="font-mono text-[10px] uppercase tracking-widest text-offwhite/60 hidden sm:block">
+                          {featured.domain}
+                        </span>
+                        {hasDetails && (
+                          <ChevronDown
+                            className={`h-4 w-4 text-offwhite/40 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                          />
+                        )}
+                      </div>
                     </div>
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-offwhite/60 hidden sm:block">
+
+                    <h2 className="font-sans text-2xl md:text-3xl font-semibold text-offwhite leading-tight mb-2">
+                      {featured.title}
+                    </h2>
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-offwhite/60 sm:hidden block mb-6">
                       {featured.domain}
                     </span>
+
+                    {/* CTAs — 44px touch targets on mobile */}
+                    <div className="flex flex-wrap items-center gap-3 mt-6" onClick={(e) => e.stopPropagation()}>
+                      {featured.caseStudy && (
+                        <Link
+                          href={featured.caseStudy}
+                          className="inline-flex items-center justify-center min-h-[44px] gap-2 bg-accent text-offwhite font-mono text-[11px] font-bold uppercase tracking-widest px-5 py-2.5 rounded-full hover:bg-accent/90 transition-colors spring-press"
+                        >
+                          {language === "es" ? "Caso de Estudio" : "Case Study"}
+                          <ArrowUpRight className="h-3.5 w-3.5 shrink-0" />
+                        </Link>
+                      )}
+                      {featured.links && featured.links.length > 0 && featured.links.map((lnk, i) => (
+                        <a
+                          key={i}
+                          href={lnk.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center min-h-[44px] gap-2 border border-offwhite/15 text-offwhite/70 font-mono text-[11px] uppercase tracking-widest px-5 py-2.5 rounded-full hover:border-offwhite/40 hover:text-offwhite transition-colors spring-press"
+                        >
+                          {lnk.label}
+                          <ArrowUpRight className="h-3.5 w-3.5 shrink-0" />
+                        </a>
+                      ))}
+                    </div>
                   </div>
 
-                  <h2 className="font-sans text-2xl md:text-3xl font-semibold text-offwhite leading-tight mb-2">
-                    {featured.title}
-                  </h2>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-offwhite/60 sm:hidden block mb-6">
-                    {featured.domain}
-                  </span>
-
-                  {/* CTAs — 44px touch targets on mobile */}
-                  <div className="flex flex-wrap items-center gap-3 mt-6">
-                    {featured.caseStudy && (
-                      <Link
-                        href={featured.caseStudy}
-                        className="inline-flex items-center justify-center min-h-[44px] gap-2 bg-accent text-offwhite font-mono text-[11px] font-bold uppercase tracking-widest px-5 py-2.5 rounded-full hover:bg-accent/90 transition-colors spring-press"
-                      >
-                        {language === "es" ? "Caso de Estudio" : "Case Study"}
-                        <ArrowUpRight className="h-3.5 w-3.5 shrink-0" />
-                      </Link>
-                    )}
-                    {featured.links && featured.links.length > 0 && featured.links.map((lnk, i) => (
-                      <a
-                        key={i}
-                        href={lnk.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center min-h-[44px] gap-2 border border-offwhite/15 text-offwhite/70 font-mono text-[11px] uppercase tracking-widest px-5 py-2.5 rounded-full hover:border-offwhite/40 hover:text-offwhite transition-colors spring-press"
-                      >
-                        {lnk.label}
-                        <ArrowUpRight className="h-3.5 w-3.5 shrink-0" />
-                      </a>
-                    ))}
-                  </div>
+                  {/* Expandable detail panel */}
+                  {hasDetails && (
+                    <div
+                      className="overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+                      style={{ maxHeight: isOpen ? "400px" : "0" }}
+                    >
+                      <div className="px-7 md:px-10 pb-7 md:pb-10 pt-0 border-t border-accent/10">
+                        {featured.description && (
+                          <p className="text-sm text-offwhite/60 leading-relaxed mb-5 max-w-2xl">
+                            {featured.description}
+                          </p>
+                        )}
+                        <div className="flex flex-col sm:flex-row gap-6">
+                          {featured.technologies && featured.technologies.length > 0 && (
+                            <div className="flex-1">
+                              <span className="font-mono text-[10px] uppercase tracking-widest text-accent/60 block mb-2">
+                                {language === "es" ? "Stack" : "Tech Stack"}
+                              </span>
+                              <div className="flex flex-wrap gap-1.5">
+                                {featured.technologies.map((tech, ti) => (
+                                  <span
+                                    key={ti}
+                                    className="font-mono text-[10px] bg-accent/10 text-accent/80 border border-accent/20 px-2 py-1 rounded-full"
+                                  >
+                                    {tech}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          {featured.metrics && featured.metrics.length > 0 && (
+                            <div className="flex gap-6">
+                              {featured.metrics.map((m, mi) => (
+                                <div key={mi} className="flex flex-col">
+                                  <span className="font-mono text-xl font-bold text-offwhite">{m.value}</span>
+                                  <span className="font-mono text-[10px] uppercase tracking-widest text-offwhite/50">{m.label}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
@@ -160,53 +226,108 @@ export default function SystemArchive() {
 
               {/* Rows */}
               <div className="flex flex-col">
-                {byYear[year].map((project, pidx) => (
-                  <div
-                    key={pidx}
-                    className="archive-item group flex flex-col gap-3 sm:flex-row sm:items-center py-4 md:py-5 border-b border-offwhite/[0.06] hover:border-offwhite/[0.12] border-l-2 border-l-transparent hover:border-l-accent pl-4 md:pl-5 transition-all duration-200 md:gap-8"
-                  >
-                    {/* Domain — desktop only */}
-                    <span className="hidden md:block shrink-0 w-44 font-mono text-[10px] uppercase tracking-widest text-offwhite/60 leading-tight">
-                      {project.domain}
-                    </span>
+                {byYear[year].map((project, pidx) => {
+                  const key = `${year}-${pidx}`;
+                  const isOpen = expanded === key;
+                  const hasDetails = project.description || (project.technologies && project.technologies.length > 0) || (project.metrics && project.metrics.length > 0);
 
-                    {/* Title + domain mobile */}
-                    <p className="flex-1 min-w-0 font-sans text-sm md:text-base font-medium text-offwhite/70 group-hover:text-offwhite transition-colors leading-snug">
-                      {project.title}
-                      <span className="md:hidden flex font-mono text-xs uppercase tracking-widest text-offwhite/60 mt-1">
-                        {project.domain}
-                      </span>
-                    </p>
+                  return (
+                    <div key={pidx} className="archive-item">
+                      <div
+                        className={`group flex flex-col gap-3 sm:flex-row sm:items-center py-4 md:py-5 border-b border-offwhite/[0.06] hover:border-offwhite/[0.12] border-l-2 border-l-transparent hover:border-l-accent pl-4 md:pl-5 transition-all duration-200 md:gap-8 ${hasDetails ? "cursor-pointer" : ""}`}
+                        onClick={() => hasDetails && toggleExpand(key)}
+                      >
+                        {/* Domain — desktop only */}
+                        <span className="hidden md:block shrink-0 w-44 font-mono text-[10px] uppercase tracking-widest text-offwhite/60 leading-tight">
+                          {project.domain}
+                        </span>
 
-                    {/* Link(s) — 44px touch on mobile, inline on desktop */}
-                    <div className="shrink-0 flex flex-wrap items-center gap-2">
-                      {project.links ? (
-                        project.links.map((lnk, li) => (
-                          <a
-                            key={li}
-                            href={lnk.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center min-h-[44px] gap-1 font-mono text-xs md:text-[10px] uppercase tracking-widest text-offwhite/70 group-hover:text-accent transition-colors border border-offwhite/10 hover:border-accent/40 rounded-full px-3 py-2 md:px-2.5 md:py-1 spring-press"
-                          >
-                            <span>{lnk.label}</span>
-                            <ArrowUpRight className="h-3 w-3 shrink-0" />
-                          </a>
-                        ))
-                      ) : (project.link && (
-                        <a
-                          href={project.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center min-h-[44px] gap-1.5 font-mono text-xs md:text-[10px] uppercase tracking-widest text-offwhite/70 group-hover:text-accent transition-colors px-3 py-2 md:px-0 md:py-0 spring-press"
+                        {/* Title + domain mobile */}
+                        <p className="flex-1 min-w-0 font-sans text-sm md:text-base font-medium text-offwhite/70 group-hover:text-offwhite transition-colors leading-snug">
+                          {project.title}
+                          <span className="md:hidden flex font-mono text-xs uppercase tracking-widest text-offwhite/60 mt-1">
+                            {project.domain}
+                          </span>
+                        </p>
+
+                        {/* Chevron + Link(s) */}
+                        <div className="shrink-0 flex items-center gap-2">
+                          {hasDetails && (
+                            <ChevronDown
+                              className={`h-3.5 w-3.5 text-offwhite/30 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                            />
+                          )}
+                          <div className="flex flex-wrap items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                            {project.links ? (
+                              project.links.map((lnk, li) => (
+                                <a
+                                  key={li}
+                                  href={lnk.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center justify-center min-h-[44px] gap-1 font-mono text-xs md:text-[10px] uppercase tracking-widest text-offwhite/70 group-hover:text-accent transition-colors border border-offwhite/10 hover:border-accent/40 rounded-full px-3 py-2 md:px-2.5 md:py-1 spring-press"
+                                >
+                                  <span>{lnk.label}</span>
+                                  <ArrowUpRight className="h-3 w-3 shrink-0" />
+                                </a>
+                              ))
+                            ) : (project.link && (
+                              <a
+                                href={project.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center min-h-[44px] gap-1.5 font-mono text-xs md:text-[10px] uppercase tracking-widest text-offwhite/70 group-hover:text-accent transition-colors px-3 py-2 md:px-0 md:py-0 spring-press"
+                              >
+                                <span className="hidden sm:inline">{archive.viewProject}</span>
+                                <ArrowUpRight className="h-3.5 w-3.5 shrink-0" />
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Expandable detail panel */}
+                      {hasDetails && (
+                        <div
+                          className="overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+                          style={{ maxHeight: isOpen ? "300px" : "0" }}
                         >
-                          <span className="hidden sm:inline">{archive.viewProject}</span>
-                          <ArrowUpRight className="h-3.5 w-3.5 shrink-0" />
-                        </a>
-                      ))}
+                          <div className="pl-4 md:pl-5 pr-4 pb-4 pt-3 border-b border-offwhite/[0.06]">
+                            {project.description && (
+                              <p className="text-xs text-offwhite/50 leading-relaxed mb-3 max-w-2xl">
+                                {project.description}
+                              </p>
+                            )}
+                            <div className="flex flex-wrap items-center gap-4">
+                              {project.technologies && project.technologies.length > 0 && (
+                                <div className="flex flex-wrap gap-1">
+                                  {project.technologies.map((tech, ti) => (
+                                    <span
+                                      key={ti}
+                                      className="font-mono text-[9px] bg-offwhite/[0.05] text-offwhite/50 border border-offwhite/10 px-1.5 py-0.5 rounded"
+                                    >
+                                      {tech}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                              {project.metrics && project.metrics.length > 0 && (
+                                <div className="flex gap-4">
+                                  {project.metrics.map((m, mi) => (
+                                    <div key={mi} className="flex items-baseline gap-1.5">
+                                      <span className="font-mono text-sm font-bold text-offwhite/80">{m.value}</span>
+                                      <span className="font-mono text-[9px] uppercase tracking-widest text-offwhite/40">{m.label}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ))}

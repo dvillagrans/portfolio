@@ -237,6 +237,12 @@ export const sharedEn = {
         caseStudy: "/projects/bouquet",
         links: [
           { label: "bouquet-psi.vercel.app", url: "https://bouquet-psi.vercel.app/" }
+        ],
+        description: "Multi-tenant Hospitality OS for restaurant chains with role-based dashboards, Apache Spark analytics pipeline, and guest-facing QR menu with digital payments.",
+        technologies: ["Next.js 16", "Prisma 7", "Supabase", "Apache Spark", "Docker"],
+        metrics: [
+          { value: "52", label: "KPIs" },
+          { value: "3", label: "Dashboards" }
         ]
       },
       {
@@ -245,6 +251,12 @@ export const sharedEn = {
         domain: "AI / Sports Intelligence",
         links: [
           { label: "Repo", url: "https://github.com/dvillagrans/analisis-apuestas-futbol" }
+        ],
+        description: "AI-powered sports betting analysis platform with real-time stats, DeepSeek-generated picks, SSE streaming, and World Cup 2026 bracket visualization.",
+        technologies: ["Turborepo", "Next.js 16", "Express", "Supabase", "DeepSeek"],
+        metrics: [
+          { value: "7", label: "Leagues" },
+          { value: "$2-3", label: "USD/month" }
         ]
       },
       {
@@ -253,6 +265,12 @@ export const sharedEn = {
         domain: "AI / PWA / RAG",
         links: [
           { label: "Repo", url: "https://github.com/dvillagrans/ARIA" }
+        ],
+        description: "Personal AI operating system as a PWA with natural language capture, automatic classification, RAG memory via 4096-dim embeddings, and study tools.",
+        technologies: ["Next.js 16", "FastAPI", "Supabase", "pgvector", "DeepSeek"],
+        metrics: [
+          { value: "7", label: "Intent types" },
+          { value: "229", label: "Tests" }
         ]
       },
       {
@@ -261,7 +279,13 @@ export const sharedEn = {
         domain: "AI / Automation",
         isFeatured: true,
         caseStudy: "/projects/eyenet",
-        links: []
+        links: [],
+        description: "Full automation infrastructure with LLMs, ETL/ELT pipelines, containerized microservices, and production web/mobile apps handling 10K+ daily requests.",
+        technologies: ["Python", "n8n", "Docker", "FastAPI", "OpenAI"],
+        metrics: [
+          { value: "10K+", label: "Daily requests" },
+          { value: "65%", label: "Less manual work" }
+        ]
       },
       {
         year: "2025",
@@ -272,22 +296,204 @@ export const sharedEn = {
         links: [
           { label: "timeup.mx", url: "https://timeup.mx" },
           { label: "negocios.timeup.mx", url: "https://negocios.timeup.mx" }
+        ],
+        description: "Frictionless time tracking system modernizing how businesses log hours and calculate payrolls. Multi-tenant SaaS with real-time availability and Passkeys login.",
+        technologies: ["Next.js 16", "Prisma 7", "Supabase", "PostgreSQL", "Docker"],
+        metrics: [
+          { value: "<500ms", label: "Dashboard" },
+          { value: "0", label: "Overbooking" }
         ]
       },
-      { year: "2025", title: "COVID-19 Risk Profiles (Mexico)", domain: "Data Science / Clustering", isFeatured: true, caseStudy: "https://covid.dvillagrans.dev", links: [{ label: "Dashboard", url: "https://covid.dvillagrans.dev" }] },
-      { year: "2025", title: "NYC Ride-Hailing Analytics Dashboard", domain: "Data Science / Streamlit", links: [ { label: "Dashboard", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" }, { label: "Repo", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" } ] },
-      { year: "2025", title: "Métodos de Optimización No Lineal", domain: "Optimization / Flask", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal" } ] },
-      { year: "2025", title: "Matemáticas Avanzadas - Métodos de Optimización", domain: "Optimization / Education", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Metodos-de-optimizacion" } ] },
-      { year: "2025", title: "Population Dashboard", domain: "Analytics / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/population-dashboard" } ] },
-      { year: "2025", title: "Global Health Analytics Dashboard", domain: "Analytics / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/health-analytics-dashboard" } ] },
-      { year: "2025", title: "Video Game Market Intelligence", domain: "Analytics / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/videogames-dashboard" } ] },
-      { year: "2024", title: "India Air Quality ETL", domain: "Data Engineering / Azure", links: [ { label: "Live", url: "https://aqi-india.dvillagrans.dev" }, { label: "Repo", url: "https://github.com/dvillagrans/india-air-quality-etl" } ] },
-      { year: "2024", title: "Code Master", domain: "EdTech / Full Stack", links: [ { label: "Website", url: "https://codemaster-two.vercel.app" }, { label: "Repo", url: "https://github.com/dvillagrans/Code-Master" } ] },
-      { year: "2024", title: "Technical Portfolio Platform", domain: "Web Development / Next.js", links: [ { label: "Website", url: "https://www.dvillagrans.dev/" }, { label: "Repo", url: "https://github.com/dvillagrans/portfolio" } ] },
-      { year: "2024", title: "Houses Prices Prediction", domain: "Machine Learning / Flask", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Houses-Prices-Prediction" } ] },
-      { year: "2024", title: "Dashboard Financial", domain: "Data Analysis / Excel VBA", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Dashboard-Financial" } ] },
-      { year: "2023", title: "Melari Spa", domain: "Web Development / Astro", links: [ { label: "Website", url: "https://melarispa.com" } ] },
-      { year: "2023", title: "Prediction of Passengers for Mexican Airlines", domain: "Time Series / Data Science", links: [ { label: "Dashboard", url: "https://passenger-volume-prediction-in-mexi.vercel.app/" }, { label: "Repo", url: "https://github.com/dvillagrans/Passenger-Volume-Prediction-in-Mexico" } ] }
+      {
+        year: "2025",
+        title: "COVID-19 Risk Profiles (Mexico)",
+        domain: "Data Science / Clustering",
+        isFeatured: true,
+        caseStudy: "https://covid.dvillagrans.dev",
+        links: [{ label: "Dashboard", url: "https://covid.dvillagrans.dev" }],
+        description: "Identification of COVID-19 risk profiles from 30M+ Mexican open health records using K-Means and Fuzzy C-Means clustering.",
+        technologies: ["Python", "scikit-learn", "scikit-fuzzy", "Next.js", "Recharts"],
+        metrics: [
+          { value: "30M+", label: "Records" },
+          { value: "9", label: "Risk profiles" }
+        ]
+      },
+      {
+        year: "2025",
+        title: "NYC Ride-Hailing Analytics Dashboard",
+        domain: "Data Science / Streamlit",
+        links: [
+          { label: "Dashboard", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" },
+          { label: "Repo", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" }
+        ],
+        description: "Interactive dashboard for analyzing Uber and Lyft trip patterns in NYC with fare prediction ML models and geospatial visualizations.",
+        technologies: ["Streamlit", "Python", "Scikit-learn", "Plotly", "Pandas"],
+        metrics: [
+          { value: "R² .85", label: "Fare prediction" },
+          { value: "92%", label: "Classification" }
+        ]
+      },
+      {
+        year: "2025",
+        title: "Métodos de Optimización No Lineal",
+        domain: "Optimization / Flask",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal" }
+        ],
+        description: "Interactive web app implementing non-linear optimization algorithms with dynamic visualizations and step-by-step convergence rendering.",
+        technologies: ["Flask", "Python", "NumPy"],
+        metrics: [
+          { value: "10+", label: "Algorithms" }
+        ]
+      },
+      {
+        year: "2025",
+        title: "Matemáticas Avanzadas - Métodos de Optimización",
+        domain: "Optimization / Education",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/Metodos-de-optimizacion" }
+        ],
+        description: "Flask app solving linear programming with Simplex, Big M, and Two Phases methods, featuring Manim-generated mathematical animations.",
+        technologies: ["Flask", "Python", "Manim"],
+        metrics: [
+          { value: "3", label: "Methods" }
+        ]
+      },
+      {
+        year: "2025",
+        title: "Population Dashboard",
+        domain: "Analytics / Power BI",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/population-dashboard" }
+        ],
+        description: "Power BI dashboard analyzing population trends and dynamic demographic shifts across continents.",
+        technologies: ["Power BI", "DAX", "Data Modeling"],
+        metrics: [
+          { value: "6", label: "Continents" }
+        ]
+      },
+      {
+        year: "2025",
+        title: "Global Health Analytics Dashboard",
+        domain: "Analytics / Power BI",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/health-analytics-dashboard" }
+        ],
+        description: "Health analytics dashboard analyzing life expectancy and infant mortality rates with socioeconomic factor integration.",
+        technologies: ["Power BI", "Statistical Analysis", "Data Modeling"],
+        metrics: [
+          { value: "195", label: "Countries" }
+        ]
+      },
+      {
+        year: "2025",
+        title: "Video Game Market Intelligence",
+        domain: "Analytics / Power BI",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/videogames-dashboard" }
+        ],
+        description: "Power BI dashboard analyzing global gaming market trends with sales data from major platforms for regional analytics.",
+        technologies: ["Power BI", "DAX", "ETL"],
+        metrics: [
+          { value: "5+", label: "Platforms" }
+        ]
+      },
+      {
+        year: "2024",
+        title: "India Air Quality ETL",
+        domain: "Data Engineering / Azure",
+        links: [
+          { label: "Live", url: "https://aqi-india.dvillagrans.dev" },
+          { label: "Repo", url: "https://github.com/dvillagrans/india-air-quality-etl" }
+        ],
+        description: "End-to-end ETL pipeline processing 2M+ daily readings from 500+ IoT sensors using Azure Databricks and PySpark.",
+        technologies: ["Azure", "PySpark", "PostgreSQL", "Databricks", "Power BI"],
+        metrics: [
+          { value: "2M+", label: "Daily records" },
+          { value: "500+", label: "Sensors" }
+        ]
+      },
+      {
+        year: "2024",
+        title: "Code Master",
+        domain: "EdTech / Full Stack",
+        links: [
+          { label: "Website", url: "https://codemaster-two.vercel.app" },
+          { label: "Repo", url: "https://github.com/dvillagrans/Code-Master" }
+        ],
+        description: "Gamified coding platform with Django backend, code playgrounds, and AI-assisted feedback. 2nd place in 2024 EdTech Innovation Awards.",
+        technologies: ["Django", "Astro", "JWT"],
+        metrics: [
+          { value: "2nd", label: "EdTech Awards" }
+        ]
+      },
+      {
+        year: "2024",
+        title: "Technical Portfolio Platform",
+        domain: "Web Development / Next.js",
+        links: [
+          { label: "Website", url: "https://www.dvillagrans.dev/" },
+          { label: "Repo", url: "https://github.com/dvillagrans/portfolio" }
+        ],
+        description: "Performant portfolio using Next.js SSG with perfect Lighthouse scores, project showcases, and MDX-based content system.",
+        technologies: ["Next.js 14", "React", "TypeScript"],
+        metrics: [
+          { value: "100", label: "Lighthouse" }
+        ]
+      },
+      {
+        year: "2024",
+        title: "Houses Prices Prediction",
+        domain: "Machine Learning / Flask",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/Houses-Prices-Prediction" }
+        ],
+        description: "ML pipeline using Random Forest to predict Mexico City property values with 88% R² score, deployed as a Flask API.",
+        technologies: ["Scikit-learn", "Python", "Flask"],
+        metrics: [
+          { value: "88%", label: "R² score" }
+        ]
+      },
+      {
+        year: "2024",
+        title: "Dashboard Financial",
+        domain: "Data Analysis / Excel VBA",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/Dashboard-Financial" }
+        ],
+        description: "Automated financial system using Excel VBA reducing process time by 15 hours/week with P&L visualizations.",
+        technologies: ["VBA", "Excel", "Dashboard"],
+        metrics: [
+          { value: "15h", label: "Saved/week" }
+        ]
+      },
+      {
+        year: "2023",
+        title: "Melari Spa",
+        domain: "Web Development / Astro",
+        links: [
+          { label: "Website", url: "https://melarispa.com" }
+        ],
+        description: "SEO-optimized wellness platform built with Astro, React, and Tailwind CSS featuring multi-language support.",
+        technologies: ["Astro", "React", "Tailwind CSS"],
+        metrics: [
+          { value: "SEO", label: "Optimized" }
+        ]
+      },
+      {
+        year: "2023",
+        title: "Prediction of Passengers for Mexican Airlines",
+        domain: "Time Series / Data Science",
+        links: [
+          { label: "Dashboard", url: "https://passenger-volume-prediction-in-mexi.vercel.app/" },
+          { label: "Repo", url: "https://github.com/dvillagrans/Passenger-Volume-Prediction-in-Mexico" }
+        ],
+        description: "Time series predictive models using SARIMA to forecast passenger demand for Mexican airlines with interactive dashboard.",
+        technologies: ["Python", "Pandas", "SARIMA"],
+        metrics: [
+          { value: "SARIMA", label: "Model" }
+        ]
+      }
     ]
   },
   contact: {
@@ -539,6 +745,12 @@ export const sharedEs = {
         caseStudy: "/projects/bouquet",
         links: [
           { label: "bouquet-psi.vercel.app", url: "https://bouquet-psi.vercel.app/" }
+        ],
+        description: "Sistema de gestión hotelera multi-tenant para cadenas de restaurantes con dashboards por rol, pipeline de analítica con Apache Spark y menú QR con pagos digitales.",
+        technologies: ["Next.js 16", "Prisma 7", "Supabase", "Apache Spark", "Docker"],
+        metrics: [
+          { value: "52", label: "KPIs" },
+          { value: "3", label: "Dashboards" }
         ]
       },
       {
@@ -547,6 +759,12 @@ export const sharedEs = {
         domain: "IA / Inteligencia Deportiva",
         links: [
           { label: "Repo", url: "https://github.com/dvillagrans/analisis-apuestas-futbol" }
+        ],
+        description: "Plataforma de análisis deportivo con IA que combina estadísticas en tiempo real, picks generados por DeepSeek, streaming SSE y visualización del Mundial 2026.",
+        technologies: ["Turborepo", "Next.js 16", "Express", "Supabase", "DeepSeek"],
+        metrics: [
+          { value: "7", label: "Ligas" },
+          { value: "$2-3", label: "USD/mes" }
         ]
       },
       {
@@ -555,6 +773,12 @@ export const sharedEs = {
         domain: "IA / PWA / RAG",
         links: [
           { label: "Repo", url: "https://github.com/dvillagrans/ARIA" }
+        ],
+        description: "Sistema operativo personal con IA como PWA. Captura en lenguaje natural, clasificación automática, memoria RAG con embeddings de 4096 dimensiones y herramientas de estudio.",
+        technologies: ["Next.js 16", "FastAPI", "Supabase", "pgvector", "DeepSeek"],
+        metrics: [
+          { value: "7", label: "Tipos de intent" },
+          { value: "229", label: "Tests" }
         ]
       },
       {
@@ -563,7 +787,13 @@ export const sharedEs = {
         domain: "IA / Automatización",
         isFeatured: true,
         caseStudy: "/projects/eyenet",
-        links: []
+        links: [],
+        description: "Infraestructura completa de automatización con LLMs, pipelines ETL/ELT, microservicios containerizados y apps web/móviles en producción con 10K+ requests diarios.",
+        technologies: ["Python", "n8n", "Docker", "FastAPI", "OpenAI"],
+        metrics: [
+          { value: "10K+", label: "Requests diarios" },
+          { value: "65%", label: "Menos trabajo manual" }
+        ]
       },
       {
         year: "2025",
@@ -574,22 +804,204 @@ export const sharedEs = {
         links: [
           { label: "timeup.mx", url: "https://timeup.mx" },
           { label: "negocios.timeup.mx", url: "https://negocios.timeup.mx" }
+        ],
+        description: "Sistema de control de tiempos que moderniza cómo los negocios registran horas y calculan nóminas. SaaS multi-tenant con disponibilidad en tiempo real y login con Passkeys.",
+        technologies: ["Next.js 16", "Prisma 7", "Supabase", "PostgreSQL", "Docker"],
+        metrics: [
+          { value: "<500ms", label: "Dashboard" },
+          { value: "0", label: "Sobre-reservas" }
         ]
       },
-      { year: "2025", title: "Perfiles de riesgo COVID-19 (México)", domain: "Data Science / Clustering", isFeatured: true, caseStudy: "https://covid.dvillagrans.dev", links: [{ label: "Dashboard", url: "https://covid.dvillagrans.dev" }] },
-      { year: "2025", title: "NYC Ride-Hailing Analytics Dashboard", domain: "Data Science / Streamlit", links: [ { label: "Dashboard", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" }, { label: "Repo", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" } ] },
-      { year: "2025", title: "Métodos de Optimización No Lineal", domain: "Optimización / Flask", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal" } ] },
-      { year: "2025", title: "Matemáticas Avanzadas - Métodos de Optimización", domain: "Optimización / Educación", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Metodos-de-optimizacion" } ] },
-      { year: "2025", title: "Dashboard de Población por Continente", domain: "Analítica / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/population-dashboard" } ] },
-      { year: "2025", title: "Global Health Analytics Dashboard", domain: "Analítica / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/health-analytics-dashboard" } ] },
-      { year: "2025", title: "Video Game Market Intelligence", domain: "Analítica / Power BI", links: [ { label: "Repo", url: "https://github.com/dvillagrans/videogames-dashboard" } ] },
-      { year: "2024", title: "India Air Quality ETL", domain: "Data Engineering / Azure", links: [ { label: "Live", url: "https://aqi-india.dvillagrans.dev" }, { label: "Repo", url: "https://github.com/dvillagrans/india-air-quality-etl" } ] },
-      { year: "2024", title: "Code Master", domain: "EdTech / Full Stack", links: [ { label: "Website", url: "https://codemaster-two.vercel.app" }, { label: "Repo", url: "https://github.com/dvillagrans/Code-Master" } ] },
-      { year: "2024", title: "Technical Portfolio Platform", domain: "Desarrollo Web / Next.js", links: [ { label: "Website", url: "https://www.dvillagrans.dev/" }, { label: "Repo", url: "https://github.com/dvillagrans/portfolio" } ] },
-      { year: "2024", title: "Predicción de precios de casas", domain: "Machine Learning / Flask", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Houses-Prices-Prediction" } ] },
-      { year: "2024", title: "Dashboard Financial", domain: "Análisis de Datos / Excel VBA", links: [ { label: "Repo", url: "https://github.com/dvillagrans/Dashboard-Financial" } ] },
-      { year: "2023", title: "Melari Spa", domain: "Desarrollo Web / Astro", links: [ { label: "Website", url: "https://melarispa.com" } ] },
-      { year: "2023", title: "Predicción de pasajeros para aerolíneas mexicanas", domain: "Series de tiempo / Data Science", links: [ { label: "Dashboard", url: "https://passenger-volume-prediction-in-mexi.vercel.app/" }, { label: "Repo", url: "https://github.com/dvillagrans/Passenger-Volume-Prediction-in-Mexico" } ] }
+      {
+        year: "2025",
+        title: "Perfiles de riesgo COVID-19 (México)",
+        domain: "Data Science / Clustering",
+        isFeatured: true,
+        caseStudy: "https://covid.dvillagrans.dev",
+        links: [{ label: "Dashboard", url: "https://covid.dvillagrans.dev" }],
+        description: "Identificación de perfiles de riesgo de COVID-19 a partir de más de 30 millones de registros de salud abiertos mexicanos usando K-Means y Fuzzy C-Means.",
+        technologies: ["Python", "scikit-learn", "scikit-fuzzy", "Next.js", "Recharts"],
+        metrics: [
+          { value: "30M+", label: "Registros" },
+          { value: "9", label: "Perfiles de riesgo" }
+        ]
+      },
+      {
+        year: "2025",
+        title: "NYC Ride-Hailing Analytics Dashboard",
+        domain: "Data Science / Streamlit",
+        links: [
+          { label: "Dashboard", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" },
+          { label: "Repo", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" }
+        ],
+        description: "Dashboard interactivo para analizar patrones de viaje de Uber y Lyft en NYC con modelos de predicción de tarifas y visualizaciones geoespaciales.",
+        technologies: ["Streamlit", "Python", "Scikit-learn", "Plotly", "Pandas"],
+        metrics: [
+          { value: "R² .85", label: "Predicción tarifa" },
+          { value: "92%", label: "Clasificación" }
+        ]
+      },
+      {
+        year: "2025",
+        title: "Métodos de Optimización No Lineal",
+        domain: "Optimización / Flask",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/Metodos-de-optimizacion-no-lineal" }
+        ],
+        description: "App web interactiva que implementa algoritmos de optimización no lineal con visualizaciones dinámicas y renderizado paso a paso de la convergencia.",
+        technologies: ["Flask", "Python", "NumPy"],
+        metrics: [
+          { value: "10+", label: "Algoritmos" }
+        ]
+      },
+      {
+        year: "2025",
+        title: "Matemáticas Avanzadas - Métodos de Optimización",
+        domain: "Optimización / Educación",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/Metodos-de-optimizacion" }
+        ],
+        description: "App Flask para resolver programación lineal con métodos Simplex, Big M y Dos Fases, con animaciones matemáticas generadas con Manim.",
+        technologies: ["Flask", "Python", "Manim"],
+        metrics: [
+          { value: "3", label: "Métodos" }
+        ]
+      },
+      {
+        year: "2025",
+        title: "Dashboard de Población por Continente",
+        domain: "Analítica / Power BI",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/population-dashboard" }
+        ],
+        description: "Dashboard de Power BI que analiza tendencias poblacionales y cambios demográficos dinámicos por continente.",
+        technologies: ["Power BI", "DAX", "Modelado de datos"],
+        metrics: [
+          { value: "6", label: "Continentes" }
+        ]
+      },
+      {
+        year: "2025",
+        title: "Global Health Analytics Dashboard",
+        domain: "Analítica / Power BI",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/health-analytics-dashboard" }
+        ],
+        description: "Dashboard de analítica de salud que analiza esperanza de vida y tasas de mortalidad infantil con integración de factores socioeconómicos.",
+        technologies: ["Power BI", "Análisis estadístico", "Modelado de datos"],
+        metrics: [
+          { value: "195", label: "Países" }
+        ]
+      },
+      {
+        year: "2025",
+        title: "Video Game Market Intelligence",
+        domain: "Analítica / Power BI",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/videogames-dashboard" }
+        ],
+        description: "Dashboard de Power BI que analiza tendencias del mercado global de videojuegos con datos de ventas de las principales plataformas.",
+        technologies: ["Power BI", "DAX", "ETL"],
+        metrics: [
+          { value: "5+", label: "Plataformas" }
+        ]
+      },
+      {
+        year: "2024",
+        title: "India Air Quality ETL",
+        domain: "Data Engineering / Azure",
+        links: [
+          { label: "Live", url: "https://aqi-india.dvillagrans.dev" },
+          { label: "Repo", url: "https://github.com/dvillagrans/india-air-quality-etl" }
+        ],
+        description: "Pipeline ETL de extremo a extremo que procesa más de 2 millones de lecturas diarias de más de 500 sensores IoT usando Azure Databricks y PySpark.",
+        technologies: ["Azure", "PySpark", "PostgreSQL", "Databricks", "Power BI"],
+        metrics: [
+          { value: "2M+", label: "Registros diarios" },
+          { value: "500+", label: "Sensores" }
+        ]
+      },
+      {
+        year: "2024",
+        title: "Code Master",
+        domain: "EdTech / Full Stack",
+        links: [
+          { label: "Website", url: "https://codemaster-two.vercel.app" },
+          { label: "Repo", url: "https://github.com/dvillagrans/Code-Master" }
+        ],
+        description: "Plataforma de programación gamificada con backend Django, playgrounds de código y retroalimentación asistida por IA. 2do lugar en EdTech Innovation Awards 2024.",
+        technologies: ["Django", "Astro", "JWT"],
+        metrics: [
+          { value: "2do", label: "EdTech Awards" }
+        ]
+      },
+      {
+        year: "2024",
+        title: "Technical Portfolio Platform",
+        domain: "Desarrollo Web / Next.js",
+        links: [
+          { label: "Website", url: "https://www.dvillagrans.dev/" },
+          { label: "Repo", url: "https://github.com/dvillagrans/portfolio" }
+        ],
+        description: "Portfolio de alto rendimiento con Next.js SSG, puntuaciones perfectas en Lighthouse, showcases de proyectos y sistema de contenido basado en MDX.",
+        technologies: ["Next.js 14", "React", "TypeScript"],
+        metrics: [
+          { value: "100", label: "Lighthouse" }
+        ]
+      },
+      {
+        year: "2024",
+        title: "Predicción de precios de casas",
+        domain: "Machine Learning / Flask",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/Houses-Prices-Prediction" }
+        ],
+        description: "Pipeline de ML con Random Forest para predecir valores de propiedades en la Ciudad de México con 88% de R², desplegado como API Flask.",
+        technologies: ["Scikit-learn", "Python", "Flask"],
+        metrics: [
+          { value: "88%", label: "R² score" }
+        ]
+      },
+      {
+        year: "2024",
+        title: "Dashboard Financial",
+        domain: "Análisis de Datos / Excel VBA",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/Dashboard-Financial" }
+        ],
+        description: "Sistema financiero automatizado con Excel VBA que reduce el tiempo de proceso en 15 horas semanales con visualizaciones de P&L.",
+        technologies: ["VBA", "Excel", "Dashboard"],
+        metrics: [
+          { value: "15h", label: "Ahorradas/sem" }
+        ]
+      },
+      {
+        year: "2023",
+        title: "Melari Spa",
+        domain: "Desarrollo Web / Astro",
+        links: [
+          { label: "Website", url: "https://melarispa.com" }
+        ],
+        description: "Plataforma de bienestar optimizada para SEO construida con Astro, React y Tailwind CSS con soporte multi-idioma.",
+        technologies: ["Astro", "React", "Tailwind CSS"],
+        metrics: [
+          { value: "SEO", label: "Optimizado" }
+        ]
+      },
+      {
+        year: "2023",
+        title: "Predicción de pasajeros para aerolíneas mexicanas",
+        domain: "Series de tiempo / Data Science",
+        links: [
+          { label: "Dashboard", url: "https://passenger-volume-prediction-in-mexi.vercel.app/" },
+          { label: "Repo", url: "https://github.com/dvillagrans/Passenger-Volume-Prediction-in-Mexico" }
+        ],
+        description: "Modelos predictivos de series de tiempo usando SARIMA para pronosticar la demanda de pasajeros en aerolíneas mexicanas con dashboard interactivo.",
+        technologies: ["Python", "Pandas", "SARIMA"],
+        metrics: [
+          { value: "SARIMA", label: "Modelo" }
+        ]
+      }
     ]
   },
   contact: {

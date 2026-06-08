@@ -127,6 +127,9 @@ export interface ArchiveProject {
   caseStudy?: string;
   links?: ProjectLink[];
   link?: string;
+  description?: string;
+  technologies?: string[];
+  metrics?: { value: string; label: string }[];
 }
 
 export interface ArchiveDict {
