@@ -124,7 +124,7 @@ export const DATA = {
       title: "Qalma — Personal Wellness Agent",
       href: "",
       dates: "2026",
-      active: true,
+      active: false,
       role: "AI Developer · Eyenet (Part-time)",
       badges: ["AI Agent", "React Native", "EEG", "In Development"],
       metrics: [
@@ -794,12 +794,12 @@ export const DATA = {
     {
       company: "Eyenet",
       href: "https://eyenet.com",
-      badges: ["Internship", "Remote", "Full-time"],
+      badges: ["Remote", "Full-time"],
       location: "Remote",
       title: "AI & Automation Intern",
       logoUrl: "/img/eyenet.webp",
       start: "April 2025",
-      end: "Present",
+      end: "June 2026",
       description:
         "Designed and deployed end-to-end automation workflows using n8n and Python, reducing manual processing time by 70%. Implemented AI/ML deployment with OpenAI and Gemini APIs for document processing, achieving 60% reduction in data capture errors. Built production-ready Docker infrastructure with PostgreSQL databases, automated CI/CD pipelines, and Telegram alerting systems. Developed intelligent data processing pipelines using machine learning algorithms, improving accuracy by 45%. Architected scalable microservices architecture with Redis caching and MongoDB integration, handling 10,000+ daily transactions.",
     },
