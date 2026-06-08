@@ -240,6 +240,14 @@ export const sharedEn = {
         ]
       },
       {
+        year: "2026",
+        title: "Sports Analytics Platform",
+        domain: "AI / Sports Intelligence",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/analisis-apuestas-futbol" }
+        ]
+      },
+      {
         year: "2025",
         title: "EyeNet — AI & Automation Systems",
         domain: "AI / Automation",
@@ -523,6 +531,14 @@ export const sharedEs = {
         caseStudy: "/projects/bouquet",
         links: [
           { label: "bouquet-psi.vercel.app", url: "https://bouquet-psi.vercel.app/" }
+        ]
+      },
+      {
+        year: "2026",
+        title: "Sports Analytics Platform",
+        domain: "IA / Inteligencia Deportiva",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/analisis-apuestas-futbol" }
         ]
       },
       {

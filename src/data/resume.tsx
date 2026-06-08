@@ -136,6 +136,50 @@ export const DATA = {
       video: ""
     },
     {
+      title: "Sports Analytics Platform",
+      href: "https://github.com/dvillagrans/analisis-apuestas-futbol",
+      dates: "May 2026",
+      active: true,
+      role: "Full-Stack Dev · AI-Powered Sports Intelligence",
+      badges: ["AI", "Monorepo", "Production-ready", "SSE Streaming"],
+      metrics: [
+        { value: "7", label: "Leagues covered" },
+        { value: "$2-3", label: "USD/month operating cost" },
+        { value: "<15s", label: "AI analysis via SSE" }
+      ],
+      features: [
+        { name: "AI Engine", value: "DeepSeek Reasoner generates picks with confidence scores, parlays, and transparent reasoning" },
+        { name: "Data Pipeline", value: "3 APIs (football-data.org, TheSportsDB, API-Football) with Supabase caching and TTL management" },
+        { name: "World Cup 2026", value: "Full bracket visualization with native SVG connector engine — zero external chart libraries" }
+      ],
+      description: "Personal sports betting analysis platform combining real-time cold stats with AI-generated picks. Monorepo (Turborepo) with Next.js frontend, Express backend, Supabase, and SSE streaming. Covers LaLiga, Premier League, Serie A, Bundesliga, Liga MX, and World Cup 2026. ROI tracking, confidence-based pick history, and parlay builder.",
+      technologies: [
+        "Turborepo",
+        "Next.js 16",
+        "React 19",
+        "TypeScript",
+        "Express",
+        "Supabase",
+        "PostgreSQL",
+        "DeepSeek Reasoner",
+        "SSE",
+        "Docker",
+        "GitHub Actions",
+        "Tailwind CSS",
+        "Framer Motion",
+        "Vercel"
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/dvillagrans/analisis-apuestas-futbol",
+          icon: <Icons.github className="size-3" />
+        }
+      ],
+      image: { src: "/img/sports-analytics.webp" },
+      video: ""
+    },
+    {
       title: "TimeUp",
       caseStudy: true,
       href: "/projects/timeup",
