@@ -507,3 +507,108 @@ html.theme-toggling::view-transition-new(root) {
 body[data-mobile-menu-open] .project-chat-trigger {
   display: none !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   PRINT STYLES — CV Builder PDF export
+   ═══════════════════════════════════════════════════════════════ */
+
+@media print {
+  /* Hide everything except the CV content */
+  body * {
+    visibility: hidden;
+  }
+
+  .prose-cv,
+  .prose-cv * {
+    visibility: visible;
+  }
+
+  /* Position the CV at the top of the page */
+  .prose-cv {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 0.5in 0.6in !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: white !important;
+    color: #1a1a1a !important;
+    font-size: 10pt;
+    line-height: 1.35;
+  }
+
+  /* Typography */
+  .prose-cv h1 {
+    font-size: 16pt;
+    margin-bottom: 4pt;
+    color: #1a1a1a !important;
+  }
+
+  .prose-cv h2 {
+    font-size: 10pt;
+    margin-top: 10pt;
+    margin-bottom: 4pt;
+    padding-bottom: 2pt;
+    border-bottom: 0.5pt solid #ccc !important;
+    color: #1a1a1a !important;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .prose-cv h2:first-of-type {
+    margin-top: 0;
+  }
+
+  .prose-cv h3 {
+    font-size: 9.5pt;
+    margin-top: 6pt;
+    margin-bottom: 2pt;
+    color: #1a1a1a !important;
+  }
+
+  .prose-cv p {
+    font-size: 9.5pt;
+    margin-bottom: 3pt;
+    color: #333 !important;
+  }
+
+  .prose-cv ul,
+  .prose-cv ol {
+    margin-bottom: 4pt;
+    padding-left: 14pt;
+    color: #333 !important;
+  }
+
+  .prose-cv li {
+    font-size: 9.5pt;
+    margin-bottom: 1.5pt;
+    line-height: 1.3;
+  }
+
+  .prose-cv strong {
+    color: #1a1a1a !important;
+  }
+
+  .prose-cv em {
+    color: #444 !important;
+  }
+
+  .prose-cv a {
+    color: #1a1a1a !important;
+    text-decoration: none !important;
+  }
+
+  /* Page settings */
+  @page {
+    size: letter;
+    margin: 0;
+  }
+
+  /* Force single page */
+  .prose-cv {
+    max-height: 100vh;
+    overflow: hidden;
+  }
+}

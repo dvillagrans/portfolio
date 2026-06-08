@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Link } from "next-view-transitions";
 import Navbar from "@/components/layout/Navbar";
-import { ArrowLeft, Copy, Check, RotateCcw, Sparkles } from "lucide-react";
+import { ArrowLeft, Copy, Check, RotateCcw, Sparkles, Printer } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { cvBuilderEn, cvBuilderEs } from "@/i18n/dictionaries/cv-builder";
 import type { CvBuilderDict } from "@/i18n/types";
@@ -108,6 +108,10 @@ export default function CvBuilderPage() {
       setTimeout(() => setCopied(false), 2000);
     }
   }, [state]);
+
+  const handlePrint = useCallback(() => {
+    window.print();
+  }, []);
 
   const handleReset = useCallback(() => {
     setState({ status: "idle" });
@@ -280,6 +284,19 @@ export default function CvBuilderPage() {
                     {dict.copyButton}
                   </>
                 )}
+              </button>
+
+              <button
+                onClick={handlePrint}
+                className="group inline-flex items-center justify-center gap-2 min-h-[44px] px-6 rounded-full font-sans text-xs font-bold uppercase tracking-widest transition-all spring-press border"
+                style={{
+                  backgroundColor: "var(--card)",
+                  borderColor: "var(--border-color)",
+                  color: "var(--text-secondary)",
+                }}
+              >
+                <Printer className="h-4 w-4" />
+                {dict.printButton}
               </button>
 
               <button

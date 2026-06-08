@@ -489,6 +489,7 @@ export interface CvBuilderDict {
   generating: string;
   copyButton: string;
   copied: string;
+  printButton: string;
   generateAgain: string;
   back: string;
   errorRateLimit: string;
