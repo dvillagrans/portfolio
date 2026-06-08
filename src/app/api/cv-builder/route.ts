@@ -14,6 +14,30 @@ const CV_WINDOW_MS = 5 * 60 * 1000;
 const MIN_JD_LENGTH = 10;
 const MAX_JD_LENGTH = 10_000;
 
+/**
+ * Remove duplicate paragraphs from the generated CV.
+ * DeepSeek sometimes repeats the summary or other sections.
+ */
+function deduplicateParagraphs(text: string): string {
+  const paragraphs = text.split(/\n\n+/);
+  const seen = new Set<string>();
+  const unique: string[] = [];
+
+  for (const p of paragraphs) {
+    const normalized = p.trim().toLowerCase().replace(/\s+/g, " ");
+    if (normalized.length < 20) {
+      // Keep short lines (headers, bullets, etc.)
+      unique.push(p);
+      continue;
+    }
+    if (seen.has(normalized)) continue;
+    seen.add(normalized);
+    unique.push(p);
+  }
+
+  return unique.join("\n\n");
+}
+
 // Filter out non-serializable fields (JSX nodes) before stringifying
 const cleanData = JSON.stringify(DATA, (key, value) => {
   if (key === 'icon' || key === 'logo') return undefined;
@@ -59,7 +83,7 @@ Instructions:
 (location · email · phone · linkedin url · github url · portfolio url)
 
 ## Professional Summary
-(3-4 lines, tailored to JD, compelling and specific. DO NOT repeat this section.)
+(3-4 lines, tailored to JD, compelling and specific. THIS SECTION MUST APPEAR EXACTLY ONCE. NEVER repeat paragraphs or sentences.)
 
 ## Education
 (school · degree · expected graduation · GPA if > 8.5)
@@ -162,7 +186,10 @@ export async function POST(req: Request) {
       );
     }
 
-    return NextResponse.json({ markdown: text });
+    // Deduplicate repeated paragraphs (DeepSeek sometimes repeats the summary)
+    const deduplicated = deduplicateParagraphs(text);
+
+    return NextResponse.json({ markdown: deduplicated });
   } catch (error) {
     console.error('CV Builder error:', error);
     return NextResponse.json(
