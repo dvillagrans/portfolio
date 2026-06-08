@@ -231,6 +231,18 @@ export const sharedEn = {
     projects: [
       {
         year: "2026",
+        title: "RAG Conversacional CIC",
+        domain: "AI / Multi-Agent / RAG",
+        links: [],
+        description: "Multi-agent RAG system for graduate students at CIC-IPN. Agents specialize in state-of-the-art, prior works, and research using Bloom's taxonomy. Generates LaTeX protocol drafts.",
+        technologies: ["FastAPI", "DeepSeek", "pgvector", "Supabase", "LaTeX"],
+        metrics: [
+          { value: "5+", label: "Agents" },
+          { value: "Bloom", label: "Taxonomy" }
+        ]
+      },
+      {
+        year: "2026",
         title: "Bouquet — Hospitality OS",
         domain: "Full Stack / Multi-tenant SaaS",
         isFeatured: true,
@@ -741,6 +753,18 @@ export const sharedEs = {
     headers: { year: "Año", project: "Proyecto", domain: "Dominio", link: "Enlace" },
     viewProject: "Visitar",
     projects: [
+      {
+        year: "2026",
+        title: "RAG Conversacional CIC",
+        domain: "IA / Multi-Agente / RAG",
+        links: [],
+        description: "Sistema RAG multi-agente para estudiantes de posgrado en el CIC-IPN. Agentes especializados en estado del arte, trabajos previos e investigación usando taxonomía de Bloom. Genera protocolos en LaTeX.",
+        technologies: ["FastAPI", "DeepSeek", "pgvector", "Supabase", "LaTeX"],
+        metrics: [
+          { value: "5+", label: "Agentes" },
+          { value: "Bloom", label: "Taxonomía" }
+        ]
+      },
       {
         year: "2026",
         title: "Bouquet — Hospitality OS",

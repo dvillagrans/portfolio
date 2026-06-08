@@ -87,6 +87,38 @@ export const DATA = {
 
   projects: [
     {
+      title: "RAG Conversacional CIC",
+      href: "",
+      dates: "2026",
+      active: true,
+      role: "AI Engineer · Multi-Agent Research Assistant (CIC-IPN)",
+      badges: ["RAG", "Multi-Agent", "LaTeX", "In Development"],
+      metrics: [
+        { value: "5+", label: "Specialized agents" },
+        { value: "Bloom", label: "Taxonomy-driven reasoning" },
+        { value: "LaTeX", label: "Protocol generation" }
+      ],
+      features: [
+        { name: "Agent Architecture", value: "Dedicated agents for state-of-the-art, prior works, and general research" },
+        { name: "Bloom's Taxonomy", value: "Structured reasoning from remembering to creating — guides the research depth" },
+        { name: "LaTeX Pipeline", value: "First-shot protocol generation with iterative refinement loop" }
+      ],
+      description: "Multi-agent RAG system that helps graduate students build research protocols. Agents specialize in state-of-the-art review, prior works analysis, and general research. Uses Bloom's taxonomy to structure reasoning depth. Generates first LaTeX draft and iterates with the student. Built at CIC-IPN.",
+      technologies: [
+        "FastAPI",
+        "Python",
+        "DeepSeek",
+        "Qwen3 Embeddings",
+        "pgvector",
+        "Supabase",
+        "Next.js",
+        "LaTeX"
+      ],
+      links: [],
+      image: { src: "/img/rag-cic.webp" },
+      video: ""
+    },
+    {
       title: "Bouquet — Hospitality OS",
       caseStudy: true,
       href: "/projects/bouquet",
