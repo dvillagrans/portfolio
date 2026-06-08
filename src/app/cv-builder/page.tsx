@@ -114,8 +114,9 @@ export default function CvBuilderPage() {
     try {
       const { pdf } = await import("@react-pdf/renderer");
       const { CvPdfDocument } = await import("@/components/ui/CvPdf");
+      const { CERTIFICATIONS } = await import("@/data/certifications");
       const blob = await pdf(
-        <CvPdfDocument markdown={state.markdown} />
+        <CvPdfDocument markdown={state.markdown} certifications={CERTIFICATIONS} />
       ).toBlob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");

@@ -10,6 +10,7 @@ import {
   Font,
   Link,
 } from "@react-pdf/renderer";
+import type { Certification } from "@/data/certifications";
 
 Font.register({
   family: "Helvetica",
@@ -128,6 +129,11 @@ const styles = StyleSheet.create({
     color: "#333",
     marginBottom: 3,
   },
+  certLink: {
+    fontSize: 9,
+    color: ACCENT,
+    textDecoration: "none",
+  },
 });
 
 interface CvSection {
@@ -236,7 +242,28 @@ function stripMarkdown(text: string): string {
     .replace(/\[(.*?)\]\(.*?\)/g, "$1");
 }
 
-export function CvPdfDocument({ markdown }: { markdown: string }) {
+/**
+ * Match a certification text line to a known certification ID.
+ * Tries exact match first, then checks if the cert name is contained in the line.
+ */
+function findCertId(text: string, lookup: Map<string, string>): string | null {
+  const lower = text.toLowerCase();
+  // Exact match
+  if (lookup.has(lower)) return lookup.get(lower)!;
+  // Check if any cert name is contained in the text
+  for (const [name, id] of lookup) {
+    if (lower.includes(name)) return id;
+  }
+  return null;
+}
+
+export function CvPdfDocument({
+  markdown,
+  certifications = [],
+}: {
+  markdown: string;
+  certifications?: Certification[];
+}) {
   const sections = parseMarkdown(markdown);
 
   // Deduplicate sections by type — DeepBoost sometimes generates duplicates
@@ -255,6 +282,12 @@ export function CvPdfDocument({ markdown }: { markdown: string }) {
   const nameParts = rawName.split(/\n|(?=·)/);
   const name = nameParts[0]?.trim() || rawName;
   const contact = nameParts.length > 1 ? nameParts.slice(1).join(" ").trim() : "";
+
+  // Build a lookup for certification links by name matching
+  const certLookup = new Map<string, string>();
+  for (const cert of certifications) {
+    certLookup.set(cert.name.toLowerCase(), cert.id);
+  }
 
   const titleMap: Record<string, string> = {
     "professional summary": "Professional Summary",
@@ -347,9 +380,25 @@ export function CvPdfDocument({ markdown }: { markdown: string }) {
             const clean = item.startsWith("__BOLD__")
               ? item.replace("__BOLD__", "")
               : item;
+            const stripped = stripMarkdown(clean);
+            // Try to match certification name to get the ID for linking
+            const matchedId = findCertId(stripped, certLookup);
+            if (matchedId) {
+              return (
+                <Text key={i} style={styles.certLine}>
+                  •{" "}
+                  <Link
+                    src={`https://www.dvillagrans.dev/about#${matchedId}`}
+                    style={styles.certLink}
+                  >
+                    {stripped}
+                  </Link>
+                </Text>
+              );
+            }
             return (
               <Text key={i} style={styles.certLine}>
-                • {renderInline(clean)}
+                • {stripped}
               </Text>
             );
           })}
