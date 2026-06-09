@@ -7,7 +7,6 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useTheme } from "@/hooks/ThemeContext";
 import { Link } from "next-view-transitions";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, Sun, Moon, FolderGit2, Cpu, User, Mail } from "lucide-react";
 
@@ -207,16 +206,9 @@ export default function Navbar() {
         <div className="flex items-center justify-between px-5 md:px-6 py-3 w-full">
           <Link
             href="/"
-            className="hover:opacity-60 transition-opacity duration-300"
+            className="text-xs md:text-sm font-semibold tracking-wide uppercase font-sans hover:opacity-60 transition-opacity duration-300"
           >
-            <Image
-              src="/img/dv-logo.png"
-              alt="Diego Villagran"
-              width={120}
-              height={32}
-              className="h-7 md:h-8 w-auto"
-              priority
-            />
+            DIEGO VILLAGRAN
           </Link>
 
           <div className="flex items-center gap-2 md:gap-6">
