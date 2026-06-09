@@ -375,33 +375,61 @@ export function CvPdfDocument({
         )}
 
         {/* Certifications */}
-        {section.type === "certifications" &&
-          section.items.map((item, i) => {
-            const clean = item.startsWith("__BOLD__")
-              ? item.replace("__BOLD__", "")
-              : item;
-            const stripped = stripMarkdown(clean);
-            // Try to match certification name to get the ID for linking
-            const matchedId = findCertId(stripped, certLookup);
-            if (matchedId) {
-              return (
-                <Text key={i} style={styles.certLine}>
-                  •{" "}
-                  <Link
-                    src={`https://www.dvillagrans.dev/about#${matchedId}`}
-                    style={styles.certLink}
-                  >
-                    {stripped}
-                  </Link>
-                </Text>
-              );
-            }
-            return (
-              <Text key={i} style={styles.certLine}>
-                • {stripped}
-              </Text>
-            );
-          })}
+        {section.type === "certifications" && (
+          <>
+            {section.items.length > 0
+              ? section.items.map((item, i) => {
+                  const clean = item.startsWith("__BOLD__")
+                    ? item.replace("__BOLD__", "")
+                    : item;
+                  const stripped = stripMarkdown(clean);
+                  const matchedId = findCertId(stripped, certLookup);
+                  if (matchedId) {
+                    return (
+                      <Text key={i} style={styles.certLine}>
+                        •{" "}
+                        <Link
+                          src={`https://www.dvillagrans.dev/about#${matchedId}`}
+                          style={styles.certLink}
+                        >
+                          {stripped}
+                        </Link>
+                      </Text>
+                    );
+                  }
+                  return (
+                    <Text key={i} style={styles.certLine}>
+                      • {stripped}
+                    </Text>
+                  );
+                })
+              : section.content &&
+                // Content might have cert lines separated by newlines or as one block
+                section.content.split(/\n|(?<=\))\s{2,}/).filter(Boolean).map((line, i) => {
+                  const stripped = stripMarkdown(line.trim());
+                  if (!stripped) return null;
+                  const matchedId = findCertId(stripped, certLookup);
+                  if (matchedId) {
+                    return (
+                      <Text key={i} style={styles.certLine}>
+                        •{" "}
+                        <Link
+                          src={`https://www.dvillagrans.dev/about#${matchedId}`}
+                          style={styles.certLink}
+                        >
+                          {stripped}
+                        </Link>
+                      </Text>
+                    );
+                  }
+                  return (
+                    <Text key={i} style={styles.certLine}>
+                      • {stripped}
+                    </Text>
+                  );
+                })}
+          </>
+        )}
       </View>
     );
   };
