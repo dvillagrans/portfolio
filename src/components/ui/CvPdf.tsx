@@ -152,7 +152,7 @@ function parseMarkdown(md: string): CvSection[] {
   const flush = () => {
     if (currentType) {
       sections.push({
-        type: currentType,
+        type: currentType === "__name__" ? "name" : currentType,
         content: currentContent.trim(),
         items: currentItems,
       });
@@ -166,10 +166,11 @@ function parseMarkdown(md: string): CvSection[] {
     const trimmed = line.trim();
     if (!trimmed) continue;
 
-    // H1 — name
+    // H1 — name (capture name + next line for contact info)
     if (trimmed.startsWith("# ") && !trimmed.startsWith("## ")) {
       flush();
-      sections.push({ type: "name", content: trimmed.replace(/^# /, ""), items: [] });
+      currentType = "__name__";
+      currentContent = trimmed.replace(/^# /, "");
       continue;
     }
 
