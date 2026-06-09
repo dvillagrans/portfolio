@@ -210,7 +210,7 @@ export default function Navbar() {
             className="hover:opacity-60 transition-opacity duration-300"
           >
             <Image
-              src="/img/dv-logo.jpeg"
+              src="/img/dv-logo.png"
               alt="Diego Villagran"
               width={120}
               height={32}
