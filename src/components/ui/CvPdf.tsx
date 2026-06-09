@@ -281,7 +281,33 @@ export function CvPdfDocument({
   const rawName = nameSection?.content || "Diego Villagran Salazar";
   const nameParts = rawName.split(/\n|(?=·)/);
   const name = nameParts[0]?.trim() || rawName;
-  const contact = nameParts.length > 1 ? nameParts.slice(1).join(" ").trim() : "";
+  const contactRaw = nameParts.length > 1 ? nameParts.slice(1).join(" ").trim() : "";
+
+  // Parse contact into segments with clickable links
+  const contactSegments = contactRaw
+    .split("·")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  function getContactLink(segment: string): { text: string; src: string } | null {
+    const lower = segment.toLowerCase();
+    if (lower.includes("github.com")) {
+      return { text: segment, src: segment.startsWith("http") ? segment : `https://${segment}` };
+    }
+    if (lower.includes("linkedin.com")) {
+      return { text: segment, src: segment.startsWith("http") ? segment : `https://${segment}` };
+    }
+    if (lower.includes("dvillagrans.dev") || lower.includes(".dev")) {
+      return { text: segment, src: segment.startsWith("http") ? segment : `https://${segment}` };
+    }
+    if (lower.includes("@") && lower.includes(".")) {
+      return { text: segment, src: `mailto:${segment}` };
+    }
+    if (/^\+?\d[\d\s-]{7,}$/.test(segment)) {
+      return { text: segment, src: `tel:${segment.replace(/\s/g, "")}` };
+    }
+    return null;
+  }
 
   // Build a lookup for certification links by name matching
   const certLookup = new Map<string, string>();
@@ -438,7 +464,25 @@ export function CvPdfDocument({
     <Document>
       <Page size="LETTER" style={styles.page}>
         <Text style={styles.name}>{stripMarkdown(name)}</Text>
-        {contact && <Text style={styles.contactLine}>{contact}</Text>}
+        {contactSegments.length > 0 && (
+          <Text style={styles.contactLine}>
+            {contactSegments.map((segment, i) => {
+              const link = getContactLink(segment);
+              return (
+                <React.Fragment key={i}>
+                  {i > 0 && " · "}
+                  {link ? (
+                    <Link src={link.src} style={styles.contactLink}>
+                      {link.text}
+                    </Link>
+                  ) : (
+                    segment
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </Text>
+        )}
         {uniqueSections.map((section, index) => renderSection(section, index))}
       </Page>
     </Document>
