@@ -125,14 +125,24 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   certLine: {
-    fontSize: 9,
+    fontSize: 8.5,
     color: "#333",
-    marginBottom: 3,
+    marginBottom: 2,
+    lineHeight: 1.4,
   },
   certLink: {
-    fontSize: 9,
+    fontSize: 8.5,
     color: ACCENT,
     textDecoration: "none",
+  },
+  certGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 3,
+  },
+  certItem: {
+    width: "48%",
+    marginBottom: 3,
   },
 });
 
@@ -401,61 +411,41 @@ export function CvPdfDocument({
           </View>
         )}
 
-        {/* Certifications */}
+        {/* Certifications — 2-column grid */}
         {section.type === "certifications" && (
-          <>
-            {section.items.length > 0
-              ? section.items.map((item, i) => {
+          <View style={styles.certGrid}>
+            {(section.items.length > 0
+              ? section.items.map((item) => {
                   const clean = item.startsWith("__BOLD__")
                     ? item.replace("__BOLD__", "")
                     : item;
-                  const stripped = stripMarkdown(clean);
-                  const matchedId = findCertId(stripped, certLookup);
-                  if (matchedId) {
-                    return (
-                      <Text key={i} style={styles.certLine}>
-                        •{" "}
-                        <Link
-                          src={`https://www.dvillagrans.dev/about#${matchedId}`}
-                          style={styles.certLink}
-                        >
-                          {stripped}
-                        </Link>
-                      </Text>
-                    );
-                  }
-                  return (
-                    <Text key={i} style={styles.certLine}>
-                      • {stripped}
-                    </Text>
-                  );
+                  return stripMarkdown(clean);
                 })
-              : section.content &&
-                // Content might have cert lines separated by newlines or as one block
-                section.content.split(/\n|(?<=\))\s{2,}/).filter(Boolean).map((line, i) => {
-                  const stripped = stripMarkdown(line.trim());
-                  if (!stripped) return null;
-                  const matchedId = findCertId(stripped, certLookup);
-                  if (matchedId) {
-                    return (
-                      <Text key={i} style={styles.certLine}>
-                        •{" "}
-                        <Link
-                          src={`https://www.dvillagrans.dev/about#${matchedId}`}
-                          style={styles.certLink}
-                        >
-                          {stripped}
-                        </Link>
-                      </Text>
-                    );
-                  }
-                  return (
-                    <Text key={i} style={styles.certLine}>
-                      • {stripped}
+              : section.content
+                ? section.content.split(/\n|(?<=\))\s{2,}/).filter(Boolean).map((l) => stripMarkdown(l.trim()))
+                : []
+            ).map((text, i) => {
+              if (!text) return null;
+              const matchedId = findCertId(text, certLookup);
+              return (
+                <View key={i} style={styles.certItem}>
+                  {matchedId ? (
+                    <Text style={styles.certLine}>
+                      •{" "}
+                      <Link
+                        src={`https://www.dvillagrans.dev/about#${matchedId}`}
+                        style={styles.certLink}
+                      >
+                        {text}
+                      </Link>
                     </Text>
-                  );
-                })}
-          </>
+                  ) : (
+                    <Text style={styles.certLine}>• {text}</Text>
+                  )}
+                </View>
+              );
+            })}
+          </View>
         )}
       </View>
     );
