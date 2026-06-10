@@ -67,6 +67,12 @@ export default function About() {
   const sections = about.sections;
   const closureText = about.closure;
   const stats = about.metrics;
+  const meta = about.meta;
+  // Split the title for editorial typography: "Diego" / "Villagran" / "Salazar"
+  const titleParts = about.title.trim().split(/\s+/);
+  const titleFirst = titleParts[0] ?? about.title;
+  const titleMid = titleParts[1] ?? "";
+  const titleLast = titleParts.slice(2).join(" ");
 
   return (
     <main
@@ -125,26 +131,126 @@ export default function About() {
         {/* Editorial Intro */}
         <section className="mb-32">
 
-          {/* Title Section */}
-          <div className="flex flex-col gap-4 mb-20">
-            <h1
-              style={{ viewTransitionName: "about-title" }}
-              ref={(el) => { elementsRef.current[0] = el; }}
-              className="font-serif text-5xl italic tracking-tight md:text-8xl mb-4 text-[var(--text-primary)]"
+          {/* Eyebrow — masthead-style role tag */}
+          <p
+            ref={(el) => { elementsRef.current[1] = el; }}
+            className="font-sans text-[10px] font-bold uppercase tracking-[0.32em] text-warm mb-10 md:mb-14"
+          >
+            {about.subtitle}
+          </p>
+
+          {/* Title + Portrait — asymmetric editorial grid */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 mb-20 md:mb-28 items-start">
+
+            {/* Title + meta */}
+            <div className="md:col-span-7 flex flex-col gap-12 md:order-1 order-2">
+              <h1
+                style={{ viewTransitionName: "about-title" }}
+                ref={(el) => { elementsRef.current[0] = el; }}
+                className="font-serif text-6xl md:text-[7.5rem] leading-[0.92] tracking-tight text-[var(--text-primary)]"
+              >
+                {titleFirst}
+                {titleMid && (
+                  <>
+                    <br />
+                    <span className="italic text-[var(--text-secondary)]">{titleMid}</span>
+                  </>
+                )}
+                {titleLast && (
+                  <>
+                    <br />
+                    <span className="font-light">{titleLast}</span>
+                  </>
+                )}
+              </h1>
+
+              {/* Meta block — magazine masthead */}
+              <dl className="grid grid-cols-[auto_1fr] gap-y-3 gap-x-8 font-mono text-[10px] uppercase tracking-[0.22em] max-w-sm border-t border-[var(--border-color)] pt-6">
+                <dt className="text-[var(--text-muted)]">{meta.locationLabel}</dt>
+                <dd className="text-[var(--text-secondary)]">{meta.locationValue}</dd>
+                <dt className="text-[var(--text-muted)]">{meta.statusLabel}</dt>
+                <dd className="text-warm">{meta.statusValue}</dd>
+                <dt className="text-[var(--text-muted)]">{meta.roleLabel}</dt>
+                <dd className="text-[var(--text-secondary)]">{about.subtitle.split("·")[0]?.trim()}</dd>
+                <dt className="text-[var(--text-muted)]">{meta.studyingLabel}</dt>
+                <dd className="text-[var(--text-secondary)]">{meta.studyingValue}</dd>
+              </dl>
+            </div>
+
+            {/* Identity poster — monogram in place of portrait */}
+            <div
+              ref={(el) => { elementsRef.current[7] = el; }}
+              className="md:col-span-5 md:order-2 order-1 relative"
             >
-              {about.title}
-            </h1>
-            <p
-              ref={(el) => { elementsRef.current[1] = el; }}
-              className="font-sans text-sm font-semibold uppercase tracking-[0.3em] text-warm"
-            >
-              {about.subtitle}
-            </p>
+              <figure
+                className="group relative aspect-[4/5] w-full overflow-hidden rounded-[1.5rem] border border-[var(--border-color)] bg-[var(--bg-secondary)] shadow-2xl"
+                aria-label={`${about.title} — identity card`}
+              >
+                {/* Warm radial wash */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "radial-gradient(ellipse at 28% 18%, rgba(225,160,80,0.22) 0%, transparent 55%), radial-gradient(ellipse at 78% 88%, rgba(225,160,80,0.10) 0%, transparent 50%)",
+                  }}
+                  aria-hidden
+                />
+                {/* Faint grid pattern */}
+                <div
+                  className="absolute inset-0 opacity-[0.05]"
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(var(--text-primary) 1px, transparent 1px), linear-gradient(90deg, var(--text-primary) 1px, transparent 1px)",
+                    backgroundSize: "44px 44px",
+                  }}
+                  aria-hidden
+                />
+
+                {/* Top corner credit line */}
+                <div className="absolute top-5 inset-x-5 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.28em] text-[var(--text-muted)] z-10">
+                  <span>EST. 2024</span>
+                  <span>MX · CDMX</span>
+                </div>
+
+                {/* Monogram — D + V overlapping */}
+                <div className="absolute inset-0 flex items-center justify-center select-none">
+                  <div className="relative" aria-hidden>
+                    <span className="block font-serif text-[14rem] md:text-[18rem] leading-none text-[var(--text-primary)] font-medium tracking-tighter transition-transform duration-700 ease-out group-hover:-translate-x-3">
+                      D
+                    </span>
+                    <span
+                      className="absolute font-serif italic text-[14rem] md:text-[18rem] leading-none text-warm tracking-tighter transition-transform duration-700 ease-out group-hover:translate-x-3"
+                      style={{ left: "52%", top: "18%" }}
+                    >
+                      V
+                    </span>
+                  </div>
+                </div>
+
+                {/* Bottom credit line */}
+                <div className="absolute bottom-5 inset-x-5 flex items-end justify-between font-mono text-[9px] uppercase tracking-[0.28em] text-[var(--text-muted)] z-10">
+                  <span>N° 01 · IDENTITY</span>
+                  <span>AI / SYSTEMS</span>
+                </div>
+
+                {/* Vignette to soften edges */}
+                <div
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    background:
+                      "radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(0,0,0,0.20) 100%)",
+                  }}
+                  aria-hidden
+                />
+              </figure>
+            </div>
+
           </div>
 
+          {/* Intro paragraph — magazine lede */}
           <div
             ref={(el) => { elementsRef.current[2] = el; }}
-            className="text-2xl md:text-4xl leading-relaxed md:leading-[1.4] text-[var(--text-primary)] font-medium text-balance"
+            className="text-2xl md:text-4xl leading-relaxed md:leading-[1.4] text-[var(--text-primary)] font-medium text-balance max-w-3xl"
           >
             {about.intro}
           </div>
@@ -177,7 +283,7 @@ export default function About() {
             <h2 className="md:col-span-4 font-sans text-[10px] font-bold uppercase tracking-widest text-warm pt-2 border-t-2 border-warm/30 md:border-transparent md:pt-0">
               {sections.systems.title}
             </h2>
-            <div className="md:col-span-8 font-serif text-xl md:text-2xl leading-relaxed text-[var(--text-secondary)]">
+            <div className="md:col-span-8 font-serif text-xl md:text-2xl leading-relaxed text-[var(--text-secondary)] drop-cap">
               {sections.systems.content}
             </div>
           </section>
@@ -220,19 +326,84 @@ export default function About() {
 
         </div>
 
+        {/* Full-bleed Thesis — mid-page rupture */}
+        <section
+          ref={(el) => { elementsRef.current[9] = el; }}
+          className="relative left-1/2 -translate-x-1/2 w-screen my-32 md:my-44 py-28 md:py-40 overflow-hidden"
+          aria-label="Thesis statement"
+        >
+          {/* Base wash */}
+          <div className="absolute inset-0 bg-[var(--bg-secondary)]" aria-hidden />
+          {/* Warm radial spotlight */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse at 50% 40%, rgba(225,160,80,0.10) 0%, transparent 65%)",
+            }}
+            aria-hidden
+          />
+          {/* Faint grid */}
+          <div
+            className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage:
+                "linear-gradient(var(--text-primary) 1px, transparent 1px), linear-gradient(90deg, var(--text-primary) 1px, transparent 1px)",
+              backgroundSize: "64px 64px",
+            }}
+            aria-hidden
+          />
+          {/* Top & bottom hairlines */}
+          <div className="absolute top-0 inset-x-0 h-px bg-[var(--border-color)]" aria-hidden />
+          <div className="absolute bottom-0 inset-x-0 h-px bg-[var(--border-color)]" aria-hidden />
+
+          <div className="relative max-w-5xl mx-auto px-8 md:px-16 text-center">
+            {/* Eyebrow */}
+            <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-warm mb-10">
+              {language === "en" ? "Thesis" : "Tesis"}
+            </p>
+
+            {/* Giant opening quote glyph */}
+            <span
+              className="block font-serif italic text-warm/35 leading-none mb-[-0.35em]"
+              style={{ fontSize: "clamp(8rem, 16vw, 16rem)" }}
+              aria-hidden
+            >
+              &ldquo;
+            </span>
+
+            {/* Thesis — declarative serif */}
+            <blockquote
+              className="font-serif font-medium leading-[1.15] tracking-tight text-[var(--text-primary)] text-balance"
+              style={{ fontSize: "clamp(2rem, 5.5vw, 5rem)" }}
+            >
+              {closureText}
+            </blockquote>
+
+            {/* Signature line */}
+            <div className="mt-14 md:mt-20 flex items-center justify-center gap-5">
+              <div className="h-px w-16 bg-[var(--border-color)]" aria-hidden />
+              <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-[var(--text-muted)]">
+                DV · {language === "en" ? "On building" : "Sobre construir"}
+              </span>
+              <div className="h-px w-16 bg-[var(--border-color)]" aria-hidden />
+            </div>
+          </div>
+        </section>
+
         {/* Certifications Section */}
         <div className="flex flex-col gap-32 pt-24">
           <Certifications />
         </div>
 
-        {/* Closure */}
+        {/* Closure — CTAs only (thesis lives in the full-bleed mid-page) */}
         <section
           ref={(el) => { elementsRef.current[6] = el; }}
           className="mt-40 mb-20 text-center max-w-2xl mx-auto"
         >
-          <div className="font-serif text-2xl md:text-3xl leading-relaxed text-[var(--text-primary)] mb-12">
-            &ldquo;{closureText}&rdquo;
-          </div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-warm mb-8">
+            {language === "en" ? "Get in touch" : "Hablemos"}
+          </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
