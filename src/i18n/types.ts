@@ -124,6 +124,7 @@ export interface AboutDict {
   title: string;
   subtitle: string;
   intro: string;
+  introHighlights: string[];
   meta: AboutMeta;
   metrics: AboutMetric[];
   sections: AboutSections;

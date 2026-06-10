@@ -74,6 +74,28 @@ export default function About() {
   const titleMid = titleParts[1] ?? "";
   const titleLast = titleParts.slice(2).join(" ");
 
+  // Split the intro text by highlighted keywords and wrap each match in a
+  // serif italic warm span. Longer phrases match before shorter ones so
+  // "ML pipelines" beats "ML" if both were highlights.
+  const introNodes = (() => {
+    const highlights = about.introHighlights;
+    if (!highlights?.length) return [about.intro];
+    const sorted = [...highlights].sort((a, b) => b.length - a.length);
+    const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const pattern = new RegExp(`(${sorted.map(escape).join("|")})`, "g");
+    const set = new Set(sorted);
+    return about.intro.split(pattern).map((part, i) => {
+      if (set.has(part)) {
+        return (
+          <em key={i} className="font-serif italic font-medium text-warm">
+            {part}
+          </em>
+        );
+      }
+      return part;
+    });
+  })();
+
   return (
     <main
       id="main-content"
@@ -247,12 +269,23 @@ export default function About() {
 
           </div>
 
-          {/* Intro paragraph — magazine lede */}
-          <div
-            ref={(el) => { elementsRef.current[2] = el; }}
-            className="text-2xl md:text-4xl leading-relaxed md:leading-[1.4] text-[var(--text-primary)] font-medium text-balance max-w-3xl"
-          >
-            {about.intro}
+          {/* Intro paragraph — magazine lede with drop-cap, decorative quote, and highlighted keywords */}
+          <div className="relative max-w-3xl">
+            {/* Giant decorative opening quote — hangs in the margin */}
+            <span
+              aria-hidden
+              className="pointer-events-none select-none absolute font-serif italic text-warm/20 leading-none -left-2 md:-left-16 -top-8 md:-top-16"
+              style={{ fontSize: "clamp(7rem, 12vw, 14rem)" }}
+            >
+              &ldquo;
+            </span>
+
+            <p
+              ref={(el) => { elementsRef.current[2] = el; }}
+              className="relative drop-cap text-2xl md:text-4xl leading-relaxed md:leading-[1.4] text-[var(--text-primary)] font-medium text-balance"
+            >
+              {introNodes}
+            </p>
           </div>
 
           {/* Stats strip — animated counters */}

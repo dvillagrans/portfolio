@@ -197,6 +197,14 @@ export const sharedEn = {
     title: "Diego Villagran Salazar",
     subtitle: "AI & Data Engineer · ML Systems Builder",
     intro: "I build intelligent systems that go from raw data to production — ML pipelines, LLM automation, and scalable infrastructure that teams can actually trust and ship with. Currently studying Data Science at ESCOM-IPN while working full-time on AI automation at EyeNet and managing a private GPU cluster for open-source LLM deployment.",
+    introHighlights: [
+      "ML pipelines",
+      "LLM automation",
+      "scalable infrastructure",
+      "ESCOM-IPN",
+      "EyeNet",
+      "GPU cluster",
+    ],
     meta: {
       locationLabel: "Based in",
       locationValue: "Mexico City",
@@ -771,6 +779,14 @@ export const sharedEs = {
     title: "Diego Villagran Salazar",
     subtitle: "Ingeniero de IA y Datos · Constructor de Sistemas de ML",
     intro: "Construyo sistemas inteligentes que van desde los datos crudos hasta la producción: pipelines de ML, automatización con LLMs e infraestructura escalable en la que los equipos realmente pueden confiar. Actualmente estudio Ciencia de Datos en ESCOM-IPN mientras trabajo a tiempo completo en automatización de IA en EyeNet y gestiono un clúster de GPU privado para el despliegue de LLMs de código abierto.",
+    introHighlights: [
+      "pipelines de ML",
+      "automatización con LLMs",
+      "infraestructura escalable",
+      "ESCOM-IPN",
+      "EyeNet",
+      "clúster de GPU",
+    ],
     meta: {
       locationLabel: "Desde",
       locationValue: "Ciudad de México",
