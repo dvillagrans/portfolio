@@ -1,23 +1,29 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useMagnetic } from "@/hooks/useMagnetic";
 import { ArrowDownToLine } from "lucide-react";
 import Link from "next/link";
-import ParallaxLayer from "@/components/ui/ParallaxLayer";
+
+const WebGLHeroCanvas = dynamic(
+  () => import("@/components/ui/WebGLHeroCanvas"),
+  { ssr: false }
+);
 
 export default function Hero() {
   const container = useRef<HTMLDivElement>(null);
   const wordsRef = useRef<(HTMLSpanElement | null)[]>([]);
   const sublineRef = useRef<HTMLParagraphElement>(null);
   const actionRef = useRef<HTMLDivElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
   const scanRef = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
   const reduced = useReducedMotion();
+  const magneticProjects = useMagnetic({ strength: 10, radius: 150 });
+  const magneticCv = useMagnetic({ strength: 8, radius: 120 });
 
   // Split headline into animatable word spans
   const title1Words = t.hero.title1.split(" ");
@@ -28,7 +34,6 @@ export default function Hero() {
     const ctx = gsap.context(() => {
       if (reduced) {
         // Respect reduced motion: make everything visible instantly
-        gsap.set(bgRef.current, { scale: 1, opacity: 1 });
         gsap.set(scanRef.current, { opacity: 0 });
         const validWords = wordsRef.current.filter(Boolean);
         gsap.set(validWords, { clipPath: "inset(0% 0% 0% 0%)", y: 0, opacity: 1 });
@@ -36,15 +41,6 @@ export default function Hero() {
         gsap.set(actionRef.current, { y: 0, opacity: 1 });
         return;
       }
-
-      // Background slow breathe
-      gsap.to(bgRef.current, {
-        scale: 1.08,
-        duration: 14,
-        repeat: -1,
-        ease: "sine.inOut",
-        yoyo: true,
-      });
 
       // Scan line — sweeps left to right then disappears (cinematic HUD moment)
       gsap.fromTo(
@@ -111,27 +107,12 @@ export default function Hero() {
   return (
     <section
       ref={container}
+      id="hero"
       className="relative flex h-[100dvh] w-full flex-col justify-end overflow-hidden pt-[max(5rem,calc(4rem+env(safe-area-inset-top)))] sm:pt-24 md:pt-28 pb-[max(5rem,calc(1.25rem+env(safe-area-inset-bottom)))] sm:pb-24 md:pb-32 pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] sm:pl-8 md:pl-24"
     >
       {/* Background cinematic layers */}
       <div className="absolute inset-0 z-0 bg-charcoal">
-        <ParallaxLayer speed={0.15} className="absolute inset-0 overflow-hidden">
-          <div
-            ref={bgRef}
-            className="absolute inset-0 overflow-hidden"
-          >
-            <Image
-              src="/img/bg-water-dark.jpg"
-              alt=""
-              fill
-              priority
-              fetchPriority="high"
-              quality={75}
-              className="object-cover opacity-80 mix-blend-screen"
-              sizes="100vw"
-            />
-          </div>
-        </ParallaxLayer>
+        <WebGLHeroCanvas />
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/50 to-transparent" aria-hidden="true" />
         <div className="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/20 to-transparent opacity-60" aria-hidden="true" />
       </div>
@@ -194,8 +175,9 @@ export default function Hero() {
           style={{ opacity: reduced ? 1 : 0 }}
         >
           <Link
-            href="/#projects"
-            className="group inline-flex items-center justify-center sm:justify-start w-full sm:w-auto min-h-[44px] gap-3 border border-offwhite/20 px-6 py-4 md:px-8 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-offwhite transition-all hover:bg-offwhite hover:text-charcoal spring-press"
+            href="/projects"
+            ref={magneticProjects.ref as React.RefObject<HTMLAnchorElement>}
+            className="group inline-flex items-center justify-center sm:justify-start w-full sm:w-auto min-h-[44px] gap-3 border border-offwhite/20 px-6 py-4 md:px-8 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-offwhite transition-colors duration-200 hover:bg-offwhite hover:text-charcoal"
           >
             {t.hero.cta}
             <div className="h-[2px] w-4 bg-warm transition-all group-hover:w-8 group-hover:bg-charcoal" />
@@ -203,7 +185,8 @@ export default function Hero() {
           <a
             href="/resume/resume-banca.pdf"
             download
-            className="group inline-flex items-center justify-center sm:justify-start w-full sm:w-auto min-h-[44px] gap-2 border border-offwhite/10 px-6 py-4 md:px-8 font-sans text-xs font-semibold uppercase tracking-[0.15em] text-offwhite/70 transition-all hover:text-offwhite hover:border-offwhite/30 spring-press"
+            ref={magneticCv.ref as React.RefObject<HTMLAnchorElement>}
+            className="group inline-flex items-center justify-center sm:justify-start w-full sm:w-auto min-h-[44px] gap-2 border border-offwhite/10 px-6 py-4 md:px-8 font-sans text-xs font-semibold uppercase tracking-[0.15em] text-offwhite/70 transition-colors duration-200 hover:text-offwhite hover:border-offwhite/30"
           >
             {t.hero.downloadCv}
             <ArrowDownToLine className="w-4 h-4" />

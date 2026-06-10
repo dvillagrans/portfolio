@@ -3,6 +3,9 @@ import { ConsoleEasterEgg } from '@/components/ui/ConsoleEasterEgg';
 import { ViewTransitionDirector } from '@/components/ui/ViewTransitionDirector';
 import GridOverlay from '@/components/ui/GridOverlay';
 import { PersonSchema, WebSiteSchema } from '@/components/ui/SchemaOrg';
+import { CommandPalette } from '@/components/ui/CommandPalette';
+import { CommandPaletteProvider } from '@/hooks/CommandPaletteContext';
+import { CustomCursor } from '@/components/ui/CustomCursor';
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Space_Grotesk, EB_Garamond, JetBrains_Mono } from "next/font/google";
@@ -163,16 +166,20 @@ export default function RootLayout({
         </a>
         <ThemeProvider>
           <LanguageProvider>
-            <Analytics />
-            <HtmlLang />
-            <ViewTransitionDirector />
-            <ConsoleEasterEgg />
-            <PersonSchema />
-            <WebSiteSchema />
-            <GridOverlay />
-            <div className="noise-overlay pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.03] mix-blend-overlay" aria-hidden="true"></div>
-            {children}
-            <ProjectChat />
+            <CommandPaletteProvider>
+              <Analytics />
+              <HtmlLang />
+              <ViewTransitionDirector />
+              <ConsoleEasterEgg />
+              <PersonSchema />
+              <WebSiteSchema />
+              <GridOverlay />
+              <div className="noise-overlay pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.03] mix-blend-overlay" aria-hidden="true"></div>
+              {children}
+              <ProjectChat />
+              <CommandPalette />
+              <CustomCursor />
+            </CommandPaletteProvider>
           </LanguageProvider>
         </ThemeProvider>
       </body>
