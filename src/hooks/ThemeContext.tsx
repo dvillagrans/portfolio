@@ -4,9 +4,14 @@ import { createContext, useContext, useEffect, useState, useCallback, type React
 
 type Theme = "dark" | "light";
 
+interface ToggleOrigin {
+  x: number;
+  y: number;
+}
+
 interface ThemeContextType {
   theme: Theme;
-  toggleTheme: () => void;
+  toggleTheme: (origin?: ToggleOrigin) => void;
   setTheme: (theme: Theme) => void;
 }
 
@@ -53,17 +58,37 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     return () => mql.removeEventListener("change", handler);
   }, []);
 
-  const toggleTheme = useCallback(() => {
+  const toggleTheme = useCallback((origin?: ToggleOrigin) => {
+    const root = document.documentElement;
+
+    // Anchor the radial wipe to the click point. Without an origin we fall back
+    // to viewport center. The radius is the distance to the farthest corner so
+    // the circle always covers the full viewport.
+    if (origin) {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const dx = Math.max(origin.x, w - origin.x);
+      const dy = Math.max(origin.y, h - origin.y);
+      const r = Math.hypot(dx, dy);
+      root.style.setProperty("--theme-x", `${origin.x}px`);
+      root.style.setProperty("--theme-y", `${origin.y}px`);
+      root.style.setProperty("--theme-r", `${r}px`);
+    } else {
+      root.style.setProperty("--theme-x", "50vw");
+      root.style.setProperty("--theme-y", "50vh");
+      root.style.setProperty("--theme-r", "100vmax");
+    }
+
     if (!document.startViewTransition) {
       setThemeState(prev => prev === "dark" ? "light" : "dark");
       return;
     }
-    document.documentElement.classList.add("theme-toggling");
+    root.classList.add("theme-toggling");
     const transition = document.startViewTransition(() => {
       setThemeState(prev => prev === "dark" ? "light" : "dark");
     });
     transition.finished.then(() => {
-      document.documentElement.classList.remove("theme-toggling");
+      root.classList.remove("theme-toggling");
     });
   }, []);
 

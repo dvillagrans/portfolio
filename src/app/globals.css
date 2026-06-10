@@ -1,6 +1,27 @@
 @import "tailwindcss";
 
 /* ═══════════════════════════════════════════════════════════════
+   ANIMATABLE ACCENT — @property enables smooth OKLCH interpolation
+   ═══════════════════════════════════════════════════════════════ */
+
+@property --color-accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: oklch(40% 0.085 195);
+}
+
+@property --color-accent-light {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: oklch(55% 0.085 195);
+}
+
+:root {
+  transition: --color-accent 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+              --color-accent-light 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ═══════════════════════════════════════════════════════════════
    THEME SYSTEM — CSS custom properties for dark/light mode
    ═══════════════════════════════════════════════════════════════ */
 
@@ -127,6 +148,46 @@ html.no-transition * {
 /* ─── Typography Utilities ─── */
 .text-balance { text-wrap: balance; }
 .clip-text { background-clip: text; -webkit-background-clip: text; color: transparent; }
+
+/* ─── Drop Cap — editorial first-letter treatment ─── */
+.drop-cap::first-letter {
+  font-family: var(--font-serif);
+  font-size: 3.5em;
+  font-weight: 500;
+  line-height: 0.8;
+  float: left;
+  margin-right: 0.08em;
+  margin-top: 0.05em;
+  color: var(--color-warm);
+}
+
+@media (max-width: 640px) {
+  .drop-cap::first-letter {
+    font-size: 2.5em;
+  }
+}
+
+/* ─── Pull Quote — editorial blockquote ─── */
+.pull-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-left: 1.5rem;
+  padding-left: 1.25rem;
+  border-left: 3px solid var(--color-warm);
+  color: var(--text-secondary);
+}
+
+/* ─── Spotlight overlay view-transition-name for cards ─── */
+.secondary-card {
+  view-transition-name: project-card;
+}
+
+/* ─── WebGL fallback gradient ─── */
+[data-webgl-fallback] {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
 
 /* ─── Warm accent underline — for editorial emphasis ─── */
 .accent-underline {
@@ -482,25 +543,45 @@ html.back-transition::view-transition-new(root) {
   transform: scale(0.95);
 }
 
-/* Theme toggle crossfade via View Transition API */
+/* ─── Custom cursor: hide native pointer when active (fine pointer only) ─── */
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  body.cursor-active,
+  body.cursor-active * {
+    cursor: none;
+  }
+  body.cursor-active input,
+  body.cursor-active textarea,
+  body.cursor-active [contenteditable="true"] {
+    cursor: text;
+  }
+}
+
+/* Theme toggle — radial wipe via View Transition API.
+   Coords come from JS as --theme-x / --theme-y; radius covers the viewport. */
 html.theme-toggling::view-transition-old(root),
 html.theme-toggling::view-transition-new(root) {
-  animation-duration: 0.2s;
-  animation-timing-function: ease-out;
+  animation: none;
+  mix-blend-mode: normal;
 }
 html.theme-toggling::view-transition-old(root) {
-  animation-name: theme-fade-out;
+  z-index: 1;
 }
 html.theme-toggling::view-transition-new(root) {
-  animation-name: theme-fade-in;
+  z-index: 2;
+  animation: theme-reveal 0.65s cubic-bezier(0.4, 0, 0.2, 1);
 }
-@keyframes theme-fade-out {
-  0%   { opacity: 1; }
-  100% { opacity: 0; }
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0px at var(--theme-x, 50vw) var(--theme-y, 50vh));
+  }
+  to {
+    clip-path: circle(var(--theme-r, 100vmax) at var(--theme-x, 50vw) var(--theme-y, 50vh));
+  }
 }
-@keyframes theme-fade-in {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  html.theme-toggling::view-transition-new(root) {
+    animation-duration: 0.001s;
+  }
 }
 
 /* Hide chat trigger when mobile menu is open */
