@@ -8,6 +8,8 @@ import type {
   AboutDict,
   ArchiveDict,
   ContactDict,
+  ColophonDict,
+  NowDict,
 } from "../types";
 
 export type {
@@ -20,6 +22,8 @@ export type {
   AboutDict,
   ArchiveDict,
   ContactDict,
+  ColophonDict,
+  NowDict,
 } from "../types";
 
 export const sharedEn = {
@@ -193,6 +197,15 @@ export const sharedEn = {
     title: "Diego Villagran Salazar",
     subtitle: "AI & Data Engineer · ML Systems Builder",
     intro: "I build intelligent systems that go from raw data to production — ML pipelines, LLM automation, and scalable infrastructure that teams can actually trust and ship with. Currently studying Data Science at ESCOM-IPN while working full-time on AI automation at EyeNet and managing a private GPU cluster for open-source LLM deployment.",
+    meta: {
+      locationLabel: "Based in",
+      locationValue: "Mexico City",
+      statusLabel: "Status",
+      statusValue: "Open to work",
+      roleLabel: "Role",
+      studyingLabel: "Studying",
+      studyingValue: "ESCOM-IPN",
+    },
     metrics: [
       { value: "10K+", label: "Daily requests handled" },
       { value: "2M+", label: "Records processed" },
@@ -558,6 +571,21 @@ export const sharedEn = {
     linkedin: "https://linkedin.com/in/dvillagrans",
     footerText: "— Diego Villagran"
   },
+  colophon: {
+    fontCredit: "Typography: EB Garamond — designed by Georg Duffner, Rodrigo Fuenzalida",
+    deployLabel: "Last deploy",
+    scoreLabel: "Lighthouse",
+  },
+  now: {
+    title: "Now",
+    subtitle: "What I'm focused on right now",
+    lastUpdated: "June 2025",
+    sections: [
+      { heading: "Current Focus", content: "Building production ML pipelines and LLM automation systems at EyeNet. Managing a private GPU cluster for open-source model deployment (LLaMA, Mistral). Studying Data Science at ESCOM-IPN." },
+      { heading: "Recent Learnings", content: "Deep-dive into FBM simplex noise for real-time graphics. Exploring view transition APIs for cinematic web experiences. Optimizing PySpark ETL pipelines for 2M+ daily records." },
+      { heading: "What's Next", content: "Expanding the RAG multi-agent system at CIC-IPN. Benchmarking new open-source LLMs against proprietary APIs. Building more interactive data visualization tools." },
+    ],
+  },
 } satisfies {
   nav: NavDict;
   hero: HeroDict;
@@ -568,6 +596,8 @@ export const sharedEn = {
   about: AboutDict;
   archive: ArchiveDict;
   contact: ContactDict;
+  colophon: ColophonDict;
+  now: NowDict;
 };
 
 export const sharedEs = {
@@ -741,6 +771,15 @@ export const sharedEs = {
     title: "Diego Villagran Salazar",
     subtitle: "Ingeniero de IA y Datos · Constructor de Sistemas de ML",
     intro: "Construyo sistemas inteligentes que van desde los datos crudos hasta la producción: pipelines de ML, automatización con LLMs e infraestructura escalable en la que los equipos realmente pueden confiar. Actualmente estudio Ciencia de Datos en ESCOM-IPN mientras trabajo a tiempo completo en automatización de IA en EyeNet y gestiono un clúster de GPU privado para el despliegue de LLMs de código abierto.",
+    meta: {
+      locationLabel: "Desde",
+      locationValue: "Ciudad de México",
+      statusLabel: "Estado",
+      statusValue: "Disponible",
+      roleLabel: "Rol",
+      studyingLabel: "Estudiando",
+      studyingValue: "ESCOM-IPN",
+    },
     metrics: [
       { value: "10K+", label: "Solicitudes diarias" },
       { value: "2M+", label: "Registros procesados" },
@@ -1102,6 +1141,21 @@ export const sharedEs = {
     linkedin: "https://www.linkedin.com/in/diegovillagrans/",
     footerText: "— Diego Villagran"
   },
+  colophon: {
+    fontCredit: "Tipografía: EB Garamond — diseñada por Georg Duffner, Rodrigo Fuenzalida",
+    deployLabel: "Último deploy",
+    scoreLabel: "Lighthouse",
+  },
+  now: {
+    title: "Ahora",
+    subtitle: "En lo que estoy enfocado ahora mismo",
+    lastUpdated: "Junio 2025",
+    sections: [
+      { heading: "Enfoque Actual", content: "Construyendo pipelines de ML en producción y sistemas de automatización con LLMs en EyeNet. Gestionando un clúster de GPU privado para despliegue de modelos de código abierto (LLaMA, Mistral). Estudiando Ciencia de Datos en ESCOM-IPN." },
+      { heading: "Aprendizajes Recientes", content: "Inmersión profunda en ruido simplex FBM para gráficos en tiempo real. Explorando APIs de transiciones de vista para experiencias web cinemáticas. Optimizando pipelines ETL con PySpark para más de 2M registros diarios." },
+      { heading: "Qué Sigue", content: "Expandiendo el sistema RAG multi-agente en el CIC-IPN. Evaluando nuevos LLMs de código abierto contra APIs propietarias. Construyendo más herramientas interactivas de visualización de datos." },
+    ],
+  },
 } satisfies {
   nav: NavDict;
   hero: HeroDict;
@@ -1112,4 +1166,6 @@ export const sharedEs = {
   about: AboutDict;
   archive: ArchiveDict;
   contact: ContactDict;
+  colophon: ColophonDict;
+  now: NowDict;
 };

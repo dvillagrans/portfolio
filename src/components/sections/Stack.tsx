@@ -1,234 +1,501 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ArrowUpRight } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import type { ProjectItem } from "@/i18n/types";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
+interface BandConfig {
+  name: string;
+  accent: string;
+  accentSoft: string;
+  tools: string[];
+  direction: "ltr" | "rtl";
+  speed: number;
+}
+
+const CATEGORY_SETS = {
+  dataScience: [
+    "Python",
+    "Pandas",
+    "NumPy",
+    "Scikit-learn",
+    "TensorFlow",
+    "PyTorch",
+    "LLaMA / Mistral",
+    "OpenAI API",
+    "Gemini",
+  ],
+  infrastructure: [
+    "PySpark",
+    "SQL",
+    "PostgreSQL",
+    "Redis",
+    "n8n",
+    "Docker",
+    "Kubernetes",
+    "Azure",
+    "AWS",
+    "Google Cloud",
+  ],
+  platform: ["Next.js", "React", "TypeScript", "Tailwind CSS", "FastAPI", "Streamlit"],
+  core: ["Power BI", "Grafana", "Git", "GitHub"],
+};
+
+function normalize(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[\s\/.-]+/g, "")
+    .replace(/(api|css|js)$/, "");
+}
+
 export default function Stack() {
   const container = useRef<HTMLElement>(null);
-  const terminalRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
+  const bandsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const tweensRef = useRef<gsap.core.Tween[]>([]);
   const { t, language } = useLanguage();
   const reduced = useReducedMotion();
+  const [activeTool, setActiveTool] = useState<{ bandIdx: number; tool: string } | null>(null);
+  const [isCoarse, setIsCoarse] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 768px), (hover: none)");
+    setIsCoarse(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setIsCoarse(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
+
   const tools = t.stack.tools;
-  const [activeByCategory, setActiveByCategory] = useState<Record<number, string | null>>({});
 
-  const dataScience = ["Python", "Pandas", "Numpy", "Matplotlib", "Seaborn", "Scikit-learn", "Tensorflow", "Keras", "PyTorch", "Yolo", "anaconda", "googlecolab"];
-  const backend = ["PostgreSQL", "SQL", "Docker", "Kubernetes", "AmazonAWS", "Azure", "googlecloud"];
-  const frontend = ["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Astro", "Vercel"];
+  const inSet = (tool: string, set: string[]) =>
+    set.some((s) => s.toLowerCase() === tool.toLowerCase());
 
-  const categories = [
-    {
-      name: t.systems?.items?.[0]?.title || (language === 'es' ? 'Ciencia de Datos & IA' : 'Data Science & AI'),
-      items: tools.filter(tool => dataScience.some(i => i.toLowerCase() === tool.toLowerCase()))
-    },
-    {
-      name: t.systems?.items?.[1]?.title || (language === 'es' ? 'Infraestructura & Nube' : 'Infrastructure & Cloud'),
-      items: tools.filter(tool => backend.some(i => i.toLowerCase() === tool.toLowerCase()))
-    },
-    {
-      name: t.systems?.items?.[3]?.title || (language === 'es' ? 'Desarrollo de Plataforma' : 'Platform Development'),
-      items: tools.filter(tool => frontend.some(i => i.toLowerCase() === tool.toLowerCase()))
-    },
-    {
-      name: language === 'es' ? 'Herramientas Base' : 'Core Tools',
-      items: tools.filter(tool =>
-        !dataScience.some(i => i.toLowerCase() === tool.toLowerCase()) &&
-        !backend.some(i => i.toLowerCase() === tool.toLowerCase()) &&
-        !frontend.some(i => i.toLowerCase() === tool.toLowerCase())
-      )
-    }
-  ].filter(c => c.items.length > 0);
-
-  const statusText = `stack.audit() — ${tools.length} tools across ${categories.length} domains — all systems nominal`;
-
-  useGSAP(() => {
-    if (reduced) {
-      gsap.set(".terminal-char", { opacity: 1 });
-      gsap.set(".stack-category", { opacity: 1, y: 0, rotateX: 0 });
-      gsap.set(".tool-chip", { opacity: 1, y: 0 });
-      return;
-    }
-
-    // Terminal typing effect — character by character
-    if (terminalRef.current) {
-      gsap.fromTo(
-        ".terminal-char",
-        { opacity: 0 },
-        {
-          opacity: 1,
-          duration: 0.04,
-          stagger: 0.025,
-          ease: "none",
-          scrollTrigger: {
-            trigger: terminalRef.current,
-            start: "top 88%",
-            once: true,
-          },
-        }
-      );
-    }
-
-    // Cards: staggered dramatic entrance with perspective
-    if (cardsRef.current) {
-      gsap.fromTo(
-        ".stack-category",
-        { opacity: 0, y: 70, rotateX: 6 },
-        {
-          opacity: 1,
-          y: 0,
-          rotateX: 0,
-          duration: 1.2,
-          stagger: 0.15,
-          ease: "expo.out",
-          scrollTrigger: {
-            trigger: cardsRef.current,
-            start: "top 82%",
-            once: true,
-          },
-        }
-      );
-    }
-
-    // Tool chips: fade in with staggered delay after cards appear
-    gsap.fromTo(
-      ".tool-chip",
-      { opacity: 0, y: 8 },
+  const bands: BandConfig[] = useMemo(() => {
+    return [
       {
-        opacity: 1,
-        y: 0,
-        duration: 0.45,
-        stagger: 0.015,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: cardsRef.current,
-          start: "top 78%",
-          once: true,
-        },
-        delay: 0.5,
-      }
-    );
-  }, { scope: container, dependencies: [reduced], revertOnUpdate: true });
+        name: language === "es" ? "Ciencia de Datos & IA" : "Data Science & AI",
+        accent: "oklch(72% 0.16 285)",
+        accentSoft: "oklch(72% 0.16 285 / 0.18)",
+        tools: tools.filter((tool) => inSet(tool, CATEGORY_SETS.dataScience)),
+        direction: "rtl" as const,
+        speed: 60,
+      },
+      {
+        name: language === "es" ? "Infraestructura & Nube" : "Infrastructure & Cloud",
+        accent: "oklch(72% 0.13 195)",
+        accentSoft: "oklch(72% 0.13 195 / 0.18)",
+        tools: tools.filter((tool) => inSet(tool, CATEGORY_SETS.infrastructure)),
+        direction: "ltr" as const,
+        speed: 72,
+      },
+      {
+        name: language === "es" ? "Plataforma & Producto" : "Platform & Product",
+        accent: "oklch(68% 0.14 150)",
+        accentSoft: "oklch(68% 0.14 150 / 0.18)",
+        tools: tools.filter((tool) => inSet(tool, CATEGORY_SETS.platform)),
+        direction: "rtl" as const,
+        speed: 52,
+      },
+      {
+        name: language === "es" ? "Herramientas Base" : "Core Tooling",
+        accent: "oklch(74% 0.15 65)",
+        accentSoft: "oklch(74% 0.15 65 / 0.18)",
+        tools: tools.filter((tool) => inSet(tool, CATEGORY_SETS.core)),
+        direction: "ltr" as const,
+        speed: 64,
+      },
+    ].filter((b) => b.tools.length > 0);
+  }, [tools, language]);
 
-  const renderCategoryCard = (category: typeof categories[number], cIdx: number, isPrimary: boolean = false) => {
-    const gradientDir = cIdx % 2 === 0 ? "from-accent to-warm" : "from-warm to-accent";
-    const dotColor = cIdx % 2 === 0 ? "bg-accent text-accent" : "bg-warm text-warm";
-    const glowColor = cIdx % 2 === 0 ? "bg-accent/[0.04]" : "bg-warm/[0.04]";
+  /* ─── Build tool → projects map from project tags ─── */
+  const toolUsage = useMemo(() => {
+    const map = new Map<string, ProjectItem[]>();
+    t.work.projects.forEach((project) => {
+      project.tags?.forEach((tag) => {
+        const key = normalize(tag);
+        if (!key) return;
+        if (!map.has(key)) map.set(key, []);
+        const list = map.get(key)!;
+        if (!list.some((p) => p.id === project.id)) list.push(project);
+      });
+    });
+    return map;
+  }, [t.work.projects]);
 
-    return (
-      <div
-        key={cIdx}
-        className={`stack-category group relative rounded-2xl border border-offwhite/[0.08] bg-graphite/40 backdrop-blur-sm transition-all duration-500 hover:border-offwhite/20 hover:bg-graphite/60 ${isPrimary ? "p-6 sm:p-8 lg:p-10" : "p-5 sm:p-6 lg:p-8"}`}
-      >
-        {/* Subtle radial glow behind card */}
-        <div className={`absolute -inset-8 rounded-[2rem] ${glowColor} blur-[60px] pointer-events-none transition-opacity duration-500 opacity-60 group-hover:opacity-100`} aria-hidden="true" />
-
-        {/* Gradient top border */}
-        <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r ${gradientDir} rounded-t-2xl opacity-80`} />
-
-        <div className="relative z-10">
-          <h3 className="font-sans text-[13px] font-bold uppercase tracking-[0.2em] text-offwhite/70 mb-6 flex items-center gap-3">
-            <span className={`w-2 h-2 rounded-full ${dotColor} shadow-[0_0_8px] shadow-current`} />
-            {category.name}
-          </h3>
-
-          <div className={`grid gap-2 ${isPrimary ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" : "grid-cols-2"}`}>
-            {category.items.map((tool, iIdx) => {
-              const isActive = activeByCategory[cIdx] === tool;
-              const borderAccent = iIdx % 2 === 0 ? "border-l-accent/70" : "border-l-warm/70";
-              const dotAccent = iIdx % 2 === 0 ? "bg-accent/50" : "bg-warm/50";
-
-              return (
-                <button
-                  key={tool}
-                  type="button"
-                  onClick={() =>
-                    setActiveByCategory((prev) => ({
-                      ...prev,
-                      [cIdx]: isActive ? null : tool,
-                    }))
-                  }
-                  className={`tool-chip relative inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-offwhite/10 font-mono text-[11px] text-offwhite/80 transition-all duration-300 hover:bg-offwhite/[0.06] hover:text-offwhite hover:border-offwhite/20 ${borderAccent} border-l-[3px] ${
-                    isActive
-                      ? "bg-accent/15 border-accent/40 text-white"
-                      : ""
-                  }`}
-                >
-                  <span className={`w-1 h-1 rounded-full ${dotAccent}`} />
-                  {tool}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    );
+  const getProjectsForTool = (tool: string): ProjectItem[] => {
+    return toolUsage.get(normalize(tool)) ?? [];
   };
 
+  /* ─── Marquee animation per band ─── */
+  useGSAP(
+    () => {
+      tweensRef.current.forEach((tw) => tw?.kill());
+      tweensRef.current = [];
+
+      if (reduced || isCoarse) return;
+
+      bandsRef.current.forEach((band, idx) => {
+        if (!band) return;
+        const config = bands[idx];
+        if (!config) return;
+        const inner = band.querySelector<HTMLDivElement>(".band-inner");
+        if (!inner) return;
+
+        const fromX = config.direction === "rtl" ? "0%" : "-50%";
+        const toX = config.direction === "rtl" ? "-50%" : "0%";
+
+        gsap.set(inner, { x: fromX });
+        const tween = gsap.to(inner, {
+          x: toX,
+          duration: config.speed,
+          ease: "none",
+          repeat: -1,
+        });
+        tweensRef.current[idx] = tween;
+      });
+    },
+    { scope: container, dependencies: [bands, reduced, isCoarse], revertOnUpdate: true }
+  );
+
+  const handleToolActivate = (bandIdx: number, tool: string) => {
+    setActiveTool({ bandIdx, tool });
+    tweensRef.current[bandIdx]?.pause();
+  };
+
+  const handleToolDeactivate = (bandIdx: number) => {
+    setActiveTool(null);
+    tweensRef.current[bandIdx]?.resume();
+  };
+
+  const handleToolToggle = (bandIdx: number, tool: string) => {
+    if (activeTool?.bandIdx === bandIdx && activeTool?.tool === tool) {
+      handleToolDeactivate(bandIdx);
+    } else {
+      if (activeTool && activeTool.bandIdx !== bandIdx) {
+        tweensRef.current[activeTool.bandIdx]?.resume();
+      }
+      handleToolActivate(bandIdx, tool);
+    }
+  };
+
+  /* ─── Detail panel data ─── */
+  const activeProjects = activeTool ? getProjectsForTool(activeTool.tool) : [];
+  const activeBand = activeTool ? bands[activeTool.bandIdx] : null;
+
   return (
-    <section ref={container} className="relative bg-charcoal py-24 md:py-32 text-offwhite pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] md:px-12 lg:px-24 overflow-hidden border-t border-offwhite/5 border-b">
+    <section
+      ref={container}
+      id="stack"
+      className="relative overflow-hidden border-t border-b border-offwhite/5 bg-charcoal py-24 text-offwhite md:py-32"
+      style={{
+        paddingLeft: "max(1.5rem, env(safe-area-inset-left))",
+        paddingRight: "max(1.5rem, env(safe-area-inset-right))",
+      }}
+    >
+      {/* Subtle scan-line texture */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        aria-hidden="true"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(240,234,216,0.4) 3px, rgba(240,234,216,0.4) 4px)",
+        }}
+      />
 
-      {/* Central radial gradient — accent at very low opacity */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl aspect-square rounded-full bg-accent/[0.03] blur-[140px] pointer-events-none" aria-hidden="true" />
-
-      {/* Noise texture for physical grain */}
-      <div className="absolute inset-0 noise-overlay opacity-[0.03] pointer-events-none" aria-hidden="true" />
-
-      <div className="mx-auto max-w-7xl relative z-10">
+      <div className="relative z-10 mx-auto max-w-7xl md:px-12 lg:px-16">
+        {/* Header */}
         <header className="mb-16 md:mb-20">
-          <div className="flex items-center gap-4 mb-6 md:justify-center">
-             <div className="h-[1px] w-12 bg-warm opacity-60 block md:hidden"></div>
-             <span className="font-sans text-[10px] font-bold uppercase tracking-[0.3em] text-offwhite/70">
-               05. {t.stack.title}
-             </span>
-             <div className="h-[1px] w-12 bg-warm opacity-60 block md:hidden"></div>
+          <div className="mb-6 flex items-center gap-4">
+            <div className="h-[1px] w-12 bg-warm/60" />
+            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-offwhite/70">
+              05. {t.stack.title}
+            </span>
           </div>
-           <h2 className="font-serif text-5xl md:text-6xl lg:text-7xl tracking-tight text-white mb-4 md:text-center break-words">
-            {language === 'es' ? (
-               <>Tecnologías <span className="italic text-offwhite/50 font-light">&</span> Herramientas</>
+          <h2 className="font-serif text-5xl tracking-tight text-offwhite md:text-6xl lg:text-7xl">
+            {language === "es" ? (
+              <>
+                El sistema{" "}
+                <span className="italic text-offwhite/50">en vivo</span>
+              </>
             ) : (
-               <>Technologies <span className="italic text-offwhite/50 font-light">&</span> Tooling</>
+              <>
+                The stack{" "}
+                <span className="italic text-offwhite/50">in motion</span>
+              </>
             )}
           </h2>
+          <p className="mt-6 max-w-xl font-sans text-sm text-offwhite/55 md:text-base">
+            {language === "es"
+              ? isCoarse
+                ? "Tocá una herramienta para ver en qué proyectos del portfolio se usa."
+                : "Pasá el cursor sobre cualquier herramienta para ver en qué proyectos del portfolio se usa."
+              : isCoarse
+              ? "Tap any tool to see which portfolio projects use it."
+              : "Hover any tool to see which portfolio projects use it."}
+          </p>
         </header>
 
-        {/* Terminal-style system status bar */}
-        <div ref={terminalRef} className="mb-12 md:mb-16 md:text-center">
-          <div className="inline-flex items-center gap-2 font-mono text-[13px] text-offwhite/50 bg-offwhite/[0.03] border border-offwhite/10 rounded-lg px-4 py-2.5">
-            <span className="text-warm font-bold">{">"}</span>
-            <span className="flex">
-              {statusText.split("").map((char, i) => (
-                <span
-                  key={i}
-                  className="terminal-char inline-block"
-                  style={{ minWidth: char === " " ? "0.4em" : undefined }}
+        {/* Bands */}
+        <div className="space-y-8 md:space-y-10">
+          {bands.map((config, bandIdx) => {
+            const showStatic = reduced || isCoarse;
+            const isFocusedBand = activeTool?.bandIdx === bandIdx;
+
+            return (
+              <div key={config.name} className="relative">
+                {/* Band label */}
+                <div className="mb-3 flex items-center gap-3">
+                  <span
+                    className="block h-1.5 w-1.5 rounded-full transition-all duration-500"
+                    style={{
+                      background: config.accent,
+                      boxShadow: isFocusedBand ? `0 0 12px ${config.accent}` : "none",
+                    }}
+                  />
+                  <span
+                    className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] transition-colors duration-500"
+                    style={{ color: isFocusedBand ? config.accent : "rgba(240,234,216,0.4)" }}
+                  >
+                    {config.name}
+                  </span>
+                  <div
+                    className="ml-auto h-[1px] flex-1 transition-all duration-500"
+                    style={{
+                      background: isFocusedBand
+                        ? `linear-gradient(90deg, ${config.accent}50, transparent)`
+                        : "rgba(240,234,216,0.06)",
+                    }}
+                  />
+                </div>
+
+                {/* Band */}
+                <div
+                  className="relative overflow-hidden py-1"
+                  style={{
+                    maskImage:
+                      "linear-gradient(90deg, transparent, black 5%, black 95%, transparent)",
+                    WebkitMaskImage:
+                      "linear-gradient(90deg, transparent, black 5%, black 95%, transparent)",
+                  }}
                 >
-                  {char === " " ? "\u00A0" : char}
-                </span>
-              ))}
-            </span>
-            <span className="inline-block w-[2px] h-[1em] bg-warm animate-pulse ml-0.5" />
-          </div>
+                  {showStatic ? (
+                    <div className="flex flex-wrap gap-2">
+                      {config.tools.map((tool) => {
+                        const isActive =
+                          activeTool?.bandIdx === bandIdx && activeTool?.tool === tool;
+                        return (
+                          <ToolPill
+                            key={tool}
+                            tool={tool}
+                            accent={config.accent}
+                            accentSoft={config.accentSoft}
+                            isActive={isActive}
+                            isDimmed={isFocusedBand && !isActive}
+                            onClick={() => handleToolToggle(bandIdx, tool)}
+                          />
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div
+                      ref={(el) => {
+                        bandsRef.current[bandIdx] = el;
+                      }}
+                      className="relative"
+                    >
+                      <div className="band-inner flex w-max gap-3 will-change-transform">
+                        {[...config.tools, ...config.tools].map((tool, i) => {
+                          const isActive =
+                            activeTool?.bandIdx === bandIdx && activeTool?.tool === tool;
+                          return (
+                            <ToolPill
+                              key={`${tool}-${i}`}
+                              tool={tool}
+                              accent={config.accent}
+                              accentSoft={config.accentSoft}
+                              isActive={isActive}
+                              isDimmed={isFocusedBand && !isActive}
+                              onMouseEnter={() => handleToolActivate(bandIdx, tool)}
+                              onMouseLeave={() => handleToolDeactivate(bandIdx)}
+                              onFocus={() => handleToolActivate(bandIdx, tool)}
+                              onBlur={() => handleToolDeactivate(bandIdx)}
+                            />
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
 
-        {/* Asymmetric layout with perspective container */}
-        <div ref={cardsRef} className="flex flex-col gap-6 lg:gap-8" style={{ perspective: "1200px" }}>
-          {/* Primary card — full width */}
-          {categories.length > 0 && renderCategoryCard(categories[0], 0, true)}
+        {/* Detail panel — always present (fixed slot) to avoid layout shift */}
+        <div className="mt-16 md:mt-20">
+          <div
+            className="relative min-h-[200px] rounded-2xl border border-offwhite/8 bg-graphite/30 p-6 backdrop-blur-sm md:p-8 lg:p-10"
+            style={{
+              borderColor: activeBand ? `${activeBand.accent}30` : "rgba(240,234,216,0.08)",
+              transition: "border-color 0.5s ease",
+            }}
+          >
+            {/* Top accent rule */}
+            <div
+              className="absolute left-6 right-6 top-0 h-[2px] rounded-full transition-all duration-500"
+              aria-hidden="true"
+              style={{
+                background: activeBand
+                  ? `linear-gradient(90deg, transparent, ${activeBand.accent}, transparent)`
+                  : "rgba(240,234,216,0.08)",
+                opacity: activeBand ? 1 : 0.3,
+              }}
+            />
 
-          {/* Secondary cards — responsive grid */}
-          {categories.length > 1 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-              {categories.slice(1).map((category, idx) => renderCategoryCard(category, idx + 1, false))}
-            </div>
-          )}
+            {activeTool && activeBand ? (
+              <div key={activeTool.tool}>
+                <div className="mb-6 flex flex-wrap items-baseline gap-x-5 gap-y-2">
+                  <span
+                    className="font-mono text-[10px] font-bold uppercase tracking-[0.32em]"
+                    style={{ color: activeBand.accent }}
+                  >
+                    {activeBand.name}
+                  </span>
+                  <h3
+                    className="font-serif text-3xl tracking-tight md:text-4xl"
+                    style={{ color: "#fff" }}
+                  >
+                    {activeTool.tool}
+                  </h3>
+                </div>
+
+                {activeProjects.length > 0 ? (
+                  <>
+                    <p className="mb-5 font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-offwhite/40">
+                      {language === "es"
+                        ? `EN USO · ${activeProjects.length} ${activeProjects.length === 1 ? "PROYECTO" : "PROYECTOS"}`
+                        : `IN PRODUCTION · ${activeProjects.length} ${activeProjects.length === 1 ? "PROJECT" : "PROJECTS"}`}
+                    </p>
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                      {activeProjects.map((project) => (
+                        <a
+                          key={project.id}
+                          href={project.href}
+                          target={project.href.startsWith("http") ? "_blank" : undefined}
+                          rel={project.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                          className="group flex items-center justify-between gap-4 rounded-xl border border-offwhite/8 bg-offwhite/[0.02] px-4 py-3 transition-all hover:border-offwhite/20 hover:bg-offwhite/[0.05]"
+                        >
+                          <div className="min-w-0">
+                            <div
+                              className="font-mono text-[9px] font-bold uppercase tracking-[0.3em]"
+                              style={{ color: activeBand.accent }}
+                            >
+                              SYS_0{project.id}
+                            </div>
+                            <div className="mt-1 font-sans text-sm font-medium text-offwhite/85 group-hover:text-white">
+                              {project.title}
+                            </div>
+                          </div>
+                          <ArrowUpRight className="h-4 w-4 shrink-0 text-offwhite/40 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-offwhite/90" />
+                        </a>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    <p className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-offwhite/40">
+                      {language === "es" ? "EXPLORACIÓN PERSONAL" : "PERSONAL EXPLORATION"}
+                    </p>
+                    <p className="max-w-xl font-sans text-sm text-offwhite/65 md:text-base">
+                      {language === "es"
+                        ? `${activeTool.tool} no aparece etiquetado en los proyectos destacados del portfolio, pero forma parte del stack que uso para investigación, prototipos y proyectos internos.`
+                        : `${activeTool.tool} isn't tagged on any featured portfolio project, but it's part of the stack I use for research, prototypes, and internal work.`}
+                    </p>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex h-full min-h-[140px] flex-col items-start justify-center gap-3">
+                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-offwhite/30">
+                  {language === "es" ? "ESPERANDO INTERACCIÓN" : "AWAITING INPUT"}
+                </p>
+                <p className="max-w-xl font-serif text-xl italic tracking-tight text-offwhite/45 md:text-2xl">
+                  {language === "es"
+                    ? isCoarse
+                      ? "Tocá cualquier herramienta de las bandas para ver dónde la uso en el portfolio."
+                      : "Pasá el cursor sobre cualquier herramienta para ver dónde la uso en el portfolio."
+                    : isCoarse
+                    ? "Tap any tool above to see where it lives across the portfolio."
+                    : "Hover any tool above to see where it lives across the portfolio."}
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>
+  );
+}
+
+/* ─── Tool pill (mono, minimal) ─── */
+interface ToolPillProps {
+  tool: string;
+  accent: string;
+  accentSoft: string;
+  isActive: boolean;
+  isDimmed: boolean;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
+  onClick?: () => void;
+}
+
+function ToolPill({
+  tool,
+  accent,
+  accentSoft,
+  isActive,
+  isDimmed,
+  onMouseEnter,
+  onMouseLeave,
+  onFocus,
+  onBlur,
+  onClick,
+}: ToolPillProps) {
+  return (
+    <button
+      type="button"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      onClick={onClick}
+      className="group inline-flex items-center gap-2.5 whitespace-nowrap rounded-full border px-4 py-2 font-mono text-[12px] tracking-tight transition-all duration-300 focus:outline-none"
+      style={{
+        borderColor: isActive ? accent : "rgba(240,234,216,0.1)",
+        background: isActive ? accentSoft : "rgba(240,234,216,0.02)",
+        color: isActive ? "#fff" : isDimmed ? "rgba(240,234,216,0.3)" : "rgba(240,234,216,0.75)",
+        opacity: isDimmed ? 0.4 : 1,
+        boxShadow: isActive ? `0 0 24px -8px ${accent}` : "none",
+      }}
+    >
+      <span
+        className="block h-1 w-1 rounded-full transition-all duration-300"
+        style={{
+          background: accent,
+          opacity: isActive ? 1 : 0.6,
+          boxShadow: isActive ? `0 0 6px ${accent}` : "none",
+        }}
+      />
+      {tool}
+    </button>
   );
 }

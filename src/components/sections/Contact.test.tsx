@@ -54,6 +54,11 @@ vi.mock('@/i18n/LanguageContext', () => ({
         github: 'https://github.com/test',
         linkedin: 'https://linkedin.com/in/test',
       },
+      colophon: {
+        fontCredit: 'Typography: EB Garamond',
+        deployLabel: 'Last deploy',
+        scoreLabel: 'Lighthouse',
+      },
     },
   }),
 }));

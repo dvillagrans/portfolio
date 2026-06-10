@@ -110,10 +110,21 @@ export interface AboutSections {
   };
 }
 
+export interface AboutMeta {
+  locationLabel: string;
+  locationValue: string;
+  statusLabel: string;
+  statusValue: string;
+  roleLabel: string;
+  studyingLabel: string;
+  studyingValue: string;
+}
+
 export interface AboutDict {
   title: string;
   subtitle: string;
   intro: string;
+  meta: AboutMeta;
   metrics: AboutMetric[];
   sections: AboutSections;
   closure: string;
@@ -167,6 +178,12 @@ export interface ContactDict {
   github: string;
   linkedin: string;
   footerText: string;
+}
+
+export interface ColophonDict {
+  fontCredit: string;
+  deployLabel: string;
+  scoreLabel: string;
 }
 
 /* ─── Case-study shared shapes ─── */
@@ -507,6 +524,15 @@ export interface CvBuilderDict {
   interviewPoweredBy: string;
 }
 
+/* ─── Now page ─── */
+
+export interface NowDict {
+  title: string;
+  subtitle: string;
+  lastUpdated: string;
+  sections: { heading: string; content: string }[];
+}
+
 /* ─── Top-level Language dictionary ─── */
 
 export interface LanguageDict {
@@ -519,6 +545,8 @@ export interface LanguageDict {
   about: AboutDict;
   archive: ArchiveDict;
   contact: ContactDict;
+  colophon: ColophonDict;
+  now: NowDict;
   timeup: TimeUpDict;
   eyenet: EyeNetDict;
   covidPerfiles: CovidDict;
@@ -530,5 +558,5 @@ export interface LanguageDict {
 
 export type SharedDict = Pick<
   LanguageDict,
-  "nav" | "hero" | "work" | "systems" | "philosophy" | "stack" | "about" | "archive" | "contact"
+  "nav" | "hero" | "work" | "systems" | "philosophy" | "stack" | "about" | "archive" | "contact" | "colophon" | "now"
 >;

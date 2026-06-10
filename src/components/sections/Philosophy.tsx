@@ -8,650 +8,320 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ═══════════════════════════════════════════════════════════════
-   PHILOSOPHY SECTION — "The Systems Mindset" Visual Manifesto
-   Dark editorial layout with animated SVG metaphors for each
-   principle. Cinematic scroll-driven entrances.
-   ═══════════════════════════════════════════════════════════════ */
+const ACCENTS = [
+  "oklch(72% 0.15 65)",
+  "oklch(70% 0.13 195)",
+  "oklch(74% 0.10 90)",
+];
 
-/* ─── Static SVG Visual: Connected Nodes ─── */
-function PipelineVisual({ reduced }: { reduced: boolean }) {
-  const teal = "oklch(40% 0.085 195)";
-  const amber = "oklch(70% 0.130 65)";
-  const lineColor = "oklch(100% 0 0 / 0.12)";
+function useTypewriter(text: string, enabled: boolean) {
+  const [typed, setTyped] = useState("");
+  const startedRef = useRef(false);
+  const triggerRef = useRef<HTMLDivElement>(null);
 
-  if (reduced) {
-    return (
-      <svg viewBox="0 0 320 160" className="w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <circle cx="50" cy="80" r="4" fill={teal} opacity="0.5" />
-        <circle cx="105" cy="55" r="4" fill={amber} opacity="0.4" />
-        <circle cx="165" cy="90" r="6" fill={teal} opacity="0.5" />
-        <circle cx="225" cy="60" r="4" fill={amber} opacity="0.4" />
-        <circle cx="280" cy="80" r="4" fill={teal} opacity="0.5" />
-        <path d="M50 80 L105 55 M105 55 L165 90 M165 90 L225 60 M225 60 L280 80" fill="none" stroke={lineColor} strokeWidth="1.5" />
-      </svg>
-    );
-  }
-
-  return (
-    <svg viewBox="0 0 320 160" className="w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
-      </defs>
-
-      {/* Connection lines */}
-      <path d="M50 80 L105 55" fill="none" stroke={lineColor} strokeWidth="1.5" />
-      <path d="M105 55 L165 90" fill="none" stroke={lineColor} strokeWidth="1.5" />
-      <path d="M165 90 L225 60" fill="none" stroke={lineColor} strokeWidth="1.5" />
-      <path d="M225 60 L280 80" fill="none" stroke={lineColor} strokeWidth="1.5" />
-
-      {/* Node 1 — teal */}
-      <circle cx="50" cy="80" r="5" fill={teal} opacity="0.15" />
-      <circle cx="50" cy="80" r="5" stroke={teal} strokeWidth="1.5" fill="none" opacity="0.7" />
-
-      {/* Node 2 — amber */}
-      <circle cx="105" cy="55" r="5" fill={amber} opacity="0.12" />
-      <circle cx="105" cy="55" r="5" stroke={amber} strokeWidth="1.5" fill="none" opacity="0.7" />
-
-      {/* Node 3 — active, teal, larger */}
-      <circle cx="165" cy="90" r="9" fill={teal} opacity="0.08" filter="url(#nodeGlow)" />
-      <circle cx="165" cy="90" r="9" stroke={teal} strokeWidth="2" fill="none" opacity="0.8" />
-      <circle cx="165" cy="90" r="3" fill={teal} opacity="0.9" />
-
-      {/* Node 4 — amber */}
-      <circle cx="225" cy="60" r="5" fill={amber} opacity="0.12" />
-      <circle cx="225" cy="60" r="5" stroke={amber} strokeWidth="1.5" fill="none" opacity="0.7" />
-
-      {/* Node 5 — teal */}
-      <circle cx="280" cy="80" r="5" fill={teal} opacity="0.15" />
-      <circle cx="280" cy="80" r="5" stroke={teal} strokeWidth="1.5" fill="none" opacity="0.7" />
-    </svg>
-  );
-}
-
-
-/* ─── Static SVG Visual: Infrastructure Matrix ─── */
-function GridVisual({ reduced }: { reduced: boolean }) {
-  const teal = "oklch(40% 0.085 195)";
-  const amber = "oklch(70% 0.130 65)";
-  const borderColor = "oklch(100% 0 0 / 0.12)";
-
-  const cells = [
-    { x: 35, y: 22, dot: false, fill: teal, dotColor: "" },
-    { x: 125, y: 22, dot: true, fill: "", dotColor: amber },
-    { x: 215, y: 22, dot: false, fill: "", dotColor: "" },
-    { x: 35, y: 82, dot: false, fill: "", dotColor: "" },
-    { x: 125, y: 82, dot: false, fill: amber, dotColor: "" },
-    { x: 215, y: 82, dot: true, fill: "", dotColor: teal },
-    { x: 35, y: 142, dot: true, fill: "", dotColor: teal },
-    { x: 125, y: 142, dot: false, fill: "", dotColor: "" },
-    { x: 215, y: 142, dot: false, fill: teal, dotColor: "" },
-  ];
-
-  if (reduced) {
-    return (
-      <svg viewBox="0 0 320 200" className="w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        {cells.map((c, i) => (
-          <rect
-            key={i}
-            x={c.x} y={c.y} width="70" height="48" rx="4"
-            fill="none"
-            stroke={borderColor}
-            strokeWidth="1.5"
-            opacity="0.35"
-          />
-        ))}
-      </svg>
-    );
-  }
-
-  return (
-    <svg viewBox="0 0 320 200" className="w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      {cells.map((c, i) => (
-        <g key={i}>
-          {c.fill && (
-            <rect
-              x={c.x} y={c.y} width="70" height="48" rx="4"
-              fill={c.fill}
-              fillOpacity="0.05"
-            />
-          )}
-          <rect
-            x={c.x} y={c.y} width="70" height="48" rx="4"
-            fill="none"
-            stroke={borderColor}
-            strokeWidth="1.5"
-          />
-          {c.dot && c.dotColor && (
-            <circle
-              cx={c.x + 35}
-              cy={c.y + 24}
-              r="2.5"
-              fill={c.dotColor}
-              opacity="0.7"
-            />
-          )}
-        </g>
-      ))}
-    </svg>
-  );
-}
-
-/* ─── Static SVG Visual: Signal to Noise ─── */
-function ClarityVisual({ reduced }: { reduced: boolean }) {
-  const teal = "oklch(40% 0.085 195)";
-  const amber = "oklch(70% 0.130 65)";
-  const lineColor = "oklch(100% 0 0 / 0.12)";
-
-  if (reduced) {
-    return (
-      <svg viewBox="0 0 320 160" className="w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <circle cx="50" cy="60" r="3" fill={teal} opacity="0.3" />
-        <circle cx="85" cy="100" r="3" fill={amber} opacity="0.3" />
-        <circle cx="70" cy="130" r="3" fill={teal} opacity="0.3" />
-        <path d="M120 80 L185 80" fill="none" stroke={lineColor} strokeWidth="1.5" />
-        <path d="M178 74 L185 80 L178 86" fill="none" stroke={amber} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        <circle cx="215" cy="55" r="3" fill={teal} opacity="0.7" />
-        <circle cx="215" cy="80" r="3" fill={teal} opacity="0.7" />
-        <circle cx="215" cy="105" r="3" fill={teal} opacity="0.7" />
-        <circle cx="250" cy="55" r="3" fill={amber} opacity="0.7" />
-        <circle cx="250" cy="80" r="3" fill={amber} opacity="0.7" />
-        <circle cx="250" cy="105" r="3" fill={amber} opacity="0.7" />
-        <circle cx="285" cy="55" r="3" fill={teal} opacity="0.7" />
-        <circle cx="285" cy="80" r="3" fill={teal} opacity="0.7" />
-        <circle cx="285" cy="105" r="3" fill={teal} opacity="0.7" />
-      </svg>
-    );
-  }
-
-  return (
-    <svg viewBox="0 0 320 160" className="w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <filter id="chaosBlur" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2.2" />
-        </filter>
-      </defs>
-
-      {/* Chaos — left side: scattered, blurred dots */}
-      <g filter="url(#chaosBlur)" opacity="0.35">
-        <circle cx="45" cy="50" r="4" fill={teal} />
-        <circle cx="80" cy="75" r="3" fill={amber} />
-        <circle cx="60" cy="110" r="5" fill={teal} />
-        <circle cx="95" cy="130" r="3" fill={amber} />
-        <circle cx="35" cy="85" r="3.5" fill={amber} />
-        <circle cx="110" cy="55" r="2.5" fill={teal} />
-        <circle cx="75" cy="145" r="4" fill={teal} />
-      </g>
-
-      {/* Faint chaotic connections */}
-      <path d="M45 50 Q60 70 80 75" fill="none" stroke={lineColor} strokeWidth="1" opacity="0.15" filter="url(#chaosBlur)" />
-      <path d="M60 110 Q80 100 95 130" fill="none" stroke={lineColor} strokeWidth="1" opacity="0.15" filter="url(#chaosBlur)" />
-
-      {/* Transition arrow */}
-      <path d="M135 80 L185 80" fill="none" stroke={amber} strokeWidth="1.5" opacity="0.5" />
-      <path d="M178 74 L185 80 L178 86" fill="none" stroke={amber} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.5" />
-
-      {/* Order — right side: crisp, aligned grid */}
-      <g opacity="0.9">
-        <circle cx="215" cy="55" r="3.5" fill={teal} />
-        <circle cx="215" cy="80" r="3.5" fill={teal} />
-        <circle cx="215" cy="105" r="3.5" fill={teal} />
-        <circle cx="250" cy="55" r="3.5" fill={amber} />
-        <circle cx="250" cy="80" r="3.5" fill={amber} />
-        <circle cx="250" cy="105" r="3.5" fill={amber} />
-        <circle cx="285" cy="55" r="3.5" fill={teal} />
-        <circle cx="285" cy="80" r="3.5" fill={teal} />
-        <circle cx="285" cy="105" r="3.5" fill={teal} />
-      </g>
-
-      {/* Crisp connections */}
-      <path d="M215 55 L250 55 M250 55 L285 55" fill="none" stroke={lineColor} strokeWidth="1.5" opacity="0.25" />
-      <path d="M215 80 L250 80 M250 80 L285 80" fill="none" stroke={lineColor} strokeWidth="1.5" opacity="0.25" />
-      <path d="M215 105 L250 105 M250 105 L285 105" fill="none" stroke={lineColor} strokeWidth="1.5" opacity="0.25" />
-      <path d="M250 55 L250 80 M250 80 L250 105" fill="none" stroke={lineColor} strokeWidth="1.5" opacity="0.25" />
-    </svg>
-  );
-}
-
-/* ─── Principle Card ─── */
-function PrincipleCard({
-  index,
-  item,
-  reduced,
-}: {
-  index: number;
-  item: { title: string; description: string };
-  reduced: boolean;
-}) {
-  const [number, ...titleRest] = item.title.split(". ");
-  const pureTitle = titleRest.join(". ");
-
-  const visuals = [
-    <PipelineVisual key="p" reduced={reduced} />,
-    <GridVisual key="g" reduced={reduced} />,
-    <ClarityVisual key="c" reduced={reduced} />,
-  ];
-
-  const borderColors = [
-    "border-l-warm",
-    "border-l-accent",
-    "border-l-warm/70",
-  ];
-
-  const numberColors = [
-    "text-warm/8 group-hover:text-warm/15",
-    "text-accent/8 group-hover:text-accent/15",
-    "text-warm/6 group-hover:text-warm/12",
-  ];
-
-  const dotColors = [
-    "bg-warm/50 group-hover:bg-warm",
-    "bg-accent/50 group-hover:bg-accent",
-    "bg-warm/40 group-hover:bg-warm/80",
-  ];
-
-  const patternBgs = [
-    "/img/patterns/pipelines-flow.svg",
-    "/img/patterns/infra-grid.svg",
-    "/img/patterns/analytics-tiles.svg",
-  ];
-
-  return (
-    <div
-      className={`principle-card group relative flex flex-col md:flex-row gap-8 md:gap-12 p-8 md:p-10 lg:p-14 bg-graphite/40 backdrop-blur-sm border border-white/[0.06] ${borderColors[index]} border-l-[3px] rounded-2xl overflow-hidden hover:bg-graphite/60 transition-colors duration-700`}
-    >
-      {/* Subtle pattern background */}
-      <div
-        className="absolute inset-0 opacity-[0.035] bg-no-repeat bg-right-bottom pointer-events-none"
-        style={{ backgroundImage: `url(${patternBgs[index]})`, backgroundSize: "320px" }}
-        aria-hidden="true"
-      />
-
-      {/* Ambient glow */}
-      <div
-        className={`absolute -right-20 -top-20 h-64 w-64 rounded-full blur-[120px] transition-all duration-700 pointer-events-none ${
-          index === 1 ? "bg-accent/8 group-hover:bg-accent/15" : "bg-warm/8 group-hover:bg-warm/15"
-        }`}
-        aria-hidden="true"
-      />
-
-      {/* Watermark number */}
-      <span
-        className={`absolute top-2 right-4 md:right-8 font-serif text-8xl md:text-[10rem] font-medium leading-none select-none pointer-events-none transition-colors duration-700 ${numberColors[index]}`}
-        aria-hidden="true"
-      >
-        {number}
-      </span>
-
-      {/* Visual side */}
-      <div
-        className="relative flex-shrink-0 w-full md:w-2/5 lg:w-[38%] aspect-[16/10] md:aspect-auto md:min-h-[260px] rounded-xl bg-charcoal/60 border border-white/[0.05] overflow-hidden"
-        aria-hidden="true"
-      >
-        {visuals[index]}
-      </div>
-
-      {/* Text side */}
-      <div className="relative flex flex-col justify-center flex-1 z-10">
-        <div className="flex items-center gap-3 mb-4 md:mb-5">
-          <div className={`w-2 h-2 rounded-full transition-colors duration-500 ${dotColors[index]}`} />
-          <span className="font-mono text-[10px] font-bold tracking-[0.25em] uppercase text-white/30">
-            PRINCIPLE_0{index + 1}
-          </span>
-        </div>
-
-        <h3 className="mb-4 md:mb-5 font-sans text-2xl md:text-3xl lg:text-[2rem] font-semibold tracking-tight text-offwhite leading-[1.15] max-w-lg">
-          {pureTitle}
-        </h3>
-
-        <p className="principle-desc font-sans text-base md:text-[17px] leading-[1.7] text-white/45 group-hover:text-white/65 transition-colors duration-500 max-w-xl">
-          {item.description}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-/* ─── Mobile Principle Card (compact, no SVG) ─── */
-function MobilePrincipleCard({
-  index,
-  item,
-}: {
-  index: number;
-  item: { title: string; description: string };
-}) {
-  const [, ...titleRest] = item.title.split(". ");
-  const pureTitle = titleRest.join(". ");
-
-  const borderColors = [
-    "border-l-warm",
-    "border-l-accent",
-    "border-l-warm/70",
-  ];
-
-  const numberColors = [
-    "text-warm/10",
-    "text-accent/10",
-    "text-warm/8",
-  ];
-
-  const dotColors = [
-    "bg-warm",
-    "bg-accent",
-    "bg-warm/80",
-  ];
-
-  return (
-    <div
-      className={`relative flex flex-col gap-4 p-6 bg-graphite/40 backdrop-blur-sm border border-white/[0.06] ${borderColors[index]} border-l-[3px] rounded-2xl overflow-hidden`}
-    >
-      {/* Watermark number */}
-      <span
-        className={`absolute top-2 right-4 font-serif text-7xl font-medium leading-none select-none pointer-events-none ${numberColors[index]}`}
-        aria-hidden="true"
-      >
-        0{index + 1}
-      </span>
-
-      <div className="relative z-10 flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <div className={`w-2 h-2 rounded-full ${dotColors[index]}`} />
-          <span className="font-mono text-[10px] font-bold tracking-[0.25em] uppercase text-white/30">
-            PRINCIPLE_0{index + 1}
-          </span>
-        </div>
-
-        <h3 className="font-sans text-xl font-semibold tracking-tight text-offwhite leading-[1.15]">
-          {pureTitle}
-        </h3>
-
-        <p className="font-sans text-base leading-[1.7] text-white/60">
-          {item.description}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-/* ─── Main Section ─── */
-export default function Philosophy() {
-  const container = useRef<HTMLElement>(null);
-  const quoteRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
-  const mobileCardRef = useRef<HTMLDivElement>(null);
-  const { t } = useLanguage();
-  const reduced = useReducedMotion();
-  const [activeIndex, setActiveIndex] = useState(0);
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
-
-  /* Mobile card transition */
   useEffect(() => {
-    if (reduced) return;
-    const el = mobileCardRef.current;
-    if (!el) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        el,
-        { opacity: 0, y: 16, scale: 0.98 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power2.out" }
-      );
-    }, el);
-    return () => ctx.revert();
-  }, [activeIndex, reduced]);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.changedTouches[0].screenX;
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    touchEndX.current = e.changedTouches[0].screenX;
-    const diff = touchStartX.current - touchEndX.current;
-    if (Math.abs(diff) > 50) {
-      setActiveIndex((prev) =>
-        diff > 0 ? (prev + 1) % 3 : (prev - 1 + 3) % 3
-      );
+    if (!enabled) {
+      setTyped(text);
+      return;
     }
-  };
+    if (!triggerRef.current) return;
 
-  const handleTabKeyDown = (e: React.KeyboardEvent, idx: number) => {
-    if (e.key === "ArrowRight") {
-      e.preventDefault();
-      const next = (idx + 1) % 3;
-      setActiveIndex(next);
-      setTimeout(() => {
-        document.getElementById(`principle-tab-${next}`)?.focus();
-      }, 0);
-    } else if (e.key === "ArrowLeft") {
-      e.preventDefault();
-      const prev = (idx - 1 + 3) % 3;
-      setActiveIndex(prev);
-      setTimeout(() => {
-        document.getElementById(`principle-tab-${prev}`)?.focus();
-      }, 0);
-    }
-  };
+    const trigger = ScrollTrigger.create({
+      trigger: triggerRef.current,
+      start: "top 75%",
+      once: true,
+      onEnter: () => {
+        if (startedRef.current) return;
+        startedRef.current = true;
+
+        let i = 0;
+        const interval = setInterval(() => {
+          i++;
+          setTyped(text.slice(0, i));
+          if (i >= text.length) {
+            clearInterval(interval);
+          }
+        }, 28);
+      },
+    });
+
+    return () => {
+      trigger.kill();
+    };
+  }, [text, enabled]);
+
+  return { typed, triggerRef, complete: typed.length >= text.length };
+}
+
+export default function Philosophy() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const principlesRef = useRef<(HTMLElement | null)[]>([]);
+  const signatureRef = useRef<HTMLDivElement>(null);
+  const { t, language } = useLanguage();
+  const reduced = useReducedMotion();
+  const [focused, setFocused] = useState<number | null>(null);
+
+  const quote = t.philosophy.quote.replace(/["']/g, "");
+  const { typed, triggerRef, complete } = useTypewriter(quote, !reduced);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       if (reduced) {
-        gsap.set(".quote-text", { opacity: 1, y: 0, filter: "blur(0px)" });
-        gsap.set(".principle-card", { opacity: 1, y: 0, rotateX: 0 });
-        gsap.set(".principle-desc", { opacity: 1, filter: "blur(0px)" });
+        principlesRef.current.forEach((p) => {
+          if (p) gsap.set(p, { opacity: 1, y: 0 });
+        });
+        if (signatureRef.current) gsap.set(signatureRef.current, { opacity: 1, y: 0 });
         return;
       }
 
-      /* Quote: blur-to-clear + scale entrance */
-      gsap.fromTo(
-        ".quote-text",
-        { opacity: 0, y: 50, filter: "blur(16px)", scale: 0.98 },
-        {
-          opacity: 1,
-          y: 0,
-          filter: "blur(0px)",
-          scale: 1,
-          duration: 1.6,
-          ease: "expo.out",
-          scrollTrigger: {
-            trigger: quoteRef.current,
-            start: "top 72%",
-            once: true,
-          },
-        }
-      );
-
-      /* Cards: staggered dramatic entrance with perspective */
-      if (cardsRef.current) {
+      principlesRef.current.forEach((el, i) => {
+        if (!el) return;
         gsap.fromTo(
-          ".principle-card",
-          { opacity: 0, y: 80, rotateX: 6 },
+          el,
+          { opacity: 0, y: 60 },
           {
             opacity: 1,
             y: 0,
-            rotateX: 0,
-            duration: 1.2,
-            stagger: 0.22,
+            duration: 1.1,
+            delay: i * 0.15,
             ease: "expo.out",
             scrollTrigger: {
-              trigger: cardsRef.current,
-              start: "top 78%",
+              trigger: el,
+              start: "top 82%",
+              once: true,
+            },
+          }
+        );
+      });
+
+      if (signatureRef.current) {
+        gsap.fromTo(
+          signatureRef.current,
+          { opacity: 0, y: 16 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: signatureRef.current,
+              start: "top 88%",
               once: true,
             },
           }
         );
       }
-
-      /* Principle 3 description: blur-to-clear (the "explainability" metaphor) */
-      gsap.fromTo(
-        ".principle-card:last-child .principle-desc",
-        { opacity: 0.2, filter: "blur(8px)" },
-        {
-          opacity: 1,
-          filter: "blur(0px)",
-          duration: 1.4,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".principle-card:last-child",
-            start: "top 60%",
-            once: true,
-          },
-        }
-      );
-    }, container);
+    }, sectionRef);
 
     return () => ctx.revert();
   }, [reduced]);
 
-  const quote = t.philosophy.quote.replace(/['"]/g, "");
-
   return (
     <section
-      ref={container}
+      ref={sectionRef}
       id="principles"
-      className="relative bg-charcoal py-24 md:py-36 lg:py-44 overflow-hidden text-offwhite"
-      style={{ perspective: "1200px" }}
+      className="relative overflow-hidden bg-charcoal py-28 text-offwhite md:py-40 lg:py-48"
+      style={{
+        paddingLeft: "max(1.5rem, env(safe-area-inset-left))",
+        paddingRight: "max(1.5rem, env(safe-area-inset-right))",
+      }}
     >
-      {/* Subtle grid texture */}
+      {/* Quiet scan-line texture — barely perceptible */}
       <div
-        className="absolute inset-0 opacity-[0.025]"
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        aria-hidden="true"
         style={{
           backgroundImage:
-            "linear-gradient(to right, rgb(255 255 255 / 0.08) 1px, transparent 1px), linear-gradient(to bottom, rgb(255 255 255 / 0.08) 1px, transparent 1px)",
-          backgroundSize: "80px 80px",
+            "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(240,234,216,0.4) 3px, rgba(240,234,216,0.4) 4px)",
         }}
-        aria-hidden="true"
       />
-
-      {/* Noise grain overlay */}
-      <div className="absolute inset-0 noise-overlay opacity-[0.12] pointer-events-none" aria-hidden="true" />
 
       {/* Top ambient line */}
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[1px] bg-gradient-to-r from-transparent via-warm/10 to-transparent"
+        className="pointer-events-none absolute left-1/2 top-0 h-[1px] w-full max-w-7xl -translate-x-1/2 bg-gradient-to-r from-transparent via-warm/15 to-transparent"
         aria-hidden="true"
       />
 
-      <div className="relative z-10 mx-auto max-w-7xl pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] md:px-12 lg:px-16">
+      <div className="relative z-10 mx-auto max-w-7xl md:px-12 lg:px-16">
         {/* Section heading */}
-        <div className="flex items-center gap-4 mb-6">
-          <h2 className="font-sans text-[10px] font-bold uppercase tracking-[0.3em] text-warm/70">
-            04. {t.philosophy.tag}
+        <header className="mb-20 md:mb-32">
+          <div className="mb-6 flex items-center gap-4">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-warm/70">
+              04. {t.philosophy.tag}
+            </span>
+            <div className="h-[1px] w-16 bg-warm/20" />
+          </div>
+          <h2 className="font-serif text-3xl italic tracking-tight text-offwhite/70 md:text-4xl lg:text-5xl">
+            {t.philosophy.title}
           </h2>
-          <div className="h-[1px] flex-1 max-w-24 bg-warm/15" />
-        </div>
-        <h3 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight text-warm/90 mb-16 md:mb-24">
-          {t.philosophy.title}
-        </h3>
+        </header>
 
-        {/* ═══ Massive Manifesto Quote ═══ */}
-        <div ref={quoteRef} className="mb-24 md:mb-36 lg:mb-44 max-w-6xl">
-          <p className="quote-text font-serif italic text-[2.5rem] sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem] leading-[1.08] tracking-tight text-warm">
-            {quote}
+        {/* ═══ Manifesto Quote — typewriter ═══ */}
+        <div ref={triggerRef} className="mb-32 md:mb-44 lg:mb-52 max-w-6xl">
+          <p
+            className="font-serif italic leading-[1.08] tracking-tight text-warm"
+            style={{
+              fontSize: "clamp(2.25rem, 7vw, 5.5rem)",
+              minHeight: "1.08em",
+            }}
+          >
+            <span>&ldquo;{typed}</span>
+            <span
+              className="inline-block translate-y-[-0.08em] text-warm/80"
+              style={{
+                animation: !complete || reduced
+                  ? "manifesto-cursor 0.9s steps(1) infinite"
+                  : reduced
+                  ? "none"
+                  : "manifesto-cursor-fadeout 1.2s ease-out forwards",
+                width: "0.5ch",
+                display: "inline-block",
+              }}
+              aria-hidden="true"
+            >
+              |
+            </span>
+            <span className={complete ? "" : "opacity-0"}>&rdquo;</span>
           </p>
-          {/* Decorative rule */}
-          <div className="mt-10 md:mt-14 flex items-center gap-4">
-            <div className="h-[2px] w-16 md:w-24 bg-warm/30" />
-            <div className="h-[2px] w-3 rounded-full bg-warm/20" />
+
+          {/* Manifesto signature rule */}
+          <div
+            className="mt-12 flex items-center gap-4 transition-opacity duration-1000"
+            style={{ opacity: complete ? 1 : 0 }}
+          >
+            <div className="h-[2px] w-20 bg-warm/40 md:w-32" />
+            <span className="h-1.5 w-1.5 rounded-full bg-warm/60" />
+            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-warm/50">
+              {language === "es" ? "MANIFIESTO · 2026" : "MANIFESTO · 2026"}
+            </span>
           </div>
         </div>
 
-        {/* ═══ Desktop Principle Cards ═══ */}
-        <div ref={cardsRef} className="hidden md:block space-y-6 md:space-y-8">
-          {t.philosophy.items.map((item, idx) => (
-            <PrincipleCard key={idx} index={idx} item={item} reduced={reduced} />
-          ))}
-        </div>
+        {/* ═══ Principles as manuscript entries ═══ */}
+        <div className="space-y-24 md:space-y-32 lg:space-y-40">
+          {t.philosophy.items.map((item, idx) => {
+            const [numLabel, ...titleRest] = item.title.split(". ");
+            const pureTitle = titleRest.join(". ");
+            const accent = ACCENTS[idx % ACCENTS.length];
+            const isFocused = focused === idx;
+            const isDimmed = focused !== null && focused !== idx;
 
-        {/* ═══ Mobile Principle Cards ═══ */}
-        <div className="md:hidden space-y-5">
-          {/* Tabs */}
-          <div
-            className="flex gap-2 overflow-x-auto scrollbar-hide pb-2"
-            role="tablist"
-            aria-label="Principles"
-          >
-            {t.philosophy.items.map((item, idx) => {
-              const isActive = activeIndex === idx;
-              const [, ...titleRest] = item.title.split(". ");
-              const pureTitle = titleRest.join(". ");
-              return (
-                <button
-                  key={idx}
-                  role="tab"
-                  aria-selected={isActive}
-                  aria-controls={`principle-panel-${idx}`}
-                  id={`principle-tab-${idx}`}
-                  tabIndex={isActive ? 0 : -1}
-                  onClick={() => setActiveIndex(idx)}
-                  onKeyDown={(e) => handleTabKeyDown(e, idx)}
-                  className={`flex-shrink-0 min-w-[130px] px-4 py-3 rounded-xl text-left transition-all duration-300 min-h-[44px] border ${
-                    isActive
-                      ? "bg-warm/10 border-warm/40 text-warm shadow-[0_0_20px_-5px_rgba(251,191,36,0.15)]"
-                      : "bg-white/[0.03] border-white/[0.06] text-white/40 hover:text-white/60 hover:bg-white/[0.06]"
-                  }`}
-                >
-                  <span className="block font-mono text-[9px] font-bold tracking-[0.2em] uppercase opacity-70">
-                    PRINCIPLE_0{idx + 1}
-                  </span>
+            return (
+              <article
+                key={idx}
+                ref={(el) => {
+                  principlesRef.current[idx] = el;
+                }}
+                onMouseEnter={() => setFocused(idx)}
+                onMouseLeave={() => setFocused(null)}
+                onFocus={() => setFocused(idx)}
+                onBlur={() => setFocused(null)}
+                tabIndex={0}
+                aria-label={pureTitle}
+                className="group relative grid cursor-default grid-cols-1 gap-6 outline-none transition-all duration-700 ease-out md:grid-cols-[auto_1fr] md:gap-12 lg:gap-16"
+                style={{
+                  opacity: isDimmed ? 0.32 : 1,
+                  filter: isDimmed ? "blur(2px)" : "blur(0)",
+                  transform: isFocused ? "translateX(8px)" : "translateX(0)",
+                }}
+              >
+                {/* Left: illuminated number + accent rule */}
+                <div className="flex items-start gap-4 md:flex-col md:items-end md:gap-3 md:pt-3">
                   <span
-                    className={`block text-sm font-medium mt-0.5 truncate ${
-                      isActive ? "text-warm" : "text-white/50"
-                    }`}
+                    className="font-serif italic leading-none transition-colors duration-500"
+                    style={{
+                      fontSize: "clamp(3.5rem, 6vw, 5.5rem)",
+                      color: isFocused ? accent : "rgba(240,234,216,0.85)",
+                    }}
+                  >
+                    {numLabel}.
+                  </span>
+                  <div
+                    className="mt-3 h-[2px] origin-left transition-all duration-700 md:mt-0 md:h-[3px]"
+                    style={{
+                      width: isFocused ? 80 : 40,
+                      background: accent,
+                      opacity: isFocused ? 1 : 0.6,
+                    }}
+                  />
+                </div>
+
+                {/* Right: principle + description */}
+                <div className="max-w-3xl">
+                  <h3
+                    className="mb-6 font-serif tracking-tight transition-colors duration-500 md:mb-8"
+                    style={{
+                      fontSize: "clamp(1.875rem, 4vw, 3.5rem)",
+                      lineHeight: 1.1,
+                      color: isFocused ? "#fff" : "rgba(240,234,216,0.95)",
+                    }}
                   >
                     {pureTitle}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+                  </h3>
+                  <p
+                    className="font-sans leading-[1.7] transition-colors duration-500"
+                    style={{
+                      fontSize: "clamp(1rem, 1.2vw, 1.125rem)",
+                      color: isFocused ? "rgba(240,234,216,0.85)" : "rgba(240,234,216,0.55)",
+                    }}
+                  >
+                    {item.description}
+                  </p>
 
-          {/* Active Card */}
-          <div
-            ref={mobileCardRef}
-            key={activeIndex}
-            role="tabpanel"
-            id={`principle-panel-${activeIndex}`}
-            aria-labelledby={`principle-tab-${activeIndex}`}
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-          >
-            <MobilePrincipleCard
-              index={activeIndex}
-              item={t.philosophy.items[activeIndex]}
-            />
-          </div>
+                  {/* Subtle reading marker — only visible when focused */}
+                  <div
+                    className="mt-8 flex items-center gap-3 transition-opacity duration-500"
+                    style={{ opacity: isFocused ? 1 : 0 }}
+                    aria-hidden="true"
+                  >
+                    <span
+                      className="h-1 w-1 rounded-full"
+                      style={{ background: accent }}
+                    />
+                    <span
+                      className="font-mono text-[9px] font-bold uppercase tracking-[0.32em]"
+                      style={{ color: accent }}
+                    >
+                      {language === "es" ? "EN FOCO" : "IN FOCUS"}
+                    </span>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
 
-          {/* Pagination Dots */}
-          <div
-            className="flex justify-center gap-2 pt-2"
-            role="group"
-            aria-label="Principle pagination"
-          >
-            {t.philosophy.items.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setActiveIndex(idx)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  activeIndex === idx
-                    ? "bg-warm w-6"
-                    : "bg-white/20 w-2 hover:bg-white/40"
-                }`}
-                aria-label={`Go to principle ${idx + 1}`}
-                aria-current={activeIndex === idx ? "true" : undefined}
-              />
-            ))}
-          </div>
+        {/* ═══ Closing signature ═══ */}
+        <div
+          ref={signatureRef}
+          className="mt-32 flex flex-col items-end gap-4 md:mt-44"
+        >
+          <div className="h-[1px] w-32 bg-warm/30 md:w-48" />
+          <p className="font-serif italic text-base text-warm/80 md:text-lg">
+            — Diego Villagran
+          </p>
+          <p className="font-mono text-[9px] font-bold uppercase tracking-[0.32em] text-offwhite/30">
+            {language === "es" ? "FIN DEL MANIFIESTO" : "END OF MANIFESTO"}
+          </p>
         </div>
       </div>
 
       {/* Bottom ambient line */}
       <div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[1px] bg-gradient-to-r from-transparent via-offwhite/5 to-transparent"
+        className="pointer-events-none absolute bottom-0 left-1/2 h-[1px] w-full max-w-7xl -translate-x-1/2 bg-gradient-to-r from-transparent via-offwhite/8 to-transparent"
         aria-hidden="true"
       />
+
+      <style>{`
+        @keyframes manifesto-cursor {
+          0%, 49% { opacity: 1; }
+          50%, 100% { opacity: 0; }
+        }
+        @keyframes manifesto-cursor-fadeout {
+          0% { opacity: 1; }
+          100% { opacity: 0; }
+        }
+      `}</style>
     </section>
   );
 }

@@ -6,6 +6,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ArrowUpRight, ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
+import Colophon from "@/components/ui/Colophon";
+import { useMagnetic } from "@/hooks/useMagnetic";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,6 +28,7 @@ export default function Contact() {
     name: false, email: false, message: false
   });
   const [shakeForm, setShakeForm] = useState(false);
+  const magneticEmail = useMagnetic({ strength: 10, radius: 150 });
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -182,6 +185,7 @@ export default function Contact() {
           <div className="flex flex-col sm:flex-row items-center gap-6 mt-8">
             <a
               href={`mailto:${t.contact.email}`}
+              ref={magneticEmail.ref as React.RefObject<HTMLAnchorElement>}
               className="group relative inline-flex items-center min-h-[44px] gap-4 overflow-hidden border border-offwhite/20 bg-transparent px-8 py-4 font-sans text-sm font-semibold tracking-[0.1em] text-offwhite transition-all duration-500 hover:border-warm hover:bg-warm hover:text-charcoal spring-press"
             >
               <span className="relative z-10 font-bold uppercase">{t.contact.email}</span>
@@ -344,16 +348,7 @@ export default function Contact() {
         )}
 
         {/* Footer Ribbon */}
-        <div className="mt-32 md:mt-48 flex flex-col sm:flex-row w-full items-center justify-between border-t border-white/10 pt-10 font-sans text-xs text-offwhite/50 gap-6">
-          <div className="flex items-center gap-3">
-             <div className="w-1.5 h-1.5 bg-warm rounded-full animate-pulse"></div>
-             <span>{new Date().getFullYear()} {t.contact.footerText}</span>
-          </div>
-          <div className="flex gap-6 text-[11px] uppercase tracking-[0.2em] font-bold">
-            <a href={t.contact.github} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center justify-center hover:text-accent transition-colors py-2">Github</a>
-            <a href={t.contact.linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center justify-center hover:text-accent transition-colors py-2">LinkedIn</a>
-          </div>
-        </div>
+        <Colophon />
 
       </div>
     </section>
