@@ -63,3 +63,8 @@ docs/resume/*.synctex.gz
 
 # Output logs
 .output.log
+
+# Local agent / IDE state
+.atl/
+.windsurf/
+
