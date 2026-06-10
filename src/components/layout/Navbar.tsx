@@ -8,7 +8,8 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useTheme } from "@/hooks/ThemeContext";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
-import { Menu, X, Sun, Moon, FolderGit2, Cpu, User, Mail } from "lucide-react";
+import { Menu, X, Sun, Moon, FolderGit2, Cpu, User, Mail, Command } from "lucide-react";
+import { useCommandPalette } from "@/hooks/CommandPaletteContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -29,6 +30,7 @@ export default function Navbar() {
   const menuPanelRef = useRef<HTMLDivElement>(null);
   const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
+  const { setOpen: setCmdPaletteOpen } = useCommandPalette();
   const reduced = useReducedMotion();
   const pathname = usePathname();
 
@@ -172,7 +174,7 @@ export default function Navbar() {
   }, [mobileMenuOpen, reduced]);
 
   const navItems: NavItem[] = [
-    { href: "/#projects", label: t.nav.projects },
+    { href: "/projects", label: t.nav.projects },
     { href: "/#systems", label: t.nav.systems },
     { href: "/about", label: t.nav.about },
     { href: "/#contact", label: t.nav.contact },
@@ -199,8 +201,8 @@ export default function Navbar() {
             : "translate-y-0 opacity-100"
         } ${
           scrolled || mobileMenuOpen
-            ? "w-[95%] sm:w-[90%] max-w-4xl bg-offwhite/95 text-charcoal backdrop-blur-xl border border-charcoal/10 shadow-lg md:w-[600px]"
-            : `w-[95%] sm:w-[90%] max-w-4xl bg-transparent ${theme === "light" ? "text-charcoal" : "text-offwhite"} border border-transparent md:w-[600px]`
+            ? "w-[95%] sm:w-[90%] max-w-4xl bg-offwhite/95 text-charcoal backdrop-blur-xl border border-charcoal/10 shadow-lg md:w-[720px]"
+            : `w-[95%] sm:w-[90%] max-w-4xl bg-transparent ${theme === "light" ? "text-charcoal" : "text-offwhite"} border border-transparent md:w-[720px]`
         }`}
       >
         <div className="flex items-center justify-between px-5 md:px-6 py-3 w-full">
@@ -234,10 +236,27 @@ export default function Navbar() {
             </ul>
 
             <div className="flex items-center gap-1.5 md:gap-2">
+              {/* Command palette trigger (desktop only) */}
+              <button
+                type="button"
+                onClick={() => setCmdPaletteOpen(true)}
+                aria-label="Open command palette (Cmd+K)"
+                className={`hidden md:inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.15em] border rounded-full px-2.5 py-1.5 transition-colors ${
+                  scrolled
+                    ? "border-charcoal/20 text-charcoal/70 hover:bg-charcoal hover:text-offwhite"
+                    : theme === "light"
+                    ? "border-charcoal/20 text-charcoal/70 hover:bg-charcoal hover:text-offwhite"
+                    : "border-offwhite/20 text-offwhite/70 hover:bg-offwhite hover:text-charcoal"
+                }`}
+              >
+                <Command className="h-3 w-3" aria-hidden="true" />
+                <span>K</span>
+              </button>
+
               {/* Theme toggle */}
               <button
                 type="button"
-                onClick={toggleTheme}
+                onClick={(e) => toggleTheme({ x: e.clientX, y: e.clientY })}
                 aria-label={
                   theme === "dark"
                     ? "Switch to light mode"
@@ -417,7 +436,7 @@ export default function Navbar() {
                     </span>
                     <button
                       type="button"
-                      onClick={toggleTheme}
+                      onClick={(e) => toggleTheme({ x: e.clientX, y: e.clientY })}
                       aria-label={
                         theme === "dark"
                           ? "Switch to light mode"
