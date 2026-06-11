@@ -704,7 +704,7 @@ export default function EyeNetCard({ variant = "card" }: EyeNetCardProps = {}) {
           </div>
 
           {/* Pipeline nodes — horizontal scroll on mobile */}
-          <div className="overflow-x-auto scrollbar-hide pb-2" style={{ height: 160 }}>
+          <div className="overflow-x-auto scrollbar-hide pb-2" style={{ height: 160, border: "1px solid #1a1a1a", borderRadius: 0 }}>
             <div className="flex items-center gap-0 min-w-max px-1 h-full">
               {pipelineNodes.map((node, i) => (
                 <div key={node.id} className="flex items-center">
