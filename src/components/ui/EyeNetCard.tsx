@@ -277,75 +277,6 @@ function PipelineArrow({ delay, colorFrom, colorTo }: { delay: number; colorFrom
 }
 
 /* ──────────────────────────────────────────────────────────────
-   MÉTRICA ANIMADA
-   ────────────────────────────────────────────────────────────── */
-
-function AnimatedMetric({
-  value,
-  label,
-  sublabel,
-  delay = 0,
-  valueClassName = "",
-}: {
-  value: string;
-  label: string;
-  sublabel?: string;
-  delay?: number;
-  valueClassName?: string;
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const reduced = useReducedMotion();
-
-  useEffect(() => {
-    if (!ref.current || reduced) return;
-    const match = value.match(/^(\d+)(.*)$/);
-    const target = match ? parseInt(match[1], 10) : null;
-    const suffix = match ? match[2] : "";
-    if (target === null) {
-      ref.current.textContent = value;
-      return;
-    }
-
-    const trigger = ScrollTrigger.create({
-      trigger: ref.current,
-      start: "top 90%",
-      onEnter: () => {
-        const obj = { val: 0 };
-        gsap.to(obj, {
-          val: target,
-          duration: 1.6,
-          delay: delay * 0.15,
-          ease: "power2.out",
-          onUpdate: () => {
-            if (ref.current) ref.current.textContent = Math.round(obj.val) + suffix;
-          },
-        });
-      },
-    });
-    return () => trigger.kill();
-  }, [value, delay, reduced]);
-
-  return (
-    <div className="flex flex-col gap-1">
-      <span
-        ref={ref}
-        className={`font-mono font-bold tabular-nums text-white ${valueClassName}`}
-      >
-        {reduced ? value : "0"}
-      </span>
-      <span className="font-mono text-[10px] text-white/30 tracking-widest uppercase block">
-        {label}
-      </span>
-      {sublabel && (
-        <span className="font-sans text-[11px] text-white/40 block mt-0.5">
-          {sublabel}
-        </span>
-      )}
-    </div>
-  );
-}
-
-/* ──────────────────────────────────────────────────────────────
    ORB VISUAL — decorative tech anchor for EyeNet header
    ────────────────────────────────────────────────────────────── */
 
@@ -391,6 +322,7 @@ export default function EyeNetCard({ variant = "card" }: EyeNetCardProps = {}) {
 
   const isEn = language === "en";
   const isBespoke = variant === "bespoke";
+  const [activeTab, setActiveTab] = useState<"Doc Pipeline" | "AI Assistant">("Doc Pipeline");
 
   /* GSAP internal timeline */
   useEffect(() => {
@@ -638,95 +570,84 @@ export default function EyeNetCard({ variant = "card" }: EyeNetCardProps = {}) {
           <OrbVisual reduced={reduced} />
 
           <div className="relative z-10">
-            {/* Metadata row — terminal-like with left accent */}
-            <div
-              className="eyenet-meta flex items-center justify-between mb-6 pl-3"
-              style={{ borderLeft: "2px solid oklch(40% 0.085 195 / 0.25)" }}
-            >
+            {/* Metadata row */}
+            <div className="eyenet-meta flex items-center justify-between mb-6 pl-3" style={{ borderLeft: "2px solid oklch(40% 0.085 195 / 0.25)" }}>
               <div className="flex items-center gap-3 flex-wrap">
-                <span className="font-mono text-[11px] text-white/30 tracking-widest">
-                  SYS_000
-                </span>
-
+                <span className="font-mono text-[11px] text-white/30 tracking-widest">SYS_000</span>
                 <span className="text-white/15">·</span>
-
-                {/* Badge LIVE — con pulso real */}
                 <div className="flex items-center gap-1.5">
                   <div className="relative">
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                     <div className="absolute inset-0 w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping opacity-75" />
                   </div>
-                  <span className="font-mono text-[11px] text-emerald-400 tracking-widest">
-                    LIVE
-                  </span>
+                  <span className="font-mono text-[11px] text-emerald-400 tracking-widest">LIVE</span>
                 </div>
-
                 <span className="text-white/15">·</span>
-
                 <span className="font-mono text-[11px] text-white/30 tracking-widest">
                   {isEn ? "PROFESSIONAL EXPERIENCE" : "EXPERIENCIA PROFESIONAL"}
                 </span>
               </div>
-
-              {/* Fecha — derecha */}
-              <span className="font-mono text-[11px] text-emerald-400/70 hidden sm:block">
-                {isEn ? "Apr 2025 — May 2026" : "Abr 2025 — May 2026"}
-              </span>
-            </div>
-
-            {/* Headline — dramatic scale with glow */}
-            <div className={isBespoke ? "eyenet-title mb-7" : "eyenet-title mb-5"}>
-              <h2
-                className={
-                  isBespoke
-                    ? "font-sans text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white leading-none tracking-tight mb-3"
-                    : "font-sans text-5xl sm:text-6xl md:text-7xl font-black text-white leading-none tracking-tight mb-2"
-                }
-                style={{ textShadow: "0 0 40px rgba(96,165,250,0.15)" }}
-              >
-                EyeNet
-              </h2>
-              <p
-                className={
-                  isBespoke
-                    ? "font-mono text-base md:text-lg text-white/45 tracking-wide"
-                    : "font-mono text-sm text-white/40 tracking-wide"
-                }
-              >
-                AI &amp; Automation Platform
-              </p>
-            </div>
-
-            {/* Description — visual hierarchy with color-coded dots */}
-            <div className="eyenet-desc flex flex-col gap-1.5 mb-4">
-              <div className="flex items-center gap-2.5">
-                <span className="block w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "oklch(40% 0.085 195)" }} />
-                <span className="font-sans text-sm text-white/55">
-                  {isEn ? "LLM pipelines · ETL/ELT" : "Pipelines LLM · ETL/ELT"}
+              <div className="flex items-center gap-3">
+                <span className="font-mono text-[11px] text-white/40 hidden sm:block">
+                  {isEn ? "Apr 2025 – May 2026" : "Abr 2025 – May 2026"}
                 </span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <span className="block w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "oklch(70% 0.130 65)" }} />
-                <span className="font-sans text-sm text-white/55">
-                  {isEn ? "Containerized microservices · AI assistants" : "Microservicios containerizados · asistentes IA"}
-                </span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <span className="block w-1.5 h-1.5 rounded-full shrink-0 bg-white/25" />
-                <span className="font-sans text-sm text-white/55">
-                  {isEn ? "GPU cluster inference" : "Inferencia en cluster GPU"}
+                <span className="font-mono text-[10px] px-2 py-0.5 rounded-sm text-white/40 border border-[#666] bg-transparent">
+                  NDA PARCIAL
                 </span>
               </div>
             </div>
 
-            {/* Badges de contexto */}
-            <div className="eyenet-badges flex items-center gap-2.5 mt-3">
-              <span className="font-mono text-[11px] px-2.5 py-1 rounded-sm text-white/40 border border-white/10">
-                {isEn ? "Remote" : "Remoto"}
-              </span>
-              <span className="font-mono text-[11px] px-2.5 py-1 rounded-sm text-amber-400/70 border border-amber-400/20 bg-amber-400/5">
-                {isEn ? "Partial NDA" : "NDA Parcial"}
-              </span>
+            {/* Headline + Stats — two-column layout */}
+            <div className={isBespoke ? "grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-8 mb-7" : "grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-6 mb-5"}>
+              {/* Left column — title, subtitle, description */}
+              <div className="eyenet-title">
+                <h2
+                  className={
+                    isBespoke
+                      ? "font-sans text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white leading-none tracking-tight mb-3"
+                      : "font-sans text-5xl sm:text-6xl md:text-7xl font-black text-white leading-none tracking-tight mb-2"
+                  }
+                  style={{ textShadow: "0 0 40px rgba(96,165,250,0.15)" }}
+                >
+                  EyeNet
+                </h2>
+                <p className="font-sans text-[14px] text-[#888] mb-3">
+                  AI &amp; Automation Platform
+                </p>
+                <p className="font-sans text-[13px] text-[#aaa] leading-relaxed">
+                  {isEn
+                    ? "Automatization of documental flows with LLMs and autonomous agents. Inference over private GPU cluster."
+                    : "Automatización de flujos documentales con LLMs y agentes autónomos. Inferencia sobre cluster GPU privado."}
+                </p>
+              </div>
+
+              {/* Right column — stats grid 2x2 */}
+              <div className="grid grid-cols-2 gap-x-6 gap-y-5 self-center">
+                <div className="eyenet-metric">
+                  <span className="font-mono text-[28px] font-bold text-white tabular-nums leading-none">65%</span>
+                  <span className="block font-mono text-[10px] uppercase text-[#666] tracking-[0.1em] mt-1">
+                    {isEn ? "Less Manual Work" : "Menos Trabajo Manual"}
+                  </span>
+                </div>
+                <div className="eyenet-metric">
+                  <span className="font-mono text-[28px] font-bold text-white tabular-nums leading-none">300+</span>
+                  <span className="block font-mono text-[10px] uppercase text-[#666] tracking-[0.1em] mt-1">
+                    {isEn ? "Docs / Week" : "Docs / Semana"}
+                  </span>
+                </div>
+                <div className="eyenet-metric">
+                  <span className="font-mono text-[28px] font-bold text-white tabular-nums leading-none">10K+</span>
+                  <span className="block font-mono text-[10px] uppercase text-[#666] tracking-[0.1em] mt-1">
+                    {isEn ? "Daily Requests" : "Requests Diarios"}
+                  </span>
+                </div>
+                <div className="eyenet-metric">
+                  <span className="font-mono text-[28px] font-bold text-white tabular-nums leading-none">92%</span>
+                  <span className="block font-mono text-[10px] uppercase text-[#666] tracking-[0.1em] mt-1">
+                    {isEn ? "NER Accuracy" : "Precisión NER"}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </header>
@@ -740,20 +661,42 @@ export default function EyeNetCard({ variant = "card" }: EyeNetCardProps = {}) {
           }
           style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
         >
+          {/* Pipeline tabs */}
+          <div className="flex items-center gap-6 pt-5 mb-4">
+            {(["Doc Pipeline", "AI Assistant"] as const).map((tab) => {
+              const isActive = activeTab === tab;
+              return (
+                <button
+                  key={tab}
+                  type="button"
+                  onClick={() => setActiveTab(tab)}
+                  className="font-mono text-[11px] uppercase tracking-wider pb-2 transition-colors duration-200"
+                  style={{
+                    color: isActive ? "#fff" : "#666",
+                    borderBottom: `1px solid ${isActive ? "#fff" : "#333"}`,
+                    background: "transparent",
+                  }}
+                >
+                  {tab}
+                </button>
+              );
+            })}
+          </div>
+
           {/* Section header — modern dash layout */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-5 mb-6">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
             <div className="flex items-center gap-2">
-              {/* Accent dash graphic */}
               <svg width="20" height="12" viewBox="0 0 20 12" fill="none" className="shrink-0">
                 <rect x="0" y="5" width="20" height="2" rx="1" fill="oklch(40% 0.085 195 / 0.3)" />
                 <rect x="0" y="5" width="8" height="2" rx="1" fill="oklch(40% 0.085 195)" />
                 <circle cx="10" cy="6" r="1.5" fill="oklch(40% 0.085 195)" />
               </svg>
               <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-white/35">
-                {isEn ? "SYSTEM ARCHITECTURE" : "ARQUITECTURA DEL SISTEMA"}
+                {activeTab === "Doc Pipeline"
+                  ? (isEn ? "DOCUMENT PIPELINE" : "PIPELINE DOCUMENTAL")
+                  : (isEn ? "AI ASSISTANT PIPELINE" : "PIPELINE ASISTENTE IA")}
               </span>
             </div>
-            {/* Status pill */}
             <div className="flex items-center gap-1.5 px-2 py-1 rounded-full border border-white/[0.06] bg-white/[0.02]">
               <div className="relative">
                 <div className="w-[5px] h-[5px] rounded-full bg-amber-400/80" style={{ animation: "dataPulse 2s ease-in-out infinite" }} />
@@ -765,8 +708,8 @@ export default function EyeNetCard({ variant = "card" }: EyeNetCardProps = {}) {
           </div>
 
           {/* Pipeline nodes — horizontal scroll on mobile */}
-          <div className="overflow-x-auto scrollbar-hide pb-2">
-            <div className="flex items-center gap-0 min-w-max px-1">
+          <div className="overflow-x-auto scrollbar-hide pb-2" style={{ height: 160 }}>
+            <div className="flex items-center gap-0 min-w-max px-1 h-full">
               {pipelineNodes.map((node, i) => (
                 <div key={node.id} className="flex items-center">
                   <PipelineNodeItem node={node} index={i} />
@@ -779,7 +722,7 @@ export default function EyeNetCard({ variant = "card" }: EyeNetCardProps = {}) {
           </div>
 
           {/* Legend — inline minimal with glow dots */}
-          <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1.5">
+          <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5">
             {[
               { color: "#4ade80", label: "TRIGGER" },
               { color: "#888888", label: "TRANSFORM" },
@@ -801,79 +744,7 @@ export default function EyeNetCard({ variant = "card" }: EyeNetCardProps = {}) {
           </div>
         </div>
 
-        {/* ═══ SEPARATOR + METRICS ═══ */}
-        <div
-          className={
-            isBespoke
-              ? "mx-8 md:mx-16 lg:mx-24 xl:mx-32 border-t border-white/[0.08]"
-              : "mx-6 md:mx-8 border-t border-white/[0.08]"
-          }
-        />
-
-        <div className="grid grid-cols-2 md:grid-cols-[1.5fr_1fr_1fr_1fr] divide-x divide-white/[0.08]">
-          <div
-            className={
-              isBespoke
-                ? "eyenet-metric px-8 md:px-10 lg:px-14 py-7 lg:py-9"
-                : "eyenet-metric px-5 md:px-6 py-5"
-            }
-          >
-            <AnimatedMetric
-              value="65%"
-              label={isEn ? "LESS MANUAL WORK" : "MENOS TRABAJO MANUAL"}
-              sublabel={isEn ? "vs. previous process" : "vs. proceso anterior"}
-              delay={0}
-              valueClassName={isBespoke ? "text-5xl lg:text-6xl" : "text-3xl"}
-            />
-          </div>
-          <div
-            className={
-              isBespoke
-                ? "eyenet-metric px-8 md:px-10 lg:px-14 py-7 lg:py-9"
-                : "eyenet-metric px-5 md:px-6 py-5"
-            }
-          >
-            <AnimatedMetric
-              value="300+"
-              label={isEn ? "DOCS / WEEK" : "DOCS / SEMANA"}
-              sublabel={isEn ? "processed automatically" : "procesados automáticamente"}
-              delay={1}
-              valueClassName={isBespoke ? "text-3xl lg:text-4xl" : "text-2xl"}
-            />
-          </div>
-          <div
-            className={
-              isBespoke
-                ? "eyenet-metric px-8 md:px-10 lg:px-14 py-7 lg:py-9"
-                : "eyenet-metric px-5 md:px-6 py-5"
-            }
-          >
-            <AnimatedMetric
-              value="10K+"
-              label={isEn ? "DAILY REQUESTS" : "REQUESTS DIARIOS"}
-              sublabel={isEn ? "to inference cluster" : "al cluster de inferencia"}
-              delay={2}
-              valueClassName={isBespoke ? "text-3xl lg:text-4xl" : "text-2xl"}
-            />
-          </div>
-          <div
-            className={
-              isBespoke
-                ? "eyenet-metric px-8 md:px-10 lg:px-14 py-7 lg:py-9"
-                : "eyenet-metric px-5 md:px-6 py-5"
-            }
-          >
-            <AnimatedMetric
-              value="92%"
-              label={isEn ? "NER ACCURACY" : "PRECISIÓN NER"}
-              sublabel={isEn ? "entity extraction" : "extracción de entidades"}
-              delay={3}
-              valueClassName={isBespoke ? "text-3xl lg:text-4xl" : "text-2xl"}
-            />
-          </div>
-        </div>
-
-        {/* ═══ SEPARATOR + FOOTER ═══ */}
+        {/* ═══ FOOTER ═══ */}
         <div
           className={
             isBespoke
