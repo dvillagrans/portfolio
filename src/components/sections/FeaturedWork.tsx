@@ -5,11 +5,12 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import type { ProjectItem } from "@/i18n/types";
+import { Scene, getAccent } from "./Scene";
+import { BespokeCovidScene } from "./BespokeCovidScene";
 
 const ProjectSpotlight = dynamic(
   () => import("../portfolio/ProjectSpotlight"),
@@ -17,494 +18,8 @@ const ProjectSpotlight = dynamic(
 );
 
 const EyeNetCard = dynamic(() => import("../ui/EyeNetCard"), { ssr: false });
-const VizContainer = dynamic(
-  () =>
-    import("../portfolio/viz/VizContainer").then((m) => ({
-      default: m.VizContainer,
-    })),
-  { ssr: false }
-);
-const CovidClusterViz = dynamic(
-  () =>
-    import("../portfolio/viz/CovidClusterViz").then((m) => ({
-      default: m.CovidClusterViz,
-    })),
-  { ssr: false }
-);
-const NYCFareViz = dynamic(
-  () =>
-    import("../portfolio/viz/NYCFareViz").then((m) => ({
-      default: m.NYCFareViz,
-    })),
-  { ssr: false }
-);
-const IndiaAQIViz = dynamic(
-  () =>
-    import("../portfolio/viz/IndiaAQIViz").then((m) => ({
-      default: m.IndiaAQIViz,
-    })),
-  { ssr: false }
-);
 
 gsap.registerPlugin(ScrollTrigger);
-
-interface SceneAccent {
-  fg: string;
-  bg: string;
-  ink: string;
-}
-
-const SCENE_ACCENTS: Record<string, SceneAccent> = {
-  "00": { fg: "#c8a96e", bg: "#0d1117", ink: "#f0ead8" },
-  "01": { fg: "#7dd49a", bg: "#0c100c", ink: "#f0ead8" },
-  "02": { fg: "oklch(60% 0.15 155)", bg: "oklch(96% 0.012 155)", ink: "#1c1c1e" },
-  "03": { fg: "oklch(58% 0.16 35)",  bg: "oklch(95% 0.018 35)",  ink: "#1c1c1e" },
-  "04": { fg: "oklch(60% 0.14 50)",  bg: "oklch(96% 0.014 50)",  ink: "#1c1c1e" },
-};
-
-const DEFAULT_ACCENT: SceneAccent = {
-  fg: "oklch(50% 0.12 240)",
-  bg: "oklch(96% 0.005 100)",
-  ink: "#1c1c1e",
-};
-
-function getAccent(id: string): SceneAccent {
-  return SCENE_ACCENTS[id] ?? DEFAULT_ACCENT;
-}
-
-function pickViz(id: string, image: string, title: string) {
-  if (id === "01") {
-    return (
-      <VizContainer height={320}>
-        <CovidClusterViz />
-      </VizContainer>
-    );
-  }
-  if (id === "02") {
-    return (
-      <VizContainer height={300}>
-        <NYCFareViz />
-      </VizContainer>
-    );
-  }
-  if (id === "03") {
-    return (
-      <VizContainer height={340}>
-        <IndiaAQIViz />
-      </VizContainer>
-    );
-  }
-  return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-charcoal/5">
-      <Image
-        src={image}
-        alt={title}
-        fill
-        sizes="(max-width: 1024px) 90vw, 50vw"
-        className="object-cover"
-        style={{ viewTransitionName: `project-img-${id}` }}
-      />
-    </div>
-  );
-}
-
-interface CountUpProps {
-  value: string;
-  triggerKey: number;
-  reduced: boolean;
-  className?: string;
-  style?: React.CSSProperties;
-}
-
-function CountUp({ value, triggerKey, reduced, className, style }: CountUpProps) {
-  const ref = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    if (!ref.current) return;
-    const match = value.match(/^(\d+(?:\.\d+)?)(.*)$/);
-    if (!match || reduced) {
-      ref.current.textContent = value;
-      return;
-    }
-    const target = parseFloat(match[1]);
-    const suffix = match[2];
-    const obj = { v: 0 };
-    const tween = gsap.to(obj, {
-      v: target,
-      duration: 1.4,
-      ease: "power2.out",
-      onUpdate: () => {
-        if (!ref.current) return;
-        const rounded = Number.isInteger(target)
-          ? Math.round(obj.v)
-          : obj.v.toFixed(1);
-        ref.current.textContent = `${rounded}${suffix}`;
-      },
-    });
-    return () => {
-      tween.kill();
-    };
-  }, [value, triggerKey, reduced]);
-
-  return <span ref={ref} className={className} style={style}>{reduced ? value : "0"}</span>;
-}
-
-interface SceneProps {
-  project: ProjectItem;
-  accent: SceneAccent;
-  language: string;
-  isActive: boolean;
-  index: number;
-  onOpenSpotlight: (project: ProjectItem) => void;
-  reduced: boolean;
-}
-
-interface BespokeCovidSceneProps {
-  project: ProjectItem;
-  language: string;
-  isActive: boolean;
-  index: number;
-  onOpenSpotlight: (project: ProjectItem) => void;
-  reduced: boolean;
-}
-
-function BespokeCovidScene({
-  project,
-  language,
-  isActive,
-  index,
-  onOpenSpotlight,
-  reduced,
-}: BespokeCovidSceneProps) {
-  const [activeKey, setActiveKey] = useState(0);
-
-  useEffect(() => {
-    if (isActive) setActiveKey((k) => k + 1);
-  }, [isActive]);
-
-  const ink = "#f0ead8";
-  const accent = "#7dd49a";
-  const inkSoft = "rgba(240,234,216,0.7)";
-  const inkMute = "rgba(240,234,216,0.55)";
-
-  return (
-    <div
-      className="relative h-full w-full overflow-hidden"
-      style={{
-        background:
-          "radial-gradient(ellipse at 50% 50%, #11140e 0%, #0a0b08 100%)",
-      }}
-    >
-      {/* Layer 1 — full-bleed viz */}
-      <div className="absolute inset-0">
-        <CovidClusterViz />
-      </div>
-
-      {/* Layer 2 — soft focus vignette (depth, not contrast) */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 55%, transparent 50%, rgba(0,0,0,0.25) 90%, rgba(0,0,0,0.45) 100%)",
-        }}
-      />
-
-      {/* Layer 3 — scanlines */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.4) 3px, rgba(255,255,255,0.4) 4px)",
-          maskImage:
-            "linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)",
-        }}
-      />
-
-      {/* Layer 4 — editorial HUD */}
-      <div
-        className="relative grid h-full grid-cols-12 grid-rows-12 gap-4 px-8 pt-28 pb-10 md:px-16 md:pt-32 md:pb-14 lg:px-24 lg:pt-36 lg:pb-16"
-        style={{ color: ink }}
-      >
-        {/* Top-left — system badge */}
-        <div className="col-span-7 row-start-1 flex items-center gap-3">
-          <span
-            className="font-mono text-[10px] font-bold uppercase tracking-[0.32em]"
-            style={{ color: accent }}
-          >
-            SYS_{project.id}
-          </span>
-          <span className="h-[1px] w-10 bg-white/20" />
-          <span
-            className="font-mono text-[9px] uppercase tracking-[0.32em]"
-            style={{ color: inkMute }}
-          >
-            {project.category}
-          </span>
-        </div>
-
-        {/* Top-right — live channel */}
-        <div className="col-span-5 row-start-1 flex items-start justify-end gap-2">
-          <span
-            className="mt-[6px] block h-1.5 w-1.5 rounded-full"
-            style={{ background: accent, boxShadow: `0 0 10px ${accent}` }}
-          />
-          <span
-            className="font-mono text-[9px] font-bold uppercase tracking-widest"
-            style={{ color: inkMute }}
-          >
-            {String(index + 1).padStart(2, "0")} / LIVE · K-MEANS · n=9
-          </span>
-        </div>
-
-        {/* Title + problem — top-left block */}
-        <div className="col-span-12 row-start-2 row-span-4 flex flex-col gap-5 md:col-span-7">
-          <h3
-            className="font-serif text-4xl leading-[0.92] tracking-tight md:text-6xl lg:text-7xl"
-            style={{ color: ink }}
-          >
-            {project.title}
-          </h3>
-          <div className="flex max-w-md gap-4">
-            <span
-              className="w-[3px] shrink-0 rounded-full"
-              style={{ background: accent }}
-            />
-            <p
-              className="font-sans text-sm leading-relaxed md:text-base"
-              style={{ color: inkSoft }}
-            >
-              {project.problem}
-            </p>
-          </div>
-        </div>
-
-        {/* GIANT metric — bottom-right, hugging the corner over the data */}
-        {project.metrics && project.metrics[0] && (
-          <div className="col-span-12 row-start-7 row-span-4 flex flex-col items-end justify-end md:col-span-7 md:col-start-6">
-            <CountUp
-              value={project.metrics[0].value}
-              triggerKey={activeKey}
-              reduced={reduced}
-              className="font-mono font-black tabular-nums leading-[0.85] tracking-tighter text-[7rem] md:text-[11rem] lg:text-[14rem]"
-              style={{
-                color: accent,
-                textShadow: `0 0 80px ${accent}40, 0 0 20px ${accent}30`,
-              }}
-            />
-            <span
-              className="mt-1 font-mono text-[10px] font-bold uppercase tracking-[0.3em]"
-              style={{ color: inkMute }}
-            >
-              {project.metrics[0].label}
-            </span>
-          </div>
-        )}
-
-        {/* Bottom-left — CTAs + tags */}
-        <div className="col-span-12 row-start-11 row-span-2 flex flex-col justify-end gap-3 md:col-span-7">
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              onClick={() => onOpenSpotlight(project)}
-              className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 px-6 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-white transition-all hover:-translate-y-0.5 hover:bg-white/10"
-            >
-              {language === "en" ? "Inspect System" : "Inspeccionar"}
-              <ArrowRight className="h-3.5 w-3.5" />
-            </button>
-            <Link
-              href={project.href}
-              className="inline-flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 transition-colors hover:text-white"
-            >
-              {language === "en" ? "Case study" : "Caso de estudio"}
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-          {project.tags && project.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1.5">
-              {project.tags.slice(0, 5).map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-widest text-white/55"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Scene({ project, accent, language, isActive, index, onOpenSpotlight, reduced }: SceneProps) {
-  const [activeKey, setActiveKey] = useState(0);
-
-  useEffect(() => {
-    if (isActive) setActiveKey((k) => k + 1);
-  }, [isActive]);
-
-  return (
-    <div
-      className="grid h-full w-full grid-cols-1 items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-16"
-      style={{ color: accent.ink }}
-    >
-      {/* LEFT — narrative column */}
-      <div className="flex flex-col gap-6 max-w-xl">
-        <div className="flex items-center gap-3">
-          <span
-            className="font-mono text-[10px] font-bold uppercase tracking-[0.32em]"
-            style={{ color: accent.fg }}
-          >
-            SYS_0{project.id}
-          </span>
-          <span className="h-[1px] w-10" style={{ background: `${accent.ink}25` }} />
-          <span
-            className="font-mono text-[9px] uppercase tracking-[0.32em]"
-            style={{ color: `${accent.ink}55` }}
-          >
-            {project.category}
-          </span>
-        </div>
-
-        <h3
-          className="font-serif text-5xl leading-[0.95] tracking-tight md:text-6xl lg:text-7xl"
-          style={{ color: accent.ink }}
-        >
-          {project.title}
-        </h3>
-
-        <div className="flex gap-4">
-          <span
-            className="w-[3px] shrink-0 rounded-full"
-            style={{ background: accent.fg }}
-          />
-          <p
-            className="font-sans text-base leading-relaxed md:text-lg"
-            style={{ color: `${accent.ink}99` }}
-          >
-            {project.problem}
-          </p>
-        </div>
-
-        {project.metrics && project.metrics.length > 0 && (
-          <div className="mt-2 flex flex-wrap items-end gap-8">
-            <div className="flex flex-col">
-              <CountUp
-                value={project.metrics[0].value}
-                triggerKey={activeKey}
-                reduced={reduced}
-                className="font-mono text-6xl font-black tabular-nums tracking-tighter md:text-7xl"
-                style={{ color: accent.fg }}
-              />
-              <span
-                className="mt-1 font-mono text-[10px] font-bold uppercase tracking-widest"
-                style={{ color: `${accent.ink}55` }}
-              >
-                {project.metrics[0].label}
-              </span>
-            </div>
-            {project.metrics.slice(1, 3).map((m, i) => (
-              <div key={i} className="flex flex-col">
-                <CountUp
-                  value={m.value}
-                  triggerKey={activeKey}
-                  reduced={reduced}
-                  className="font-mono text-2xl font-bold tabular-nums tracking-tight"
-                  style={{ color: accent.ink }}
-                />
-                <span
-                  className="mt-1 font-mono text-[9px] font-bold uppercase tracking-widest"
-                  style={{ color: `${accent.ink}55` }}
-                >
-                  {m.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div className="mt-4 flex flex-wrap items-center gap-3">
-          <button
-            type="button"
-            onClick={() => onOpenSpotlight(project)}
-            className="inline-flex items-center gap-3 rounded-full border px-6 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.2em] transition-all hover:-translate-y-0.5"
-            style={{
-              borderColor: `${accent.ink}20`,
-              color: accent.ink,
-              background: `${accent.ink}05`,
-            }}
-          >
-            {language === "en" ? "Inspect System" : "Inspeccionar"}
-            <ArrowRight className="h-3.5 w-3.5" />
-          </button>
-
-          <Link
-            href={project.href}
-            className="inline-flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.2em] transition-colors"
-            style={{ color: `${accent.ink}55` }}
-          >
-            {language === "en" ? "Case study" : "Caso de estudio"}
-            <ArrowUpRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
-
-        {project.tags && project.tags.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {project.tags.slice(0, 5).map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-widest"
-                style={{
-                  color: `${accent.ink}70`,
-                  background: `${accent.ink}06`,
-                  border: `1px solid ${accent.ink}10`,
-                }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* RIGHT — visual column */}
-      <div className="relative">
-        <div
-          className="absolute -inset-6 -z-10 rounded-[3rem] opacity-60 blur-3xl"
-          style={{ background: `radial-gradient(circle at 60% 40%, ${accent.fg}30, transparent 65%)` }}
-          aria-hidden="true"
-        />
-        <div
-          className="relative rounded-[2rem] border bg-white/60 p-5 backdrop-blur-sm md:p-7"
-          style={{ borderColor: `${accent.ink}10` }}
-        >
-          <div className="mb-4 flex items-center justify-between">
-            <span
-              className="font-mono text-[9px] font-bold uppercase tracking-[0.32em]"
-              style={{ color: `${accent.ink}55` }}
-            >
-              {language === "en" ? "Visualization" : "Visualización"}
-            </span>
-            <div className="flex items-center gap-1.5">
-              <span
-                className="block h-1.5 w-1.5 rounded-full"
-                style={{ background: accent.fg, boxShadow: `0 0 8px ${accent.fg}` }}
-              />
-              <span
-                className="font-mono text-[9px] font-bold uppercase tracking-widest"
-                style={{ color: `${accent.ink}45` }}
-              >
-                {String(index + 1).padStart(2, "0")} / LIVE
-              </span>
-            </div>
-          </div>
-          {pickViz(project.id, project.image, project.title)}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function FeaturedWork() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -518,7 +33,8 @@ export default function FeaturedWork() {
     project: null,
   });
   const [activeScene, setActiveScene] = useState(0);
-  const [mode, setMode] = useState<"loading" | "cinematic" | "static">("loading");
+  // Default to "static" — safe fallback; upgraded to "cinematic" on desktop with motion enabled
+  const [mode, setMode] = useState<"cinematic" | "static">("static");
 
   useEffect(() => {
     const mql = window.matchMedia("(min-width: 1024px)");
@@ -562,15 +78,15 @@ export default function FeaturedWork() {
           start: "top top",
           end: `+=${scrollDistance}`,
           pin: stageRef.current,
-          scrub: 0.4,
+          scrub: 0.15,
           anticipatePin: 1,
           snap: {
             snapTo: 1 / (totalSlides - 1),
-            duration: { min: 0.4, max: 0.8 },
+            duration: { min: 0.3, max: 0.6 },
             ease: "power3.out",
-            delay: 0.12,
+            delay: 0.15,
             inertia: false,
-            directional: false,
+            directional: true,
           },
           onUpdate: (self) => {
             const idx = Math.min(
@@ -586,7 +102,7 @@ export default function FeaturedWork() {
       });
 
       const segment = 1 / (totalSlides - 1);
-      const fadeFraction = 0.55;
+      const fadeFraction = 0.35;
       const fadeDur = segment * fadeFraction;
 
       for (let i = 1; i < totalSlides; i++) {
@@ -733,7 +249,9 @@ export default function FeaturedWork() {
             )}
           </div>
 
-          {/* Progress rail */}
+          {/* Progress rail — local to the pinned stage (right side).
+              The global ScrollProgressRail (layout, left side, z-40) serves
+              a different purpose and does not visually overlap. */}
           <div className="absolute right-12 top-1/2 z-30 flex -translate-y-1/2 flex-col gap-4">
             {projects.map((p, i) => {
               const isOn = i === activeScene;
