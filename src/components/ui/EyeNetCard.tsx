@@ -509,7 +509,7 @@ export default function EyeNetCard({ variant = "card" }: EyeNetCardProps = {}) {
       <div
         className={
           isBespoke
-            ? "relative h-full overflow-hidden flex flex-col"
+            ? "relative h-full overflow-hidden flex flex-col justify-center"
             : "relative overflow-hidden rounded-2xl transition-all"
         }
         style={
