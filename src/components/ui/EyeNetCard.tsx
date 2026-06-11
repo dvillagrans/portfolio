@@ -607,10 +607,10 @@ export default function EyeNetCard({ variant = "card" }: EyeNetCardProps = {}) {
                 >
                   EyeNet
                 </h2>
-                <p className="font-sans text-[14px] text-[#888] mb-3">
+                <p className="font-sans text-[14px] text-[#888] mb-1">
                   AI &amp; Automation Platform
                 </p>
-                <p className="font-sans text-[13px] text-[#aaa] leading-relaxed">
+                <p className="font-sans text-[13px] text-[#aaa] leading-relaxed mt-3">
                   {isEn
                     ? "Automatization of documental flows with LLMs and autonomous agents. Inference over private GPU cluster."
                     : "Automatización de flujos documentales con LLMs y agentes autónomos. Inferencia sobre cluster GPU privado."}
