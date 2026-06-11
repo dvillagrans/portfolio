@@ -625,7 +625,7 @@ export default function EyeNetCard({ variant = "card" }: EyeNetCardProps = {}) {
                     {isEn ? "Less Manual Work" : "Menos Trabajo Manual"}
                   </span>
                 </div>
-                <div className="eyenet-metric">
+                <div className="eyenet-metric pl-4" style={{ borderLeft: "1px solid #222" }}>
                   <span className="font-mono text-[28px] font-bold text-white tabular-nums leading-none">300+</span>
                   <span className="block font-mono text-[10px] uppercase text-[#666] tracking-[0.1em] mt-1">
                     {isEn ? "Docs / Week" : "Docs / Semana"}
@@ -637,7 +637,7 @@ export default function EyeNetCard({ variant = "card" }: EyeNetCardProps = {}) {
                     {isEn ? "Daily Requests" : "Requests Diarios"}
                   </span>
                 </div>
-                <div className="eyenet-metric">
+                <div className="eyenet-metric pl-4" style={{ borderLeft: "1px solid #222" }}>
                   <span className="font-mono text-[28px] font-bold text-white tabular-nums leading-none">92%</span>
                   <span className="block font-mono text-[10px] uppercase text-[#666] tracking-[0.1em] mt-1">
                     {isEn ? "NER Accuracy" : "Precisión NER"}
