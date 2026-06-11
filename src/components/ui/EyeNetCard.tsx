@@ -550,8 +550,8 @@ export default function EyeNetCard({ variant = "card" }: EyeNetCardProps = {}) {
         <header
           className={
             isBespoke
-              ? "relative pt-28 px-8 pb-6 md:pt-32 md:px-16 md:pb-8 lg:pt-36 lg:px-24 xl:px-32 overflow-hidden"
-              : "relative p-6 pb-4 md:p-8 md:pb-5 overflow-hidden"
+              ? "relative pt-28 px-8 pb-4 md:pt-32 md:px-16 md:pb-5 lg:pt-36 lg:px-24 xl:px-32 overflow-hidden"
+              : "relative p-6 pb-3 md:p-8 md:pb-4 overflow-hidden"
           }
         >
           {/* Subtle depth gradient */}
