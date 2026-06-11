@@ -380,12 +380,17 @@ function OrbVisual({ reduced }: { reduced: boolean }) {
    MAIN COMPONENT
    ────────────────────────────────────────────────────────────── */
 
-export default function EyeNetCard() {
+interface EyeNetCardProps {
+  variant?: "card" | "bespoke";
+}
+
+export default function EyeNetCard({ variant = "card" }: EyeNetCardProps = {}) {
   const { language } = useLanguage();
   const reduced = useReducedMotion();
   const cardRef = useRef<HTMLElement>(null);
 
   const isEn = language === "en";
+  const isBespoke = variant === "bespoke";
 
   /* GSAP internal timeline */
   useEffect(() => {
@@ -546,7 +551,14 @@ export default function EyeNetCard() {
   };
 
   return (
-    <article ref={cardRef} className="relative w-full eyenet-card">
+    <article
+      ref={cardRef}
+      className={
+        isBespoke
+          ? "relative h-full w-full overflow-hidden eyenet-card flex flex-col"
+          : "relative w-full eyenet-card"
+      }
+    >
       <style>{`
         @keyframes flowParticle {
           0%   { left: -6px; opacity: 0; }
@@ -563,28 +575,53 @@ export default function EyeNetCard() {
       `}</style>
 
       <div
-        className="relative overflow-hidden rounded-2xl transition-all"
-        style={{
-          background: "#0d1117",
-          boxShadow: "0 0 0 1px rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.3)",
-        }}
-        onMouseEnter={(e) => {
-          gsap.to(e.currentTarget, {
-            boxShadow: "0 0 0 1px rgba(255,255,255,0.1), 0 20px 60px rgba(0,0,0,0.4)",
-            duration: 0.3,
-            ease: "power2.out",
-          });
-        }}
-        onMouseLeave={(e) => {
-          gsap.to(e.currentTarget, {
-            boxShadow: "0 0 0 1px rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.3)",
-            duration: 0.4,
-            ease: "power2.inOut",
-          });
-        }}
+        className={
+          isBespoke
+            ? "relative h-full overflow-hidden flex flex-col"
+            : "relative overflow-hidden rounded-2xl transition-all"
+        }
+        style={
+          isBespoke
+            ? { background: "#0d1117" }
+            : {
+                background: "#0d1117",
+                boxShadow:
+                  "0 0 0 1px rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.3)",
+              }
+        }
+        onMouseEnter={
+          isBespoke
+            ? undefined
+            : (e) => {
+                gsap.to(e.currentTarget, {
+                  boxShadow:
+                    "0 0 0 1px rgba(255,255,255,0.1), 0 20px 60px rgba(0,0,0,0.4)",
+                  duration: 0.3,
+                  ease: "power2.out",
+                });
+              }
+        }
+        onMouseLeave={
+          isBespoke
+            ? undefined
+            : (e) => {
+                gsap.to(e.currentTarget, {
+                  boxShadow:
+                    "0 0 0 1px rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.3)",
+                  duration: 0.4,
+                  ease: "power2.inOut",
+                });
+              }
+        }
       >
         {/* ═══ HEADER ═══ */}
-        <header className="relative p-6 pb-4 md:p-8 md:pb-5 overflow-hidden">
+        <header
+          className={
+            isBespoke
+              ? "relative pt-28 px-8 pb-6 md:pt-32 md:px-16 md:pb-8 lg:pt-36 lg:px-24 xl:px-32 overflow-hidden"
+              : "relative p-6 pb-4 md:p-8 md:pb-5 overflow-hidden"
+          }
+        >
           {/* Subtle depth gradient */}
           <div
             className="absolute inset-0 pointer-events-none"
@@ -638,14 +675,24 @@ export default function EyeNetCard() {
             </div>
 
             {/* Headline — dramatic scale with glow */}
-            <div className="eyenet-title mb-5">
+            <div className={isBespoke ? "eyenet-title mb-7" : "eyenet-title mb-5"}>
               <h2
-                className="font-sans text-5xl sm:text-6xl md:text-7xl font-black text-white leading-none tracking-tight mb-2"
+                className={
+                  isBespoke
+                    ? "font-sans text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white leading-none tracking-tight mb-3"
+                    : "font-sans text-5xl sm:text-6xl md:text-7xl font-black text-white leading-none tracking-tight mb-2"
+                }
                 style={{ textShadow: "0 0 40px rgba(96,165,250,0.15)" }}
               >
                 EyeNet
               </h2>
-              <p className="font-mono text-sm text-white/40 tracking-wide">
+              <p
+                className={
+                  isBespoke
+                    ? "font-mono text-base md:text-lg text-white/45 tracking-wide"
+                    : "font-mono text-sm text-white/40 tracking-wide"
+                }
+              >
                 AI &amp; Automation Platform
               </p>
             </div>
@@ -685,7 +732,14 @@ export default function EyeNetCard() {
         </header>
 
         {/* ═══ PIPELINE ═══ */}
-        <div className="eyenet-flow px-6 md:px-8 pb-6 md:pb-8" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+        <div
+          className={
+            isBespoke
+              ? "eyenet-flow px-8 md:px-16 lg:px-24 xl:px-32 pb-8 md:pb-10"
+              : "eyenet-flow px-6 md:px-8 pb-6 md:pb-8"
+          }
+          style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
+        >
           {/* Section header — modern dash layout */}
           <div className="flex flex-wrap items-center justify-between gap-3 pt-5 mb-6">
             <div className="flex items-center gap-2">
@@ -748,51 +802,93 @@ export default function EyeNetCard() {
         </div>
 
         {/* ═══ SEPARATOR + METRICS ═══ */}
-        <div className="mx-6 md:mx-8 border-t border-white/[0.08]" />
+        <div
+          className={
+            isBespoke
+              ? "mx-8 md:mx-16 lg:mx-24 xl:mx-32 border-t border-white/[0.08]"
+              : "mx-6 md:mx-8 border-t border-white/[0.08]"
+          }
+        />
 
         <div className="grid grid-cols-2 md:grid-cols-[1.5fr_1fr_1fr_1fr] divide-x divide-white/[0.08]">
-          <div className="eyenet-metric px-5 md:px-6 py-5">
+          <div
+            className={
+              isBespoke
+                ? "eyenet-metric px-8 md:px-10 lg:px-14 py-7 lg:py-9"
+                : "eyenet-metric px-5 md:px-6 py-5"
+            }
+          >
             <AnimatedMetric
               value="65%"
               label={isEn ? "LESS MANUAL WORK" : "MENOS TRABAJO MANUAL"}
               sublabel={isEn ? "vs. previous process" : "vs. proceso anterior"}
               delay={0}
-              valueClassName="text-3xl"
+              valueClassName={isBespoke ? "text-5xl lg:text-6xl" : "text-3xl"}
             />
           </div>
-          <div className="eyenet-metric px-5 md:px-6 py-5">
+          <div
+            className={
+              isBespoke
+                ? "eyenet-metric px-8 md:px-10 lg:px-14 py-7 lg:py-9"
+                : "eyenet-metric px-5 md:px-6 py-5"
+            }
+          >
             <AnimatedMetric
               value="300+"
               label={isEn ? "DOCS / WEEK" : "DOCS / SEMANA"}
               sublabel={isEn ? "processed automatically" : "procesados automáticamente"}
               delay={1}
-              valueClassName="text-2xl"
+              valueClassName={isBespoke ? "text-3xl lg:text-4xl" : "text-2xl"}
             />
           </div>
-          <div className="eyenet-metric px-5 md:px-6 py-5">
+          <div
+            className={
+              isBespoke
+                ? "eyenet-metric px-8 md:px-10 lg:px-14 py-7 lg:py-9"
+                : "eyenet-metric px-5 md:px-6 py-5"
+            }
+          >
             <AnimatedMetric
               value="10K+"
               label={isEn ? "DAILY REQUESTS" : "REQUESTS DIARIOS"}
               sublabel={isEn ? "to inference cluster" : "al cluster de inferencia"}
               delay={2}
-              valueClassName="text-2xl"
+              valueClassName={isBespoke ? "text-3xl lg:text-4xl" : "text-2xl"}
             />
           </div>
-          <div className="eyenet-metric px-5 md:px-6 py-5">
+          <div
+            className={
+              isBespoke
+                ? "eyenet-metric px-8 md:px-10 lg:px-14 py-7 lg:py-9"
+                : "eyenet-metric px-5 md:px-6 py-5"
+            }
+          >
             <AnimatedMetric
               value="92%"
               label={isEn ? "NER ACCURACY" : "PRECISIÓN NER"}
               sublabel={isEn ? "entity extraction" : "extracción de entidades"}
               delay={3}
-              valueClassName="text-2xl"
+              valueClassName={isBespoke ? "text-3xl lg:text-4xl" : "text-2xl"}
             />
           </div>
         </div>
 
         {/* ═══ SEPARATOR + FOOTER ═══ */}
-        <div className="mx-6 md:mx-8 border-t border-white/[0.08]" />
+        <div
+          className={
+            isBespoke
+              ? "mx-8 md:mx-16 lg:mx-24 xl:mx-32 border-t border-white/[0.08]"
+              : "mx-6 md:mx-8 border-t border-white/[0.08]"
+          }
+        />
 
-        <footer className="eyenet-footer flex flex-wrap items-center justify-between gap-4 px-6 md:px-8 py-4">
+        <footer
+          className={
+            isBespoke
+              ? "eyenet-footer flex flex-wrap items-center justify-between gap-4 px-8 md:px-16 lg:px-24 xl:px-32 py-6 lg:py-8"
+              : "eyenet-footer flex flex-wrap items-center justify-between gap-4 px-6 md:px-8 py-4"
+          }
+        >
           <div className="flex items-center gap-1.5 flex-wrap">
             {visibleTags.map((tag) => {
               const style = getTagStyle(tag);

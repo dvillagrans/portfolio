@@ -55,8 +55,8 @@ interface SceneAccent {
 }
 
 const SCENE_ACCENTS: Record<string, SceneAccent> = {
-  "00": { fg: "oklch(70% 0.130 65)", bg: "oklch(18% 0.02 250)", ink: "#f0ead8" },
-  "01": { fg: "oklch(54% 0.18 265)", bg: "oklch(96% 0.012 265)", ink: "#1c1c1e" },
+  "00": { fg: "#c8a96e", bg: "#0d1117", ink: "#f0ead8" },
+  "01": { fg: "#7dd49a", bg: "#0c100c", ink: "#f0ead8" },
   "02": { fg: "oklch(60% 0.15 155)", bg: "oklch(96% 0.012 155)", ink: "#1c1c1e" },
   "03": { fg: "oklch(58% 0.16 35)",  bg: "oklch(95% 0.018 35)",  ink: "#1c1c1e" },
   "04": { fg: "oklch(60% 0.14 50)",  bg: "oklch(96% 0.014 50)",  ink: "#1c1c1e" },
@@ -157,6 +157,184 @@ interface SceneProps {
   index: number;
   onOpenSpotlight: (project: ProjectItem) => void;
   reduced: boolean;
+}
+
+interface BespokeCovidSceneProps {
+  project: ProjectItem;
+  language: string;
+  isActive: boolean;
+  index: number;
+  onOpenSpotlight: (project: ProjectItem) => void;
+  reduced: boolean;
+}
+
+function BespokeCovidScene({
+  project,
+  language,
+  isActive,
+  index,
+  onOpenSpotlight,
+  reduced,
+}: BespokeCovidSceneProps) {
+  const [activeKey, setActiveKey] = useState(0);
+
+  useEffect(() => {
+    if (isActive) setActiveKey((k) => k + 1);
+  }, [isActive]);
+
+  const ink = "#f0ead8";
+  const accent = "#7dd49a";
+  const inkSoft = "rgba(240,234,216,0.7)";
+  const inkMute = "rgba(240,234,216,0.55)";
+
+  return (
+    <div
+      className="relative h-full w-full overflow-hidden"
+      style={{
+        background:
+          "radial-gradient(ellipse at 50% 50%, #11140e 0%, #0a0b08 100%)",
+      }}
+    >
+      {/* Layer 1 — full-bleed viz */}
+      <div className="absolute inset-0">
+        <CovidClusterViz />
+      </div>
+
+      {/* Layer 2 — soft focus vignette (depth, not contrast) */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 55%, transparent 50%, rgba(0,0,0,0.25) 90%, rgba(0,0,0,0.45) 100%)",
+        }}
+      />
+
+      {/* Layer 3 — scanlines */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.4) 3px, rgba(255,255,255,0.4) 4px)",
+          maskImage:
+            "linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)",
+        }}
+      />
+
+      {/* Layer 4 — editorial HUD */}
+      <div
+        className="relative grid h-full grid-cols-12 grid-rows-12 gap-4 px-8 pt-28 pb-10 md:px-16 md:pt-32 md:pb-14 lg:px-24 lg:pt-36 lg:pb-16"
+        style={{ color: ink }}
+      >
+        {/* Top-left — system badge */}
+        <div className="col-span-7 row-start-1 flex items-center gap-3">
+          <span
+            className="font-mono text-[10px] font-bold uppercase tracking-[0.32em]"
+            style={{ color: accent }}
+          >
+            SYS_{project.id}
+          </span>
+          <span className="h-[1px] w-10 bg-white/20" />
+          <span
+            className="font-mono text-[9px] uppercase tracking-[0.32em]"
+            style={{ color: inkMute }}
+          >
+            {project.category}
+          </span>
+        </div>
+
+        {/* Top-right — live channel */}
+        <div className="col-span-5 row-start-1 flex items-start justify-end gap-2">
+          <span
+            className="mt-[6px] block h-1.5 w-1.5 rounded-full"
+            style={{ background: accent, boxShadow: `0 0 10px ${accent}` }}
+          />
+          <span
+            className="font-mono text-[9px] font-bold uppercase tracking-widest"
+            style={{ color: inkMute }}
+          >
+            {String(index + 1).padStart(2, "0")} / LIVE · K-MEANS · n=9
+          </span>
+        </div>
+
+        {/* Title + problem — top-left block */}
+        <div className="col-span-12 row-start-2 row-span-4 flex flex-col gap-5 md:col-span-7">
+          <h3
+            className="font-serif text-4xl leading-[0.92] tracking-tight md:text-6xl lg:text-7xl"
+            style={{ color: ink }}
+          >
+            {project.title}
+          </h3>
+          <div className="flex max-w-md gap-4">
+            <span
+              className="w-[3px] shrink-0 rounded-full"
+              style={{ background: accent }}
+            />
+            <p
+              className="font-sans text-sm leading-relaxed md:text-base"
+              style={{ color: inkSoft }}
+            >
+              {project.problem}
+            </p>
+          </div>
+        </div>
+
+        {/* GIANT metric — bottom-right, hugging the corner over the data */}
+        {project.metrics && project.metrics[0] && (
+          <div className="col-span-12 row-start-7 row-span-4 flex flex-col items-end justify-end md:col-span-7 md:col-start-6">
+            <CountUp
+              value={project.metrics[0].value}
+              triggerKey={activeKey}
+              reduced={reduced}
+              className="font-mono font-black tabular-nums leading-[0.85] tracking-tighter text-[7rem] md:text-[11rem] lg:text-[14rem]"
+              style={{
+                color: accent,
+                textShadow: `0 0 80px ${accent}40, 0 0 20px ${accent}30`,
+              }}
+            />
+            <span
+              className="mt-1 font-mono text-[10px] font-bold uppercase tracking-[0.3em]"
+              style={{ color: inkMute }}
+            >
+              {project.metrics[0].label}
+            </span>
+          </div>
+        )}
+
+        {/* Bottom-left — CTAs + tags */}
+        <div className="col-span-12 row-start-11 row-span-2 flex flex-col justify-end gap-3 md:col-span-7">
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={() => onOpenSpotlight(project)}
+              className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 px-6 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-white transition-all hover:-translate-y-0.5 hover:bg-white/10"
+            >
+              {language === "en" ? "Inspect System" : "Inspeccionar"}
+              <ArrowRight className="h-3.5 w-3.5" />
+            </button>
+            <Link
+              href={project.href}
+              className="inline-flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 transition-colors hover:text-white"
+            >
+              {language === "en" ? "Case study" : "Caso de estudio"}
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+          {project.tags && project.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {project.tags.slice(0, 5).map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-widest text-white/55"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function Scene({ project, accent, language, isActive, index, onOpenSpotlight, reduced }: SceneProps) {
@@ -478,47 +656,59 @@ export default function FeaturedWork() {
     setSpotlight({ open: true, project });
   };
 
-  const renderHeader = (variant: "cinematic" | "static") => (
-    <header
-      className={
-        variant === "cinematic"
-          ? "pointer-events-auto flex flex-col gap-2"
-          : "mb-20 flex flex-col gap-6 md:flex-row md:items-end md:justify-between"
-      }
-    >
-      <div>
-        <div className="mb-3 flex items-center gap-3">
-          <div className="h-[1px] w-8 bg-charcoal/20" />
-          <span className="font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-charcoal/40">
-            02. {language === "en" ? "Featured Systems" : "Sistemas Destacados"}
-          </span>
+  const renderHeader = (variant: "cinematic" | "static", inkOverride?: string) => {
+    const ink = inkOverride ?? "#1c1c1e";
+    const inkSoft = `${ink}66`;
+    const inkLine = `${ink}33`;
+    return (
+      <header
+        className={
+          variant === "cinematic"
+            ? "pointer-events-auto flex flex-col gap-2"
+            : "mb-20 flex flex-col gap-6 md:flex-row md:items-end md:justify-between"
+        }
+      >
+        <div>
+          <div className="mb-3 flex items-center gap-3">
+            <div
+              className="h-[1px] w-8"
+              style={{ background: inkLine, transition: "background-color 0.6s ease" }}
+            />
+            <span
+              className="font-mono text-[10px] font-bold uppercase tracking-[0.3em]"
+              style={{ color: inkSoft, transition: "color 0.6s ease" }}
+            >
+              02. {language === "en" ? "Featured Systems" : "Sistemas Destacados"}
+            </span>
+          </div>
+          <h2
+            className={
+              variant === "cinematic"
+                ? "font-serif text-2xl tracking-tight md:text-3xl"
+                : "font-serif text-5xl tracking-tight md:text-7xl"
+            }
+            style={{ color: ink, transition: "color 0.6s ease" }}
+          >
+            {t.work.title}
+          </h2>
+          {variant === "static" && (
+            <p className="mt-4 max-w-md font-sans text-sm" style={{ color: inkSoft }}>
+              {t.work.subtitle}
+            </p>
+          )}
         </div>
-        <h2
-          className={
-            variant === "cinematic"
-              ? "font-serif text-2xl tracking-tight text-charcoal md:text-3xl"
-              : "font-serif text-5xl tracking-tight text-charcoal md:text-7xl"
-          }
-        >
-          {t.work.title}
-        </h2>
         {variant === "static" && (
-          <p className="mt-4 max-w-md font-sans text-sm text-charcoal/50">
-            {t.work.subtitle}
-          </p>
+          <Link
+            href="/projects"
+            className="group flex min-h-[44px] items-center justify-center gap-3 rounded-full border border-charcoal/10 bg-white px-8 py-4 font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-charcoal shadow-sm transition-all hover:bg-charcoal hover:text-offwhite spring-press"
+          >
+            {language === "en" ? "Full Systems Archive" : "Archivo de Sistemas"}
+            <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </Link>
         )}
-      </div>
-      {variant === "static" && (
-        <Link
-          href="/projects"
-          className="group flex min-h-[44px] items-center justify-center gap-3 rounded-full border border-charcoal/10 bg-white px-8 py-4 font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-charcoal shadow-sm transition-all hover:bg-charcoal hover:text-offwhite spring-press"
-        >
-          {language === "en" ? "Full Systems Archive" : "Archivo de Sistemas"}
-          <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-        </Link>
-      )}
-    </header>
-  );
+      </header>
+    );
+  };
 
   return (
     <section
@@ -537,7 +727,10 @@ export default function FeaturedWork() {
         <div ref={stageRef} className="relative h-screen w-full overflow-hidden">
           {/* Sticky chapter header */}
           <div className="pointer-events-none absolute left-12 top-12 z-30">
-            {renderHeader("cinematic")}
+            {renderHeader(
+              "cinematic",
+              getAccent(projects[activeScene]?.id ?? "00").ink
+            )}
           </div>
 
           {/* Progress rail */}
@@ -578,44 +771,70 @@ export default function FeaturedWork() {
           </div>
 
           {/* Scene stage */}
-          <div className="absolute inset-0 flex items-center px-12 pt-32 pb-12 lg:px-24">
-            {projects.map((p, i) => (
-              <div
-                key={p.id}
-                ref={(el) => {
-                  slideRefs.current[i] = el;
-                }}
-                className="absolute inset-0 flex items-center px-12 pt-32 pb-12 lg:px-24"
-                style={{ willChange: "opacity, transform" }}
-              >
-                {p.type === "special" ? (
-                  <div className="mx-auto w-full max-w-5xl">
-                    <EyeNetCard />
-                  </div>
-                ) : (
-                  <div className="mx-auto w-full max-w-7xl">
-                    <Scene
+          <div className="absolute inset-0">
+            {projects.map((p, i) => {
+              const isBespoke = p.id === "01" || p.type === "special";
+              return (
+                <div
+                  key={p.id}
+                  ref={(el) => {
+                    slideRefs.current[i] = el;
+                  }}
+                  className={
+                    isBespoke
+                      ? "absolute inset-0"
+                      : "absolute inset-0 flex items-center px-12 pt-32 pb-12 lg:px-24"
+                  }
+                  style={{ willChange: "opacity, transform" }}
+                >
+                  {p.type === "special" ? (
+                    <EyeNetCard variant="bespoke" />
+                  ) : p.id === "01" ? (
+                    <BespokeCovidScene
                       project={p}
-                      accent={getAccent(p.id)}
                       language={language}
                       isActive={i === activeScene}
                       index={i}
                       onOpenSpotlight={handleOpenSpotlight}
                       reduced={reduced}
                     />
-                  </div>
-                )}
-              </div>
-            ))}
+                  ) : (
+                    <div className="mx-auto w-full max-w-7xl">
+                      <Scene
+                        project={p}
+                        accent={getAccent(p.id)}
+                        language={language}
+                        isActive={i === activeScene}
+                        index={i}
+                        onOpenSpotlight={handleOpenSpotlight}
+                        reduced={reduced}
+                      />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           {/* Scroll hint */}
           {activeScene === 0 && (
             <div className="pointer-events-none absolute bottom-8 left-1/2 z-30 -translate-x-1/2 flex flex-col items-center gap-2">
-              <span className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-charcoal/40">
+              <span
+                className="font-mono text-[9px] font-bold uppercase tracking-[0.3em]"
+                style={{
+                  color: `${getAccent(projects[0]?.id ?? "00").ink}66`,
+                  transition: "color 0.6s ease",
+                }}
+              >
                 {language === "en" ? "Scroll to navigate systems" : "Hacé scroll para navegar"}
               </span>
-              <div className="h-8 w-[1px] animate-pulse bg-charcoal/30" />
+              <div
+                className="h-8 w-[1px] animate-pulse"
+                style={{
+                  background: `${getAccent(projects[0]?.id ?? "00").ink}55`,
+                  transition: "background-color 0.6s ease",
+                }}
+              />
             </div>
           )}
         </div>
