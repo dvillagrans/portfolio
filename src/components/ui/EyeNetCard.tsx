@@ -602,12 +602,8 @@ export default function EyeNetCard({ variant = "card" }: EyeNetCardProps = {}) {
               {/* Left column — title, subtitle, description */}
               <div className="eyenet-title">
                 <h2
-                  className={
-                    isBespoke
-                      ? "font-sans text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white leading-none tracking-tight mb-3"
-                      : "font-sans text-5xl sm:text-6xl md:text-7xl font-black text-white leading-none tracking-tight mb-2"
-                  }
-                  style={{ textShadow: "0 0 40px rgba(96,165,250,0.15)" }}
+                  className="font-sans font-black text-white leading-none tracking-tight mb-2"
+                  style={{ fontSize: "clamp(56px, 6vw, 80px)", textShadow: "0 0 40px rgba(96,165,250,0.15)" }}
                 >
                   EyeNet
                 </h2>
