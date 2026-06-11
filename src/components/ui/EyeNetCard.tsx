@@ -704,8 +704,8 @@ export default function EyeNetCard({ variant = "card" }: EyeNetCardProps = {}) {
           </div>
 
           {/* Pipeline nodes — horizontal scroll on mobile */}
-          <div className="overflow-x-auto scrollbar-hide pb-2" style={{ height: 160, border: "1px solid #1a1a1a", borderRadius: 0 }}>
-            <div className="flex items-center gap-0 min-w-max px-1 h-full">
+          <div className="overflow-x-auto scrollbar-hide" style={{ border: "1px solid #1a1a1a", borderRadius: 0 }}>
+            <div className="flex items-center gap-0 min-w-max px-1" style={{ height: 160 }}>
               {pipelineNodes.map((node, i) => (
                 <div key={node.id} className="flex items-center">
                   <PipelineNodeItem node={node} index={i} />
@@ -715,28 +715,28 @@ export default function EyeNetCard({ variant = "card" }: EyeNetCardProps = {}) {
                 </div>
               ))}
             </div>
-          </div>
 
-          {/* Legend — inline minimal with glow dots */}
-          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1.5">
-            {[
-              { color: "#4ade80", label: "TRIGGER" },
-              { color: "#888888", label: "TRANSFORM" },
-              { color: "#60a5fa", label: "AI" },
-              { color: "#f87171", label: "STORAGE" },
-              { color: "#c8a96e", label: "OUTPUT" },
-            ].map((item) => (
-              <span key={item.label} className="flex items-center gap-1.5 font-mono text-[8px] tracking-[0.12em] text-white/20">
-                <span
-                  className="block w-[5px] h-[5px] rounded-full"
-                  style={{
-                    background: item.color,
-                    boxShadow: `0 0 4px ${item.color}40`,
-                  }}
-                />
-                {item.label}
-              </span>
-            ))}
+            {/* Legend — inline minimal with glow dots */}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5" style={{ marginTop: 8, paddingLeft: 12, paddingBottom: 10 }}>
+              {[
+                { color: "#4ade80", label: "TRIGGER" },
+                { color: "#888888", label: "TRANSFORM" },
+                { color: "#60a5fa", label: "AI" },
+                { color: "#f87171", label: "STORAGE" },
+                { color: "#c8a96e", label: "OUTPUT" },
+              ].map((item) => (
+                <span key={item.label} className="flex items-center gap-1.5 font-mono text-[8px] tracking-[0.12em] text-white/20">
+                  <span
+                    className="block w-[5px] h-[5px] rounded-full"
+                    style={{
+                      background: item.color,
+                      boxShadow: `0 0 4px ${item.color}40`,
+                    }}
+                  />
+                  {item.label}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
 
