@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { accentAlpha } from "@/components/sections/Scene";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -28,7 +29,7 @@ function useTypewriter(text: string, enabled: boolean) {
 
     const trigger = ScrollTrigger.create({
       trigger: triggerRef.current,
-      start: "top 75%",
+      start: "top 78%",
       once: true,
       onEnter: () => {
         if (startedRef.current) return;
@@ -38,16 +39,12 @@ function useTypewriter(text: string, enabled: boolean) {
         const interval = setInterval(() => {
           i++;
           setTyped(text.slice(0, i));
-          if (i >= text.length) {
-            clearInterval(interval);
-          }
-        }, 28);
+          if (i >= text.length) clearInterval(interval);
+        }, 24);
       },
     });
 
-    return () => {
-      trigger.kill();
-    };
+    return () => trigger.kill();
   }, [text, enabled]);
 
   return { typed, triggerRef, complete: typed.length >= text.length };
@@ -56,21 +53,30 @@ function useTypewriter(text: string, enabled: boolean) {
 export default function Philosophy() {
   const sectionRef = useRef<HTMLElement>(null);
   const principlesRef = useRef<(HTMLElement | null)[]>([]);
-  const signatureRef = useRef<HTMLDivElement>(null);
-  const { t, language } = useLanguage();
+  const closureRef = useRef<HTMLParagraphElement>(null);
+  const { t } = useLanguage();
+  const labels = t.philosophy;
   const reduced = useReducedMotion();
-  const [focused, setFocused] = useState<number | null>(null);
 
-  const quote = t.philosophy.quote.replace(/["']/g, "");
+  const [active, setActive] = useState<number | null>(null);
+  const [isCoarse, setIsCoarse] = useState(false);
+
+  const quote = labels.quote.replace(/^["']|["']$/g, "");
   const { typed, triggerRef, complete } = useTypewriter(quote, !reduced);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(hover: none), (max-width: 767px)");
+    setIsCoarse(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setIsCoarse(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       if (reduced) {
-        principlesRef.current.forEach((p) => {
-          if (p) gsap.set(p, { opacity: 1, y: 0 });
-        });
-        if (signatureRef.current) gsap.set(signatureRef.current, { opacity: 1, y: 0 });
+        principlesRef.current.forEach((p) => p && gsap.set(p, { opacity: 1, y: 0 }));
+        if (closureRef.current) gsap.set(closureRef.current, { opacity: 1, y: 0 });
         return;
       }
 
@@ -78,36 +84,28 @@ export default function Philosophy() {
         if (!el) return;
         gsap.fromTo(
           el,
-          { opacity: 0, y: 60 },
+          { opacity: 0, y: 32 },
           {
             opacity: 1,
             y: 0,
-            duration: 1.1,
-            delay: i * 0.15,
-            ease: "expo.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 82%",
-              once: true,
-            },
+            duration: 0.9,
+            delay: i * 0.08,
+            ease: "power3.out",
+            scrollTrigger: { trigger: el, start: "top 88%", once: true },
           }
         );
       });
 
-      if (signatureRef.current) {
+      if (closureRef.current) {
         gsap.fromTo(
-          signatureRef.current,
-          { opacity: 0, y: 16 },
+          closureRef.current,
+          { opacity: 0, y: 12 },
           {
             opacity: 1,
             y: 0,
-            duration: 1.2,
+            duration: 0.8,
             ease: "power2.out",
-            scrollTrigger: {
-              trigger: signatureRef.current,
-              start: "top 88%",
-              once: true,
-            },
+            scrollTrigger: { trigger: closureRef.current, start: "top 92%", once: true },
           }
         );
       }
@@ -120,206 +118,156 @@ export default function Philosophy() {
     <section
       ref={sectionRef}
       id="principles"
-      className="relative overflow-hidden bg-charcoal py-28 text-offwhite md:py-40 lg:py-48"
+      className="relative overflow-hidden bg-charcoal py-20 text-offwhite md:py-28"
       style={{
         paddingLeft: "max(1.5rem, env(safe-area-inset-left))",
         paddingRight: "max(1.5rem, env(safe-area-inset-right))",
       }}
     >
-      {/* Quiet scan-line texture — barely perceptible */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.04]"
-        aria-hidden="true"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(240,234,216,0.4) 3px, rgba(240,234,216,0.4) 4px)",
-        }}
-      />
-
-      {/* Top ambient line */}
-      <div
-        className="pointer-events-none absolute left-1/2 top-0 h-[1px] w-full max-w-7xl -translate-x-1/2 bg-gradient-to-r from-transparent via-warm/15 to-transparent"
-        aria-hidden="true"
-      />
-
-      <div className="relative z-10 mx-auto max-w-7xl md:px-12 lg:px-16">
-        {/* Section heading */}
-        <header className="mb-20 md:mb-32">
-          <div className="mb-6 flex items-center gap-4">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-warm/70">
-              04. {t.philosophy.tag}
+      <div className="relative z-10 mx-auto max-w-7xl lg:px-12">
+        <header className="mb-12 md:mb-16">
+          <div className="mb-4 flex items-center gap-3">
+            <div className="h-px w-8 bg-offwhite/20" />
+            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-offwhite/50">
+              {labels.eyebrow}
             </span>
-            <div className="h-[1px] w-16 bg-warm/20" />
           </div>
-          <h2 className="font-serif text-3xl italic tracking-tight text-offwhite/70 md:text-4xl lg:text-5xl">
-            {t.philosophy.title}
+          <h2 className="font-serif text-4xl tracking-tight text-offwhite md:text-5xl lg:text-6xl">
+            {labels.title}
           </h2>
+          <p className="mt-4 max-w-xl font-sans text-sm text-offwhite/55 md:text-base">
+            {labels.subtitle}
+          </p>
         </header>
 
-        {/* ═══ Manifesto Quote — typewriter ═══ */}
-        <div ref={triggerRef} className="mb-32 md:mb-44 lg:mb-52 max-w-6xl">
-          <p
-            className="font-serif italic leading-[1.08] tracking-tight text-warm"
-            style={{
-              fontSize: "clamp(2.25rem, 7vw, 5.5rem)",
-              minHeight: "1.08em",
-            }}
-          >
-            <span>&ldquo;{typed}</span>
-            <span
-              className="inline-block translate-y-[-0.08em] text-warm/80"
-              style={{
-                animation: !complete || reduced
-                  ? "manifesto-cursor 0.9s steps(1) infinite"
-                  : reduced
-                  ? "none"
-                  : "manifesto-cursor-fadeout 1.2s ease-out forwards",
-                width: "0.5ch",
-                display: "inline-block",
-              }}
-              aria-hidden="true"
+        {/* Editorial quote — single cinematic beat */}
+        <div ref={triggerRef} className="mb-14 md:mb-20 max-w-4xl">
+          <blockquote>
+            <p
+              className="font-serif italic leading-[1.12] tracking-tight text-warm"
+              style={{ fontSize: "clamp(1.75rem, 4.5vw, 3.5rem)" }}
             >
-              |
-            </span>
-            <span className={complete ? "" : "opacity-0"}>&rdquo;</span>
-          </p>
-
-          {/* Manifesto signature rule */}
-          <div
-            className="mt-12 flex items-center gap-4 transition-opacity duration-1000"
+              <span>&ldquo;{typed}</span>
+              <span
+                className="inline-block translate-y-[-0.06em] text-warm/70"
+                style={{
+                  animation:
+                    !complete && !reduced ? "manifesto-cursor 0.9s steps(1) infinite" : "none",
+                  opacity: complete ? 0 : 1,
+                  width: "0.45ch",
+                }}
+                aria-hidden="true"
+              >
+                |
+              </span>
+              <span className={complete ? "" : "opacity-0"}>&rdquo;</span>
+            </p>
+          </blockquote>
+          <footer
+            className="mt-6 flex items-center gap-3 transition-opacity duration-700"
             style={{ opacity: complete ? 1 : 0 }}
           >
-            <div className="h-[2px] w-20 bg-warm/40 md:w-32" />
-            <span className="h-1.5 w-1.5 rounded-full bg-warm/60" />
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-warm/50">
-              {language === "es" ? "MANIFIESTO · 2026" : "MANIFESTO · 2026"}
-            </span>
-          </div>
+            <div className="h-px w-12 bg-warm/35" />
+            <cite className="font-sans text-sm not-italic text-offwhite/50">{labels.quoteBy}</cite>
+          </footer>
         </div>
 
-        {/* ═══ Principles as manuscript entries ═══ */}
-        <div className="space-y-24 md:space-y-32 lg:space-y-40">
-          {t.philosophy.items.map((item, idx) => {
-            const [numLabel, ...titleRest] = item.title.split(". ");
-            const pureTitle = titleRest.join(". ");
+        {/* Principles — scan layer + expand for depth */}
+        <div className="flex flex-col gap-3">
+          {labels.items.map((item, idx) => {
             const accent = ACCENTS[idx % ACCENTS.length];
-            const isFocused = focused === idx;
-            const isDimmed = focused !== null && focused !== idx;
+            const isActive = active === idx;
+            const caseNumber = String(idx + 1).padStart(2, "0");
 
             return (
               <article
-                key={idx}
+                key={item.title}
                 ref={(el) => {
                   principlesRef.current[idx] = el;
                 }}
-                onMouseEnter={() => setFocused(idx)}
-                onMouseLeave={() => setFocused(null)}
-                onFocus={() => setFocused(idx)}
-                onBlur={() => setFocused(null)}
+                onMouseEnter={() => !isCoarse && setActive(idx)}
+                onMouseLeave={() => !isCoarse && setActive(null)}
+                onClick={() => isCoarse && setActive(isActive ? null : idx)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setActive(isActive ? null : idx);
+                  }
+                }}
+                role="button"
                 tabIndex={0}
-                aria-label={pureTitle}
-                className="group relative grid cursor-default grid-cols-1 gap-6 outline-none transition-all duration-700 ease-out md:grid-cols-[auto_1fr] md:gap-12 lg:gap-16"
+                aria-expanded={isActive}
+                aria-label={item.title}
+                className="group rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-5 transition-all duration-500 hover:border-white/16 focus:outline-none focus-visible:ring-2 focus-visible:ring-warm/35 md:px-8 md:py-6"
                 style={{
-                  opacity: isDimmed ? 0.32 : 1,
-                  filter: isDimmed ? "blur(2px)" : "blur(0)",
-                  transform: isFocused ? "translateX(8px)" : "translateX(0)",
+                  boxShadow: isActive ? `0 0 0 1px ${accentAlpha(accent, 0.2)} inset` : undefined,
                 }}
               >
-                {/* Left: illuminated number + accent rule */}
-                <div className="flex items-start gap-4 md:flex-col md:items-end md:gap-3 md:pt-3">
-                  <span
-                    className="font-serif italic leading-none transition-colors duration-500"
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0 flex-1">
+                    <p className="mb-1.5 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/38">
+                      {labels.labelPrinciple} {caseNumber}
+                    </p>
+                    <h3 className="font-serif text-xl tracking-tight text-offwhite md:text-2xl">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 font-sans text-sm leading-relaxed text-offwhite/58">
+                      {item.summary}
+                    </p>
+                  </div>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 20 20"
+                    className="mt-1 hidden shrink-0 transition-transform duration-500 md:block"
                     style={{
-                      fontSize: "clamp(3.5rem, 6vw, 5.5rem)",
-                      color: isFocused ? accent : "rgba(240,234,216,0.85)",
+                      transform: isActive ? "rotate(90deg)" : "rotate(0deg)",
+                      color: isActive ? accent : "rgba(240,234,216,0.25)",
                     }}
-                  >
-                    {numLabel}.
-                  </span>
-                  <div
-                    className="mt-3 h-[2px] origin-left transition-all duration-700 md:mt-0 md:h-[3px]"
-                    style={{
-                      width: isFocused ? 80 : 40,
-                      background: accent,
-                      opacity: isFocused ? 1 : 0.6,
-                    }}
-                  />
-                </div>
-
-                {/* Right: principle + description */}
-                <div className="max-w-3xl">
-                  <h3
-                    className="mb-6 font-serif tracking-tight transition-colors duration-500 md:mb-8"
-                    style={{
-                      fontSize: "clamp(1.875rem, 4vw, 3.5rem)",
-                      lineHeight: 1.1,
-                      color: isFocused ? "#fff" : "rgba(240,234,216,0.95)",
-                    }}
-                  >
-                    {pureTitle}
-                  </h3>
-                  <p
-                    className="font-sans leading-[1.7] transition-colors duration-500"
-                    style={{
-                      fontSize: "clamp(1rem, 1.2vw, 1.125rem)",
-                      color: isFocused ? "rgba(240,234,216,0.85)" : "rgba(240,234,216,0.55)",
-                    }}
-                  >
-                    {item.description}
-                  </p>
-
-                  {/* Subtle reading marker — only visible when focused */}
-                  <div
-                    className="mt-8 flex items-center gap-3 transition-opacity duration-500"
-                    style={{ opacity: isFocused ? 1 : 0 }}
                     aria-hidden="true"
                   >
-                    <span
-                      className="h-1 w-1 rounded-full"
-                      style={{ background: accent }}
+                    <path
+                      d="M8 5l5 5-5 5"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      fill="none"
+                      strokeLinecap="round"
                     />
-                    <span
-                      className="font-mono text-[9px] font-bold uppercase tracking-[0.32em]"
-                      style={{ color: accent }}
-                    >
-                      {language === "es" ? "EN FOCO" : "IN FOCUS"}
-                    </span>
-                  </div>
+                  </svg>
+                </div>
+
+                <div
+                  className="overflow-hidden transition-all duration-600 ease-out"
+                  style={{
+                    maxHeight: isActive ? "200px" : "0px",
+                    opacity: isActive ? 1 : 0,
+                  }}
+                >
+                  <p className="pt-4 font-sans text-sm leading-relaxed text-offwhite/65 md:text-[15px]">
+                    {item.description}
+                  </p>
                 </div>
               </article>
             );
           })}
         </div>
 
-        {/* ═══ Closing signature ═══ */}
-        <div
-          ref={signatureRef}
-          className="mt-32 flex flex-col items-end gap-4 md:mt-44"
-        >
-          <div className="h-[1px] w-32 bg-warm/30 md:w-48" />
-          <p className="font-serif italic text-base text-warm/80 md:text-lg">
-            — Diego Villagran
-          </p>
-          <p className="font-mono text-[9px] font-bold uppercase tracking-[0.32em] text-offwhite/30">
-            {language === "es" ? "FIN DEL MANIFIESTO" : "END OF MANIFESTO"}
-          </p>
-        </div>
-      </div>
+        <p className="mt-8 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/28">
+          {isCoarse ? labels.hintTap : labels.hintHover}
+        </p>
 
-      {/* Bottom ambient line */}
-      <div
-        className="pointer-events-none absolute bottom-0 left-1/2 h-[1px] w-full max-w-7xl -translate-x-1/2 bg-gradient-to-r from-transparent via-offwhite/8 to-transparent"
-        aria-hidden="true"
-      />
+        <p
+          ref={closureRef}
+          className="mt-14 max-w-2xl border-t border-white/8 pt-8 font-serif text-lg italic text-offwhite/45 md:text-xl"
+        >
+          {labels.closure}
+        </p>
+      </div>
 
       <style>{`
         @keyframes manifesto-cursor {
           0%, 49% { opacity: 1; }
           50%, 100% { opacity: 0; }
-        }
-        @keyframes manifesto-cursor-fadeout {
-          0% { opacity: 1; }
-          100% { opacity: 0; }
         }
       `}</style>
     </section>

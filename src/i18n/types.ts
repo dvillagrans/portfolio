@@ -6,12 +6,14 @@ export interface NavDict {
 }
 
 export interface HeroDict {
+  eyebrow: string;
   title1: string;
   title2: string;
-  subtitle1: string;
-  subtitle2: string;
+  subtitle: string;
+  focusLine: string;
   cta: string;
-  downloadCv?: string;
+  downloadCv: string;
+  scrollHint: string;
 }
 
 export interface ProjectMetric {
@@ -63,29 +65,79 @@ export interface WorkDict {
 
 export interface SystemCapability {
   title: string;
+  /** One-line scan text (collapsed state) */
+  summary: string;
   description: string;
+  /** Featured project names where this capability shows up */
+  usedIn: string[];
   tags: string[];
 }
 
 export interface SystemsDict {
+  eyebrow: string;
   title: string;
+  subtitle: string;
+  labelCapability: string;
+  labelUsedIn: string;
+  hintHover: string;
+  hintTap: string;
+  railTop: string;
+  railBottom: string;
   items: SystemCapability[];
+}
+
+export interface MarqueeSegment {
+  text: string;
+  warm?: boolean;
+}
+
+export interface MarqueeDict {
+  ariaLabel: string;
+  segments: MarqueeSegment[];
 }
 
 export interface PhilosophyItem {
   title: string;
+  /** One-line scan text */
+  summary: string;
   description: string;
 }
 
 export interface PhilosophyDict {
-  tag: string;
+  eyebrow: string;
   title: string;
+  subtitle: string;
   quote: string;
+  quoteBy: string;
+  labelPrinciple: string;
+  hintHover: string;
+  hintTap: string;
+  readMore: string;
+  closure: string;
   items: PhilosophyItem[];
 }
 
+export interface StackBandDict {
+  dataScience: string;
+  infrastructure: string;
+  platform: string;
+  core: string;
+}
+
 export interface StackDict {
+  eyebrow: string;
   title: string;
+  subtitle: string;
+  hintHover: string;
+  hintTap: string;
+  labelUsedIn: string;
+  labelExploration: string;
+  explorationNote: string;
+  emptyTitle: string;
+  emptyHint: string;
+  projectOne: string;
+  projectMany: string;
+  bands: StackBandDict;
   tools: string[];
 }
 
@@ -168,8 +220,10 @@ export interface ArchiveDict {
 }
 
 export interface ContactDict {
-  title1: string;
-  title2: string;
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  focusLine: string;
   email: string;
   bookSession: string;
   bookDesc: string;
@@ -181,6 +235,7 @@ export interface ContactDict {
   formLabel: string;
   formSuccess: string;
   formError: string;
+  labelSocial: string;
   errorRequired?: string;
   errorNameShort?: string;
   errorEmailInvalid?: string;
@@ -549,6 +604,7 @@ export interface LanguageDict {
   nav: NavDict;
   hero: HeroDict;
   work: WorkDict;
+  marquee: MarqueeDict;
   systems: SystemsDict;
   philosophy: PhilosophyDict;
   stack: StackDict;
@@ -568,5 +624,16 @@ export interface LanguageDict {
 
 export type SharedDict = Pick<
   LanguageDict,
-  "nav" | "hero" | "work" | "systems" | "philosophy" | "stack" | "about" | "archive" | "contact" | "colophon" | "now"
+  | "nav"
+  | "hero"
+  | "work"
+  | "marquee"
+  | "systems"
+  | "philosophy"
+  | "stack"
+  | "about"
+  | "archive"
+  | "contact"
+  | "colophon"
+  | "now"
 >;

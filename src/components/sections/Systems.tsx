@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { accentAlpha } from "@/components/sections/Scene";
 import { Brain, Database, BarChart3, Globe } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -17,22 +18,22 @@ interface LayerMeta {
 
 const LAYER_META: LayerMeta[] = [
   {
-    icon: <Brain className="h-6 w-6" />,
+    icon: <Brain className="h-5 w-5" />,
     accent: "oklch(68% 0.18 285)",
     accentSoft: "oklch(68% 0.18 285 / 0.18)",
   },
   {
-    icon: <Database className="h-6 w-6" />,
+    icon: <Database className="h-5 w-5" />,
     accent: "oklch(70% 0.14 195)",
     accentSoft: "oklch(70% 0.14 195 / 0.18)",
   },
   {
-    icon: <BarChart3 className="h-6 w-6" />,
+    icon: <BarChart3 className="h-5 w-5" />,
     accent: "oklch(72% 0.15 60)",
     accentSoft: "oklch(72% 0.15 60 / 0.18)",
   },
   {
-    icon: <Globe className="h-6 w-6" />,
+    icon: <Globe className="h-5 w-5" />,
     accent: "oklch(65% 0.14 150)",
     accentSoft: "oklch(65% 0.14 150 / 0.18)",
   },
@@ -43,7 +44,8 @@ export default function Systems() {
   const stackRef = useRef<HTMLDivElement>(null);
   const layerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const railRef = useRef<HTMLDivElement>(null);
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
+  const labels = t.systems;
   const reduced = useReducedMotion();
 
   const [active, setActive] = useState<number | null>(null);
@@ -68,17 +70,17 @@ export default function Systems() {
 
       gsap.fromTo(
         layers,
-        { opacity: 0, y: -80, z: -120 },
+        { opacity: 0, y: -60, z: -80 },
         {
           opacity: 1,
           y: 0,
           z: 0,
-          duration: 0.9,
-          stagger: 0.12,
+          duration: 0.85,
+          stagger: 0.1,
           ease: "power3.out",
           scrollTrigger: {
             trigger: stackRef.current,
-            start: "top 80%",
+            start: "top 82%",
             once: true,
           },
         }
@@ -87,12 +89,12 @@ export default function Systems() {
       if (railRef.current) {
         gsap.fromTo(
           railRef.current,
-          { opacity: 0, y: 30 },
+          { opacity: 0, y: 24 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
-            delay: 0.4,
+            duration: 0.75,
+            delay: 0.35,
             ease: "power2.out",
             scrollTrigger: {
               trigger: railRef.current,
@@ -107,28 +109,25 @@ export default function Systems() {
     return () => ctx.revert();
   }, [reduced]);
 
-  const items = t.systems.items;
+  const items = labels.items;
 
   const computeLayerTransform = (idx: number) => {
     if (isCoarse || reduced) return undefined;
-    if (active === null) {
-      return "translate3d(0, 0, 0)";
-    }
-    if (active === idx) {
-      return "translate3d(0, -16px, 100px)";
-    }
-    return "translate3d(0, 0, -30px)";
+    if (active === null) return "translate3d(0, 0, 0)";
+    if (active === idx) return "translate3d(0, -12px, 80px)";
+    return "translate3d(0, 0, -24px)";
   };
 
   const computeLayerOpacity = (idx: number) => {
     if (active === null) return 1;
     if (active === idx) return 1;
-    return 0.28;
+    return 0.32;
   };
 
-  const renderLayer = (cap: typeof items[number], idx: number) => {
+  const renderLayer = (cap: (typeof items)[number], idx: number) => {
     const meta = LAYER_META[idx % LAYER_META.length];
     const isActive = active === idx;
+    const caseNumber = String(idx + 1).padStart(2, "0");
 
     return (
       <div
@@ -149,116 +148,65 @@ export default function Systems() {
         tabIndex={0}
         aria-expanded={isActive}
         aria-label={cap.title}
-        className="layer-panel group relative cursor-pointer rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-md transition-all duration-700 ease-out hover:border-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal"
+        className="layer-panel group relative cursor-pointer rounded-2xl border border-white/10 bg-white/[0.03] transition-all duration-700 ease-out hover:border-white/18 focus:outline-none focus-visible:ring-2 focus-visible:ring-warm/40 focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal"
         style={{
           transform: computeLayerTransform(idx),
           opacity: computeLayerOpacity(idx),
           transformStyle: "preserve-3d",
           boxShadow: isActive
-            ? `0 30px 80px -20px ${meta.accentSoft}, 0 0 0 1px ${meta.accent}40 inset`
-            : "0 10px 30px -10px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04) inset",
+            ? `0 24px 60px -20px ${meta.accentSoft}, 0 0 0 1px ${accentAlpha(meta.accent, 0.35)} inset`
+            : "0 8px 24px -12px rgba(0,0,0,0.45)",
           willChange: "transform, opacity",
         }}
       >
-        {/* Accent edge glow on active */}
         <div
           className="pointer-events-none absolute inset-0 rounded-2xl transition-opacity duration-500"
           aria-hidden="true"
           style={{
-            background: `linear-gradient(135deg, ${meta.accentSoft} 0%, transparent 50%)`,
+            background: `linear-gradient(135deg, ${meta.accentSoft} 0%, transparent 55%)`,
             opacity: isActive ? 1 : 0,
           }}
         />
 
-        {/* Top accent bar */}
-        <div
-          className="absolute left-6 right-6 top-0 h-[2px] rounded-full transition-all duration-500"
-          aria-hidden="true"
-          style={{
-            background: `linear-gradient(90deg, transparent, ${meta.accent}, transparent)`,
-            opacity: isActive ? 1 : 0.4,
-            transform: isActive ? "scaleX(1)" : "scaleX(0.5)",
-          }}
-        />
-
-        {/* Compact / collapsed view (always visible) */}
-        <div className="relative z-10 flex items-center justify-between gap-6 px-6 py-5 md:px-8 md:py-7">
-          <div className="flex min-w-0 items-center gap-5">
-            <div
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border transition-all duration-500"
-              style={{
-                background: isActive ? meta.accentSoft : "rgba(255,255,255,0.03)",
-                borderColor: isActive ? `${meta.accent}50` : "rgba(255,255,255,0.08)",
-                color: isActive ? meta.accent : "rgba(240,234,216,0.55)",
-              }}
-            >
-              {meta.icon}
-            </div>
-
-            <div className="min-w-0">
-              <div className="mb-1 flex items-center gap-3">
-                <span
-                  className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] transition-colors duration-300"
-                  style={{ color: isActive ? meta.accent : "rgba(240,234,216,0.4)" }}
-                >
-                  SYS_0{idx + 1}
-                </span>
-                <span
-                  className="h-1.5 w-1.5 rounded-full transition-all duration-500"
-                  style={{
-                    background: meta.accent,
-                    boxShadow: isActive ? `0 0 12px ${meta.accent}` : `0 0 4px ${meta.accent}80`,
-                  }}
-                />
+        <div className="relative z-10 px-6 py-5 md:px-8 md:py-6">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex min-w-0 flex-1 items-start gap-4">
+              <div
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-all duration-500"
+                style={{
+                  background: isActive ? meta.accentSoft : "rgba(255,255,255,0.04)",
+                  borderColor: isActive ? accentAlpha(meta.accent, 0.45) : "rgba(255,255,255,0.08)",
+                  color: isActive ? meta.accent : "rgba(240,234,216,0.55)",
+                }}
+              >
+                {meta.icon}
               </div>
-              <h3
-                className="font-serif text-2xl tracking-tight text-offwhite md:text-3xl"
-                style={{ color: isActive ? "#fff" : "rgba(240,234,216,0.92)" }}
-              >
-                {cap.title}
-              </h3>
-            </div>
-          </div>
 
-          {/* Right-side indicator + chevron */}
-          <div className="hidden items-center gap-4 md:flex">
-            <div className="flex flex-col items-end gap-1">
-              <span
-                className="font-mono text-[9px] uppercase tracking-widest transition-colors duration-300"
-                style={{ color: isActive ? meta.accent : "rgba(240,234,216,0.35)" }}
-              >
-                {isActive
-                  ? language === "en"
-                    ? "Layer Online"
-                    : "Capa Activa"
-                  : language === "en"
-                  ? "Idle"
-                  : "En Reposo"}
-              </span>
-              <div className="flex items-center gap-1">
-                {[0, 1, 2].map((i) => (
-                  <span
-                    key={i}
-                    className="h-[3px] w-[3px] rounded-full transition-all duration-300"
-                    style={{
-                      background: meta.accent,
-                      opacity: isActive ? 1 : 0.35,
-                      animation: isActive
-                        ? `pulse-dot 1.4s ease-in-out ${i * 0.18}s infinite`
-                        : undefined,
-                    }}
-                  />
-                ))}
+              <div className="min-w-0 flex-1">
+                <div className="mb-1.5 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/40">
+                  {labels.labelCapability} {caseNumber}
+                </div>
+                <h3 className="font-serif text-xl tracking-tight text-offwhite md:text-2xl">
+                  {cap.title}
+                </h3>
+                <p className="mt-1.5 font-sans text-sm leading-snug text-offwhite/55">
+                  {cap.summary}
+                </p>
+                <p className="mt-2 font-mono text-[9px] uppercase tracking-wider text-offwhite/38">
+                  <span className="text-offwhite/50">{labels.labelUsedIn}</span>{" "}
+                  {cap.usedIn.join(" · ")}
+                </p>
               </div>
             </div>
+
             <svg
-              width="20"
-              height="20"
+              width="18"
+              height="18"
               viewBox="0 0 20 20"
-              className="transition-all duration-500"
+              className="mt-1 hidden shrink-0 transition-transform duration-500 md:block"
               style={{
                 transform: isActive ? "rotate(90deg)" : "rotate(0deg)",
-                color: isActive ? meta.accent : "rgba(240,234,216,0.3)",
+                color: isActive ? meta.accent : "rgba(240,234,216,0.28)",
               }}
               aria-hidden="true"
             >
@@ -271,40 +219,37 @@ export default function Systems() {
               />
             </svg>
           </div>
-        </div>
 
-        {/* Expanded view (revealed on active) */}
-        <div
-          className="overflow-hidden transition-all duration-700 ease-out"
-          style={{
-            maxHeight: isActive ? "320px" : "0px",
-            opacity: isActive ? 1 : 0,
-          }}
-        >
-          <div className="px-6 pb-7 md:px-8 md:pb-9">
-            <div
-              className="mb-5 h-[1px] w-full"
-              style={{
-                background: `linear-gradient(90deg, ${meta.accent}40, transparent)`,
-              }}
-            />
-            <p className="mb-6 max-w-2xl font-sans text-base leading-relaxed text-offwhite/75 md:text-lg">
-              {cap.description}
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {cap.tags?.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-widest transition-all"
-                  style={{
-                    color: meta.accent,
-                    borderColor: `${meta.accent}30`,
-                    background: meta.accentSoft,
-                  }}
-                >
-                  {tag}
-                </span>
-              ))}
+          <div
+            className="overflow-hidden transition-all duration-700 ease-out"
+            style={{
+              maxHeight: isActive ? "240px" : "0px",
+              opacity: isActive ? 1 : 0,
+            }}
+          >
+            <div className="pt-5 md:pt-6">
+              <div
+                className="mb-4 h-px w-full"
+                style={{ background: `linear-gradient(90deg, ${accentAlpha(meta.accent, 0.4)}, transparent)` }}
+              />
+              <p className="mb-4 max-w-2xl font-sans text-sm leading-relaxed text-offwhite/70 md:text-[15px]">
+                {cap.description}
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {cap.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-md px-2 py-1 font-mono text-[8px] font-medium uppercase tracking-wider"
+                    style={{
+                      color: meta.accent,
+                      background: meta.accentSoft,
+                      border: `1px solid ${accentAlpha(meta.accent, 0.25)}`,
+                    }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -316,116 +261,76 @@ export default function Systems() {
     <section
       ref={sectionRef}
       id="systems"
-      className="relative overflow-hidden bg-charcoal py-24 text-offwhite md:py-32"
+      className="relative overflow-hidden bg-charcoal py-20 text-offwhite md:py-28"
       style={{
         paddingLeft: "max(1.5rem, env(safe-area-inset-left))",
         paddingRight: "max(1.5rem, env(safe-area-inset-right))",
       }}
     >
-      {/* Ambient grid + gradient */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-30"
+        className="pointer-events-none absolute inset-0 opacity-[0.12]"
         aria-hidden="true"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(240,234,216,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(240,234,216,0.04) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-          maskImage: "radial-gradient(ellipse at 50% 30%, black, transparent 70%)",
+            "linear-gradient(rgba(240,234,216,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(240,234,216,0.05) 1px, transparent 1px)",
+          backgroundSize: "72px 72px",
+          maskImage: "radial-gradient(ellipse at 50% 20%, black, transparent 72%)",
         }}
       />
-      <div
-        className="pointer-events-none absolute left-1/2 top-0 h-[1px] w-full max-w-7xl -translate-x-1/2 bg-gradient-to-r from-transparent via-offwhite/15 to-transparent"
-        aria-hidden="true"
-      />
 
-      <div className="relative mx-auto max-w-7xl md:px-6 lg:px-12">
-        {/* Header */}
-        <header className="mb-16 md:mb-24">
-          <div className="mb-6 flex items-center gap-4">
-            <div className="h-[1px] w-12 bg-warm opacity-60" />
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-offwhite/70">
-              03. {t.systems.title}
+      <div className="relative mx-auto max-w-7xl lg:px-12">
+        <header className="mb-12 md:mb-16">
+          <div className="mb-4 flex items-center gap-3">
+            <div className="h-px w-8 bg-offwhite/20" />
+            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-offwhite/50">
+              {labels.eyebrow}
             </span>
           </div>
-          <h2 className="mb-6 font-serif text-5xl tracking-tight text-offwhite lg:text-7xl">
-            {language === "es" ? (
-              <>
-                Arquitectura{" "}
-                <span className="font-light italic text-offwhite/50">&</span> Escala
-              </>
-            ) : (
-              <>
-                Architecture{" "}
-                <span className="font-light italic text-offwhite/50">&</span> Scale
-              </>
-            )}
+          <h2 className="font-serif text-4xl tracking-tight text-offwhite md:text-5xl lg:text-6xl">
+            {labels.title}
           </h2>
-          <p className="max-w-xl font-sans text-sm text-offwhite/55 md:text-base">
-            {language === "es"
-              ? "Cuatro capas que se apoyan unas en otras. Pasá el cursor por encima para inspeccionar cada una."
-              : "Four layers that stack on top of each other. Hover any to inspect it."}
+          <p className="mt-4 max-w-xl font-sans text-sm text-offwhite/55 md:text-base">
+            {labels.subtitle}
           </p>
         </header>
 
-        {/* Stack + flow rail */}
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_88px] lg:gap-12">
-          {/* The 3D stack */}
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_72px] lg:gap-10">
           <div
             className="stack-stage"
             style={{
-              perspective: isCoarse || reduced ? "none" : "1800px",
-              perspectiveOrigin: "50% 30%",
+              perspective: isCoarse || reduced ? "none" : "1600px",
+              perspectiveOrigin: "50% 28%",
             }}
           >
-            <div
-              ref={stackRef}
-              className="flex flex-col gap-3"
-              style={{
-                transformStyle: "preserve-3d",
-              }}
-            >
+            <div ref={stackRef} className="flex flex-col gap-2.5" style={{ transformStyle: "preserve-3d" }}>
               {items.map((cap, idx) => renderLayer(cap, idx))}
             </div>
           </div>
 
-          {/* Flow rail */}
-          <div
-            ref={railRef}
-            className="hidden lg:flex flex-col items-center justify-between py-8"
-            aria-hidden="true"
-          >
-            <span className="font-mono text-[8px] font-bold uppercase tracking-[0.3em] text-offwhite/30">
-              {language === "es" ? "FLUJO" : "FLOW"}
+          <div ref={railRef} className="hidden lg:flex flex-col items-center justify-between py-6" aria-hidden="true">
+            <span className="font-mono text-[8px] font-bold uppercase tracking-[0.28em] text-offwhite/28">
+              {labels.railTop}
             </span>
 
             <div className="relative flex h-full flex-col items-center py-4">
-              {/* Vertical line */}
               <div
-                className="absolute left-1/2 top-0 h-full w-[1px] -translate-x-1/2"
+                className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2"
                 style={{
                   background:
-                    "linear-gradient(180deg, transparent, rgba(240,234,216,0.18) 15%, rgba(240,234,216,0.18) 85%, transparent)",
+                    "linear-gradient(180deg, transparent, rgba(240,234,216,0.14) 18%, rgba(240,234,216,0.14) 82%, transparent)",
                 }}
               />
-              {/* Pulsing dots per layer */}
               {items.map((_, idx) => {
                 const meta = LAYER_META[idx % LAYER_META.length];
                 const isOn = active === idx;
                 return (
-                  <div
-                    key={idx}
-                    className="relative my-auto flex h-16 items-center justify-center"
-                  >
+                  <div key={idx} className="relative my-auto flex h-14 items-center justify-center">
                     <div
-                      className="absolute h-3 w-3 rounded-full transition-all duration-500"
+                      className="h-2.5 w-2.5 rounded-full transition-all duration-500"
                       style={{
-                        background: isOn ? meta.accent : `${meta.accent}40`,
-                        boxShadow: isOn
-                          ? `0 0 16px ${meta.accent}, 0 0 32px ${meta.accent}80`
-                          : `0 0 6px ${meta.accent}40`,
-                        animation: !reduced
-                          ? `pulse-dot 2s ease-in-out ${idx * 0.4}s infinite`
-                          : undefined,
+                        background: isOn ? meta.accent : accentAlpha(meta.accent, 0.35),
+                        boxShadow: isOn ? `0 0 14px ${accentAlpha(meta.accent, 0.65)}` : undefined,
+                        animation: !reduced && isOn ? `pulse-dot 2s ease-in-out infinite` : undefined,
                       }}
                     />
                   </div>
@@ -433,31 +338,21 @@ export default function Systems() {
               })}
             </div>
 
-            <span className="font-mono text-[8px] font-bold uppercase tracking-[0.3em] text-offwhite/30">
-              {language === "es" ? "BASE" : "BASE"}
+            <span className="font-mono text-[8px] font-bold uppercase tracking-[0.28em] text-offwhite/28">
+              {labels.railBottom}
             </span>
           </div>
         </div>
 
-        {/* Hint */}
-        <div className="mt-12 flex items-center gap-3 text-offwhite/35">
-          <div className="h-[1px] w-8 bg-offwhite/20" />
-          <span className="font-mono text-[10px] font-bold uppercase tracking-[0.3em]">
-            {language === "es"
-              ? isCoarse
-                ? "TOCAR PARA INSPECCIONAR"
-                : "HOVER · INSPECT · CLICK"
-              : isCoarse
-              ? "TAP TO INSPECT"
-              : "HOVER · INSPECT · CLICK"}
-          </span>
-        </div>
+        <p className="mt-10 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/30">
+          {isCoarse ? labels.hintTap : labels.hintHover}
+        </p>
       </div>
 
       <style>{`
         @keyframes pulse-dot {
-          0%, 100% { opacity: 0.35; transform: scale(0.9); }
-          50% { opacity: 1; transform: scale(1.1); }
+          0%, 100% { opacity: 0.45; transform: scale(0.92); }
+          50% { opacity: 1; transform: scale(1.08); }
         }
         .layer-panel {
           transform-origin: center center;

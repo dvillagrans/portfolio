@@ -34,7 +34,7 @@ export default function Colophon() {
   const showLighthouse = lighthouseScore.trim() !== "";
 
   return (
-    <footer className="mt-32 md:mt-48 w-full border-t border-white/10 pt-10">
+    <footer className="mt-20 md:mt-24 w-full border-t border-white/10 pt-10">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 font-sans text-xs text-offwhite/50">
         {/* Font credits */}
         <div className="flex flex-col gap-2">

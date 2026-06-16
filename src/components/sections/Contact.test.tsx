@@ -28,24 +28,31 @@ vi.mock('@/hooks/useReducedMotion', () => ({
   useReducedMotion: () => true,
 }));
 
+vi.mock('@/hooks/useMagnetic', () => ({
+  useMagnetic: () => ({ ref: { current: null } }),
+}));
+
 // Mock language context with enough translation coverage
 vi.mock('@/i18n/LanguageContext', () => ({
   useLanguage: () => ({
     t: {
       contact: {
-        title1: 'Get in Touch',
-        title2: "Let's build together",
+        eyebrow: 'Contact',
+        title: "Let's work together",
+        subtitle: 'Open to collaborations and technical work.',
+        focusLine: 'Freelance · contract · full-time',
         email: 'hello@example.com',
-        bookSession: "Let's talk",
-        formLabel: 'Contact Form',
+        bookSession: 'Send a message',
+        formLabel: 'Message',
         bookDesc: 'Tell me about your project.',
         formName: 'Name',
         formEmail: 'Email',
         formMessage: 'Message',
-        formSubmit: 'Send Message',
+        formSubmit: 'Send message',
         formLoading: 'Sending...',
         formSuccess: 'Message sent successfully!',
         formError: 'Something went wrong.',
+        labelSocial: 'Elsewhere',
         errorRequired: 'This field is required',
         errorNameShort: 'Name is too short',
         errorEmailInvalid: 'Invalid email',
@@ -66,7 +73,7 @@ vi.mock('@/i18n/LanguageContext', () => ({
 describe('Contact section', () => {
   it('renders without crashing', () => {
     render(<Contact />);
-    expect(screen.getByText('Get in Touch')).toBeInTheDocument();
+    expect(screen.getByText("Let's work together")).toBeInTheDocument();
   });
 
   it('shows the email link', () => {
@@ -76,15 +83,15 @@ describe('Contact section', () => {
     expect(emailLink).toHaveAttribute('href', 'mailto:hello@example.com');
   });
 
-  it('shows the "Let\'s talk" button', () => {
+  it('shows the "Send a message" button', () => {
     render(<Contact />);
-    const button = screen.getByRole('button', { name: /let's talk/i });
+    const button = screen.getByRole('button', { name: /send a message/i });
     expect(button).toBeInTheDocument();
   });
 
   it('shows the form when clicking the button', () => {
     render(<Contact />);
-    const button = screen.getByRole('button', { name: /let's talk/i });
+    const button = screen.getByRole('button', { name: /send a message/i });
     fireEvent.click(button);
 
     expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
@@ -95,7 +102,7 @@ describe('Contact section', () => {
 
   it('closes the form when clicking the × button', () => {
     render(<Contact />);
-    fireEvent.click(screen.getByRole('button', { name: /let's talk/i }));
+    fireEvent.click(screen.getByRole('button', { name: /send a message/i }));
     expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
 
     fireEvent.click(screen.getByLabelText('Close form'));
@@ -104,7 +111,7 @@ describe('Contact section', () => {
 
   it('shows validation error for empty name on submit', () => {
     render(<Contact />);
-    fireEvent.click(screen.getByRole('button', { name: /let's talk/i }));
+    fireEvent.click(screen.getByRole('button', { name: /send a message/i }));
     fireEvent.click(screen.getByRole('button', { name: /send message/i }));
 
     // All three fields show the required error — check at least one appears
@@ -114,7 +121,7 @@ describe('Contact section', () => {
 
   it('shows validation error for short name', () => {
     render(<Contact />);
-    fireEvent.click(screen.getByRole('button', { name: /let's talk/i }));
+    fireEvent.click(screen.getByRole('button', { name: /send a message/i }));
 
     const nameInput = screen.getByLabelText(/name/i);
     fireEvent.change(nameInput, { target: { value: 'A' } });
@@ -125,7 +132,7 @@ describe('Contact section', () => {
 
   it('shows validation error for invalid email', () => {
     render(<Contact />);
-    fireEvent.click(screen.getByRole('button', { name: /let's talk/i }));
+    fireEvent.click(screen.getByRole('button', { name: /send a message/i }));
 
     const emailInput = screen.getByLabelText(/email/i);
     fireEvent.change(emailInput, { target: { value: 'not-an-email' } });
@@ -136,7 +143,7 @@ describe('Contact section', () => {
 
   it('shows validation error for short message', () => {
     render(<Contact />);
-    fireEvent.click(screen.getByRole('button', { name: /let's talk/i }));
+    fireEvent.click(screen.getByRole('button', { name: /send a message/i }));
 
     const msgInput = screen.getByLabelText(/message/i);
     fireEvent.change(msgInput, { target: { value: 'Hi' } });
@@ -147,13 +154,13 @@ describe('Contact section', () => {
 
   it('does not show errors before user interaction', () => {
     render(<Contact />);
-    fireEvent.click(screen.getByRole('button', { name: /let's talk/i }));
+    fireEvent.click(screen.getByRole('button', { name: /send a message/i }));
 
     expect(screen.queryByText('This field is required')).not.toBeInTheDocument();
   });
 
-  it('renders the cta section title', () => {
+  it('renders the section title', () => {
     render(<Contact />);
-    expect(screen.getByText("Let's build together")).toBeInTheDocument();
+    expect(screen.getByText("Let's work together")).toBeInTheDocument();
   });
 });

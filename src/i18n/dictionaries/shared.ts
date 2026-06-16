@@ -2,6 +2,7 @@ import type {
   NavDict,
   HeroDict,
   WorkDict,
+  MarqueeDict,
   SystemsDict,
   PhilosophyDict,
   StackDict,
@@ -16,6 +17,7 @@ export type {
   NavDict,
   HeroDict,
   WorkDict,
+  MarqueeDict,
   SystemsDict,
   PhilosophyDict,
   StackDict,
@@ -29,11 +31,14 @@ export type {
 export const sharedEn = {
   nav: { projects: "Projects", systems: "Capabilities", contact: "Contact", about: "About" },
   hero: {
-    title1: "ML pipelines. LLM automation.",
-    title2: "Production systems.",
-    subtitle1: "Data Science student building real infrastructure —",
-    subtitle2: "from EEG signal processing to open-source LLM clusters.",
-    cta: "View Projects",
+    eyebrow: "AI & Data Engineer",
+    title1: "Production ML systems",
+    title2: "and AI automation.",
+    subtitle: "I build infrastructure that ships — document pipelines, LLM agents, data platforms, and full-stack product surfaces.",
+    focusLine: "Client work · research · 10K+ daily requests in production",
+    cta: "View case studies",
+    downloadCv: "Download CV",
+    scrollHint: "Scroll to featured work",
   },
   work: {
     title: "Featured Projects",
@@ -139,43 +144,111 @@ export const sharedEn = {
       }
     ]
   },
+  marquee: {
+    ariaLabel: "Bridge from featured projects to capabilities",
+    segments: [
+      { text: "Every project shares one foundation" },
+      { text: " · " },
+      { text: "ML pipelines", warm: true },
+      { text: " · " },
+      { text: "data engineering" },
+      { text: " · " },
+      { text: "analytics products", warm: true },
+      { text: " · " },
+      { text: "production platforms" },
+      { text: " · " },
+    ],
+  },
   systems: {
-    title: "Systems & Capabilities",
+    eyebrow: "Capabilities",
+    title: "How I ship systems",
+    subtitle: "Four layers I combine on every engagement — hover or tap to explore each one.",
+    labelCapability: "Capability",
+    labelUsedIn: "Built in",
+    hintHover: "Hover to explore",
+    hintTap: "Tap to explore",
+    railTop: "Product",
+    railBottom: "Data",
     items: [
       {
         title: "Machine Learning Pipelines",
+        summary: "Training, evaluation, and production deployment with monitoring.",
         description: "End-to-end orchestration: from EEG signal processing and feature engineering to production-ready LLM clusters and model deployment.",
+        usedIn: ["EyeNet", "COVID Risk Profiles"],
         tags: ["Scikit-learn", "PyTorch", "MLflow", "GPU Clusters"]
       },
       {
         title: "Data Engineering & Infrastructure",
+        summary: "ETL, orchestration, and infra that survives real load.",
         description: "ETL pipelines with PySpark and SQL, automated with n8n and Grafana, backed by Redis and high-performance GPU clusters.",
+        usedIn: ["EyeNet", "India Air Quality"],
         tags: ["PySpark", "Redis", "n8n", "Docker"]
       },
       {
         title: "Analytics Products",
+        summary: "Dashboards and models stakeholders can actually use.",
         description: "High-accuracy decision systems and predictive dashboards built with FastAPI, Streamlit and Power BI for real-world impact.",
+        usedIn: ["NYC Ride-Hailing", "COVID Risk Profiles"],
         tags: ["FastAPI", "Streamlit", "Power BI", "SQL"]
       },
       {
         title: "Scalable Web Platforms",
+        summary: "Full-stack interfaces wired to AI and data backends.",
         description: "Modern full-stack ecosystems using Next.js, React, and TypeScript, optimized for high performance and seamless AI integrations.",
+        usedIn: ["EyeNet", "COVID Dashboard"],
         tags: ["Next.js", "TypeScript", "Vercel", "Tailwind"]
       }
     ]
   },
   philosophy: {
-    tag: "Working Principles",
-    title: "How I Think",
+    eyebrow: "Working principles",
+    title: "How I think",
+    subtitle: "Three rules I apply on every production system — after the demos are over.",
     quote: "\"I don't build demos. I build systems that survive Monday morning.\"",
+    quoteBy: "Diego Villagran",
+    labelPrinciple: "Principle",
+    hintHover: "Hover to read more",
+    hintTap: "Tap to read more",
+    readMore: "Full principle",
+    closure: "Practical systems, measurable outcomes, production from day one.",
     items: [
-      { title: "01. Ship the pipeline, not the notebook", description: "A Jupyter notebook is a prototype. A pipeline with monitoring, alerting, and a rollback plan is a product. I optimize for the person who gets paged at 3 AM, not the one clapping at the demo." },
-      { title: "02. Infrastructure is a feature", description: "Fast models mean nothing if your deployment takes 45 minutes and your GPU cluster idles at 12%. I treat provisioning, orchestration, and cost control as first-class engineering problems." },
-      { title: "03. Explain it to the CEO or it didn't happen", description: "If a stakeholder can't understand why the model made that decision, the model is broken — regardless of its accuracy. Clarity is not documentation. Clarity is design." }
+      {
+        title: "Ship the pipeline, not the notebook",
+        summary: "Notebooks prototype. Pipelines with monitoring, alerts, and rollback are products.",
+        description: "A Jupyter notebook is a prototype. A pipeline with monitoring, alerting, and a rollback plan is a product. I optimize for the person who gets paged at 3 AM, not the one clapping at the demo."
+      },
+      {
+        title: "Infrastructure is a feature",
+        summary: "Deploy speed, observability, and GPU utilization are first-class engineering work.",
+        description: "Fast models mean nothing if your deployment takes 45 minutes and your GPU cluster idles at 12%. I treat provisioning, orchestration, and cost control as first-class engineering problems."
+      },
+      {
+        title: "Explain it to the CEO or it didn't happen",
+        summary: "If stakeholders can't understand the output, the model is broken — regardless of accuracy.",
+        description: "If a stakeholder can't understand why the model made that decision, the model is broken — regardless of its accuracy. Clarity is not documentation. Clarity is design."
+      }
     ]
   },
   stack: {
-    title: "Technical Stack & Tooling",
+    eyebrow: "Technical stack",
+    title: "Tools in production",
+    subtitle: "Every tool maps to real portfolio work — hover or tap to see where it shows up.",
+    hintHover: "Hover a tool to see projects",
+    hintTap: "Tap a tool to see projects",
+    labelUsedIn: "Used in",
+    labelExploration: "Research & prototypes",
+    explorationNote:
+      "{tool} isn't on a featured case study, but it's part of my day-to-day stack for R&D and internal builds.",
+    emptyTitle: "Pick a tool",
+    emptyHint: "Select any tool from the bands above to see the featured projects that use it.",
+    projectOne: "featured project",
+    projectMany: "featured projects",
+    bands: {
+      dataScience: "Data science & AI",
+      infrastructure: "Infrastructure & cloud",
+      platform: "Platform & product",
+      core: "Core tooling",
+    },
     tools: [
       "Python",
       "FastAPI",
@@ -573,19 +646,22 @@ export const sharedEn = {
     ]
   },
   contact: {
-    title1: "Let's build something",
-    title2: "intelligent and useful.",
+    eyebrow: "Contact",
+    title: "Let's work together",
+    subtitle: "Open to AI engineering, data platforms, and full-stack product builds.",
+    focusLine: "Freelance · contract · full-time",
     email: "diegovillasal@gmail.com",
-    bookSession: "Let's talk",
-    bookDesc: "Reach out for collaborations, job opportunities, or technical inquiries.",
-    formName: "Your Name",
-    formEmail: "Your Email",
-    formMessage: "What would you like to discuss?",
-    formSubmit: "Send Request",
+    bookSession: "Send a message",
+    bookDesc: "Collaborations, roles, or technical questions — I reply within 48 hours.",
+    formName: "Your name",
+    formEmail: "Your email",
+    formMessage: "What are you building?",
+    formSubmit: "Send message",
     formLoading: "Sending…",
-    formLabel: "New Message /",
-    formSuccess: "Message sent! I'll get back to you shortly.",
+    formLabel: "Message",
+    formSuccess: "Message sent — I'll get back to you shortly.",
     formError: "Something went wrong. Please email directly.",
+    labelSocial: "Elsewhere",
     errorRequired: "This field is required",
     errorNameShort: "Name must be at least 2 characters",
     errorEmailInvalid: "Please enter a valid email address",
@@ -613,6 +689,7 @@ export const sharedEn = {
   nav: NavDict;
   hero: HeroDict;
   work: WorkDict;
+  marquee: MarqueeDict;
   systems: SystemsDict;
   philosophy: PhilosophyDict;
   stack: StackDict;
@@ -626,11 +703,14 @@ export const sharedEn = {
 export const sharedEs = {
   nav: { projects: "Proyectos", systems: "Capacidades", contact: "Contacto", about: "Sobre mí" },
   hero: {
-    title1: "ML pipelines. LLM automation.",
-    title2: "Sistemas de producción.",
-    subtitle1: "Estudiante de Ciencia de Datos construyendo infraestructura real —",
-    subtitle2: "desde procesamiento de señales EEG hasta clústeres de LLMs de código abierto.",
-    cta: "Ver Proyectos",
+    eyebrow: "Ingeniero de IA y Datos",
+    title1: "Sistemas ML en producción",
+    title2: "y automatización con IA.",
+    subtitle: "Construyo infraestructura que llega a prod — pipelines documentales, agentes LLM, plataformas de datos y producto full-stack.",
+    focusLine: "Trabajo cliente · investigación · 10K+ requests diarios en producción",
+    cta: "Ver casos de estudio",
+    downloadCv: "Descargar CV",
+    scrollHint: "Scroll a proyectos destacados",
   },
   work: {
     title: "Proyectos Destacados",
@@ -736,43 +816,111 @@ export const sharedEs = {
       }
     ]
   },
+  marquee: {
+    ariaLabel: "Puente entre proyectos destacados y capacidades",
+    segments: [
+      { text: "Todos los proyectos comparten la misma base" },
+      { text: " · " },
+      { text: "pipelines ML", warm: true },
+      { text: " · " },
+      { text: "ingeniería de datos" },
+      { text: " · " },
+      { text: "productos analíticos", warm: true },
+      { text: " · " },
+      { text: "plataformas en producción" },
+      { text: " · " },
+    ],
+  },
   systems: {
-    title: "Sistemas y Capacidades",
+    eyebrow: "Capacidades",
+    title: "Cómo entrego sistemas",
+    subtitle: "Cuatro capas que combino en cada proyecto — pasá el cursor o tocá para explorar.",
+    labelCapability: "Capacidad",
+    labelUsedIn: "Usado en",
+    hintHover: "Pasá el cursor para explorar",
+    hintTap: "Tocá para explorar",
+    railTop: "Producto",
+    railBottom: "Datos",
     items: [
       {
         title: "Pipelines de Machine Learning",
+        summary: "Entrenamiento, evaluación y despliegue en producción con monitoreo.",
         description: "Orquestación de extremo a extremo: desde procesamiento de señales EEG hasta despliegue de clústeres de LLMs en producción.",
+        usedIn: ["EyeNet", "Perfiles COVID-19"],
         tags: ["Scikit-learn", "PyTorch", "MLflow", "Clústeres GPU"]
       },
       {
         title: "Ingeniería de Datos e Infraestructura",
+        summary: "ETL, orquestación e infra que aguanta carga real.",
         description: "Pipelines ETL con PySpark y SQL, automatizados con n8n y Grafana, respaldados por Redis y clústeres GPU de alto rendimiento.",
+        usedIn: ["EyeNet", "Calidad del Aire India"],
         tags: ["PySpark", "Redis", "n8n", "Docker"]
       },
       {
         title: "Productos de Analítica",
+        summary: "Dashboards y modelos que los stakeholders pueden usar.",
         description: "Sistemas de decisión de alta precisión y dashboards predictivos construidos con FastAPI, Streamlit y Power BI.",
+        usedIn: ["Analytics NYC", "Perfiles COVID-19"],
         tags: ["FastAPI", "Streamlit", "Power BI", "SQL"]
       },
       {
         title: "Plataformas Web Escalables",
+        summary: "Interfaces full-stack conectadas a backends de IA y datos.",
         description: "Ecosistemas full-stack modernos usando Next.js, React y TypeScript, optimizados para integraciones de IA sin fricciones.",
+        usedIn: ["EyeNet", "Dashboard COVID"],
         tags: ["Next.js", "TypeScript", "Vercel", "Tailwind"]
       }
     ]
   },
   philosophy: {
-    tag: "Principios de trabajo",
-    title: "Cómo Pienso",
+    eyebrow: "Principios de trabajo",
+    title: "Cómo pienso",
+    subtitle: "Tres reglas que aplico en cada sistema en producción — después de la demo.",
     quote: "\"No construyo demos. Construyo sistemas que sobreviven al lunes por la mañana.\"",
+    quoteBy: "Diego Villagran",
+    labelPrinciple: "Principio",
+    hintHover: "Pasá el cursor para leer más",
+    hintTap: "Tocá para leer más",
+    readMore: "Principio completo",
+    closure: "Sistemas prácticos, impacto medible, producción desde el día uno.",
     items: [
-      { title: "01. Shippeá el pipeline, no el notebook", description: "Un Jupyter notebook es un prototipo. Un pipeline con monitoreo, alertas y un plan de rollback es un producto. Optimizo para la persona a la que le llega la alerta a las 3 AM, no para la que aplaude en la demo." },
-      { title: "02. La infraestructura es un feature", description: "Modelos rápidos no sirven de nada si tu deploy tarda 45 minutos y tu clúster de GPU está al 12% de uso. Trato el provisioning, la orquestación y el control de costos como problemas de ingeniería de primer nivel." },
-      { title: "03. Explicalo al CEO o no pasó", description: "Si un stakeholder no puede entender por qué el modelo tomó esa decisión, el modelo está roto — sin importar su accuracy. La claridad no es documentación. La claridad es diseño." }
+      {
+        title: "Shippeá el pipeline, no el notebook",
+        summary: "Los notebooks prototipan. Los pipelines con monitoreo, alertas y rollback son productos.",
+        description: "Un Jupyter notebook es un prototipo. Un pipeline con monitoreo, alertas y un plan de rollback es un producto. Optimizo para la persona a la que le llega la alerta a las 3 AM, no para la que aplaude en la demo."
+      },
+      {
+        title: "La infraestructura es un feature",
+        summary: "Velocidad de deploy, observabilidad y uso de GPU son ingeniería de primer nivel.",
+        description: "Modelos rápidos no sirven de nada si tu deploy tarda 45 minutos y tu clúster de GPU está al 12% de uso. Trato el provisioning, la orquestación y el control de costos como problemas de ingeniería de primer nivel."
+      },
+      {
+        title: "Explicalo al CEO o no pasó",
+        summary: "Si los stakeholders no entienden el output, el modelo está roto — sin importar el accuracy.",
+        description: "Si un stakeholder no puede entender por qué el modelo tomó esa decisión, el modelo está roto — sin importar su accuracy. La claridad no es documentación. La claridad es diseño."
+      }
     ]
   },
   stack: {
-    title: "Stack Técnico y Herramientas",
+    eyebrow: "Stack técnico",
+    title: "Herramientas en producción",
+    subtitle: "Cada herramienta conecta con trabajo real del portfolio — pasá el cursor o tocá para ver dónde.",
+    hintHover: "Pasá el cursor sobre una herramienta",
+    hintTap: "Tocá una herramienta",
+    labelUsedIn: "Usado en",
+    labelExploration: "Investigación y prototipos",
+    explorationNote:
+      "{tool} no aparece en un caso destacado, pero forma parte de mi stack diario para I+D y builds internos.",
+    emptyTitle: "Elegí una herramienta",
+    emptyHint: "Seleccioná cualquier herramienta de las bandas para ver los proyectos destacados que la usan.",
+    projectOne: "proyecto destacado",
+    projectMany: "proyectos destacados",
+    bands: {
+      dataScience: "Ciencia de datos e IA",
+      infrastructure: "Infraestructura y nube",
+      platform: "Plataforma y producto",
+      core: "Herramientas base",
+    },
     tools: [
       "Python",
       "FastAPI",
@@ -1166,19 +1314,22 @@ export const sharedEs = {
     ]
   },
   contact: {
-    title1: "Construyamos algo",
-    title2: "inteligente y útil.",
+    eyebrow: "Contacto",
+    title: "Trabajemos juntos",
+    subtitle: "Abierto a ingeniería IA, plataformas de datos y producto full-stack.",
+    focusLine: "Freelance · contrato · full-time",
     email: "diegovillasal@gmail.com",
-    bookSession: "Hablemos",
-    bookDesc: "Contáctame para colaboraciones, oportunidades laborales o consultas técnicas.",
-    formName: "Tu Nombre",
-    formEmail: "Tu Correo",
-    formMessage: "¿De qué te gustaría hablar?",
-    formSubmit: "Enviar Solicitud",
+    bookSession: "Enviar mensaje",
+    bookDesc: "Colaboraciones, roles o consultas técnicas — respondo en 48 horas.",
+    formName: "Tu nombre",
+    formEmail: "Tu correo",
+    formMessage: "¿Qué estás construyendo?",
+    formSubmit: "Enviar mensaje",
     formLoading: "Enviando…",
-    formLabel: "Nuevo Mensaje /",
-    formSuccess: "¡Mensaje enviado! Te contactaré pronto.",
+    formLabel: "Mensaje",
+    formSuccess: "Mensaje enviado — te contacto pronto.",
     formError: "Hubo un error. Por favor, envía un correo.",
+    labelSocial: "Redes",
     errorRequired: "Este campo es obligatorio",
     errorNameShort: "El nombre debe tener al menos 2 caracteres",
     errorEmailInvalid: "Ingresa un correo electrónico válido",
@@ -1206,6 +1357,7 @@ export const sharedEs = {
   nav: NavDict;
   hero: HeroDict;
   work: WorkDict;
+  marquee: MarqueeDict;
   systems: SystemsDict;
   philosophy: PhilosophyDict;
   stack: StackDict;
