@@ -1,0 +1,316 @@
+import type { EditorialCaseStudyDict } from "../types";
+
+const LIVE_URL = "https://aqi-india.dvillagrans.dev";
+const REPO_URL = "https://github.com/dvillagrans/india-air-quality-etl";
+
+export const indiaEn = {
+  back: "Back to projects",
+  eyebrow: "Data platform · Environmental IoT",
+  title: "India Air Quality Intelligence",
+  subtitle:
+    "Cloud ETL pipeline consolidating 500+ IoT sensor streams into policy-ready air quality indicators across India.",
+  metrics: [
+    { value: "2M+", label: "Daily records" },
+    { value: "500+", label: "IoT sensors" },
+    { value: "Azure", label: "Cloud platform" },
+    { value: "Live", label: "Public dashboard" },
+  ],
+  tldr: {
+    challenge: {
+      title: "The Challenge",
+      text1: "Air quality readings arrived ",
+      bold: "fragmented across hundreds of sensors",
+      text2: " — unusable for public-health or policy decisions without normalization and scale.",
+    },
+    solution: {
+      title: "The Solution",
+      text1: "An end-to-end pipeline on ",
+      bold: "Azure Databricks + PySpark",
+      text2: " with a PostgreSQL serving layer and ",
+      cyan: "Power BI operational views",
+      text3: " plus a public Next.js dashboard.",
+    },
+    impact: {
+      title: "The Impact",
+      bold: "2M+ daily records normalized",
+      text1:
+        " into consistent AQI and health indicators — from raw IoT noise to indicators stakeholders can monitor.",
+    },
+  },
+  meta: [
+    { label: "Role", value: "Data engineering · Analytics" },
+    { label: "Timeline", value: "2024" },
+    { label: "Stack", value: "Azure, PySpark, PostgreSQL" },
+    { label: "Deliverables", value: "ETL, live dashboard, repo" },
+  ],
+  links: { dashboard: "Live dashboard", repo: "Repository", report: "Report" },
+  linkDashboard: LIVE_URL,
+  linkRepo: REPO_URL,
+  quote: {
+    text: "Policy teams don't need more raw readings — they need ",
+    bold: "trusted indicators",
+    text2: " updated on a rhythm they can act on.",
+    title: "Why ETL mattered",
+  },
+  constraints: {
+    title1: "Constraints",
+    title2: "What shaped the platform.",
+    desc: "Scale, sensor heterogeneity, and cloud cost defined architecture.",
+    c1: {
+      title: "Sensor heterogeneity",
+      text1: "500+ devices reported ",
+      bold1: "inconsistent schemas and units",
+      text2: " — normalization rules had to run before any aggregate was trustworthy.",
+    },
+    c2: {
+      title: "Volume at ingest",
+      text1: "Millions of daily rows required ",
+      bold1: "distributed processing",
+      text2: " (PySpark) instead of single-node pandas jobs.",
+    },
+    c3: {
+      title: "Serving latency",
+      text1: "Dashboards needed ",
+      bold1: "pre-computed aggregates",
+      text2: " in PostgreSQL — analytical queries on raw bronze tables were too slow.",
+    },
+    c4: {
+      title: "Azure cost envelope",
+      text1: "Pipeline designed for ",
+      bold1: "batch windows and cluster autoscaling",
+      text2: " to stay within student/project budget tiers.",
+    },
+    c5: {
+      title: "Public presentation",
+      text1: "A ",
+      bold1: "separate Next.js layer",
+      text2: " translated engineering outputs into a portfolio-grade public view.",
+    },
+  },
+  pipeline: {
+    title1: "Platform",
+    title2: "From sensor streams to indicators.",
+    desc: "Ingestion from IoT feeds into Databricks, PySpark transforms for cleaning and AQI computation, load into PostgreSQL, and consumption through Power BI and a public dashboard at aqi-india.dvillagrans.dev.",
+  },
+  architecture: {
+    title1: "Key decisions",
+    title2: "Pipeline trade-offs.",
+    d1: {
+      nav: "Ingest",
+      title: "Databricks as compute hub",
+      desc: "Chose ",
+      bold: "Azure Databricks",
+      desc2: " for PySpark jobs — unified notebooks, scheduling, and scale without managing Spark clusters manually.",
+      costTitle: "Trade-off",
+      costDesc: "Vendor lock-in and cluster startup latency on cold runs.",
+    },
+    d2: {
+      nav: "Model",
+      title: "Bronze → Silver → Gold",
+      desc: "Layered tables so ",
+      bold: "raw, cleaned, and aggregated data",
+      desc2: " stayed separated — debugging bad readings didn't corrupt downstream KPIs.",
+      costTitle: "Trade-off",
+      costDesc: "More storage and orchestration steps; clearer lineage.",
+    },
+    d3: {
+      nav: "Serving",
+      title: "PostgreSQL for dashboards",
+      desc: "Materialized aggregates in ",
+      bold: "PostgreSQL",
+      desc2: " fed both Power BI and the public site — fast reads without hitting Spark for every chart.",
+      costTitle: "Trade-off",
+      costDesc: "Sync jobs between lake and RDBMS added operational steps.",
+    },
+    d4: {
+      nav: "Delivery",
+      title: "Dual consumption",
+      desc: "Power BI for ",
+      bold: "analyst-style exploration",
+      desc2: " and Next.js for public storytelling — same indicators, different audiences.",
+      costTitle: "Trade-off",
+      costDesc: "Two surfaces to keep in sync when metrics definitions change.",
+    },
+  },
+  lessons: {
+    title1: "Lessons learned",
+    title2: "What broke at scale.",
+    desc: "IoT pipelines fail quietly until aggregation exposes bad assumptions.",
+    l1: {
+      title: "Timezone and unit drift",
+      desc: "Sensors crossed IST boundaries with mixed units. Added explicit normalization tables and validation notebooks.",
+      tag: "Data quality",
+    },
+    l2: {
+      title: "Cold cluster costs",
+      desc: "Ad-hoc reruns on large clusters burned credits. Scheduled jobs with right-sized clusters fixed spend.",
+      tag: "Cost",
+    },
+    l3: {
+      title: "Metric definition drift",
+      desc: "AQI formulas differed between Power BI and the public site once. Documented single metric spec shared by both.",
+      tag: "Governance",
+    },
+  },
+  footer: {
+    cta: "Building environmental data platforms?",
+    contact: "Get in touch",
+    note: "Open pipeline · live at aqi-india.dvillagrans.dev",
+  },
+} satisfies EditorialCaseStudyDict;
+
+export const indiaEs = {
+  back: "Volver a proyectos",
+  eyebrow: "Plataforma de datos · IoT ambiental",
+  title: "Inteligencia de calidad del aire — India",
+  subtitle:
+    "Pipeline ETL en la nube que consolida 500+ flujos de sensores IoT en indicadores de calidad del aire listos para política pública.",
+  metrics: [
+    { value: "2M+", label: "Registros diarios" },
+    { value: "500+", label: "Sensores IoT" },
+    { value: "Azure", label: "Plataforma cloud" },
+    { value: "Live", label: "Dashboard público" },
+  ],
+  tldr: {
+    challenge: {
+      title: "El reto",
+      text1: "Las lecturas llegaban ",
+      bold: "fragmentadas en cientos de sensores",
+      text2: " — inutilizables para salud pública o política sin normalización a escala.",
+    },
+    solution: {
+      title: "La solución",
+      text1: "Pipeline de extremo a extremo en ",
+      bold: "Azure Databricks + PySpark",
+      text2: " con capa de servicio PostgreSQL y ",
+      cyan: "vistas operativas en Power BI",
+      text3: " más dashboard público en Next.js.",
+    },
+    impact: {
+      title: "El impacto",
+      bold: "2M+ registros diarios normalizados",
+      text1:
+        " en indicadores AQI y de salud consistentes — del ruido IoT crudo a métricas accionables.",
+    },
+  },
+  meta: [
+    { label: "Rol", value: "Data engineering · Analytics" },
+    { label: "Timeline", value: "2024" },
+    { label: "Stack", value: "Azure, PySpark, PostgreSQL" },
+    { label: "Entregables", value: "ETL, dashboard live, repo" },
+  ],
+  links: { dashboard: "Dashboard en vivo", repo: "Repositorio", report: "Reporte" },
+  linkDashboard: LIVE_URL,
+  linkRepo: REPO_URL,
+  quote: {
+    text: "Los equipos de política no necesitan más lecturas crudas — necesitan ",
+    bold: "indicadores confiables",
+    text2: " actualizados en un ritmo con el que puedan actuar.",
+    title: "Por qué importó el ETL",
+  },
+  constraints: {
+    title1: "Restricciones",
+    title2: "Lo que moldeó la plataforma.",
+    desc: "Escala, heterogeneidad de sensores y costo cloud definieron la arquitectura.",
+    c1: {
+      title: "Heterogeneidad de sensores",
+      text1: "500+ dispositivos reportaban ",
+      bold1: "esquemas y unidades inconsistentes",
+      text2: " — reglas de normalización antes de cualquier agregado confiable.",
+    },
+    c2: {
+      title: "Volumen en ingesta",
+      text1: "Millones de filas diarias exigieron ",
+      bold1: "procesamiento distribuido",
+      text2: " (PySpark) en lugar de jobs pandas en un solo nodo.",
+    },
+    c3: {
+      title: "Latencia de servicio",
+      text1: "Los dashboards necesitaban ",
+      bold1: "agregados precomputados",
+      text2: " en PostgreSQL — consultas analíticas sobre bronze eran demasiado lentas.",
+    },
+    c4: {
+      title: "Presupuesto Azure",
+      text1: "Pipeline diseñado para ",
+      bold1: "ventanas batch y autoscaling",
+      text2: " dentro de tiers de proyecto/estudiante.",
+    },
+    c5: {
+      title: "Presentación pública",
+      text1: "Una ",
+      bold1: "capa Next.js separada",
+      text2: " tradujo outputs de ingeniería en una vista pública de portfolio.",
+    },
+  },
+  pipeline: {
+    title1: "Plataforma",
+    title2: "De streams de sensores a indicadores.",
+    desc: "Ingesta IoT en Databricks, transformaciones PySpark para limpieza y AQI, carga a PostgreSQL y consumo vía Power BI y dashboard público en aqi-india.dvillagrans.dev.",
+  },
+  architecture: {
+    title1: "Decisiones clave",
+    title2: "Trade-offs del pipeline.",
+    d1: {
+      nav: "Ingesta",
+      title: "Databricks como hub de cómputo",
+      desc: "Elegimos ",
+      bold: "Azure Databricks",
+      desc2: " para jobs PySpark — notebooks, scheduling y escala sin operar clusters Spark a mano.",
+      costTitle: "Trade-off",
+      costDesc: "Lock-in de vendor y latencia de arranque en clusters fríos.",
+    },
+    d2: {
+      nav: "Modelo",
+      title: "Bronze → Silver → Gold",
+      desc: "Capas separadas para ",
+      bold: "datos crudos, limpios y agregados",
+      desc2: " — depurar lecturas malas no corrompe KPIs downstream.",
+      costTitle: "Trade-off",
+      costDesc: "Más almacenamiento y pasos de orquestación; linaje más claro.",
+    },
+    d3: {
+      nav: "Serving",
+      title: "PostgreSQL para dashboards",
+      desc: "Agregados materializados en ",
+      bold: "PostgreSQL",
+      desc2: " alimentan Power BI y el sitio público — lecturas rápidas sin Spark por chart.",
+      costTitle: "Trade-off",
+      costDesc: "Jobs de sync entre lake y RDBMS añaden operación.",
+    },
+    d4: {
+      nav: "Entrega",
+      title: "Doble consumo",
+      desc: "Power BI para ",
+      bold: "exploración analítica",
+      desc2: " y Next.js para narrativa pública — mismos indicadores, audiencias distintas.",
+      costTitle: "Trade-off",
+      costDesc: "Dos superficies que mantener alineadas cuando cambian definiciones.",
+    },
+  },
+  lessons: {
+    title1: "Lecciones aprendidas",
+    title2: "Qué falló a escala.",
+    desc: "Los pipelines IoT fallan en silencio hasta que la agregación expone malas suposiciones.",
+    l1: {
+      title: "Deriva de zona horaria y unidades",
+      desc: "Sensores cruzaban IST con unidades mezcladas. Tablas de normalización y notebooks de validación.",
+      tag: "Calidad de datos",
+    },
+    l2: {
+      title: "Costo de clusters fríos",
+      desc: "Re-ejecuciones ad-hoc en clusters grandes quemaban créditos. Jobs programados con tamaño adecuado.",
+      tag: "Costo",
+    },
+    l3: {
+      title: "Deriva de definición de métricas",
+      desc: "Fórmulas AQI diferían entre Power BI y el sitio público una vez. Spec única documentada.",
+      tag: "Gobernanza",
+    },
+  },
+  footer: {
+    cta: "¿Construyes plataformas de datos ambientales?",
+    contact: "Escríbeme",
+    note: "Pipeline abierto · live en aqi-india.dvillagrans.dev",
+  },
+} satisfies EditorialCaseStudyDict;

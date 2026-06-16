@@ -1,8 +1,16 @@
 import type { BouquetDict } from "../types";
 
 export const bouquetEn = {
-  back: "Back to Archive",
-  subtitle: "Full-stack multi-tenant platform for restaurant chain management.",
+  back: "Back to projects",
+  eyebrow: "Thesis project · Hospitality SaaS",
+  title: "Bouquet",
+  subtitle: "Multi-tenant hospitality OS for restaurant chains — role dashboards, Spark analytics, and guest QR ordering.",
+  metrics: [
+    { value: "52", label: "Documented KPIs" },
+    { value: "3", label: "Role dashboards" },
+    { value: "<30s", label: "Data refresh" },
+    { value: "RLS", label: "Tenant isolation" },
+  ],
   tldr: {
     challenge: {
       title: "The Challenge",
@@ -41,8 +49,8 @@ export const bouquetEn = {
     title: "The Design Principle",
   },
   constraints: {
-    title1: "01 // Inflexible Constraints",
-    title2: "Retaining walls.",
+    title1: "Constraints",
+    title2: "What shaped the architecture.",
     desc: "The context that shaped every architectural decision in the platform.",
     c1: {
       title: "Multi-Tenant Data Isolation",
@@ -77,26 +85,26 @@ export const bouquetEn = {
     },
   },
   dashboards: {
-    title1: "02 // Role-Based Dashboards",
+    title1: "Product screenshots",
     title2: "Three views, one data source.",
     superAdmin: {
-      tag: "DASHBOARD : SUPER ADMIN",
+      tag: "Super Admin",
       desc: "Strategic vision of the entire chain — GMV, zone comparison, top products.",
     },
     zoneManager: {
-      tag: "DASHBOARD : ZONE MANAGER",
+      tag: "Zone Manager",
       desc: "Comparative view across branches — trends, staff performance, payment methods.",
     },
     branchManager: {
-      tag: "DASHBOARD : BRANCH MANAGER",
+      tag: "Branch Manager",
       desc: "Operational control of a single location — kitchen status, table occupancy, waiter performance.",
     },
   },
   architecture: {
-    title1: "03 // Architecture & Decisions",
-    title2: "Trade-offs that power the kitchen.",
+    title1: "Key decisions",
+    title2: "Trade-offs behind the platform.",
     d1: {
-      nav: "3.1 / MULTI-TENANT RLS",
+      nav: "Multi-tenant RLS",
       title: "Row Level Security",
       desc: "Each role sees only their data. Super Admins see the full chain, Zone Managers see their region, and Branch Managers see their restaurant. We enforced this at the ",
       bold: "database level with Supabase RLS policies",
@@ -107,7 +115,7 @@ export const bouquetEn = {
         "RLS policies must be written for every new table. Migration complexity increases significantly, and debugging permission issues requires deep PostgreSQL knowledge.",
     },
     d2: {
-      nav: "3.2 / ANALYTICS PIPELINE",
+      nav: "Analytics pipeline",
       title: "Spark + Gold Tables",
       desc: "Raw transactional data flows through an ",
       bold: "Apache Spark pipeline",
@@ -118,7 +126,7 @@ export const bouquetEn = {
         "Pipeline orchestration adds infrastructure complexity. Schema changes in raw data must propagate through Bronze → Silver → Gold layers, requiring coordinated deployments.",
     },
     d3: {
-      nav: "3.3 / GUEST ORDERING",
+      nav: "Guest ordering",
       title: "QR Menu Flow",
       desc: "Each table has a unique QR code that resolves to a ",
       bold: "session-less guest interface",
@@ -130,8 +138,8 @@ export const bouquetEn = {
     },
   },
   lessons: {
-    title1: "04 // Post-Mortem System",
-    title2: "Raw lessons from building a thesis.",
+    title1: "Lessons learned",
+    title2: "What broke while building a thesis platform.",
     desc: "Building a production-grade platform as a thesis project taught us that academic rigor and real-world engineering have very different failure modes.",
     l1: {
       title: "RLS Policy Explosion",
@@ -150,15 +158,24 @@ export const bouquetEn = {
     },
   },
   footer: {
-    text: "LAST UPDATED: Q2 2026 // BOUQUET HOSPITALITY OS ARCHITECTURE LOG",
-    status: "STATUS: THESIS PROJECT IN DEVELOPMENT",
+    cta: "Building a multi-tenant product?",
+    contact: "Get in touch",
+    note: "Thesis project (ESCOM-IPN) — in active development",
   },
 } satisfies BouquetDict;
 
 export const bouquetEs = {
-  back: "Volver al Archivo",
+  back: "Volver a proyectos",
+  eyebrow: "Proyecto de tesis · SaaS hotelero",
+  title: "Bouquet",
   subtitle:
-    "Plataforma full-stack multi-tenant para gestión de cadenas restaurantes.",
+    "OS hotelero multi-tenant para cadenas de restaurantes — dashboards por rol, analítica Spark y pedidos QR para clientes.",
+  metrics: [
+    { value: "52", label: "KPIs documentados" },
+    { value: "3", label: "Dashboards por rol" },
+    { value: "<30s", label: "Refresh de datos" },
+    { value: "RLS", label: "Aislamiento tenant" },
+  ],
   tldr: {
     challenge: {
       title: "El Reto",
@@ -197,8 +214,8 @@ export const bouquetEs = {
     title: "El Principio de Diseño",
   },
   constraints: {
-    title1: "01 // Restricciones Inflexibles",
-    title2: "Muros de contención.",
+    title1: "Restricciones",
+    title2: "Lo que moldeó la arquitectura.",
     desc: "El contexto que definió cada decisión arquitectónica en la plataforma.",
     c1: {
       title: "Aislamiento Multi-Tenant",
@@ -232,26 +249,26 @@ export const bouquetEs = {
     },
   },
   dashboards: {
-    title1: "02 // Dashboards por Rol",
+    title1: "Capturas del producto",
     title2: "Tres vistas, una fuente de datos.",
     superAdmin: {
-      tag: "DASHBOARD : SUPER ADMIN",
+      tag: "Super Admin",
       desc: "Visión estratégica de toda la cadena — GMV, comparación por zona, productos top.",
     },
     zoneManager: {
-      tag: "DASHBOARD : GERENTE DE ZONA",
+      tag: "Gerente de zona",
       desc: "Vista comparativa entre sucursales — tendencias, rendimiento del staff, métodos de pago.",
     },
     branchManager: {
-      tag: "DASHBOARD : GERENTE DE SUCURSAL",
+      tag: "Gerente de sucursal",
       desc: "Control operativo de una sola ubicación — estado de cocina, ocupación de mesas, rendimiento de meseros.",
     },
   },
   architecture: {
-    title1: "03 // Arquitectura y Decisiones",
-    title2: "Trade-offs que alimentan la cocina.",
+    title1: "Decisiones clave",
+    title2: "Trade-offs detrás de la plataforma.",
     d1: {
-      nav: "3.1 / MULTI-TENANT RLS",
+      nav: "Multi-tenant RLS",
       title: "Row Level Security",
       desc: "Cada rol solo ve sus datos. Los Super Admins ven toda la cadena, los Gerentes de Zona ven su región y los Gerentes de Sucursal ven su restaurante. Lo implementamos a ",
       bold: "nivel de base de datos con políticas RLS de Supabase",
@@ -262,7 +279,7 @@ export const bouquetEs = {
         "Las políticas RLS deben escribirse para cada tabla nueva. La complejidad de migraciones aumenta significativamente, y depurar problemas de permisos requiere conocimiento profundo de PostgreSQL.",
     },
     d2: {
-      nav: "3.2 / PIPELINE DE ANALÍTICAS",
+      nav: "Pipeline analítico",
       title: "Spark + Tablas Gold",
       desc: "Los datos transaccionales crudos fluyen por un ",
       bold: "pipeline de Apache Spark",
@@ -273,7 +290,7 @@ export const bouquetEs = {
         "La orquestación del pipeline agrega complejidad de infraestructura. Los cambios de esquema en datos crudos deben propagarse por las capas Bronze → Silver → Gold, requiriendo despliegues coordinados.",
     },
     d3: {
-      nav: "3.3 / PEDIDOS DE CLIENTES",
+      nav: "Pedidos QR",
       title: "Flujo de Menú QR",
       desc: "Cada mesa tiene un código QR único que resuelve a una ",
       bold: "interfaz de cliente sin sesión",
@@ -285,8 +302,8 @@ export const bouquetEs = {
     },
   },
   lessons: {
-    title1: "04 // Post-Mortem System",
-    title2: "Lecciones crudas de construir una tesis.",
+    title1: "Lecciones aprendidas",
+    title2: "Lo que falló al construir una tesis productiva.",
     desc: "Construir una plataforma de grado productivo como proyecto de tesis nos enseñó que el rigor académico y la ingeniería del mundo real tienen modos de falla muy diferentes.",
     l1: {
       title: "Explosión de Políticas RLS",
@@ -305,7 +322,8 @@ export const bouquetEs = {
     },
   },
   footer: {
-    text: "LAST UPDATED: Q2 2026 // BOUQUET HOSPITALITY OS ARCHITECTURE LOG",
-    status: "ESTADO: PROYECTO DE TESIS EN DESARROLLO",
+    cta: "¿Construyes un producto multi-tenant?",
+    contact: "Escríbeme",
+    note: "Proyecto de tesis (ESCOM-IPN) — en desarrollo activo",
   },
 } satisfies BouquetDict;

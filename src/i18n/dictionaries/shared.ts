@@ -93,8 +93,8 @@ export const sharedEn = {
           { value: "9", label: "risk profiles" }
         ],
         links: [{ label: "Dashboard", url: "https://covid.dvillagrans.dev" }],
-        href: "https://covid.dvillagrans.dev",
-        caseStudy: "https://covid.dvillagrans.dev"
+        href: "/projects/covid",
+        caseStudy: "/projects/covid"
       },
       {
         id: "02",
@@ -117,7 +117,8 @@ export const sharedEn = {
           { label: "Live dashboard", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" },
           { label: "Code", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" }
         ],
-        href: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/",
+        href: "/projects/nyc",
+        caseStudy: "/projects/nyc",
       },
       {
         id: "03",
@@ -140,7 +141,8 @@ export const sharedEn = {
           { label: "Live view", url: "https://aqi-india.dvillagrans.dev" },
           { label: "Repo", url: "https://github.com/dvillagrans/india-air-quality-etl" }
         ],
-        href: "https://aqi-india.dvillagrans.dev",
+        href: "/projects/india",
+        caseStudy: "/projects/india",
       }
     ]
   },
@@ -332,9 +334,28 @@ export const sharedEn = {
     closure: "I build technology that is practical, measurable, and ready for production from day one."
   },
   archive: {
-    title: "Project Archive",
-    subtitle: "Complete index of data science, analytics, and full-stack projects.",
-    back: "Return",
+    eyebrow: "Project index",
+    title: "All work",
+    subtitle: "Case studies, client systems, research, and experiments — searchable by tech or domain.",
+    metaLine: "projects · 2023—2026",
+    featuredTitle: "Featured case studies",
+    back: "Back home",
+    searchPlaceholder: "Search by title, tech, or description…",
+    filterLabel: "Domain",
+    clearLabel: "Clear",
+    showingLabel: "Showing",
+    filteredLabel: "Filtered",
+    emptyTitle: "No matches",
+    emptyHint: "Try a different search term or clear the filters.",
+    clearFiltersLabel: "Clear filters",
+    caseStudyLabel: "Case study",
+    featuredBadge: "Featured",
+    yearProjectOne: "project",
+    yearProjectMany: "projects",
+    footerCta: "Building something similar?",
+    footerContact: "Get in touch",
+    labelStack: "Stack",
+    labelMetrics: "Impact",
     headers: { year: "Year", project: "Project", domain: "Domain", link: "Link" },
     viewProject: "Visit",
     projects: [
@@ -379,6 +400,7 @@ export const sharedEn = {
         title: "Bouquet — Hospitality OS",
         domain: "Full Stack / Multi-tenant SaaS",
         isFeatured: true,
+        summary: "Multi-tenant hospitality OS with 52 KPIs and Spark analytics.",
         caseStudy: "/projects/bouquet",
         links: [
           { label: "bouquet-psi.vercel.app", url: "https://bouquet-psi.vercel.app/" }
@@ -393,20 +415,17 @@ export const sharedEn = {
       {
         year: "2026",
         title: "Sports Analytics Platform",
-        domain: "IA / Inteligencia Deportiva",
-        links: []
-      },
-      {
-        year: "2026",
-        title: "ARIA — Personal AI OS",
-        domain: "IA / PWA / RAG",
-        links: []
-      },
-      {
-        year: "2026",
-        title: "ARIA — Personal AI OS",
-        domain: "AI / PWA / RAG",
-        links: []
+        domain: "AI / Sports intelligence",
+        links: [
+          { label: "Repo", url: "https://github.com/dvillagrans/analisis-apuestas-futbol" }
+        ],
+        summary: "Real-time sports analytics with AI picks, SSE streaming, and World Cup 2026 viz.",
+        description: "Sports analytics platform combining real-time stats, DeepSeek-generated picks, SSE streaming, and World Cup 2026 visualization.",
+        technologies: ["Turborepo", "Next.js 16", "Express", "Supabase", "DeepSeek"],
+        metrics: [
+          { value: "7", label: "Leagues" },
+          { value: "$2-3", label: "USD/mo" }
+        ]
       },
       {
         year: "2026",
@@ -415,6 +434,7 @@ export const sharedEn = {
         links: [
           { label: "Repo", url: "https://github.com/dvillagrans/ARIA" }
         ],
+        summary: "Personal AI OS — natural language capture, RAG memory, and study tools.",
         description: "Personal AI operating system as a PWA with natural language capture, automatic classification, RAG memory via 4096-dim embeddings, and study tools.",
         technologies: ["Next.js 16", "FastAPI", "Supabase", "pgvector", "DeepSeek"],
         metrics: [
@@ -427,6 +447,7 @@ export const sharedEn = {
         title: "EyeNet — AI & Automation Systems",
         domain: "AI / Automation",
         isFeatured: true,
+        summary: "Document automation with AI agents — 10K+ daily requests in production.",
         caseStudy: "/projects/eyenet",
         links: [],
         description: "Full automation infrastructure with LLMs, ETL/ELT pipelines, containerized microservices, and production web/mobile apps handling 10K+ daily requests.",
@@ -441,6 +462,7 @@ export const sharedEn = {
         title: "TimeUp // Time Tracking SaaS",
         domain: "SaaS / Full Stack",
         isFeatured: true,
+        summary: "Multi-tenant time tracking SaaS with passkeys and real-time scheduling.",
         caseStudy: "/projects/timeup",
         links: [
           { label: "timeup.mx", url: "https://timeup.mx" },
@@ -458,7 +480,8 @@ export const sharedEn = {
         title: "COVID-19 Risk Profiles (Mexico)",
         domain: "Data Science / Clustering",
         isFeatured: true,
-        caseStudy: "https://covid.dvillagrans.dev",
+        summary: "9 interpretable risk profiles from 30M+ open health records.",
+        caseStudy: "/projects/covid",
         links: [{ label: "Dashboard", url: "https://covid.dvillagrans.dev" }],
         description: "Identification of COVID-19 risk profiles from 30M+ Mexican open health records using K-Means and Fuzzy C-Means clustering.",
         technologies: ["Python", "scikit-learn", "scikit-fuzzy", "Next.js", "Recharts"],
@@ -471,6 +494,9 @@ export const sharedEn = {
         year: "2025",
         title: "NYC Ride-Hailing Analytics Dashboard",
         domain: "Data Science / Streamlit",
+        isFeatured: true,
+        summary: "Fare prediction R² > 0.85 and live geospatial dashboards.",
+        caseStudy: "/projects/nyc",
         links: [
           { label: "Dashboard", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" },
           { label: "Repo", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" }
@@ -551,6 +577,9 @@ export const sharedEn = {
         year: "2024",
         title: "India Air Quality ETL",
         domain: "Data Engineering / Azure",
+        isFeatured: true,
+        summary: "2M+ daily IoT records normalized across 500+ sensors.",
+        caseStudy: "/projects/india",
         links: [
           { label: "Live", url: "https://aqi-india.dvillagrans.dev" },
           { label: "Repo", url: "https://github.com/dvillagrans/india-air-quality-etl" }
@@ -765,8 +794,8 @@ export const sharedEs = {
           { value: "9", label: "perfiles de riesgo" }
         ],
         links: [{ label: "Dashboard", url: "https://covid.dvillagrans.dev" }],
-        href: "https://covid.dvillagrans.dev",
-        caseStudy: "https://covid.dvillagrans.dev"
+        href: "/projects/covid",
+        caseStudy: "/projects/covid"
       },
       {
         id: "02",
@@ -789,7 +818,8 @@ export const sharedEs = {
           { label: "Dashboard en vivo", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" },
           { label: "Código", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" }
         ],
-        href: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/",
+        href: "/projects/nyc",
+        caseStudy: "/projects/nyc",
       },
       {
         id: "03",
@@ -812,7 +842,8 @@ export const sharedEs = {
           { label: "Vista en vivo", url: "https://aqi-india.dvillagrans.dev" },
           { label: "Repo", url: "https://github.com/dvillagrans/india-air-quality-etl" }
         ],
-        href: "https://aqi-india.dvillagrans.dev",
+        href: "/projects/india",
+        caseStudy: "/projects/india",
       }
     ]
   },
@@ -1004,9 +1035,28 @@ export const sharedEs = {
     closure: "Construyo tecnología práctica, medible y lista para producción desde el primer día."
   },
   archive: {
-    title: "Archivo de Proyectos",
-    subtitle: "Índice completo de proyectos de ciencia de datos, analítica y desarrollo full-stack.",
-    back: "Volver",
+    eyebrow: "Índice de proyectos",
+    title: "Todo el trabajo",
+    subtitle: "Case studies, sistemas para clientes, investigación y experimentos — buscable por tech o dominio.",
+    metaLine: "proyectos · 2023—2026",
+    featuredTitle: "Case studies destacados",
+    back: "Volver al inicio",
+    searchPlaceholder: "Buscar por título, tech o descripción…",
+    filterLabel: "Dominio",
+    clearLabel: "Limpiar",
+    showingLabel: "Mostrando",
+    filteredLabel: "Filtrado",
+    emptyTitle: "Sin resultados",
+    emptyHint: "Prueba otro término o limpia los filtros.",
+    clearFiltersLabel: "Limpiar filtros",
+    caseStudyLabel: "Case study",
+    featuredBadge: "Destacado",
+    yearProjectOne: "proyecto",
+    yearProjectMany: "proyectos",
+    footerCta: "¿Construyes algo similar?",
+    footerContact: "Escríbeme",
+    labelStack: "Stack",
+    labelMetrics: "Impacto",
     headers: { year: "Año", project: "Proyecto", domain: "Dominio", link: "Enlace" },
     viewProject: "Visitar",
     projects: [
@@ -1051,6 +1101,7 @@ export const sharedEs = {
         title: "Bouquet — Hospitality OS",
         domain: "Full Stack / SaaS Multi-tenant",
         isFeatured: true,
+        summary: "OS hotelero multi-tenant con 52 KPIs y analítica Spark.",
         caseStudy: "/projects/bouquet",
         links: [
           { label: "bouquet-psi.vercel.app", url: "https://bouquet-psi.vercel.app/" }
@@ -1069,6 +1120,7 @@ export const sharedEs = {
         links: [
           { label: "Repo", url: "https://github.com/dvillagrans/analisis-apuestas-futbol" }
         ],
+        summary: "Analítica deportiva en tiempo real con picks IA, streaming SSE y viz del Mundial 2026.",
         description: "Plataforma de análisis deportivo con IA que combina estadísticas en tiempo real, picks generados por DeepSeek, streaming SSE y visualización del Mundial 2026.",
         technologies: ["Turborepo", "Next.js 16", "Express", "Supabase", "DeepSeek"],
         metrics: [
@@ -1083,6 +1135,7 @@ export const sharedEs = {
         links: [
           { label: "Repo", url: "https://github.com/dvillagrans/ARIA" }
         ],
+        summary: "OS personal con IA — captura en lenguaje natural, memoria RAG y herramientas de estudio.",
         description: "Sistema operativo personal con IA como PWA. Captura en lenguaje natural, clasificación automática, memoria RAG con embeddings de 4096 dimensiones y herramientas de estudio.",
         technologies: ["Next.js 16", "FastAPI", "Supabase", "pgvector", "DeepSeek"],
         metrics: [
@@ -1095,6 +1148,7 @@ export const sharedEs = {
         title: "EyeNet — Sistemas de IA y Automatización",
         domain: "IA / Automatización",
         isFeatured: true,
+        summary: "Automatización documental con agentes IA — 10K+ requests diarios en producción.",
         caseStudy: "/projects/eyenet",
         links: [],
         description: "Infraestructura completa de automatización con LLMs, pipelines ETL/ELT, microservicios containerizados y apps web/móviles en producción con 10K+ requests diarios.",
@@ -1109,6 +1163,7 @@ export const sharedEs = {
         title: "TimeUp // SaaS para Control de Tiempos",
         domain: "SaaS / Full Stack",
         isFeatured: true,
+        summary: "SaaS multi-tenant de control de tiempos con passkeys y agenda en tiempo real.",
         caseStudy: "/projects/timeup",
         links: [
           { label: "timeup.mx", url: "https://timeup.mx" },
@@ -1126,7 +1181,8 @@ export const sharedEs = {
         title: "Perfiles de riesgo COVID-19 (México)",
         domain: "Data Science / Clustering",
         isFeatured: true,
-        caseStudy: "https://covid.dvillagrans.dev",
+        summary: "9 perfiles de riesgo interpretables a partir de 30M+ registros abiertos.",
+        caseStudy: "/projects/covid",
         links: [{ label: "Dashboard", url: "https://covid.dvillagrans.dev" }],
         description: "Identificación de perfiles de riesgo de COVID-19 a partir de más de 30 millones de registros de salud abiertos mexicanos usando K-Means y Fuzzy C-Means.",
         technologies: ["Python", "scikit-learn", "scikit-fuzzy", "Next.js", "Recharts"],
@@ -1139,6 +1195,9 @@ export const sharedEs = {
         year: "2025",
         title: "NYC Ride-Hailing Analytics Dashboard",
         domain: "Data Science / Streamlit",
+        isFeatured: true,
+        summary: "Predicción de tarifas R² > 0.85 y dashboards geoespaciales en vivo.",
+        caseStudy: "/projects/nyc",
         links: [
           { label: "Dashboard", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" },
           { label: "Repo", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" }
@@ -1219,6 +1278,9 @@ export const sharedEs = {
         year: "2024",
         title: "India Air Quality ETL",
         domain: "Data Engineering / Azure",
+        isFeatured: true,
+        summary: "2M+ registros IoT diarios normalizados de 500+ sensores.",
+        caseStudy: "/projects/india",
         links: [
           { label: "Live", url: "https://aqi-india.dvillagrans.dev" },
           { label: "Repo", url: "https://github.com/dvillagrans/india-air-quality-etl" }

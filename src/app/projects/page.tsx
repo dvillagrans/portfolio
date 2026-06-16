@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { Link } from "next-view-transitions";
 import { ArrowLeft, ArrowUpRight, ChevronDown, Search, X } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
+import { accentAlpha } from "@/components/sections/Scene";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import type { ArchiveProject } from "@/i18n/types";
@@ -18,15 +19,100 @@ function projectKey(project: ArchiveProject, idx: number): string {
 function hasDetails(p: ArchiveProject): boolean {
   return Boolean(
     p.description ||
-    (p.technologies && p.technologies.length > 0) ||
-    (p.metrics && p.metrics.length > 0)
+      (p.technologies && p.technologies.length > 0) ||
+      (p.metrics && p.metrics.length > 0)
   );
 }
 
-export default function SystemArchive() {
+function featuredRank(title: string): number {
+  if (title.includes("EyeNet")) return 0;
+  if (title.includes("COVID") || title.includes("riesgo")) return 1;
+  if (title.includes("NYC") || title.includes("Ride-Hailing")) return 2;
+  if (title.includes("India") || title.includes("Air Quality")) return 3;
+  if (title.includes("Bouquet")) return 4;
+  if (title.includes("TimeUp")) return 5;
+  return 99;
+}
+
+function shortTitle(title: string): string {
+  const parts = title.split(/\s*[—–-]\s*/);
+  return parts[0]?.trim() || title;
+}
+
+function ProjectCtas({
+  project,
+  caseStudyLabel,
+  viewProjectLabel,
+  compact = false,
+}: {
+  project: ArchiveProject;
+  caseStudyLabel: string;
+  viewProjectLabel: string;
+  compact?: boolean;
+}) {
+  const hasLinks =
+    project.caseStudy ||
+    (project.links && project.links.length > 0) ||
+    project.link;
+  if (!hasLinks) return null;
+
+  const btnBase = compact
+    ? "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 font-mono text-[9px] font-bold uppercase tracking-[0.2em] transition-all"
+    : "inline-flex items-center gap-2 rounded-full px-4 py-2 font-mono text-[10px] font-bold uppercase tracking-[0.2em] transition-all";
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      {project.caseStudy &&
+        (project.caseStudy.startsWith("http") ? (
+          <a
+            href={project.caseStudy}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${btnBase} bg-warm text-charcoal hover:bg-warm/90`}
+          >
+            {caseStudyLabel}
+            <ArrowUpRight className="h-3 w-3" />
+          </a>
+        ) : (
+          <Link
+            href={project.caseStudy}
+            className={`${btnBase} bg-warm text-charcoal hover:bg-warm/90`}
+          >
+            {caseStudyLabel}
+            <ArrowUpRight className="h-3 w-3" />
+          </Link>
+        ))}
+      {project.links?.map((lnk, li) => (
+        <a
+          key={li}
+          href={lnk.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`${btnBase} border border-offwhite/15 text-offwhite/70 hover:border-offwhite/35 hover:text-offwhite`}
+        >
+          {lnk.label}
+          <ArrowUpRight className="h-3 w-3" />
+        </a>
+      ))}
+      {!project.links && project.link && (
+        <a
+          href={project.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`${btnBase} border border-offwhite/15 text-offwhite/70 hover:border-offwhite/35 hover:text-offwhite`}
+        >
+          {viewProjectLabel}
+          <ArrowUpRight className="h-3 w-3" />
+        </a>
+      )}
+    </div>
+  );
+}
+
+export default function ProjectsPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const indexRef = useRef<HTMLDivElement>(null);
-  const { language, t } = useLanguage();
+  const { t } = useLanguage();
   const reduced = useReducedMotion();
   const archive = t.archive;
 
@@ -34,7 +120,6 @@ export default function SystemArchive() {
   const [selectedDomains, setSelectedDomains] = useState<Set<string>>(new Set());
   const [expanded, setExpanded] = useState<string | null>(null);
 
-  /* ─── Unique primary domains for filter pills ─── */
   const allDomains = useMemo(() => {
     if (!archive) return [];
     const set = new Set<string>();
@@ -45,7 +130,6 @@ export default function SystemArchive() {
     return Array.from(set).sort();
   }, [archive]);
 
-  /* ─── Filter logic ─── */
   const filtered = useMemo(() => {
     if (!archive) return [];
     const q = searchQuery.trim().toLowerCase();
@@ -58,6 +142,7 @@ export default function SystemArchive() {
         const hay = [
           p.title,
           p.domain,
+          p.summary ?? "",
           p.description ?? "",
           ...(p.technologies ?? []),
         ]
@@ -69,7 +154,13 @@ export default function SystemArchive() {
     });
   }, [archive, searchQuery, selectedDomains]);
 
-  /* ─── Group by year ─── */
+  const featuredProjects = useMemo(() => {
+    if (!archive) return [];
+    return archive.projects
+      .filter((p) => p.isFeatured)
+      .sort((a, b) => featuredRank(a.title) - featuredRank(b.title));
+  }, [archive]);
+
   const byYear = useMemo(() => {
     const grouped: Record<string, ArchiveProject[]> = {};
     filtered.forEach((p) => {
@@ -84,18 +175,6 @@ export default function SystemArchive() {
     [byYear]
   );
 
-  /* ─── Archive numbers: stable, descending order ─── */
-  const projectArchiveNumber = useMemo(() => {
-    const map = new Map<string, string>();
-    if (!archive) return map;
-    archive.projects.forEach((p, idx) => {
-      const num = String(archive.projects.length - idx).padStart(3, "0");
-      map.set(projectKey(p, idx), num);
-    });
-    return map;
-  }, [archive]);
-
-  /* ─── Entry animation ─── */
   useEffect(() => {
     if (!indexRef.current) return;
     const ctx = gsap.context(() => {
@@ -116,7 +195,7 @@ export default function SystemArchive() {
       );
     }, indexRef);
     return () => ctx.revert();
-  }, [reduced, filtered.length]);
+  }, [reduced]);
 
   const toggleDomain = useCallback((domain: string) => {
     setSelectedDomains((prev) => {
@@ -132,12 +211,11 @@ export default function SystemArchive() {
     setSelectedDomains(new Set());
   }, []);
 
-  const hasActiveFilters = searchQuery !== "" || selectedDomains.size > 0;
-
   if (!archive) return null;
 
   const total = archive.projects.length;
   const showing = filtered.length;
+  const hasActiveFilters = searchQuery !== "" || selectedDomains.size > 0;
 
   return (
     <main
@@ -146,16 +224,7 @@ export default function SystemArchive() {
       style={{ backgroundColor: "var(--bg-primary)", color: "var(--text-primary)" }}
       tabIndex={-1}
     >
-      {/* Background — bg-charcoal + subtle scan-line */}
       <div className="fixed inset-0 z-0 bg-charcoal">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.025]"
-          aria-hidden="true"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(240,234,216,0.4) 3px, rgba(240,234,216,0.4) 4px)",
-          }}
-        />
         <div
           className="pointer-events-none absolute inset-0 opacity-50"
           aria-hidden="true"
@@ -172,8 +241,7 @@ export default function SystemArchive() {
         ref={containerRef}
         className="relative z-10 mx-auto max-w-6xl px-6 pt-28 md:px-12 md:pt-32 lg:px-16"
       >
-        {/* Top meta strip */}
-        <header className="mb-12 flex items-center justify-between md:mb-16">
+        <header className="mb-10 flex items-center justify-between md:mb-12">
           <Link
             href="/"
             className="group inline-flex min-h-[44px] items-center gap-3 font-mono text-[11px] font-bold uppercase tracking-[0.3em] text-offwhite/70 transition-colors hover:text-offwhite"
@@ -182,43 +250,97 @@ export default function SystemArchive() {
             {archive.back}
           </Link>
           <span className="font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-offwhite/40">
-            {total} {language === "es" ? "proyectos" : "projects"} · 2023—2026 ·{" "}
-            <span className="text-warm/70">indexed live</span>
+            {total} {archive.metaLine}
           </span>
         </header>
 
-        {/* Title */}
-        <div className="mb-16 md:mb-20">
+        <div className="mb-12 md:mb-16">
+          <p className="mb-4 font-mono text-[10px] font-bold uppercase tracking-[0.35em] text-warm/80">
+            {archive.eyebrow}
+          </p>
           <h1
             className="font-serif italic tracking-tight text-offwhite"
             style={{
-              fontSize: "clamp(2.75rem, 8vw, 6.5rem)",
-              lineHeight: 1,
+              fontSize: "clamp(2.5rem, 7vw, 5.5rem)",
+              lineHeight: 1.05,
               viewTransitionName: "page-title",
             }}
           >
             {archive.title}
           </h1>
-          <p className="mt-8 max-w-2xl font-sans text-base leading-relaxed text-offwhite/55 md:text-lg">
+          <p className="mt-6 max-w-2xl font-sans text-base leading-relaxed text-offwhite/55 md:text-lg">
             {archive.subtitle}
           </p>
         </div>
 
-        {/* ── Tools bar — sticky search + filters ── */}
+        {!hasActiveFilters && featuredProjects.length > 0 && (
+          <section className="mb-14 md:mb-20" aria-labelledby="featured-case-studies">
+            <h2
+              id="featured-case-studies"
+              className="mb-6 font-mono text-[10px] font-bold uppercase tracking-[0.35em] text-offwhite/45"
+            >
+              {archive.featuredTitle}
+            </h2>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {featuredProjects.map((project, idx) => {
+                const key = projectKey(project, idx);
+                const topMetric = project.metrics?.[0];
+                const blurb =
+                  project.summary ||
+                  project.description?.slice(0, 120) ||
+                  project.domain;
+
+                return (
+                  <article
+                    key={key}
+                    className="flex flex-col justify-between rounded-2xl border border-offwhite/10 p-5 transition-colors hover:border-offwhite/20"
+                    style={{ background: accentAlpha("#f0ead8", 0.03) }}
+                  >
+                    <div>
+                      <p className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-offwhite/40">
+                        {project.domain.split("/")[0].trim()}
+                      </p>
+                      <h3 className="mt-2 font-serif text-xl tracking-tight text-offwhite">
+                        {shortTitle(project.title)}
+                      </h3>
+                      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-offwhite/55">
+                        {blurb}
+                      </p>
+                      {topMetric && (
+                        <div className="mt-4 flex items-baseline gap-2">
+                          <span className="font-mono text-lg font-bold tabular-nums text-offwhite">
+                            {topMetric.value}
+                          </span>
+                          <span className="font-mono text-[9px] font-bold uppercase tracking-[0.25em] text-offwhite/40">
+                            {topMetric.label}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="mt-5 border-t border-offwhite/[0.06] pt-4">
+                      <ProjectCtas
+                        project={project}
+                        caseStudyLabel={archive.caseStudyLabel}
+                        viewProjectLabel={archive.viewProject}
+                        compact
+                      />
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
         <div className="sticky top-16 z-20 -mx-6 mb-12 border-y border-offwhite/10 bg-charcoal/85 px-6 py-5 backdrop-blur-md md:-mx-12 md:px-12 lg:-mx-16 lg:px-16">
           <div className="flex flex-col gap-4">
-            {/* Search input */}
             <div className="relative">
               <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-offwhite/40" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={
-                  language === "es"
-                    ? "Buscar en el archivo… (título, tech, descripción)"
-                    : "Search the archive… (title, tech, description)"
-                }
+                placeholder={archive.searchPlaceholder}
                 className="w-full rounded-full border border-offwhite/15 bg-offwhite/[0.03] py-3 pl-12 pr-12 font-mono text-sm text-offwhite placeholder:text-offwhite/35 focus:border-warm/40 focus:bg-offwhite/[0.06] focus:outline-none"
               />
               {searchQuery && (
@@ -226,17 +348,16 @@ export default function SystemArchive() {
                   type="button"
                   onClick={() => setSearchQuery("")}
                   className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1.5 text-offwhite/50 transition-colors hover:bg-offwhite/10 hover:text-offwhite"
-                  aria-label={language === "es" ? "Limpiar búsqueda" : "Clear search"}
+                  aria-label={archive.clearLabel}
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>
               )}
             </div>
 
-            {/* Filter pills */}
             <div className="flex flex-wrap items-center gap-2">
-              <span className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-offwhite/35 mr-1">
-                {language === "es" ? "FILTRAR" : "FILTER"}
+              <span className="mr-1 font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-offwhite/35">
+                {archive.filterLabel}
               </span>
               {allDomains.map((domain) => {
                 const isOn = selectedDomains.has(domain);
@@ -263,40 +384,33 @@ export default function SystemArchive() {
                   className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-offwhite/15 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-offwhite/60 transition-colors hover:border-offwhite/30 hover:text-offwhite"
                 >
                   <X className="h-3 w-3" />
-                  {language === "es" ? "LIMPIAR" : "CLEAR"}
+                  {archive.clearLabel}
                 </button>
               )}
             </div>
 
-            {/* Results count */}
             <div className="flex items-center justify-between border-t border-offwhite/[0.06] pt-3">
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-offwhite/40">
-                {language === "es" ? "MOSTRANDO" : "SHOWING"}{" "}
-                <span className="text-offwhite/90">
-                  {String(showing).padStart(2, "0")}
-                </span>{" "}
-                / {String(total).padStart(2, "0")}
+                {archive.showingLabel}{" "}
+                <span className="text-offwhite/90">{showing}</span> / {total}
               </span>
               {hasActiveFilters && showing !== total && (
                 <span className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-warm/70">
-                  {language === "es" ? "FILTRADO" : "FILTERED"}
+                  {archive.filteredLabel}
                 </span>
               )}
             </div>
           </div>
         </div>
 
-        {/* ── Index ── */}
         <div ref={indexRef}>
           {filtered.length === 0 ? (
             <div className="flex flex-col items-center gap-6 py-32 text-center">
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-offwhite/35">
-                {language === "es" ? "ARCHIVO VACÍO" : "EMPTY ARCHIVE"}
+                {archive.emptyTitle}
               </span>
               <p className="max-w-xl font-serif text-2xl italic leading-snug text-offwhite/55 md:text-3xl">
-                {language === "es"
-                  ? "No hay nada en el archivo que coincida con esta búsqueda."
-                  : "Nothing in the archive matches that query."}
+                {archive.emptyHint}
               </p>
               <button
                 type="button"
@@ -304,41 +418,34 @@ export default function SystemArchive() {
                 className="inline-flex items-center gap-2 rounded-full border border-warm/40 bg-warm/10 px-5 py-2 font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-warm transition-all hover:bg-warm/20"
               >
                 <X className="h-3 w-3" />
-                {language === "es" ? "QUITAR FILTROS" : "CLEAR FILTERS"}
+                {archive.clearFiltersLabel}
               </button>
             </div>
           ) : (
-            <div className="flex flex-col gap-16 md:gap-24">
+            <div className="flex flex-col gap-12 md:gap-16">
               {years.map((year) => (
                 <section key={year} aria-labelledby={`year-${year}`}>
-                  {/* Year divider */}
-                  <div className="mb-8 flex items-end justify-between border-b border-offwhite/8 pb-6 md:mb-10">
+                  <div className="mb-6 flex items-end justify-between border-b border-offwhite/8 pb-4">
                     <h2
                       id={`year-${year}`}
-                      className="font-serif italic leading-none tracking-tight text-offwhite/90"
-                      style={{ fontSize: "clamp(3rem, 6vw, 5rem)" }}
+                      className="font-serif italic leading-none tracking-tight text-offwhite/85"
+                      style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)" }}
                     >
                       {year}
                     </h2>
                     <span className="font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-offwhite/45">
                       {byYear[year].length}{" "}
-                      {language === "es"
-                        ? byYear[year].length === 1
-                          ? "PROYECTO"
-                          : "PROYECTOS"
-                        : byYear[year].length === 1
-                        ? "PROJECT"
-                        : "PROJECTS"}
+                      {byYear[year].length === 1
+                        ? archive.yearProjectOne
+                        : archive.yearProjectMany}
                     </span>
                   </div>
 
-                  {/* Project rows */}
                   <div className="flex flex-col">
                     {byYear[year].map((project, pidx) => {
                       const globalIdx = archive.projects.indexOf(project);
                       const key = projectKey(project, globalIdx);
                       const isOpen = expanded === key;
-                      const archiveNum = projectArchiveNumber.get(key) ?? "000";
                       const showExpand = hasDetails(project);
 
                       return (
@@ -346,84 +453,66 @@ export default function SystemArchive() {
                           key={key}
                           className="archive-row group relative border-b border-offwhite/[0.06] last:border-b-0"
                         >
-                          <div
-                            className={`relative flex flex-col gap-3 py-6 transition-all duration-300 sm:flex-row sm:items-start sm:gap-6 md:py-7 ${
-                              showExpand ? "cursor-pointer" : ""
-                            }`}
-                            onClick={() =>
-                              showExpand && setExpanded((p) => (p === key ? null : key))
-                            }
-                          >
-                            {/* Archive number */}
-                            <div className="flex shrink-0 items-center gap-3 sm:w-28 sm:flex-col sm:items-start sm:gap-2 sm:pt-1">
-                              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-offwhite/35 group-hover:text-warm/80 transition-colors">
-                                #{archiveNum}
-                              </span>
-                              {project.isFeatured && (
-                                <span className="inline-flex items-center gap-1.5">
-                                  <span className="relative flex h-1.5 w-1.5">
-                                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-warm opacity-60" />
-                                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-warm" />
-                                  </span>
-                                  <span className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-warm/80">
-                                    {language === "es" ? "DESTACADO" : "FEATURED"}
-                                  </span>
-                                </span>
-                              )}
-                            </div>
-
-                            {/* Title + Domain */}
-                            <div className="min-w-0 flex-1">
-                              <h3
-                                className="font-serif tracking-tight text-offwhite/95 transition-colors group-hover:text-white"
-                                style={{
-                                  fontSize: "clamp(1.25rem, 2.2vw, 1.75rem)",
-                                  lineHeight: 1.15,
-                                }}
-                              >
-                                {project.title}
-                              </h3>
-                              <p className="mt-2 font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-offwhite/50">
-                                {project.domain}
-                              </p>
-                            </div>
-
-                            {/* Right side: chevron + quick links */}
+                          <div className="relative flex flex-col gap-4 py-6 md:py-7">
                             <div
-                              className="flex shrink-0 items-center gap-2 sm:pt-1"
-                              onClick={(e) => e.stopPropagation()}
+                              className={`flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-6 ${
+                                showExpand ? "cursor-pointer" : ""
+                              }`}
+                              onClick={() =>
+                                showExpand && setExpanded((p) => (p === key ? null : key))
+                              }
                             >
-                              {!showExpand && project.links && project.links.length > 0 && (
-                                project.links.slice(0, 1).map((lnk, li) => (
-                                  <a
-                                    key={li}
-                                    href={lnk.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-1.5 rounded-full border border-offwhite/15 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-offwhite/70 transition-all hover:border-warm/40 hover:text-warm"
-                                  >
-                                    {lnk.label}
-                                    <ArrowUpRight className="h-3 w-3" />
-                                  </a>
-                                ))
-                              )}
+                              <div className="min-w-0 flex-1">
+                                <div className="flex flex-wrap items-center gap-3">
+                                  {project.isFeatured && (
+                                    <span className="inline-flex items-center rounded-full border border-warm/30 bg-warm/10 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-[0.25em] text-warm/90">
+                                      {archive.featuredBadge}
+                                    </span>
+                                  )}
+                                  <p className="font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-offwhite/45">
+                                    {project.domain}
+                                  </p>
+                                </div>
+                                <h3
+                                  className="mt-2 font-serif tracking-tight text-offwhite/95 transition-colors group-hover:text-white"
+                                  style={{
+                                    fontSize: "clamp(1.15rem, 2vw, 1.5rem)",
+                                    lineHeight: 1.2,
+                                  }}
+                                >
+                                  {project.title}
+                                </h3>
+                                {project.summary && !isOpen && (
+                                  <p className="mt-2 max-w-2xl text-sm leading-relaxed text-offwhite/50">
+                                    {project.summary}
+                                  </p>
+                                )}
+                              </div>
+
                               {showExpand && (
                                 <ChevronDown
-                                  className={`h-4 w-4 text-offwhite/40 transition-all duration-300 ${
+                                  className={`h-4 w-4 shrink-0 text-offwhite/40 transition-all duration-300 sm:mt-1 ${
                                     isOpen ? "rotate-180 text-warm" : ""
                                   }`}
                                 />
                               )}
                             </div>
+
+                            <div onClick={(e) => e.stopPropagation()}>
+                              <ProjectCtas
+                                project={project}
+                                caseStudyLabel={archive.caseStudyLabel}
+                                viewProjectLabel={archive.viewProject}
+                              />
+                            </div>
                           </div>
 
-                          {/* Expanded detail panel */}
                           {showExpand && (
                             <div
                               className="overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
                               style={{ maxHeight: isOpen ? "500px" : "0" }}
                             >
-                              <div className="pb-8 pl-0 pr-0 pt-2 sm:pl-28">
+                              <div className="pb-8 pt-1">
                                 {project.description && (
                                   <p className="mb-6 max-w-3xl font-serif text-base leading-relaxed text-offwhite/70 md:text-lg">
                                     {project.description}
@@ -434,7 +523,7 @@ export default function SystemArchive() {
                                   {project.technologies && project.technologies.length > 0 && (
                                     <div className="flex-1">
                                       <p className="mb-3 font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-offwhite/35">
-                                        {language === "es" ? "STACK" : "STACK"}
+                                        {archive.labelStack}
                                       </p>
                                       <div className="flex flex-wrap gap-1.5">
                                         {project.technologies.map((tech) => (
@@ -452,7 +541,7 @@ export default function SystemArchive() {
                                   {project.metrics && project.metrics.length > 0 && (
                                     <div>
                                       <p className="mb-3 font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-offwhite/35">
-                                        {language === "es" ? "MÉTRICAS" : "METRICS"}
+                                        {archive.labelMetrics}
                                       </p>
                                       <div className="flex flex-wrap gap-x-6 gap-y-3">
                                         {project.metrics.map((m, mi) => (
@@ -469,51 +558,10 @@ export default function SystemArchive() {
                                     </div>
                                   )}
                                 </div>
-
-                                {/* CTAs */}
-                                {(project.caseStudy ||
-                                  (project.links && project.links.length > 0) ||
-                                  project.link) && (
-                                  <div className="mt-7 flex flex-wrap items-center gap-3 border-t border-offwhite/[0.06] pt-6">
-                                    {project.caseStudy && (
-                                      <Link
-                                        href={project.caseStudy}
-                                        className="inline-flex items-center gap-2 rounded-full bg-warm px-5 py-2.5 font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-charcoal transition-all hover:bg-warm/90"
-                                      >
-                                        {language === "es" ? "Caso de Estudio" : "Case Study"}
-                                        <ArrowUpRight className="h-3.5 w-3.5" />
-                                      </Link>
-                                    )}
-                                    {project.links?.map((lnk, li) => (
-                                      <a
-                                        key={li}
-                                        href={lnk.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-2 rounded-full border border-offwhite/15 px-5 py-2.5 font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-offwhite/70 transition-all hover:border-offwhite/40 hover:text-offwhite"
-                                      >
-                                        {lnk.label}
-                                        <ArrowUpRight className="h-3.5 w-3.5" />
-                                      </a>
-                                    ))}
-                                    {!project.links && project.link && (
-                                      <a
-                                        href={project.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-2 rounded-full border border-offwhite/15 px-5 py-2.5 font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-offwhite/70 transition-all hover:border-offwhite/40 hover:text-offwhite"
-                                      >
-                                        {archive.viewProject}
-                                        <ArrowUpRight className="h-3.5 w-3.5" />
-                                      </a>
-                                    )}
-                                  </div>
-                                )}
                               </div>
                             </div>
                           )}
 
-                          {/* Hover accent line */}
                           <div
                             className="pointer-events-none absolute left-0 top-0 h-full w-[2px] origin-top scale-y-0 bg-warm transition-transform duration-500 group-hover:scale-y-100"
                             aria-hidden="true"
@@ -528,15 +576,17 @@ export default function SystemArchive() {
           )}
         </div>
 
-        {/* Closing signature */}
-        <footer className="mt-32 flex flex-col items-end gap-3 border-t border-offwhite/8 pt-12 md:mt-44">
-          <div className="h-[1px] w-24 bg-warm/30 md:w-32" />
-          <p className="font-serif italic text-sm text-warm/70 md:text-base">
-            — {language === "es" ? "Fin del archivo" : "End of archive"}
+        <footer className="mt-24 flex flex-col items-start gap-4 border-t border-offwhite/8 pt-12 md:mt-32">
+          <p className="font-serif text-lg italic text-offwhite/70 md:text-xl">
+            {archive.footerCta}
           </p>
-          <p className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-offwhite/30">
-            {language === "es" ? "DIEGO VILLAGRAN · 2026" : "DIEGO VILLAGRAN · 2026"}
-          </p>
+          <Link
+            href="/#contact"
+            className="inline-flex items-center gap-2 rounded-full bg-warm px-6 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-charcoal transition-all hover:bg-warm/90"
+          >
+            {archive.footerContact}
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </Link>
         </footer>
       </div>
     </main>

@@ -196,6 +196,8 @@ export interface ArchiveProject {
   year: string;
   title: string;
   domain: string;
+  /** One-line descriptor for featured cards */
+  summary?: string;
   isFeatured?: boolean;
   caseStudy?: string;
   links?: ProjectLink[];
@@ -206,16 +208,35 @@ export interface ArchiveProject {
 }
 
 export interface ArchiveDict {
+  eyebrow: string;
   title: string;
   subtitle: string;
+  metaLine: string;
+  featuredTitle: string;
   back: string;
+  searchPlaceholder: string;
+  filterLabel: string;
+  clearLabel: string;
+  showingLabel: string;
+  filteredLabel: string;
+  emptyTitle: string;
+  emptyHint: string;
+  clearFiltersLabel: string;
+  caseStudyLabel: string;
+  featuredBadge: string;
+  yearProjectOne: string;
+  yearProjectMany: string;
+  footerCta: string;
+  footerContact: string;
+  labelStack: string;
+  labelMetrics: string;
+  viewProject: string;
   headers: {
     year: string;
     project: string;
     domain: string;
     link: string;
   };
-  viewProject: string;
   projects: ArchiveProject[];
 }
 
@@ -300,8 +321,20 @@ export interface LessonItem {
 }
 
 export interface CaseStudyFooter {
-  text: string;
-  status: string;
+  cta: string;
+  contact: string;
+  note?: string;
+}
+
+export interface CaseStudyMetric {
+  value: string;
+  label: string;
+}
+
+export interface CaseStudyPageHeader {
+  eyebrow: string;
+  title: string;
+  metrics: CaseStudyMetric[];
 }
 
 /* ─── TimeUp ─── */
@@ -344,7 +377,10 @@ export interface TimeUpLessons {
 
 export interface TimeUpDict {
   back: string;
+  eyebrow: string;
+  title: string;
   subtitle: string;
+  metrics: CaseStudyMetric[];
   tldr: TimeUpTldr;
   meta: MetaItem[];
   links: TimeUpLinks;
@@ -419,7 +455,10 @@ export interface EyeNetLessons {
 
 export interface EyeNetDict {
   back: string;
+  eyebrow: string;
+  title: string;
   subtitle: string;
+  metrics: CaseStudyMetric[];
   tldr: EyeNetTldr;
   meta: MetaItem[];
   links: EyeNetLinks;
@@ -479,11 +518,15 @@ export interface CovidLessons {
 
 export interface CovidDict {
   back: string;
+  eyebrow: string;
+  title: string;
   subtitle: string;
+  metrics: CaseStudyMetric[];
   tldr: CovidTldr;
   meta: MetaItem[];
   links: CovidLinks;
   linkDashboard: string;
+  linkRepo?: string;
   quote: QuoteBlock;
   constraints: {
     title1: string;
@@ -500,6 +543,8 @@ export interface CovidDict {
   lessons: CovidLessons;
   footer: CaseStudyFooter;
 }
+
+export type EditorialCaseStudyDict = CovidDict;
 
 /* ─── Bouquet ─── */
 
@@ -540,7 +585,10 @@ export interface BouquetLessons {
 
 export interface BouquetDict {
   back: string;
+  eyebrow: string;
+  title: string;
   subtitle: string;
+  metrics: CaseStudyMetric[];
   tldr: BouquetTldr;
   meta: MetaItem[];
   links: BouquetLinks;

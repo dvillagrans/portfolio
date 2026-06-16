@@ -1,22 +1,19 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
-import { Link } from "next-view-transitions";
+import React, { useState, useCallback } from "react";
+import { ArrowUpRight, Clock, Users, Zap, Shield, Database, LayoutTemplate, Activity, FileCheck2, AlertCircle, Quote, ZoomIn } from "lucide-react";
+import Image from "next/image";
 import Navbar from "@/components/layout/Navbar";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { timeupEn, timeupEs } from "@/i18n/dictionaries/timeup";
 import { TimeUpProjectSchema } from "@/components/ui/SchemaOrg";
-import {
-  ArrowLeft, ArrowUpRight,
-  Clock, Users, Zap, Shield, Database, LayoutTemplate, Activity, FileCheck2, AlertCircle, Quote, X, ZoomIn, ChevronLeft, ChevronRight, ArrowUp
-} from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Image from "next/image";
-
-gsap.registerPlugin(ScrollTrigger);
-
+import { CaseStudyHeader } from "@/components/case-study/CaseStudyHeader";
+import { CaseStudyMetrics } from "@/components/case-study/CaseStudyMetrics";
+import { CaseStudyTldr } from "@/components/case-study/CaseStudyTldr";
+import { CaseStudySection } from "@/components/case-study/CaseStudySection";
+import { CaseStudyFooter } from "@/components/case-study/CaseStudyFooter";
+import { CaseStudyLightbox } from "@/components/case-study/CaseStudyLightbox";
+import { useCaseStudyReveal } from "@/components/case-study/useCaseStudyReveal";
 
 const IMAGES = [
   { src: "/img/timeup/admin-analytics.png", alt: "Administrador TimeUp" },
@@ -24,185 +21,47 @@ const IMAGES = [
   { src: "/img/timeup/staff-dashboard.png", alt: "Agenda Staff" },
 ];
 
-function Lightbox({ index, onClose, onPrev, onNext }: { index: number; onClose: () => void; onPrev: () => void; onNext: () => void }) {
-  const { src, alt } = IMAGES[index];
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-      if (e.key === "ArrowLeft") onPrev();
-      if (e.key === "ArrowRight") onNext();
-    };
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [onClose, onPrev, onNext]);
-
-  return (
-    <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/92 backdrop-blur-sm"
-      onClick={onClose}
-    >
-      {/* Close */}
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 z-10 flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white hover:bg-white/20 active:scale-95 transition-all"
-        aria-label="Close"
-      >
-        <X size={18} />
-      </button>
-
-      {/* Prev */}
-      <button
-        onClick={(e) => { e.stopPropagation(); onPrev(); }}
-        className="absolute left-3 md:left-6 z-10 flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white hover:bg-white/20 active:scale-95 transition-all"
-        aria-label="Previous"
-      >
-        <ChevronLeft size={20} />
-      </button>
-
-      {/* Next */}
-      <button
-        onClick={(e) => { e.stopPropagation(); onNext(); }}
-        className="absolute right-3 md:right-6 z-10 flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white hover:bg-white/20 active:scale-95 transition-all"
-        aria-label="Next"
-      >
-        <ChevronRight size={20} />
-      </button>
-
-      {/* Image */}
-      <div
-        className="relative mx-14 max-w-[90vw] max-h-[85vh] w-full h-full"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <Image src={src} alt={alt} fill className="object-contain" sizes="90vw" />
-      </div>
-
-      {/* Dots — 44px touch target, ARIA for carousel */}
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-1" role="tablist" aria-label="Image carousel">
-        {IMAGES.map((_, i) => (
-          <button
-            key={i}
-            type="button"
-            role="tab"
-            aria-label={`${i + 1} of ${IMAGES.length}`}
-            aria-selected={i === index}
-            onClick={(e) => { e.stopPropagation(); }}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full transition-colors hover:bg-white/10"
-          >
-            <span className={`block rounded-full transition-all duration-300 ${i === index ? "w-5 h-1.5 bg-timeup-cyan" : "w-1.5 h-1.5 bg-white/30"}`} aria-hidden />
-          </button>
-        ))}
-      </div>
-
-      {/* Caption */}
-      <p className="absolute bottom-12 left-1/2 -translate-x-1/2 font-mono text-[10px] uppercase tracking-widest text-white/40">{alt}</p>
-    </div>
-  );
-}
-
 export default function TimeUpCaseStudy() {
   const { language } = useLanguage();
   const dict = language === "es" ? timeupEs : timeupEn;
-  const containerRef = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  const containerRef = useCaseStudyReveal();
   const [lightbox, setLightbox] = useState<number | null>(null);
   const openLightbox = useCallback((index: number) => setLightbox(index), []);
   const closeLightbox = useCallback(() => setLightbox(null), []);
   const prevImage = useCallback(() => setLightbox((i) => i !== null ? (i - 1 + IMAGES.length) % IMAGES.length : null), []);
   const nextImage = useCallback(() => setLightbox((i) => i !== null ? (i + 1) % IMAGES.length : null), []);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [showScrollTop, setShowScrollTop] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => {
-      const el = document.documentElement;
-      const scrolled = el.scrollTop;
-      const total = el.scrollHeight - el.clientHeight;
-      setScrollProgress(total > 0 ? (scrolled / total) * 100 : 0);
-      setShowScrollTop(scrolled > 600);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const elements = gsap.utils.toArray(".reveal-fade");
-      if (reduced) {
-        elements.forEach((el: any) => {
-          gsap.set(el, { y: 0, opacity: 1 });
-        });
-        return;
-      }
-      elements.forEach((el: any) => {
-        gsap.fromTo(el,
-          { y: 30, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%" } }
-        );
-      });
-    }, containerRef);
-    return () => ctx.revert();
-  }, [reduced]);
 
   return (
     <>
-      {/* Scroll progress bar */}
-      <div
-        className="fixed top-0 left-0 z-[9998] h-[2px] bg-gradient-to-r from-timeup-cyan via-timeup-teal to-timeup-indigo transition-none"
-        style={{ width: `${scrollProgress}%` }}
-      />
-
       <Navbar />
       {lightbox !== null && (
-        <Lightbox index={lightbox} onClose={closeLightbox} onPrev={prevImage} onNext={nextImage} />
+        <CaseStudyLightbox images={IMAGES} index={lightbox} onClose={closeLightbox} onPrev={prevImage} onNext={nextImage} accentClass="bg-timeup-cyan" />
       )}
-
-      {/* Back to top */}
-      <button
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className={`fixed bottom-6 right-5 z-50 flex items-center justify-center w-10 h-10 rounded-full bg-timeup-cyan/10 border border-timeup-cyan/30 text-timeup-cyan backdrop-blur-sm hover:bg-timeup-cyan/20 active:scale-95 transition-all duration-300 ${
-          showScrollTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
-        }`}
-        aria-label="Back to top"
-      >
-        <ArrowUp size={16} />
-      </button>
-      <main ref={containerRef} className="min-h-screen pt-24 pb-[calc(5rem+env(safe-area-inset-bottom,0px))] md:pt-32 md:pb-[calc(8rem+env(safe-area-inset-bottom,0px))] px-5 md:px-12 lg:px-24 selection:bg-timeup-cyan selection:text-timeup-bg"
+      <main ref={containerRef} className="mx-auto min-h-screen max-w-5xl px-5 pb-24 pt-24 md:px-12 md:pt-32 md:pb-32 lg:px-8"
         style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
         <TimeUpProjectSchema />
 
-      {/* Navigation */}
-      <div className="mb-12 reveal-fade">
-        <Link href="/projects" className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-timeup-cyan transition-colors uppercase font-mono tracking-widest"><ArrowLeft size={16} /> {dict.back}</Link>
-      </div>
+        <CaseStudyHeader
+          back={dict.back}
+          eyebrow={dict.eyebrow}
+          title={dict.title}
+          subtitle={dict.subtitle}
+          actions={
+            <div className="flex flex-wrap gap-2">
+              <a href="https://timeup.mx" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-warm px-5 py-2.5 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-charcoal transition-colors hover:bg-warm/90">
+                {dict.links.public}
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </a>
+              <a href="https://negocios.timeup.mx" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-offwhite/20 px-5 py-2.5 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-offwhite/75 transition-colors hover:border-offwhite/40 hover:text-offwhite">
+                {dict.links.business}
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </a>
+            </div>
+          }
+        />
 
-      {/* Header */}
-      <header className="mb-12 reveal-fade max-w-5xl">
-        <h1
-          className="text-5xl md:text-8xl font-black tracking-tight mb-6 leading-none bg-clip-text text-transparent bg-[linear-gradient(135deg,var(--color-timeup-cyan),var(--color-timeup-teal),var(--color-timeup-indigo))] drop-shadow-2xl"
-          style={{textShadow:"0 0 40px rgb(from var(--color-timeup-cyan) r g b / 0.4)", viewTransitionName: 'page-title'}}
-        >
-          Time<span className="text-white/40">Up</span>
-        </h1>
-        <p className="text-xl md:text-3xl text-white/70 tracking-normal font-serif italic mb-6">{dict.subtitle}</p>
-      </header>
-
-      {/* 1. TL;DR Cards */}
-      <section className="grid grid-cols-1 xl:grid-cols-3 gap-4 mb-16 reveal-fade" aria-labelledby="tldr-heading">
-        <h2 id="tldr-heading" className="sr-only">{language === "es" ? "Resumen" : "Summary"}</h2>
-        <div className="bg-white/[0.02] border border-white/10 p-6 rounded-2xl hover:border-timeup-cyan/30 transition-all duration-500">
-          <h3 className="text-timeup-cyan font-mono text-xs uppercase tracking-widest mb-3 flex items-center gap-2"><AlertCircle size={14}/> {dict.tldr.challenge.title}</h3><p className="text-sm text-white/60 leading-relaxed font-sans">{dict.tldr.challenge.text1}<span className="text-white font-medium">{dict.tldr.challenge.bold}</span>{dict.tldr.challenge.text2}</p>
-        </div>
-        <div className="bg-white/[0.02] border border-white/10 p-6 rounded-2xl hover:border-timeup-teal/30 transition-all duration-500">
-          <h3 className="text-timeup-teal font-mono text-xs uppercase tracking-widest mb-3 flex items-center gap-2"><Zap size={14}/> {dict.tldr.solution.title}</h3><p className="text-sm text-white/60 leading-relaxed font-sans">{dict.tldr.solution.text1}<span className="text-white font-medium">{dict.tldr.solution.bold}</span>{dict.tldr.solution.text2}<span className="text-timeup-teal">{dict.tldr.solution.cyan}</span>{dict.tldr.solution.text3}</p>
-        </div>
-        <div className="bg-timeup-indigo/10 border border-timeup-indigo/20 p-6 rounded-2xl hover:border-timeup-indigo/40 transition-all duration-500">
-          <h3 className="text-white font-mono text-xs uppercase tracking-widest mb-3 flex items-center gap-2"><Activity size={14}/> {dict.tldr.impact.title}</h3><p className="text-sm text-white/90 leading-relaxed font-sans"><span className="text-white font-medium">{dict.tldr.impact.bold}</span>{dict.tldr.impact.text1}</p>
-        </div>
-      </section>
+        <CaseStudyMetrics metrics={dict.metrics} />
+        <CaseStudyTldr {...dict.tldr} />
 
       {/* Meta Grid */}
       <section className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 border-y border-white/10 py-8 reveal-fade font-mono text-xs">
@@ -214,36 +73,16 @@ export default function TimeUpCaseStudy() {
         ))}
       </section>
 
-      {/* Live URLs */}
-      <section className="flex flex-col sm:flex-row flex-wrap gap-5 mb-24 reveal-fade px-2">
-        <a href="https://timeup.mx" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center sm:justify-start gap-3 bg-[linear-gradient(135deg,var(--color-timeup-cyan),var(--color-timeup-blue))] text-timeup-bg px-8 py-4 font-mono text-sm font-bold uppercase tracking-widest transition-all hover:scale-105 hover:bg-[linear-gradient(135deg,var(--color-timeup-teal),var(--color-timeup-cyan))] shadow-[0_0_20px_rgb(from_var(--color-timeup-cyan)_r_g_b_/0.4)] hover:shadow-[0_0_35px_rgb(from_var(--color-timeup-cyan)_r_g_b_/0.7)] rounded-full w-full sm:w-auto">
-          {dict.links.public}
-          <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-        </a>
-        <a href="https://negocios.timeup.mx" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center sm:justify-start gap-3 bg-white/[0.03] border border-timeup-indigo/40 text-timeup-indigo px-8 py-4 font-mono text-sm font-bold uppercase tracking-widest transition-all hover:bg-timeup-indigo hover:text-white shadow-[0_0_15px_rgb(from_var(--color-timeup-indigo)_r_g_b_/0.1)] hover:shadow-[0_0_30px_rgb(from_var(--color-timeup-indigo)_r_g_b_/0.5)] rounded-full w-full sm:w-auto">
-          {dict.links.business}
-          <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-        </a>
+      <section className="reveal-fade mb-16 max-w-3xl md:mb-20">
+        <Quote className="mb-4 h-8 w-8 text-timeup-cyan/25" />
+        <blockquote className="font-serif text-2xl leading-snug text-offwhite/85 md:text-3xl">
+          &ldquo;{dict.quote.text}<span className="text-timeup-cyan italic">{dict.quote.bold}</span>{dict.quote.text2}&rdquo;
+        </blockquote>
+        <p className="mt-4 font-mono text-[10px] uppercase tracking-widest text-offwhite/40">{dict.quote.title}</p>
       </section>
 
-      {/* 2. PULL QUOTE */}
-      <section className="mb-32 reveal-fade max-w-4xl mx-auto text-center px-4">
-        <Quote className="text-timeup-cyan/20 w-12 h-12 md:w-16 md:h-16 mx-auto mb-8" />
-        <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif text-white/90 leading-tight mb-8">
-          "{dict.quote.text}<span className="text-timeup-cyan italic font-medium">{dict.quote.bold}</span>{dict.quote.text2}"
-        </h2>
-        <div className="w-12 h-1 bg-gradient-to-r from-timeup-cyan to-timeup-indigo mx-auto mb-6 rounded-full"></div>
-        <p className="font-mono text-xs text-white/40 uppercase tracking-widest">{dict.quote.title}</p>
-      </section>
-
-      {/* 3. Bento Constraints */}
-      <section className="mb-32 reveal-fade">
-        <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
-            <h2 className="text-sm text-timeup-cyan font-mono tracking-widest uppercase mb-3">{dict.constraints.title1}</h2><p className="text-3xl md:text-4xl font-serif text-white/80 leading-tight">{dict.constraints.title2}</p></div><p className="font-mono text-xs text-white/40 md:max-w-[200px] border-l border-white/20 pl-4 py-1">{dict.constraints.desc}</p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(200px,auto)]">
+      <CaseStudySection eyebrow={dict.constraints.title1} title={dict.constraints.title2} description={dict.constraints.desc}>
+        <div className="grid grid-cols-1 gap-4 auto-rows-[minmax(200px,auto)] md:grid-cols-3">
           {/* Bento Item 1: Wide */}
           <div className="md:col-span-2 bg-timeup-card/60 border border-white/5 p-8 rounded-3xl relative overflow-hidden group hover:border-timeup-cyan/30 transition-all duration-500 hover:bg-timeup-card">
             <div className="absolute top-0 right-0 p-8 text-white/[0.03] group-hover:text-timeup-cyan/10 transition-colors duration-500">
@@ -276,14 +115,10 @@ export default function TimeUpCaseStudy() {
             </div>
           </div>
         </div>
-      </section>
+      </CaseStudySection>
 
-      {/* Visual System Context */}
-      <section className="mb-32 reveal-fade">
-        <div className="mb-10 text-center md:text-left">
-          <h2 className="text-sm text-timeup-cyan font-mono tracking-widest uppercase mb-3">{dict.interfaces.title1}</h2><p className="text-3xl md:text-4xl font-serif text-white/80 leading-tight">{dict.interfaces.title2}</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+      <CaseStudySection eyebrow={dict.interfaces.title1} title={dict.interfaces.title2}>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
           
           <div
             className="md:col-span-12 relative h-[35vh] sm:h-[50vh] md:h-[75vh] w-full bg-timeup-card rounded-3xl overflow-hidden group border border-white/5 cursor-zoom-in"
@@ -293,7 +128,7 @@ export default function TimeUpCaseStudy() {
               src="/img/timeup/admin-analytics.png" 
               alt="Administrador TimeUp" 
               fill 
-              className="object-cover object-left-top opacity-50 mix-blend-screen scale-105 group-hover:scale-100 transition-all duration-1000 group-hover:opacity-100" 
+              className="object-cover object-left-top opacity-90 transition-opacity duration-500 group-hover:opacity-100" 
             />
             <div className="absolute top-6 left-6 md:top-8 md:left-8 bg-timeup-bg/90 p-4 rounded-xl backdrop-blur-md border-l-4 border-timeup-cyan shadow-2xl">
               <p className="font-mono text-[10px] md:text-xs tracking-widest text-timeup-cyan uppercase mb-1">{dict.interfaces.admin.tag}</p><p className="font-serif text-white/90 text-sm md:text-base">{dict.interfaces.admin.desc}</p>
@@ -311,7 +146,7 @@ export default function TimeUpCaseStudy() {
               src="/img/timeup/owner-finance.png" 
               alt="Finanzas Dueño" 
               fill 
-              className="object-cover object-left-top opacity-50 mix-blend-screen scale-105 group-hover:scale-100 transition-all duration-1000 group-hover:opacity-100" 
+              className="object-cover object-left-top opacity-90 transition-opacity duration-500 group-hover:opacity-100" 
             />
             <div className="absolute top-6 left-6 bg-timeup-bg/90 p-4 rounded-xl backdrop-blur-md border-l-4 border-timeup-teal shadow-2xl">
               <p className="font-mono text-[10px] md:text-xs tracking-widest text-timeup-teal uppercase mb-1">{dict.interfaces.owner.tag}</p><p className="font-serif text-white/90 text-sm md:text-base">{dict.interfaces.owner.desc}</p>
@@ -329,7 +164,7 @@ export default function TimeUpCaseStudy() {
               src="/img/timeup/staff-dashboard.png" 
               alt="Agenda Staff" 
               fill 
-              className="object-cover object-left-top opacity-50 mix-blend-screen scale-105 group-hover:scale-100 transition-all duration-1000 group-hover:opacity-100" 
+              className="object-cover object-left-top opacity-90 transition-opacity duration-500 group-hover:opacity-100" 
             />
             <div className="absolute top-6 left-6 bg-timeup-bg/90 p-4 rounded-xl backdrop-blur-md border-l-4 border-timeup-indigo shadow-2xl">
               <p className="font-mono text-[10px] md:text-xs tracking-widest text-timeup-indigo uppercase mb-1">{dict.interfaces.staff.tag}</p><p className="font-serif text-white/90 text-sm md:text-base">{dict.interfaces.staff.desc}</p>
@@ -340,16 +175,9 @@ export default function TimeUpCaseStudy() {
           </div>
 
         </div>
-      </section>
+      </CaseStudySection>
 
-      {/* 4. Engineering Decisions / Callouts */}
-      <section className="mb-32 reveal-fade">
-        <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
-            <h2 className="text-sm text-timeup-cyan font-mono tracking-widest uppercase mb-3">{dict.architecture.title1}</h2><p className="text-3xl md:text-4xl font-serif text-white/80 leading-tight">{dict.architecture.title2}</p>
-          </div>
-        </div>
-        
+      <CaseStudySection eyebrow={dict.architecture.title1} title={dict.architecture.title2}>
         <div className="flex flex-col gap-8">
           
           {/* Dec 1 */}
@@ -380,15 +208,10 @@ export default function TimeUpCaseStudy() {
           </div>
 
         </div>
-      </section>
+      </CaseStudySection>
 
-      {/* 5. What Broke & Learned (Minimalist rows) */}
-      <section className="mb-32 grid md:grid-cols-12 gap-12 md:gap-20 reveal-fade">
-        <div className="md:col-span-5">
-          <h2 className="text-sm text-timeup-teal font-mono tracking-widest uppercase mb-3">{dict.lessons.title1}</h2><p className="text-3xl md:text-4xl font-serif text-white/80 mb-6 leading-tight">{dict.lessons.title2}</p><p className="text-sm font-sans text-white/50 leading-relaxed">{dict.lessons.desc}</p>
-        </div>
-        <div className="md:col-span-7">
-          <div className="flex flex-col gap-4">
+      <CaseStudySection eyebrow={dict.lessons.title1} title={dict.lessons.title2} description={dict.lessons.desc}>
+        <div className="flex flex-col gap-4">
             
             <div className="bg-white/[0.02] hover:bg-white/[0.04] border border-white/5 transition-colors p-6 md:p-8 rounded-2xl group">
               <h3 className="text-xl font-serif text-white mb-3 flex items-center gap-3">{dict.lessons.l1.title} <AlertCircle className="text-red-400 opacity-60 group-hover:opacity-100 transition-opacity" size={18}/></h3><p className="text-sm font-sans text-white/50 mb-5 leading-relaxed">{dict.lessons.l1.desc}</p><div className="flex gap-2"><span className="text-[10px] font-mono tracking-widest text-timeup-teal bg-timeup-teal/10 border border-timeup-teal/20 px-3 py-1.5 rounded-full inline-block">{dict.lessons.l1.tag}</span>
@@ -406,13 +229,9 @@ export default function TimeUpCaseStudy() {
             </div>
 
           </div>
-        </div>
-      </section>
+      </CaseStudySection>
 
-      {/* Footer minimal */}
-      <footer className="pt-12 pb-12 flex flex-col sm:flex-row justify-between items-center text-[10px] text-white/30 font-mono tracking-widest uppercase border-t border-white/10 reveal-fade">
-        <span className="mb-4 sm:mb-0">{dict.footer.text}</span><span className="text-timeup-cyan/50 border border-timeup-cyan/20 px-4 py-2 rounded-full">{dict.footer.status}</span>
-      </footer>
+        <CaseStudyFooter footer={dict.footer} />
     </main>
     </>
   );

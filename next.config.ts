@@ -50,12 +50,12 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/projects/covid-perfiles",
-        destination: "https://covid.dvillagrans.dev",
+        destination: "/projects/covid",
         permanent: true,
       },
       {
         source: "/projects/india-air-quality",
-        destination: "https://aqi-india.dvillagrans.dev",
+        destination: "/projects/india",
         permanent: true,
       },
     ];
