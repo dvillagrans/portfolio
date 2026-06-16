@@ -6,6 +6,8 @@ import Link from "next/link";
 import Image from "next/image";
 import type { ProjectItem } from "@/i18n/types";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { resolveCaseStudyMediaFromProject } from "@/data/case-study-media";
+import { CaseStudyHeroMedia } from "@/components/case-study/CaseStudyHeroMedia";
 import { CountUp } from "./CountUp";
 
 export interface SceneAccent {
@@ -58,27 +60,48 @@ function ProjectEvidence({
   project,
   accent,
   evidenceLabel,
+  isActive,
+  reducedMotion,
 }: {
   project: ProjectItem;
   accent: SceneAccent;
   evidenceLabel: string;
+  isActive: boolean;
+  reducedMotion: boolean;
 }) {
+  const registryMedia = resolveCaseStudyMediaFromProject(project);
   const src = resolveImageSrc(project.image);
   const isExternal = project.href.startsWith("http");
+  const media = registryMedia
+    ? { ...registryMedia, alt: project.title }
+    : null;
 
   const frame = (
     <div
       className="relative aspect-[16/10] w-full overflow-hidden rounded-xl border"
       style={{ borderColor: `${accent.ink}12`, background: `${accent.ink}04` }}
     >
-      <Image
-        src={src}
-        alt={project.title}
-        fill
-        sizes="(max-width: 1024px) 90vw, 45vw"
-        className="object-cover object-top"
-        style={{ viewTransitionName: `project-img-${project.id}` }}
-      />
+      {media ? (
+        <CaseStudyHeroMedia
+          media={media}
+          layout="embedded"
+          playback={media.video && !reducedMotion ? "active-scene" : "static-image"}
+          isActive={isActive}
+          reducedMotion={reducedMotion}
+          showControls={false}
+          sizes="(max-width: 1024px) 90vw, 45vw"
+          imageStyle={{ viewTransitionName: `project-img-${project.id}` }}
+        />
+      ) : (
+        <Image
+          src={src}
+          alt={project.title}
+          fill
+          sizes="(max-width: 1024px) 90vw, 45vw"
+          className="object-cover object-top"
+          style={{ viewTransitionName: `project-img-${project.id}` }}
+        />
+      )}
     </div>
   );
 
@@ -242,7 +265,13 @@ export function Scene({
       </div>
 
       {/* RIGHT — single evidence frame */}
-      <ProjectEvidence project={project} accent={accent} evidenceLabel={labels.labelEvidence} />
+      <ProjectEvidence
+        project={project}
+        accent={accent}
+        evidenceLabel={labels.labelEvidence}
+        isActive={isActive}
+        reducedMotion={reduced}
+      />
     </div>
   );
 }

@@ -1,20 +1,22 @@
 "use client";
 
 import type { ReactNode } from "react";
-import Image from "next/image";
 import Navbar from "@/components/layout/Navbar";
 import type { EditorialCaseStudyDict } from "@/i18n/types";
+import type { CaseStudySlug } from "@/data/case-study-media";
+import { getCaseStudyMedia } from "@/data/case-study-media";
 import { CaseStudyHeader } from "@/components/case-study/CaseStudyHeader";
 import { CaseStudyMetrics } from "@/components/case-study/CaseStudyMetrics";
 import { CaseStudyTldr } from "@/components/case-study/CaseStudyTldr";
 import { CaseStudySection } from "@/components/case-study/CaseStudySection";
 import { CaseStudyFooter } from "@/components/case-study/CaseStudyFooter";
+import { CaseStudyHeroMedia } from "@/components/case-study/CaseStudyHeroMedia";
 import { useCaseStudyReveal } from "@/components/case-study/useCaseStudyReveal";
 import { AlertCircle, Activity, Quote } from "lucide-react";
 
 interface EditorialCaseStudyProps {
   dict: EditorialCaseStudyDict;
-  heroImage: { src: string; alt: string };
+  slug: CaseStudySlug;
   actions?: ReactNode;
   schema?: ReactNode;
 }
@@ -34,8 +36,9 @@ function lessonItems(dict: EditorialCaseStudyDict) {
   return [l1, l2, l3];
 }
 
-export function EditorialCaseStudy({ dict, heroImage, actions, schema }: EditorialCaseStudyProps) {
+export function EditorialCaseStudy({ dict, slug, actions, schema }: EditorialCaseStudyProps) {
   const containerRef = useCaseStudyReveal();
+  const media = getCaseStudyMedia(slug);
 
   return (
     <>
@@ -112,15 +115,7 @@ export function EditorialCaseStudy({ dict, heroImage, actions, schema }: Editori
           title={dict.pipeline.title2}
           description={dict.pipeline.desc}
         >
-          <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-offwhite/10 bg-offwhite/[0.02]">
-            <Image
-              src={heroImage.src}
-              alt={heroImage.alt}
-              fill
-              className="object-cover object-top"
-              sizes="(max-width: 1024px) 100vw, 896px"
-            />
-          </div>
+          <CaseStudyHeroMedia media={media} />
         </CaseStudySection>
 
         <CaseStudySection eyebrow={dict.architecture.title1} title={dict.architecture.title2}>

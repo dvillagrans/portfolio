@@ -11,11 +11,8 @@ export default function IndiaCaseStudyPage() {
 
   return (
     <EditorialCaseStudy
+      slug="india"
       dict={dict}
-      heroImage={{
-        src: "/img/india-air-quality.webp",
-        alt: "India air quality intelligence dashboard",
-      }}
       actions={
         <CaseStudyExternalActions
           dashboardHref={dict.linkDashboard}

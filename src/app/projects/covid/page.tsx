@@ -11,11 +11,8 @@ export default function CovidCaseStudyPage() {
 
   return (
     <EditorialCaseStudy
+      slug="covid"
       dict={dict}
-      heroImage={{
-        src: "/img/dashboard-covid-19.webp",
-        alt: "COVID-19 risk profiles dashboard",
-      }}
       actions={
         <CaseStudyExternalActions
           dashboardHref={dict.linkDashboard}

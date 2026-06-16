@@ -11,11 +11,8 @@ export default function NycCaseStudyPage() {
 
   return (
     <EditorialCaseStudy
+      slug="nyc"
       dict={dict}
-      heroImage={{
-        src: "/img/nyc-ridehailing-dashboard.webp",
-        alt: "NYC ride-hailing analytics dashboard",
-      }}
       actions={
         <CaseStudyExternalActions
           dashboardHref={dict.linkDashboard}
