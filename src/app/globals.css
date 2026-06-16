@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: auto;
+}
+
 /* ═══════════════════════════════════════════════════════════════
    ANIMATABLE ACCENT — @property enables smooth OKLCH interpolation
    ═══════════════════════════════════════════════════════════════ */

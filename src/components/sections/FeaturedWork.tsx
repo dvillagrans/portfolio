@@ -9,23 +9,36 @@ import dynamic from "next/dynamic";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import type { ProjectItem } from "@/i18n/types";
-import { Scene, getAccent } from "./Scene";
-import { BespokeCovidScene } from "./BespokeCovidScene";
+import {
+  getFeaturedWorkSceneScrollY,
+  smoothScrollTo,
+} from "@/lib/scroll";
+import {
+  CINEMATIC_SCROLL,
+  buildCinematicSnapPoints,
+  getActiveSceneFromProgress,
+  getIncomingFadeDelay,
+  CHROME_TRANSITION_MS,
+} from "@/lib/featuredWorkScrollConfig";
+import { Scene, getAccent, accentAlpha } from "./Scene";
 
 const ProjectSpotlight = dynamic(
   () => import("../portfolio/ProjectSpotlight"),
   { ssr: false }
 );
 
-const EyeNetCard = dynamic(() => import("../ui/EyeNetCard"), { ssr: false });
-
 gsap.registerPlugin(ScrollTrigger);
+
+function projectNavLabel(title: string): string {
+  return title.split(/[—–-]/)[0]?.trim() ?? title;
+}
 
 export default function FeaturedWork() {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
   const staticCardRefs = useRef<(HTMLElement | null)[]>([]);
+  const navButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const { t, language } = useLanguage();
   const reduced = useReducedMotion();
   const [spotlight, setSpotlight] = useState<{ open: boolean; project: ProjectItem | null }>({
@@ -49,6 +62,55 @@ export default function FeaturedWork() {
 
   const projects = t.work.projects;
 
+  // Keyboard navigation between pinned scenes (desktop cinematic)
+  useEffect(() => {
+    if (mode !== "cinematic" || reduced) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      const target = e.target;
+      if (
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target instanceof HTMLSelectElement ||
+        (target instanceof HTMLElement && target.isContentEditable)
+      ) {
+        return;
+      }
+
+      let next = activeScene;
+      if (e.key === "ArrowDown" || e.key === "PageDown") {
+        next = Math.min(projects.length - 1, activeScene + 1);
+      } else if (e.key === "ArrowUp" || e.key === "PageUp") {
+        next = Math.max(0, activeScene - 1);
+      } else if (/^[1-9]$/.test(e.key)) {
+        const idx = Number(e.key) - 1;
+        if (idx < projects.length) next = idx;
+      } else {
+        return;
+      }
+
+      if (next === activeScene || !sectionRef.current) return;
+      e.preventDefault();
+      smoothScrollTo(
+        getFeaturedWorkSceneScrollY(sectionRef.current, next, projects.length),
+        CINEMATIC_SCROLL.programmaticScroll
+      );
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [mode, reduced, activeScene, projects.length]);
+
+  // Keep active project tab visible above the chat dock
+  useEffect(() => {
+    if (mode !== "cinematic") return;
+    navButtonRefs.current[activeScene]?.scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "nearest",
+    });
+  }, [activeScene, mode]);
+
   // ─── CINEMATIC MODE ─── pin + cross-fade scenes ──────────────────────────────
   useLayoutEffect(() => {
     if (mode !== "cinematic") return;
@@ -57,11 +119,13 @@ export default function FeaturedWork() {
     const slides = slideRefs.current.filter(Boolean) as HTMLDivElement[];
     if (slides.length === 0) return;
 
+    let refreshSnap: (() => void) | undefined;
+
     const ctx = gsap.context(() => {
       slides.forEach((slide, i) => {
         gsap.set(slide, {
           opacity: i === 0 ? 1 : 0,
-          y: i === 0 ? 0 : 40,
+          y: i === 0 ? 0 : CINEMATIC_SCROLL.slideOffsetY,
           pointerEvents: i === 0 ? "auto" : "none",
         });
       });
@@ -70,7 +134,17 @@ export default function FeaturedWork() {
       gsap.set(sectionRef.current, { backgroundColor: firstAccent.bg });
 
       const totalSlides = slides.length;
-      const scrollDistance = (totalSlides - 1) * window.innerHeight * 1.4;
+      const scrollDistance =
+        (totalSlides - 1) * window.innerHeight * CINEMATIC_SCROLL.vhPerSlide;
+      const segment = totalSlides > 1 ? 1 / (totalSlides - 1) : 1;
+      const fadeDur = segment * CINEMATIC_SCROLL.fadeFraction;
+      const snapPoints = buildCinematicSnapPoints(totalSlides);
+      let snapToDirectional = ScrollTrigger.snapDirectional(snapPoints);
+
+      refreshSnap = () => {
+        snapToDirectional = ScrollTrigger.snapDirectional(snapPoints);
+      };
+      ScrollTrigger.addEventListener("refresh", refreshSnap);
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -78,21 +152,23 @@ export default function FeaturedWork() {
           start: "top top",
           end: `+=${scrollDistance}`,
           pin: stageRef.current,
-          scrub: 0.15,
+          pinSpacing: true,
+          scrub: CINEMATIC_SCROLL.scrub,
           anticipatePin: 1,
           snap: {
-            snapTo: 1 / (totalSlides - 1),
-            duration: { min: 0.3, max: 0.6 },
-            ease: "power3.out",
-            delay: 0.15,
-            inertia: false,
+            snapTo: (progress, self) =>
+              snapToDirectional(progress, self?.direction ?? 1),
+            duration: {
+              min: CINEMATIC_SCROLL.snap.durationMin,
+              max: CINEMATIC_SCROLL.snap.durationMax,
+            },
+            ease: CINEMATIC_SCROLL.snap.ease,
+            delay: CINEMATIC_SCROLL.snap.delay,
+            inertia: CINEMATIC_SCROLL.snap.inertia,
             directional: true,
           },
           onUpdate: (self) => {
-            const idx = Math.min(
-              totalSlides - 1,
-              Math.round(self.progress * (totalSlides - 1))
-            );
+            const idx = getActiveSceneFromProgress(self.progress, totalSlides);
             setActiveScene((curr) => (curr === idx ? curr : idx));
             slides.forEach((s, i) => {
               s.style.pointerEvents = i === idx ? "auto" : "none";
@@ -101,43 +177,37 @@ export default function FeaturedWork() {
         },
       });
 
-      const segment = 1 / (totalSlides - 1);
-      const fadeFraction = 0.35;
-      const fadeDur = segment * fadeFraction;
+      const offsetY = CINEMATIC_SCROLL.slideOffsetY;
 
       for (let i = 1; i < totalSlides; i++) {
-        const at = (i - 1) * segment;
+        const segmentStart = (i - 1) * segment;
+        const fadeStart = segmentStart + segment * CINEMATIC_SCROLL.holdFraction;
+        const incomingDelay = getIncomingFadeDelay(
+          getAccent(projects[i - 1].id).bg,
+          getAccent(projects[i].id).bg,
+          fadeDur
+        );
+
         tl.to(
           slides[i - 1],
-          { opacity: 0, y: -40, duration: fadeDur, ease: "power2.in" },
-          at
+          { opacity: 0, y: -offsetY, duration: fadeDur, ease: "power1.inOut" },
+          fadeStart
         );
         tl.fromTo(
           slides[i],
-          { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: fadeDur, ease: "power2.out" },
-          at
+          { opacity: 0, y: offsetY },
+          { opacity: 1, y: 0, duration: fadeDur, ease: "power1.inOut" },
+          fadeStart + incomingDelay
         );
-        tl.to(
-          sectionRef.current,
-          {
-            backgroundColor: getAccent(projects[i].id).bg,
-            duration: fadeDur,
-            ease: "none",
-          },
-          at
-        );
-      }
-
-      const remaining = 1 - tl.duration();
-      if (remaining > 0) {
-        tl.to({}, { duration: remaining });
       }
 
       ScrollTrigger.refresh();
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      if (refreshSnap) ScrollTrigger.removeEventListener("refresh", refreshSnap);
+      ctx.revert();
+    };
   }, [mode, projects]);
 
   // ─── STATIC MODE ─── simple stagger reveal ─────────────────────────────────
@@ -154,13 +224,13 @@ export default function FeaturedWork() {
         if (!card) return;
         gsap.fromTo(
           card,
-          { opacity: 0, y: 40 },
+          { opacity: 0, y: 32 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.9,
-            ease: "expo.out",
-            scrollTrigger: { trigger: card, start: "top 85%", once: true },
+            duration: 1.1,
+            ease: "power2.out",
+            scrollTrigger: { trigger: card, start: "top 88%", once: true },
           }
         );
       });
@@ -172,10 +242,23 @@ export default function FeaturedWork() {
     setSpotlight({ open: true, project });
   };
 
-  const renderHeader = (variant: "cinematic" | "static", inkOverride?: string) => {
+  const renderHeader = (variant: "cinematic" | "static", inkOverride?: string, sceneIndex?: number) => {
     const ink = inkOverride ?? "#1c1c1e";
     const inkSoft = `${ink}66`;
     const inkLine = `${ink}33`;
+
+    if (variant === "cinematic" && sceneIndex !== undefined) {
+      return (
+        <header className="pointer-events-auto font-mono text-[9px] font-bold uppercase tracking-[0.32em]">
+          <span style={{ color: `${ink}40` }}>{t.work.title}</span>
+          <span style={{ color: `${ink}25` }}> · </span>
+          <span style={{ color: `${ink}55` }}>
+            {String(sceneIndex + 1).padStart(2, "0")}/{String(projects.length).padStart(2, "0")}
+          </span>
+        </header>
+      );
+    }
+
     return (
       <header
         className={
@@ -188,13 +271,16 @@ export default function FeaturedWork() {
           <div className="mb-3 flex items-center gap-3">
             <div
               className="h-[1px] w-8"
-              style={{ background: inkLine, transition: "background-color 0.6s ease" }}
+              style={{
+                background: inkLine,
+                transition: `background-color ${CHROME_TRANSITION_MS}ms ease`,
+              }}
             />
             <span
               className="font-mono text-[10px] font-bold uppercase tracking-[0.3em]"
-              style={{ color: inkSoft, transition: "color 0.6s ease" }}
+              style={{ color: inkSoft, transition: `color ${CHROME_TRANSITION_MS}ms ease` }}
             >
-              02. {language === "en" ? "Featured Systems" : "Sistemas Destacados"}
+              {language === "en" ? "Selected work" : "Trabajo seleccionado"}
             </span>
           </div>
           <h2
@@ -203,22 +289,27 @@ export default function FeaturedWork() {
                 ? "font-serif text-2xl tracking-tight md:text-3xl"
                 : "font-serif text-5xl tracking-tight md:text-7xl"
             }
-            style={{ color: ink, transition: "color 0.6s ease" }}
+            style={{ color: ink, transition: `color ${CHROME_TRANSITION_MS}ms ease` }}
           >
             {t.work.title}
           </h2>
-          {variant === "static" && (
-            <p className="mt-4 max-w-md font-sans text-sm" style={{ color: inkSoft }}>
-              {t.work.subtitle}
-            </p>
-          )}
+          <p
+            className={
+              variant === "cinematic"
+                ? "mt-1 max-w-md font-sans text-xs md:text-sm"
+                : "mt-4 max-w-md font-sans text-sm"
+            }
+            style={{ color: inkSoft, transition: `color ${CHROME_TRANSITION_MS}ms ease` }}
+          >
+            {t.work.subtitle}
+          </p>
         </div>
         {variant === "static" && (
           <Link
             href="/projects"
             className="group flex min-h-[44px] items-center justify-center gap-3 rounded-full border border-charcoal/10 bg-white px-8 py-4 font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-charcoal shadow-sm transition-all hover:bg-charcoal hover:text-offwhite spring-press"
           >
-            {language === "en" ? "Full Systems Archive" : "Archivo de Sistemas"}
+            {language === "en" ? "View all projects" : "Ver todos los proyectos"}
             <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </Link>
         )}
@@ -242,109 +333,126 @@ export default function FeaturedWork() {
       {mode === "cinematic" && (
         <div ref={stageRef} className="relative h-screen w-full overflow-hidden">
           {/* Sticky chapter header */}
-          <div className="pointer-events-none absolute left-12 top-12 z-30">
+          <div className="pointer-events-none absolute left-6 top-8 z-30 lg:left-12 lg:top-10">
             {renderHeader(
               "cinematic",
-              getAccent(projects[activeScene]?.id ?? "00").ink
+              getAccent(projects[activeScene]?.id ?? "00").ink,
+              activeScene
             )}
           </div>
 
-          {/* Progress rail — local to the pinned stage (right side).
-              The global ScrollProgressRail (layout, left side, z-40) serves
-              a different purpose and does not visually overlap. */}
-          <div className="absolute right-12 top-1/2 z-30 flex -translate-y-1/2 flex-col gap-4">
-            {projects.map((p, i) => {
-              const isOn = i === activeScene;
-              return (
-                <button
-                  key={p.id}
-                  type="button"
-                  onClick={() => {
-                    if (!sectionRef.current) return;
-                    const totalSlides = projects.length;
-                    const scrollDistance = (totalSlides - 1) * window.innerHeight * 1.4;
-                    const sectionTop = sectionRef.current.getBoundingClientRect().top + window.scrollY;
-                    const target = sectionTop + (i / (totalSlides - 1)) * scrollDistance;
-                    window.scrollTo({ top: target, behavior: "smooth" });
-                  }}
-                  className="group flex items-center gap-3"
-                  aria-label={`Go to ${p.title}`}
-                >
-                  <span
-                    className="font-mono text-[9px] font-bold tracking-widest transition-opacity"
-                    style={{ color: getAccent(p.id).ink, opacity: isOn ? 1 : 0.35 }}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div
-                    className="h-[2px] transition-all duration-500"
-                    style={{
-                      width: isOn ? 48 : 20,
-                      background: isOn ? getAccent(p.id).fg : `${getAccent(p.id).ink}30`,
+          {/* Bottom project navigation — lifted above ProjectChat (z-50) */}
+          <nav
+            className="absolute left-0 right-0 z-[55] border-t px-4 py-3 lg:px-12"
+            style={{
+              bottom: "calc(5.25rem + env(safe-area-inset-bottom))",
+              borderColor: accentAlpha(getAccent(projects[activeScene]?.id ?? "00").ink, 0.14),
+              background: accentAlpha(getAccent(projects[activeScene]?.id ?? "00").bg, 0.94),
+              backdropFilter: "blur(10px)",
+              transition: `background-color ${CHROME_TRANSITION_MS}ms ease, border-color ${CHROME_TRANSITION_MS}ms ease`,
+            }}
+            aria-label={language === "en" ? "Project navigation" : "Navegación de proyectos"}
+          >
+            <div className="mx-auto flex max-w-7xl items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {projects.map((p, i) => {
+                const projectAccent = getAccent(p.id);
+                const sceneAccent = getAccent(projects[activeScene]?.id ?? "00");
+                const isOn = i === activeScene;
+                return (
+                  <button
+                    key={p.id}
+                    ref={(el) => {
+                      navButtonRefs.current[i] = el;
                     }}
-                  />
-                </button>
-              );
-            })}
-          </div>
+                    type="button"
+                    onClick={() => {
+                      if (!sectionRef.current) return;
+                      smoothScrollTo(
+                        getFeaturedWorkSceneScrollY(sectionRef.current, i, projects.length),
+                        CINEMATIC_SCROLL.programmaticScroll
+                      );
+                    }}
+                    className="flex shrink-0 items-center gap-2 rounded-lg border px-3 py-2 text-left transition-all duration-300"
+                    style={{
+                      borderColor: isOn
+                        ? accentAlpha(projectAccent.fg, 0.55)
+                        : accentAlpha(sceneAccent.ink, 0.14),
+                      background: isOn
+                        ? accentAlpha(sceneAccent.ink, 0.1)
+                        : accentAlpha(sceneAccent.ink, 0.03),
+                      boxShadow: isOn ? `0 0 0 1px ${accentAlpha(projectAccent.fg, 0.2)}` : undefined,
+                    }}
+                    aria-current={isOn ? "true" : undefined}
+                    aria-label={`${projectNavLabel(p.title)} — ${p.context}`}
+                  >
+                    <span
+                      className="font-mono text-[9px] font-bold tabular-nums"
+                      style={{
+                        color: isOn ? projectAccent.fg : accentAlpha(sceneAccent.ink, 0.5),
+                      }}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="flex flex-col gap-0.5">
+                      <span
+                        className="font-sans text-xs font-semibold leading-none"
+                        style={{ color: sceneAccent.ink }}
+                      >
+                        {projectNavLabel(p.title)}
+                      </span>
+                      <span
+                        className="hidden font-mono text-[8px] uppercase tracking-wider sm:block"
+                        style={{ color: accentAlpha(sceneAccent.ink, 0.48) }}
+                      >
+                        {p.context}
+                      </span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </nav>
 
           {/* Scene stage */}
           <div className="absolute inset-0">
-            {projects.map((p, i) => {
-              const isBespoke = p.id === "01" || p.type === "special";
-              return (
-                <div
-                  key={p.id}
-                  ref={(el) => {
-                    slideRefs.current[i] = el;
-                  }}
-                  className={
-                    isBespoke
-                      ? "absolute inset-0"
-                      : "absolute inset-0 flex items-center px-12 pt-32 pb-12 lg:px-24"
-                  }
-                  style={{ willChange: "opacity, transform" }}
-                >
-                  {p.type === "special" ? (
-                    <EyeNetCard variant="bespoke" />
-                  ) : p.id === "01" ? (
-                    <BespokeCovidScene
-                      project={p}
-                      language={language}
-                      isActive={i === activeScene}
-                      index={i}
-                      onOpenSpotlight={handleOpenSpotlight}
-                      reduced={reduced}
-                    />
-                  ) : (
-                    <div className="mx-auto w-full max-w-7xl">
-                      <Scene
-                        project={p}
-                        accent={getAccent(p.id)}
-                        language={language}
-                        isActive={i === activeScene}
-                        index={i}
-                        onOpenSpotlight={handleOpenSpotlight}
-                        reduced={reduced}
-                      />
-                    </div>
-                  )}
+            {projects.map((p, i) => (
+              <div
+                key={p.id}
+                ref={(el) => {
+                  slideRefs.current[i] = el;
+                }}
+                className="absolute inset-0 flex items-center px-6 pt-16 pb-28 lg:px-12 lg:pt-20 lg:pb-36"
+                style={{
+                  willChange: "opacity, transform",
+                  backgroundColor: getAccent(p.id).bg,
+                }}
+              >
+                <div className="mx-auto w-full max-w-7xl">
+                  <Scene
+                    project={p}
+                    accent={getAccent(p.id)}
+                    language={language}
+                    isActive={i === activeScene}
+                    index={i}
+                    onOpenSpotlight={handleOpenSpotlight}
+                    reduced={reduced}
+                  />
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
 
           {/* Scroll hint */}
           {activeScene === 0 && (
-            <div className="pointer-events-none absolute bottom-8 left-1/2 z-30 -translate-x-1/2 flex flex-col items-center gap-2">
+            <div className="pointer-events-none absolute bottom-[calc(8.5rem+env(safe-area-inset-bottom))] left-1/2 z-20 -translate-x-1/2 flex flex-col items-center gap-2">
               <span
                 className="font-mono text-[9px] font-bold uppercase tracking-[0.3em]"
                 style={{
-                  color: `${getAccent(projects[0]?.id ?? "00").ink}66`,
+                  color: `${getAccent(projects[0]?.id ?? "00").ink}50`,
                   transition: "color 0.6s ease",
                 }}
               >
-                {language === "en" ? "Scroll to navigate systems" : "Hacé scroll para navegar"}
+                {language === "en" ? "Scroll for next project" : "Scroll para el siguiente"}
               </span>
               <div
                 className="h-8 w-[1px] animate-pulse"
@@ -375,27 +483,23 @@ export default function FeaturedWork() {
                   className="relative"
                   style={{ opacity: 0 }}
                 >
-                  {p.type === "special" ? (
-                    <EyeNetCard />
-                  ) : (
-                    <div
-                      className="relative overflow-hidden rounded-[2.5rem] border p-6 md:p-10"
-                      style={{
-                        background: accent.bg,
-                        borderColor: `${accent.ink}10`,
-                      }}
-                    >
-                      <Scene
-                        project={p}
-                        accent={accent}
-                        language={language}
-                        isActive
-                        index={i}
-                        onOpenSpotlight={handleOpenSpotlight}
-                        reduced={reduced}
-                      />
-                    </div>
-                  )}
+                  <div
+                    className="relative overflow-hidden rounded-[2.5rem] border p-6 md:p-10"
+                    style={{
+                      background: accent.bg,
+                      borderColor: `${accent.ink}10`,
+                    }}
+                  >
+                    <Scene
+                      project={p}
+                      accent={accent}
+                      language={language}
+                      isActive
+                      index={i}
+                      onOpenSpotlight={handleOpenSpotlight}
+                      reduced={reduced}
+                    />
+                  </div>
                 </article>
               );
             })}
@@ -404,12 +508,12 @@ export default function FeaturedWork() {
           <footer className="mt-24 flex flex-col items-center justify-between gap-8 border-t border-charcoal/5 pt-12 md:flex-row">
             <div className="flex flex-col gap-1">
               <p className="font-sans text-sm font-medium text-charcoal">
-                {language === "en" ? "Hungry for more systems?" : "¿Quieres ver más sistemas?"}
+                {language === "en" ? "More case studies in the archive" : "Más casos de estudio en el archivo"}
               </p>
               <p className="font-sans text-xs text-charcoal/40">
                 {language === "en"
-                  ? "Explore 12+ experimental notebooks and archive projects."
-                  : "Explora más de 12 notebooks experimentales y proyectos de archivo."}
+                  ? "12+ notebooks, experiments, and shipped systems."
+                  : "12+ notebooks, experimentos y sistemas en producción."}
               </p>
             </div>
             <Link

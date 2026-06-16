@@ -42,20 +42,8 @@ export default function Hero() {
         return;
       }
 
-      // Scan line — sweeps left to right then disappears (cinematic HUD moment)
-      gsap.fromTo(
-        scanRef.current,
-        { scaleX: 0, opacity: 0.6, transformOrigin: "left" },
-        {
-          scaleX: 1,
-          duration: 1.1,
-          ease: "expo.inOut",
-          delay: 0.1,
-          onComplete: () => {
-            gsap.to(scanRef.current, { opacity: 0, duration: 0.4, delay: 0.1 });
-          },
-        }
-      );
+      // Scan line — disabled for clarity-first hero
+      gsap.set(scanRef.current, { opacity: 0 });
 
       // Word-by-word clip-path reveal — cinematic "rising from below"
       const validWords = wordsRef.current.filter(Boolean);
@@ -110,17 +98,19 @@ export default function Hero() {
       id="hero"
       className="relative flex h-[100dvh] w-full flex-col justify-end overflow-hidden pt-[max(5rem,calc(4rem+env(safe-area-inset-top)))] sm:pt-24 md:pt-28 pb-[max(5rem,calc(1.25rem+env(safe-area-inset-bottom)))] sm:pb-24 md:pb-32 pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] sm:pl-8 md:pl-24"
     >
-      {/* Background cinematic layers */}
+      {/* Background — subtle ambient layer, content-first */}
       <div className="absolute inset-0 z-0 bg-charcoal">
-        <WebGLHeroCanvas />
-        <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/50 to-transparent" aria-hidden="true" />
-        <div className="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/20 to-transparent opacity-60" aria-hidden="true" />
+        <div className="absolute inset-0 opacity-[0.35]" aria-hidden="true">
+          <WebGLHeroCanvas />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/85 to-charcoal/70" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/60 to-transparent" aria-hidden="true" />
       </div>
 
-      {/* Cinematic scan line — sweeps once on load */}
+      {/* Scan line — kept in DOM for reduced-motion compat, hidden */}
       <div
         ref={scanRef}
-        className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1px] bg-gradient-to-r from-transparent via-warm/60 to-transparent pointer-events-none z-10"
+        className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1px] bg-gradient-to-r from-transparent via-warm/60 to-transparent pointer-events-none z-10 opacity-0"
         style={{ transformOrigin: "left" }}
         aria-hidden
       />

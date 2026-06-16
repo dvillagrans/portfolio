@@ -27,6 +27,7 @@ import {
   Clock,
 } from "lucide-react";
 import { useCommandPalette } from "@/hooks/CommandPaletteContext";
+import { smoothScrollToHash } from "@/lib/scroll";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useTheme } from "@/hooks/ThemeContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -146,7 +147,13 @@ export function CommandPalette() {
       }
       const id = hash.replace("#", "");
       const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+      if (el) {
+        if (reduced) {
+          el.scrollIntoView({ behavior: "auto", block: "start" });
+        } else {
+          smoothScrollToHash(hash, { duration: 1.15, ease: "power2.inOut" });
+        }
+      }
     },
     [router, reduced, close]
   );

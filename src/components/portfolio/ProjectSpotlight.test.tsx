@@ -20,14 +20,31 @@ vi.mock("@/hooks/useReducedMotion", () => ({
   useReducedMotion: () => true,
 }));
 
+vi.mock("@/i18n/LanguageContext", () => ({
+  useLanguage: () => ({
+    language: "en",
+    t: {
+      work: {
+        labelScope: "Problem",
+        labelSystem: "Solution",
+        labelOutcome: "Impact",
+        labelRole: "My role",
+      },
+    },
+  }),
+}));
+
 const mockProject: ProjectItem = {
   id: "test-01",
   type: "grid",
+  context: "Test",
   category: "Test Category",
   title: "Test Project Title",
+  subtitle: "Test subtitle",
   problem: "Test problem description",
   system: "Test system description",
   outcome: "Test outcome",
+  role: "Full-stack · Testing",
   image: "/img/test.webp",
   tags: ["React", "TypeScript"],
   metrics: [{ value: "100%", label: "accuracy" }],
@@ -81,6 +98,6 @@ describe("ProjectSpotlight", () => {
     render(
       <ProjectSpotlight project={mockProject} open={true} onClose={vi.fn()} />
     );
-    expect(screen.getByText("Visit")).toBeInTheDocument();
+    expect(screen.getByText("Open project")).toBeInTheDocument();
   });
 });

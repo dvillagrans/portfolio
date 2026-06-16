@@ -4,6 +4,7 @@ import { useEffect, useRef, useCallback } from "react";
 import gsap from "gsap";
 import { X, ArrowUpRight, ExternalLink } from "lucide-react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useLanguage } from "@/i18n/LanguageContext";
 import type { ProjectItem } from "@/i18n/types";
 
 interface ProjectSpotlightProps {
@@ -16,6 +17,9 @@ export default function ProjectSpotlight({ project, open, onClose }: ProjectSpot
   const overlayRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+  const { t, language } = useLanguage();
+  const labels = t.work;
+  const isEn = language === "en";
 
   // ESC handler
   useEffect(() => {
@@ -99,42 +103,29 @@ export default function ProjectSpotlight({ project, open, onClose }: ProjectSpot
         </button>
 
         <div className="p-8 md:p-12">
-          {/* Category */}
-          <span className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-warm/70 mb-4 block">
-            {project.category}
-          </span>
+          <div className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-offwhite/40">
+            <span className="text-warm/70">{project.context}</span>
+            {project.date && (
+              <>
+                <span>·</span>
+                <span>{project.date}</span>
+              </>
+            )}
+          </div>
 
-          {/* Title */}
-          <h2 className="font-serif text-4xl md:text-5xl italic tracking-tight text-offwhite mb-6">
+          <h2 className="font-serif text-3xl md:text-4xl tracking-tight text-offwhite mb-2">
             {project.title}
           </h2>
-
-          {/* Problem */}
-          <p className="font-sans text-base text-offwhite/60 leading-relaxed mb-8">
-            {project.problem}
+          <p className="font-sans text-sm text-offwhite/55 leading-relaxed mb-8">
+            {project.subtitle}
           </p>
 
-          {/* Tags */}
-          {project.tags && project.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-8">
-              {project.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest text-offwhite/50 bg-white/5 border border-white/10"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-
-          {/* Metrics */}
           {project.metrics && project.metrics.length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8 pb-8 border-b border-white/10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mb-8 pb-8 border-b border-white/10">
               {project.metrics.map((m, i) => (
                 <div key={i}>
-                  <p className="font-serif text-3xl italic text-warm">{m.value}</p>
-                  <p className="font-mono text-[9px] font-bold uppercase tracking-widest text-offwhite/40 mt-1">
+                  <p className="font-mono text-2xl font-bold tabular-nums text-warm">{m.value}</p>
+                  <p className="font-mono text-[8px] font-bold uppercase tracking-widest text-offwhite/40 mt-1">
                     {m.label}
                   </p>
                 </div>
@@ -142,24 +133,63 @@ export default function ProjectSpotlight({ project, open, onClose }: ProjectSpot
             </div>
           )}
 
-          {/* CTAs */}
+          <div className="flex flex-col gap-6 mb-8">
+            <div>
+              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/35 mb-2">
+                {labels.labelScope}
+              </p>
+              <p className="font-sans text-sm text-offwhite/65 leading-relaxed">{project.problem}</p>
+            </div>
+            <div>
+              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/35 mb-2">
+                {labels.labelSystem}
+              </p>
+              <p className="font-sans text-sm text-offwhite/65 leading-relaxed">{project.system}</p>
+            </div>
+            <div>
+              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/35 mb-2">
+                {labels.labelOutcome}
+              </p>
+              <p className="font-sans text-sm text-offwhite/65 leading-relaxed">{project.outcome}</p>
+            </div>
+            <div>
+              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/35 mb-2">
+                {labels.labelRole}
+              </p>
+              <p className="font-sans text-sm text-offwhite/65 leading-relaxed">{project.role}</p>
+            </div>
+          </div>
+
+          {project.tags && project.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-8">
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-2.5 py-1 rounded-md text-[9px] font-medium uppercase tracking-wider text-offwhite/45 bg-white/5"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
           <div className="flex flex-wrap gap-4">
             {isExternal ? (
               <a
                 href={project.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[44px] items-center gap-3 bg-warm text-charcoal px-8 py-4 rounded-xl font-sans text-xs font-bold uppercase tracking-[0.15em] transition-all hover:bg-warm/80 spring-press"
+                className="inline-flex min-h-[44px] items-center gap-3 bg-warm text-charcoal px-8 py-4 rounded-xl font-sans text-xs font-semibold transition-all hover:bg-warm/80 spring-press"
               >
-                Visit
+                {isEn ? "Open project" : "Abrir proyecto"}
                 <ExternalLink className="w-4 h-4" />
               </a>
             ) : (
               <a
-                href={project.href}
-                className="inline-flex min-h-[44px] items-center gap-3 bg-warm text-charcoal px-8 py-4 rounded-xl font-sans text-xs font-bold uppercase tracking-[0.15em] transition-all hover:bg-warm/80 spring-press"
+                href={project.caseStudy ?? project.href}
+                className="inline-flex min-h-[44px] items-center gap-3 bg-warm text-charcoal px-8 py-4 rounded-xl font-sans text-xs font-semibold transition-all hover:bg-warm/80 spring-press"
               >
-                Read Case Study
+                {isEn ? "Read case study" : "Leer caso de estudio"}
                 <ArrowUpRight className="w-4 h-4" />
               </a>
             )}

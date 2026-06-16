@@ -26,12 +26,18 @@ export interface ProjectLink {
 
 export interface ProjectItem {
   id: string;
-  type: "special" | "hero" | "grid" | "wide";
+  type: "hero" | "grid" | "wide";
+  /** e.g. Client project, Research, Personal */
+  context: string;
   category: string;
   title: string;
+  /** One-line descriptor under the title */
+  subtitle: string;
   problem: string;
   system: string;
   outcome: string;
+  /** Your contribution — scanable roles */
+  role: string;
   image: string;
   tags: string[];
   metrics: ProjectMetric[];
@@ -48,6 +54,9 @@ export interface WorkDict {
   labelScope: string;
   labelSystem: string;
   labelOutcome: string;
+  labelRole: string;
+  labelStack: string;
+  labelEvidence: string;
   inspect: string;
   projects: ProjectItem[];
 }

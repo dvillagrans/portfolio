@@ -113,7 +113,7 @@ export default function RootLayout({
 }>) {
   return (
     <ViewTransitions>
-      <html lang="en" className="scroll-smooth antialiased no-transition" suppressHydrationWarning>
+      <html lang="en" className="antialiased no-transition" suppressHydrationWarning>
         <head>
         <script
           dangerouslySetInnerHTML={{
