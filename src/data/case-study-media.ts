@@ -37,7 +37,8 @@ export const caseStudyMedia = {
   india: {
     slug: "india",
     poster: "/img/india-air-quality.webp",
-    alt: "India air quality intelligence dashboard",
+    alt: "India air quality intelligence dashboard walkthrough",
+    video: { mp4: "/videos/india-aq.mp4" },
     aspectRatio: "16/10",
   },
 } as const satisfies Record<CaseStudySlug, CaseStudyMedia>;

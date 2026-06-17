@@ -11,13 +11,13 @@ describe("case-study-media", () => {
     }
   });
 
-  it("registers covid demo video under public/videos", () => {
+  it("registers demo videos under public/videos", () => {
     expect(caseStudyMedia.covid.video).toEqual({ mp4: "/videos/covid.mp4" });
+    expect(caseStudyMedia.india.video).toEqual({ mp4: "/videos/india-aq.mp4" });
   });
 
-  it("leaves nyc and india as poster-only until videos are added", () => {
+  it("leaves nyc as poster-only until video is added", () => {
     expect(getCaseStudyMedia("nyc").video).toBeUndefined();
-    expect(getCaseStudyMedia("india").video).toBeUndefined();
   });
 
   it("resolves media from featured project case study paths", () => {

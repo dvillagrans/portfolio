@@ -1,7 +1,7 @@
 import type { EditorialCaseStudyDict } from "../types";
 
 const DASHBOARD_URL =
-  "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/";
+  "https://nyc.dvillagrans.dev";
 const REPO_URL = "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard";
 
 export const nycEn = {

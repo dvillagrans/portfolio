@@ -438,7 +438,7 @@ export const DATA = {
       links: [
         {
           type: "Live app",
-          href: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/",
+          href: "https://nyc.dvillagrans.dev",
           icon: <Icons.globe className="size-3" />,
         },
         {

@@ -214,7 +214,7 @@ export function CommandPalette() {
         label: { en: "Case Study — NYC Ride-Hailing", es: "Caso — NYC Ride-Hailing" },
         group: "navigation",
         icon: FileText,
-        keywords: ["nyc", "streamlit", "uber"],
+        keywords: ["nyc", "uber", "lyft"],
         run: () => navigate("/projects/nyc"),
       },
       {

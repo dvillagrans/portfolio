@@ -114,7 +114,7 @@ export const sharedEn = {
           { value: "92%", label: "classification acc." }
         ],
         links: [
-          { label: "Live dashboard", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" },
+          { label: "Live dashboard", url: "https://nyc.dvillagrans.dev" },
           { label: "Code", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" }
         ],
         href: "/projects/nyc",
@@ -498,7 +498,7 @@ export const sharedEn = {
         summary: "Fare prediction R² > 0.85 and live geospatial dashboards.",
         caseStudy: "/projects/nyc",
         links: [
-          { label: "Dashboard", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" },
+          { label: "Dashboard", url: "https://nyc.dvillagrans.dev" },
           { label: "Repo", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" }
         ],
         description: "Interactive dashboard for analyzing Uber and Lyft trip patterns in NYC with fare prediction ML models and geospatial visualizations.",
@@ -815,7 +815,7 @@ export const sharedEs = {
           { value: "92%", label: "precisión clasif." }
         ],
         links: [
-          { label: "Dashboard en vivo", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" },
+          { label: "Dashboard en vivo", url: "https://nyc.dvillagrans.dev" },
           { label: "Código", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" }
         ],
         href: "/projects/nyc",
@@ -1199,7 +1199,7 @@ export const sharedEs = {
         summary: "Predicción de tarifas R² > 0.85 y dashboards geoespaciales en vivo.",
         caseStudy: "/projects/nyc",
         links: [
-          { label: "Dashboard", url: "https://nyc-ride-hailing-analytics-dashboard-8ef5n9wjmxxxa8ymaxw9vh.streamlit.app/" },
+          { label: "Dashboard", url: "https://nyc.dvillagrans.dev" },
           { label: "Repo", url: "https://github.com/dvillagrans/NYC-Ride-Hailing-Analytics-Dashboard" }
         ],
         description: "Dashboard interactivo para analizar patrones de viaje de Uber y Lyft en NYC con modelos de predicción de tarifas y visualizaciones geoespaciales.",
