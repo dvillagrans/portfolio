@@ -521,6 +521,12 @@ export function CvPdfDocument({
     .map((segment) => segment.trim())
     .filter(Boolean);
 
+  const contactMid = Math.ceil(contactSegments.length / 2);
+  const contactLines = [
+    contactSegments.slice(0, contactMid),
+    contactSegments.slice(contactMid),
+  ].filter((line) => line.length > 0);
+
   const certLookup = new Map<string, string>();
   for (const cert of certifications) {
     certLookup.set(cert.name.toLowerCase(), cert.id);
@@ -538,13 +544,13 @@ export function CvPdfDocument({
       <Page size="LETTER" style={styles.page} wrap>
         <View style={styles.header}>
           <Text style={styles.name}>{name}</Text>
-          {contactSegments.length > 0 && (
-            <View style={styles.contactRow}>
-              {contactSegments.map((segment, index) => {
+          {contactLines.map((line, lineIndex) => (
+            <Text key={lineIndex} style={styles.contactLine}>
+              {line.map((segment, index) => {
                 const link = getContactLink(segment);
                 return (
                   <React.Fragment key={index}>
-                    {index > 0 ? <Text style={styles.contactSep}>|</Text> : null}
+                    {index > 0 ? <Text style={styles.contactSep}> · </Text> : null}
                     {link ? (
                       <Link src={link.src} style={styles.contactLink}>
                         {link.text}
@@ -555,8 +561,8 @@ export function CvPdfDocument({
                   </React.Fragment>
                 );
               })}
-            </View>
-          )}
+            </Text>
+          ))}
         </View>
 
         {contentSections.map((section) => {
@@ -643,11 +649,24 @@ export function CvPdfDocument({
 
             return (
               <SectionBlock key={section.type} title={title}>
-                {certLines.map((text, index) => (
-                  <Text key={index} style={styles.certLine}>
-                    • {text}
-                  </Text>
-                ))}
+                {certLines.map((text, index) => {
+                  const matchedId = findCertId(text, certLookup);
+                  return (
+                    <Text key={index} style={styles.certLine}>
+                      •{" "}
+                      {matchedId ? (
+                        <Link
+                          src={`https://www.dvillagrans.dev/about#${matchedId}`}
+                          style={styles.certLink}
+                        >
+                          {text}
+                        </Link>
+                      ) : (
+                        text
+                      )}
+                    </Text>
+                  );
+                })}
               </SectionBlock>
             );
           }
