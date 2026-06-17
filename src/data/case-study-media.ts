@@ -31,7 +31,8 @@ export const caseStudyMedia = {
   nyc: {
     slug: "nyc",
     poster: "/img/nyc-ridehailing-dashboard.webp",
-    alt: "NYC ride-hailing analytics dashboard",
+    alt: "NYC ride-hailing analytics dashboard walkthrough",
+    video: { mp4: "/videos/nyc.mp4" },
     aspectRatio: "16/10",
   },
   india: {

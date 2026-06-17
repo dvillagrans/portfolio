@@ -13,11 +13,8 @@ describe("case-study-media", () => {
 
   it("registers demo videos under public/videos", () => {
     expect(caseStudyMedia.covid.video).toEqual({ mp4: "/videos/covid.mp4" });
+    expect(caseStudyMedia.nyc.video).toEqual({ mp4: "/videos/nyc.mp4" });
     expect(caseStudyMedia.india.video).toEqual({ mp4: "/videos/india-aq.mp4" });
-  });
-
-  it("leaves nyc as poster-only until video is added", () => {
-    expect(getCaseStudyMedia("nyc").video).toBeUndefined();
   });
 
   it("resolves media from featured project case study paths", () => {
