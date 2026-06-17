@@ -39,15 +39,6 @@ const ATS_SECTION_ORDER = [
   "certifications",
 ] as const;
 
-const SECTION_LABELS: Record<string, string> = {
-  "professional summary": "Professional Summary",
-  "technical skills": "Technical Skills",
-  "professional experience": "Professional Experience",
-  education: "Education",
-  "featured projects": "Selected Projects",
-  certifications: "Certifications",
-};
-
 const styles = StyleSheet.create({
   page: {
     fontFamily: "Helvetica",
@@ -94,10 +85,9 @@ const styles = StyleSheet.create({
     marginTop: 9,
   },
   sectionTitle: {
-    fontSize: 8.75,
+    fontSize: 9,
     fontWeight: "bold",
-    textTransform: "uppercase",
-    letterSpacing: 1.1,
+    letterSpacing: 0.4,
     color: COLORS.ink,
     marginBottom: 5,
     paddingBottom: 2,
@@ -211,6 +201,7 @@ const styles = StyleSheet.create({
 
 interface CvSection {
   type: string;
+  title: string;
   content: string;
   items: string[];
 }
@@ -242,6 +233,7 @@ function parseMarkdown(md: string): CvSection[] {
   const lines = md.split("\n");
   const sections: CvSection[] = [];
   let currentType = "";
+  let currentTitle = "";
   let currentContent = "";
   let currentItems: string[] = [];
 
@@ -249,11 +241,13 @@ function parseMarkdown(md: string): CvSection[] {
     if (currentType) {
       sections.push({
         type: currentType === "__name__" ? "name" : currentType,
+        title: currentTitle,
         content: currentContent.trim(),
         items: [...currentItems],
       });
     }
     currentType = "";
+    currentTitle = "";
     currentContent = "";
     currentItems = [];
   };
@@ -271,7 +265,8 @@ function parseMarkdown(md: string): CvSection[] {
 
     if (trimmed.startsWith("## ")) {
       flush();
-      currentType = trimmed.replace(/^## /, "").toLowerCase();
+      currentTitle = trimmed.replace(/^## /, "").trim();
+      currentType = currentTitle.toLowerCase();
       continue;
     }
 
@@ -477,7 +472,7 @@ function ProjectEntry({ entry }: { entry: ParsedEntry }) {
         <Text style={styles.projectDesc}>{entry.description}</Text>
       ) : null}
       {entry.stack ? (
-        <Text style={styles.stackLine}>Technologies: {entry.stack}</Text>
+        <Text style={styles.stackLine}>Stack: {entry.stack}</Text>
       ) : null}
       <BulletList bullets={entry.bullets} />
     </View>
@@ -541,7 +536,7 @@ export function CvPdfDocument({
       subject="Resume"
       keywords="resume, curriculum vitae, ATS"
     >
-      <Page size="LETTER" style={styles.page} wrap>
+      <Page size="A4" style={styles.page} wrap>
         <View style={styles.header}>
           <Text style={styles.name}>{name}</Text>
           {contactLines.map((line, lineIndex) => (
@@ -566,7 +561,7 @@ export function CvPdfDocument({
         </View>
 
         {contentSections.map((section) => {
-          const title = SECTION_LABELS[section.type] || section.type;
+          const title = section.title;
 
           if (section.type === "professional summary") {
             return (
