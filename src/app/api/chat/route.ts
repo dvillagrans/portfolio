@@ -1,7 +1,7 @@
 import { deepseek } from '@ai-sdk/deepseek';
 import { streamText, convertToModelMessages } from 'ai';
 import { NextResponse } from 'next/server';
-import { DATA } from '@/data/resume';
+import { CV_DATA } from '@/data/cv';
 import { CERTIFICATIONS } from '@/data/certifications';
 import { rateLimit, getRequestIdentifier } from '@/lib/rate-limit';
 
@@ -13,7 +13,7 @@ const CHAT_RATE_LIMIT = 15;
 const CHAT_WINDOW_MS = 60 * 1000;
 
 // Filter out non-serializable fields (JSX nodes) before stringifying
-const cleanData = JSON.stringify(DATA, (key, value) => {
+const cleanData = JSON.stringify(CV_DATA, (key, value) => {
   if (key === 'icon' || key === 'logo') return undefined;
   return value;
 }, 2);

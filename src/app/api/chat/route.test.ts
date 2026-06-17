@@ -10,8 +10,8 @@ vi.mock('ai', () => ({
   convertToModelMessages: vi.fn().mockResolvedValue([]),
 }));
 
-vi.mock('@/data/resume', () => ({
-  DATA: { name: 'Test' },
+vi.mock('@/data/cv', () => ({
+  CV_DATA: { profile: { name: 'Test' } },
 }));
 
 vi.mock('@/data/certifications', () => ({

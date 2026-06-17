@@ -6,14 +6,20 @@ import Navbar from "@/components/layout/Navbar";
 import { ArrowLeft, Copy, Check, RotateCcw, Sparkles, FileDown, Send, User, Bot } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { cvBuilderEn, cvBuilderEs } from "@/i18n/dictionaries/cv-builder";
+import { CV_EXAMPLE_JDS } from "@/data/cv/example-jds";
+import type { CvSelectionSummary } from "@/lib/cv/format-selection";
+import { CvSelectionPanel } from "@/components/cv-builder/CvSelectionPanel";
+import { CvExampleChips } from "@/components/cv-builder/CvExampleChips";
 import type { CvBuilderDict } from "@/i18n/types";
 import ReactMarkdown from "react-markdown";
 
 type CvState =
   | { status: "idle" }
   | { status: "loading" }
-  | { status: "success"; markdown: string }
+  | { status: "success"; markdown: string; coverLetter: string; selection: CvSelectionSummary }
   | { status: "error"; message: string; retryAfter?: number };
+
+type ResultTab = "cv" | "coverLetter";
 
 export default function CvBuilderPage() {
   const { language } = useLanguage();
@@ -21,7 +27,9 @@ export default function CvBuilderPage() {
 
   const [jd, setJd] = useState("");
   const [state, setState] = useState<CvState>({ status: "idle" });
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<"cv" | "coverLetter" | null>(null);
+  const [pdfError, setPdfError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<ResultTab>("cv");
   const [countdown, setCountdown] = useState(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
@@ -54,6 +62,7 @@ export default function CvBuilderPage() {
     if (!isInputValid || state.status === "loading") return;
 
     setState({ status: "loading" });
+    setPdfError(null);
 
     try {
       const res = await fetch("/api/cv-builder", {
@@ -80,22 +89,25 @@ export default function CvBuilderPage() {
         return;
       }
 
-      setState({ status: "success", markdown: data.markdown });
+      setState({
+        status: "success",
+        markdown: data.markdown,
+        coverLetter: data.coverLetter,
+        selection: data.selection,
+      });
+      setActiveTab("cv");
     } catch {
       setState({ status: "error", message: dict.errorGeneric });
     }
   }, [isInputValid, state.status, jd, dict]);
 
-  const handleCopy = useCallback(async () => {
-    if (state.status !== "success") return;
+  const copyToClipboard = useCallback(async (text: string) => {
     try {
-      await navigator.clipboard.writeText(state.markdown);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      await navigator.clipboard.writeText(text);
+      return true;
     } catch {
-      // Fallback: select text from a hidden pre element
       const pre = document.createElement("pre");
-      pre.textContent = state.markdown;
+      pre.textContent = text;
       document.body.appendChild(pre);
       const range = document.createRange();
       range.selectNode(pre);
@@ -104,13 +116,21 @@ export default function CvBuilderPage() {
       document.execCommand("copy");
       window.getSelection()?.removeAllRanges();
       document.body.removeChild(pre);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      return true;
     }
-  }, [state]);
+  }, []);
+
+  const handleCopy = useCallback(async () => {
+    if (state.status !== "success") return;
+    const text = activeTab === "cv" ? state.markdown : state.coverLetter;
+    await copyToClipboard(text);
+    setCopied(activeTab);
+    setTimeout(() => setCopied(null), 2000);
+  }, [state, activeTab, copyToClipboard]);
 
   const handleDownloadPdf = useCallback(async () => {
     if (state.status !== "success") return;
+    setPdfError(null);
     try {
       const { pdf } = await import("@react-pdf/renderer");
       const { CvPdfDocument } = await import("@/components/ui/CvPdf");
@@ -128,13 +148,17 @@ export default function CvBuilderPage() {
       URL.revokeObjectURL(url);
     } catch (err) {
       console.error("PDF generation failed:", err);
+      setPdfError(dict.pdfError);
     }
-  }, [state]);
+  }, [state, dict.pdfError]);
 
   const handleReset = useCallback(() => {
     setState({ status: "idle" });
     setCountdown(0);
-    setCopied(false);
+    setCopied(null);
+    setPdfError(null);
+    setActiveTab("cv");
+    setInterviewMessages([]);
   }, []);
 
   // Interview prep state
@@ -148,17 +172,18 @@ export default function CvBuilderPage() {
     const q = interviewInput.trim();
     if (!q || interviewLoading) return;
 
+    const priorMessages = interviewMessages;
+
     setInterviewMessages((prev) => [...prev, { role: "user", content: q }]);
     setInterviewInput("");
     setInterviewLoading(true);
 
     try {
-      // Pass the JD if one was used for CV generation
       const jobDescription = jd.trim().length > 10 ? jd.trim() : undefined;
       const res = await fetch("/api/cv-builder/interview", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q, jobDescription }),
+        body: JSON.stringify({ question: q, jobDescription, history: priorMessages }),
       });
 
       if (!res.ok) {
@@ -174,7 +199,9 @@ export default function CvBuilderPage() {
     } finally {
       setInterviewLoading(false);
     }
-  }, [interviewInput, interviewLoading, jd, dict]);
+  }, [interviewInput, interviewLoading, interviewMessages, jd, dict]);
+
+  const exampleJds = CV_EXAMPLE_JDS[language === "es" ? "es" : "en"];
 
   // Scroll to bottom of interview chat
   useEffect(() => {
@@ -218,6 +245,9 @@ export default function CvBuilderPage() {
           <p className="font-sans text-sm font-semibold uppercase tracking-[0.3em] text-warm">
             {dict.subtitle}
           </p>
+          <p className="mt-3 max-w-xl font-sans text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
+            {dict.internalNote}
+          </p>
         </section>
 
         {/* Input Section */}
@@ -260,6 +290,16 @@ export default function CvBuilderPage() {
               </span>
             )}
           </div>
+
+          <CvExampleChips
+            examples={exampleJds}
+            label={dict.exampleJdsLabel}
+            disabled={state.status === "loading"}
+            onSelect={(text) => {
+              setJd(text);
+              textareaRef.current?.focus();
+            }}
+          />
         </section>
 
         {/* Generate Button */}
@@ -326,30 +366,72 @@ export default function CvBuilderPage() {
         {/* Result Section */}
         {state.status === "success" && (
           <section ref={resultRef}>
+            <CvSelectionPanel
+              selection={state.selection}
+              labels={{
+                title: dict.selectionTitle,
+                projects: dict.selectionProjects,
+                experience: dict.selectionExperience,
+                skills: dict.selectionSkills,
+              }}
+            />
+
+            {/* Tabs */}
+            <div
+              className="mb-4 inline-flex rounded-full border p-1"
+              style={{ borderColor: "var(--border-color)", backgroundColor: "var(--card)" }}
+            >
+              {(
+                [
+                  { id: "cv" as const, label: dict.tabCv },
+                  { id: "coverLetter" as const, label: dict.tabCoverLetter },
+                ] as const
+              ).map((tab) => {
+                const isOn = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setActiveTab(tab.id)}
+                    className="rounded-full px-4 py-2 font-sans text-xs font-semibold transition-colors"
+                    style={{
+                      backgroundColor: isOn ? "var(--text-primary)" : "transparent",
+                      color: isOn ? "var(--bg-primary)" : "var(--text-secondary)",
+                    }}
+                  >
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
+
             {/* Action bar */}
             <div className="mb-6 flex items-center gap-3 flex-wrap">
               <button
                 onClick={handleCopy}
                 className="group inline-flex items-center justify-center gap-2 min-h-[44px] px-6 rounded-full font-sans text-xs font-bold uppercase tracking-widest transition-all spring-press border"
                 style={{
-                  backgroundColor: copied ? "rgba(34, 197, 94, 0.1)" : "var(--card)",
-                  borderColor: copied ? "rgba(34, 197, 94, 0.3)" : "var(--border-color)",
-                  color: copied ? "#22c55e" : "var(--text-secondary)",
+                  backgroundColor:
+                    copied === activeTab ? "rgba(34, 197, 94, 0.1)" : "var(--card)",
+                  borderColor:
+                    copied === activeTab ? "rgba(34, 197, 94, 0.3)" : "var(--border-color)",
+                  color: copied === activeTab ? "#22c55e" : "var(--text-secondary)",
                 }}
               >
-                {copied ? (
+                {copied === activeTab ? (
                   <>
                     <Check className="h-4 w-4" />
-                    {dict.copied}
+                    {activeTab === "cv" ? dict.copied : dict.copiedCoverLetter}
                   </>
                 ) : (
                   <>
                     <Copy className="h-4 w-4" />
-                    {dict.copyButton}
+                    {activeTab === "cv" ? dict.copyButton : dict.copyCoverLetter}
                   </>
                 )}
               </button>
 
+              {activeTab === "cv" && (
               <button
                 onClick={handleDownloadPdf}
                 className="group inline-flex items-center justify-center gap-2 min-h-[44px] px-6 rounded-full font-sans text-xs font-bold uppercase tracking-widest transition-all spring-press border"
@@ -362,6 +444,7 @@ export default function CvBuilderPage() {
                 <FileDown className="h-4 w-4" />
                 {dict.printButton}
               </button>
+              )}
 
               <button
                 onClick={handleReset}
@@ -377,14 +460,20 @@ export default function CvBuilderPage() {
               </button>
             </div>
 
-            {/* Markdown rendered CV */}
+            {pdfError && (
+              <p className="mb-4 font-sans text-sm text-red-500/90">{pdfError}</p>
+            )}
+
+            {/* Document output */}
             <div
-              className="rounded-2xl border px-8 py-8 md:px-12 md:py-10 prose-cv"
+              className="rounded-2xl border px-8 py-8 md:px-12 md:py-10"
               style={{
                 backgroundColor: "var(--card)",
                 borderColor: "var(--border-color)",
               }}
             >
+              {activeTab === "cv" ? (
+              <div className="prose-cv">
               <ReactMarkdown
                 components={{
                   h2: ({ children }) => (
@@ -450,6 +539,15 @@ export default function CvBuilderPage() {
               >
                 {state.markdown}
               </ReactMarkdown>
+              </div>
+              ) : (
+                <div
+                  className="whitespace-pre-wrap font-sans text-sm leading-relaxed"
+                  style={{ color: "var(--text-secondary)" }}
+                >
+                  {state.coverLetter}
+                </div>
+              )}
             </div>
 
             {/* Powered by */}
@@ -476,6 +574,19 @@ export default function CvBuilderPage() {
           >
             {dict.interviewSubtitle}
           </p>
+
+          {interviewMessages.length > 0 && (
+            <div className="mb-3 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setInterviewMessages([])}
+                className="font-mono text-[10px] uppercase tracking-widest transition-colors hover:text-warm"
+                style={{ color: "var(--text-muted)" }}
+              >
+                {dict.interviewClear}
+              </button>
+            </div>
+          )}
 
           {/* Chat messages */}
           {interviewMessages.length > 0 && (

@@ -39,6 +39,7 @@ export default function FeaturedWork() {
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
   const staticCardRefs = useRef<(HTMLElement | null)[]>([]);
   const navButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const navScrollRef = useRef<HTMLDivElement>(null);
   const { t, language } = useLanguage();
   const reduced = useReducedMotion();
   const [spotlight, setSpotlight] = useState<{ open: boolean; project: ProjectItem | null }>({
@@ -101,13 +102,19 @@ export default function FeaturedWork() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [mode, reduced, activeScene, projects.length]);
 
-  // Keep active project tab visible above the chat dock
+  // Keep active project tab visible in the horizontal nav — scroll the container only
+  // (scrollIntoView on the button would scroll the page down to #projects on mount)
   useEffect(() => {
     if (mode !== "cinematic") return;
-    navButtonRefs.current[activeScene]?.scrollIntoView({
+    const container = navScrollRef.current;
+    const btn = navButtonRefs.current[activeScene];
+    if (!container || !btn) return;
+
+    const targetLeft =
+      btn.offsetLeft - (container.clientWidth - btn.offsetWidth) / 2;
+    container.scrollTo({
+      left: Math.max(0, targetLeft),
       behavior: "smooth",
-      inline: "center",
-      block: "nearest",
     });
   }, [activeScene, mode]);
 
@@ -353,7 +360,10 @@ export default function FeaturedWork() {
             }}
             aria-label={language === "en" ? "Project navigation" : "Navegación de proyectos"}
           >
-            <div className="mx-auto flex max-w-7xl items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div
+              ref={navScrollRef}
+              className="mx-auto flex max-w-7xl items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
               {projects.map((p, i) => {
                 const projectAccent = getAccent(p.id);
                 const sceneAccent = getAccent(projects[activeScene]?.id ?? "00");

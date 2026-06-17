@@ -613,13 +613,16 @@ export interface BouquetDict {
 export interface CvBuilderDict {
   title: string;
   subtitle: string;
+  internalNote: string;
   inputLabel: string;
   inputPlaceholder: string;
+  exampleJdsLabel: string;
   generateButton: string;
   generating: string;
   copyButton: string;
   copied: string;
   printButton: string;
+  pdfError: string;
   generateAgain: string;
   back: string;
   errorRateLimit: string;
@@ -629,11 +632,20 @@ export interface CvBuilderDict {
   poweredBy: string;
   charCount: string;
   retryAfter: string;
+  selectionTitle: string;
+  selectionProjects: string;
+  selectionExperience: string;
+  selectionSkills: string;
+  tabCv: string;
+  tabCoverLetter: string;
+  copyCoverLetter: string;
+  copiedCoverLetter: string;
   interviewTitle: string;
   interviewSubtitle: string;
   interviewPlaceholder: string;
   interviewSend: string;
   interviewThinking: string;
+  interviewClear: string;
   interviewPoweredBy: string;
 }
 

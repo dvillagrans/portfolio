@@ -1,23 +1,33 @@
 import { deepseek } from '@ai-sdk/deepseek';
 import { generateText } from 'ai';
 import { NextResponse } from 'next/server';
-import { DATA } from '@/data/resume';
+import { CV_DATA } from '@/data/cv';
 import { CERTIFICATIONS } from '@/data/certifications';
 import { rateLimit, getRequestIdentifier } from '@/lib/rate-limit';
+import { selectCvContext } from '@/lib/cv/select';
+import { buildSelectedCvContext } from '@/lib/cv/build-context';
+import { renderCvMarkdown } from '@/lib/cv/render';
+import { enforceCvMetrics } from '@/lib/cv/validate';
+import { formatSelectionSummary } from '@/lib/cv/format-selection';
+import {
+  buildFallbackCvDocument,
+  parseCvFromModel,
+  type CvParseContext,
+} from '@/lib/cv/parse-cv';
+import {
+  buildCoverLetterSystemPrompt,
+  parseCoverLetterFromModel,
+  renderCoverLetter,
+} from '@/lib/cv/cover-letter';
 
-export const maxDuration = 30;
+export const maxDuration = 60;
 
-// CV Builder rate limit: 5 requests per 5 minutes per IP
 const CV_RATE_LIMIT = 5;
 const CV_WINDOW_MS = 5 * 60 * 1000;
 
 const MIN_JD_LENGTH = 10;
 const MAX_JD_LENGTH = 10_000;
 
-/**
- * Remove duplicate paragraphs from the generated CV.
- * DeepSeek sometimes repeats the summary or other sections.
- */
 function deduplicateParagraphs(text: string): string {
   const paragraphs = text.split(/\n\n+/);
   const seen = new Set<string>();
@@ -26,7 +36,6 @@ function deduplicateParagraphs(text: string): string {
   for (const p of paragraphs) {
     const normalized = p.trim().toLowerCase().replace(/\s+/g, " ");
     if (normalized.length < 20) {
-      // Keep short lines (headers, bullets, etc.)
       unique.push(p);
       continue;
     }
@@ -38,101 +47,108 @@ function deduplicateParagraphs(text: string): string {
   return unique.join("\n\n");
 }
 
-// Filter out non-serializable fields (JSX nodes) before stringifying
-const cleanData = JSON.stringify(DATA, (key, value) => {
-  if (key === 'icon' || key === 'logo') return undefined;
-  return value;
-}, 2);
+function toCleanJson(value: unknown): string {
+  return JSON.stringify(
+    value,
+    (key, v) => {
+      if (key === 'icon' || key === 'logo') return undefined;
+      return v;
+    },
+    2
+  );
+}
 
 const cleanCerts = JSON.stringify(CERTIFICATIONS, null, 2);
 
-const systemPrompt = `Role:
+function buildCvSystemPrompt(selectedJson: string, certificationsJson: string): string {
+  return `Role:
 You are a professional resume writer specializing in one-page tech CVs for early-career engineers.
 
 Objective:
-Given a job description and the candidate's resume data, produce a TAILORED ONE-PAGE CV in Markdown. The CV should fill the page completely — dense but scannable in 6 seconds.
+Given a job description and the candidate's resume data, produce a TAILORED ONE-PAGE CV.
 
 Source of Truth (Hard Requirement):
-- The canonical data is the JSON resume and certifications below.
+- The canonical data is the SELECTED context JSON below, plus certifications.
 - NEVER invent facts, skills, experience, metrics, or achievements not explicitly present in the data.
 - If the JD asks for something not in the resume, OMIT it — do not hallucinate.
 - NEVER repeat sections or content. Each section appears ONCE.
 
 Instructions:
-1. Analyze the job description to extract:
-   - Required technical skills
-   - Preferred qualifications
-   - Key responsibilities
-   - Industry/domain focus
-
-2. From the candidate's data, SELECT and PRIORITIZE:
-   - 3-4 projects whose technologies best match JD requirements
-   - Top 12-15 skills that directly match JD keywords (grouped by category)
-   - Work experience with bullet points rewritten to match JD language
-   - 3-4 most relevant certifications
-
-3. ADAPT wording:
-   - Mirror JD terminology (e.g., if JD says "data pipeline" use that, not "ETL workflow")
-   - EVERY bullet point MUST include a concrete metric or outcome (%, scale, time saved, revenue, users)
-   - If a metric exists in the data, USE IT. If not, quantify the impact (e.g., "processing 10K+ daily requests")
-   - Be concise but complete — every section should have substance
-
-4. OUTPUT FORMAT — strict Markdown, ONE PAGE, in this exact order:
-
-# Diego Villagran Salazar
-(location · email · phone · linkedin url · github url · portfolio url)
-
-## Professional Summary
-(3-4 lines, tailored to JD, compelling and specific. THIS SECTION MUST APPEAR EXACTLY ONCE. NEVER repeat paragraphs or sentences.)
-
-## Education
-(school · degree · expected graduation · GPA if > 8.5)
-(Education comes FIRST because the candidate is an active student)
-
-## Technical Skills
-(grouped by category: "Languages: ... | ML/AI: ... | Data: ... | DevOps: ... | Frontend: ...")
-
-## Professional Experience
-(2-3 entries, each with:)
-**Job Title — Company** (dates)
-Brief 1-line role description highlighting what was built/achieved
-• Bullet with metric: action verb + what + result (e.g., "Designed automation pipelines that reduced manual processing by 70%")
-• Bullet with metric: technical achievement relevant to the JD
-• Bullet with scale/impact: systems built, users served, transactions processed
-(Each bullet MUST connect to a skill or responsibility from the JD)
-
-## Featured Projects
-(3-4 projects, each as a separate block:)
-**Project Name** — one-line description
-Stack: tech1, tech2, tech3
-• Impact bullet with metric
-• Impact bullet with metric
-
-## Certifications
-(3-4 most relevant, one line each: "Certification Name — Issuer (Date)")
-
-Constraints:
-- THE CV MUST FILL ONE PAGE when printed — not half, not overflowing
-- NO cover letter — CV only
-- NO horizontal rules (---) between sections
-- NO repeated sections or content
-- EVERY bullet point must have a metric or quantified outcome
-- Professional, confident tone
-- Clean single-column layout for ATS compatibility
-- NEVER use dashes (-) or em dashes (—) as separators. Use commas, colons, or parentheses instead
-- Write like a human, not a chatbot. No filler phrases ("leveraged", "spearheaded", "utilized"). Use direct, concrete language: "built", "deployed", "designed", "reduced"
+1. You will receive a selected context JSON with verified project facts and experience bullets.
+2. Produce a STRICT JSON object (no Markdown) matching:
+{
+  "summary": string,
+  "skills": Array<{ "category": string, "items": string }>,
+  "experience": Array<{ "title": string, "company": string, "dates": string, "bullets": string[] }>,
+  "projects": Array<{ "name": string, "description": string, "stack": string, "bullets": string[] }>,
+  "certifications": string[]
+}
+3. Constraints:
+   - Experience: 1–3 entries. Projects: 3–4 entries.
+   - Every bullet must contain a metric or scale signal (numbers, <500ms, 10K+, $2-3, %).
+   - Mirror JD terminology. No dashes as separators in prose.
 
 ========
-SOURCE OF TRUTH DATA (JSON):
-${cleanData}
+SELECTED CV CONTEXT (JSON):
+${selectedJson}
 ========
 CERTIFICATIONS DETAIL:
-${cleanCerts}
-========
-`;
+${certificationsJson}
+========`;
+}
+
+function buildCvRepairPrompt(validationErrors: string, invalidJson: string): string {
+  return `Your previous CV JSON failed validation: ${validationErrors}
+
+Return ONLY corrected JSON (no markdown, no commentary) matching exactly:
+{
+  "summary": string (min 20 chars),
+  "skills": Array<{ "category": string, "items": string }> (min 3),
+  "experience": Array<{ "title": string, "company": string, "dates": string, "bullets": string[] }> (1-3, 2-5 bullets each, min 8 chars per bullet with a metric),
+  "projects": Array<{ "name": string, "description": string, "stack": string, "bullets": string[] }> (3-4, 2-4 bullets each),
+  "certifications": string[] (min 2)
+}
+
+Invalid output to fix:
+${invalidJson.slice(0, 12_000)}`;
+}
+
+async function resolveCvDocument(
+  cvText: string,
+  ctx: CvParseContext,
+  jd: string,
+  selectedJson: string,
+  certificationsJson: string
+) {
+  let attempt = parseCvFromModel(cvText, ctx);
+  if (attempt.ok) return attempt;
+
+  console.warn('CV validation failed, retrying repair:', attempt.errors);
+
+  const repair = await generateText({
+    model: deepseek('deepseek-chat'),
+    system: buildCvSystemPrompt(selectedJson, certificationsJson),
+    messages: [
+      { role: 'user', content: jd },
+      { role: 'assistant', content: cvText },
+      { role: 'user', content: buildCvRepairPrompt(attempt.errors, cvText) },
+    ],
+  });
+
+  if (repair.text?.trim()) {
+    attempt = parseCvFromModel(repair.text, ctx);
+    if (attempt.ok) return attempt;
+    console.warn('CV repair still invalid:', attempt.errors);
+  }
+
+  return {
+    ok: true as const,
+    data: buildFallbackCvDocument(ctx),
+    usedFallback: true,
+  };
+}
 
 export async function POST(req: Request) {
-  // Rate limit check
   const identifier = getRequestIdentifier(req);
   const { allowed, remaining, resetAt, message } = rateLimit({
     limit: CV_RATE_LIMIT,
@@ -154,16 +170,12 @@ export async function POST(req: Request) {
     );
   }
 
-  // Parse and validate request body
   let jobDescription: string;
   try {
     const body = await req.json();
     jobDescription = body.jobDescription;
   } catch {
-    return NextResponse.json(
-      { error: 'Invalid request body' },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
   }
 
   if (typeof jobDescription !== 'string' || jobDescription.trim().length < MIN_JD_LENGTH) {
@@ -181,23 +193,83 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { text } = await generateText({
-      model: deepseek('deepseek-chat'),
-      system: systemPrompt,
-      messages: [{ role: 'user', content: jobDescription.trim() }],
-    });
+    const jd = jobDescription.trim();
+    const selection = selectCvContext(CV_DATA, jd);
+    const selectedContext = buildSelectedCvContext(CV_DATA, selection);
+    const selectedJson = toCleanJson(selectedContext);
 
-    if (!text || text.trim().length === 0) {
+    const [cvResult, letterResult] = await Promise.all([
+      generateText({
+        model: deepseek('deepseek-chat'),
+        system: buildCvSystemPrompt(selectedJson, cleanCerts),
+        messages: [{ role: 'user', content: jd }],
+      }),
+      generateText({
+        model: deepseek('deepseek-chat'),
+        system: buildCoverLetterSystemPrompt({
+          selectedJson,
+          certificationsJson: cleanCerts,
+        }),
+        messages: [{ role: 'user', content: jd }],
+      }),
+    ]);
+
+    if (!cvResult.text?.trim()) {
       return NextResponse.json(
         { error: 'No CV generated — try rephrasing the job description' },
         { status: 500 }
       );
     }
 
-    // Deduplicate repeated paragraphs (DeepSeek sometimes repeats the summary)
-    const deduplicated = deduplicateParagraphs(text);
+    const parseCtx: CvParseContext = {
+      cv: CV_DATA,
+      selection,
+      certifications: CERTIFICATIONS,
+    };
 
-    return NextResponse.json({ markdown: deduplicated });
+    const cvResolved = await resolveCvDocument(
+      cvResult.text,
+      parseCtx,
+      jd,
+      selectedJson,
+      cleanCerts
+    );
+
+    if (!cvResolved.ok) {
+      return NextResponse.json(
+        { error: 'Could not generate a valid CV. Please try again.' },
+        { status: 500 }
+      );
+    }
+
+    if (cvResolved.usedFallback) {
+      console.warn('CV builder used deterministic fallback from CV_DATA');
+    }
+
+    let coverLetter = "";
+    if (letterResult.text?.trim()) {
+      try {
+        const letterDoc = parseCoverLetterFromModel(letterResult.text);
+        coverLetter = renderCoverLetter(CV_DATA.profile, letterDoc);
+      } catch (letterErr) {
+        console.error('Cover letter parse error:', letterErr);
+        return NextResponse.json(
+          { error: 'CV generated but cover letter failed. Please try again.' },
+          { status: 500 }
+        );
+      }
+    } else {
+      return NextResponse.json(
+        { error: 'No cover letter generated — try rephrasing the job description' },
+        { status: 500 }
+      );
+    }
+
+    const guarded = enforceCvMetrics(cvResolved.data);
+    const markdown = deduplicateParagraphs(renderCvMarkdown(CV_DATA, guarded));
+    const selectionSummary = formatSelectionSummary(CV_DATA, selection);
+
+    return NextResponse.json({ markdown, coverLetter, selection: selectionSummary });
   } catch (error) {
     console.error('CV Builder error:', error);
     return NextResponse.json(

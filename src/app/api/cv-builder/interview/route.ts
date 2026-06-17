@@ -1,7 +1,7 @@
 import { deepseek } from '@ai-sdk/deepseek';
 import { generateText } from 'ai';
 import { NextResponse } from 'next/server';
-import { DATA } from '@/data/resume';
+import { CV_DATA } from '@/data/cv';
 import { CERTIFICATIONS } from '@/data/certifications';
 import { rateLimit, getRequestIdentifier } from '@/lib/rate-limit';
 
@@ -12,7 +12,7 @@ const INTERVIEW_RATE_LIMIT = 20;
 const INTERVIEW_WINDOW_MS = 5 * 60 * 1000;
 
 // Filter out non-serializable fields (JSX nodes) before stringifying
-const cleanData = JSON.stringify(DATA, (key, value) => {
+const cleanData = JSON.stringify(CV_DATA, (key, value) => {
   if (key === 'icon' || key === 'logo') return undefined;
   return value;
 }, 2);
@@ -74,7 +74,11 @@ export async function POST(req: Request) {
     );
   }
 
-  let body: { question?: string; jobDescription?: string };
+  let body: {
+    question?: string;
+    jobDescription?: string;
+    history?: { role: "user" | "assistant"; content: string }[];
+  };
   try {
     body = await req.json();
   } catch {
@@ -84,7 +88,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const { question, jobDescription } = body;
+  const { question, jobDescription, history } = body;
 
   if (!question || typeof question !== 'string' || question.trim().length < 3) {
     return NextResponse.json(
@@ -107,10 +111,26 @@ ${jobDescription.trim().slice(0, 5000)}
   }
 
   try {
+    const priorMessages = Array.isArray(history)
+      ? history
+          .filter(
+            (m): m is { role: "user" | "assistant"; content: string } =>
+              (m.role === "user" || m.role === "assistant") &&
+              typeof m.content === "string" &&
+              m.content.trim().length > 0
+          )
+          .slice(-10)
+      : [];
+
+    const modelMessages = [
+      ...priorMessages.map((m) => ({ role: m.role as "user" | "assistant", content: m.content })),
+      { role: "user" as const, content: question.trim() },
+    ];
+
     const { text } = await generateText({
       model: deepseek('deepseek-reasoner'),
       system: systemPrompt,
-      messages: [{ role: 'user', content: question.trim() }],
+      messages: modelMessages,
     });
 
     if (!text || text.trim().length === 0) {
