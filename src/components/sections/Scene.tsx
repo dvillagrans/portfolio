@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,6 +10,27 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import { resolveCaseStudyMediaFromProject } from "@/data/case-study-media";
 import { CaseStudyHeroMedia } from "@/components/case-study/CaseStudyHeroMedia";
 import { CountUp } from "./CountUp";
+
+const EyeNetPipelineViz = dynamic(
+  () =>
+    import("@/components/portfolio/viz/EyeNetPipelineViz").then((mod) => ({
+      default: mod.EyeNetPipelineViz,
+    })),
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        className="h-full min-h-[148px] w-full animate-pulse rounded-lg"
+        style={{ background: "rgba(255,255,255,0.04)" }}
+      />
+    ),
+  }
+);
+
+function isEyeNetProject(project: ProjectItem): boolean {
+  const path = project.caseStudy ?? project.href;
+  return path.includes("/projects/eyenet");
+}
 
 export interface SceneAccent {
   fg: string;
@@ -72,6 +94,7 @@ function ProjectEvidence({
   const registryMedia = resolveCaseStudyMediaFromProject(project);
   const src = resolveImageSrc(project.image);
   const isExternal = project.href.startsWith("http");
+  const usePipelineEvidence = isEyeNetProject(project);
   const media = registryMedia
     ? { ...registryMedia, alt: project.title }
     : null;
@@ -79,7 +102,10 @@ function ProjectEvidence({
   const frame = (
     <div
       className="relative aspect-[16/10] w-full overflow-hidden rounded-xl border"
-      style={{ borderColor: `${accent.ink}12`, background: `${accent.ink}04` }}
+      style={{
+        borderColor: usePipelineEvidence ? `${accent.fg}28` : `${accent.ink}12`,
+        background: usePipelineEvidence ? "#0d1117" : `${accent.ink}04`,
+      }}
     >
       {media ? (
         <CaseStudyHeroMedia
@@ -92,6 +118,13 @@ function ProjectEvidence({
           sizes="(max-width: 1024px) 90vw, 45vw"
           imageStyle={{ viewTransitionName: `project-img-${project.id}` }}
         />
+      ) : usePipelineEvidence ? (
+        <div
+          className={`absolute inset-0 flex items-center px-2 py-3 md:px-3 ${isActive ? "" : "[&_*]:!animation-none"}`}
+          style={{ viewTransitionName: `project-img-${project.id}` }}
+        >
+          <EyeNetPipelineViz />
+        </div>
       ) : (
         <Image
           src={src}
