@@ -193,7 +193,7 @@ export default function NotFound() {
         >
           {/* Glitch layer 1 — warm */}
           <span
-            className="absolute inset-0 flex justify-center items-center text-[8rem] sm:text-[10rem] md:text-[14rem] leading-none font-serif italic text-warm"
+            className="absolute inset-0 flex justify-center items-center text-[8rem] sm:text-[10rem] md:text-[14rem] leading-none font-display italic text-warm"
             aria-hidden
             style={{
               animation: reduced
@@ -207,7 +207,7 @@ export default function NotFound() {
 
           {/* Glitch layer 2 — accent */}
           <span
-            className="absolute inset-0 flex justify-center items-center text-[8rem] sm:text-[10rem] md:text-[14rem] leading-none font-serif italic text-accent"
+            className="absolute inset-0 flex justify-center items-center text-[8rem] sm:text-[10rem] md:text-[14rem] leading-none font-display italic text-accent"
             aria-hidden
             style={{
               animation: reduced
@@ -220,7 +220,7 @@ export default function NotFound() {
           </span>
 
           {/* Main digits */}
-          <span className="relative flex text-[8rem] sm:text-[10rem] md:text-[14rem] leading-none font-serif italic text-warm">
+          <span className="relative flex text-[8rem] sm:text-[10rem] md:text-[14rem] leading-none font-display italic text-warm">
             {"404".split("").map((digit, i) => (
               <span
                 key={i}

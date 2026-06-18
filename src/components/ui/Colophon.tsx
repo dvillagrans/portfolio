@@ -61,7 +61,7 @@ export default function Colophon() {
             <span className="font-mono text-[9px] font-bold uppercase tracking-[0.25em] text-offwhite/30">
               {t.colophon.scoreLabel}
             </span>
-            <span className="font-serif text-2xl italic text-warm">
+            <span className="font-display text-2xl italic text-warm">
               {lighthouseScore}
             </span>
           </div>

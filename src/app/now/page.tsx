@@ -71,7 +71,7 @@ export default function NowPage() {
           <div className="flex flex-col gap-4 mb-12">
             <h1
               ref={(el) => { elementsRef.current[0] = el; }}
-              className="font-serif text-5xl italic tracking-tight md:text-8xl mb-4 text-[var(--text-primary)]"
+              className="font-display text-5xl italic tracking-tight md:text-8xl mb-4 text-[var(--text-primary)]"
             >
               {now.title}
             </h1>
@@ -101,7 +101,7 @@ export default function NowPage() {
               <h2 className="md:col-span-4 font-sans text-[10px] font-bold uppercase tracking-widest text-warm pt-2 border-t-2 border-warm/30 md:border-transparent md:pt-0">
                 {section.heading}
               </h2>
-              <div className="md:col-span-8 font-serif text-xl md:text-2xl leading-relaxed text-[var(--text-secondary)]">
+              <div className="md:col-span-8 font-display text-xl md:text-2xl leading-relaxed text-[var(--text-secondary)]">
                 {section.content}
               </div>
             </section>

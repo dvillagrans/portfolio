@@ -24,7 +24,7 @@ export function CaseStudySection({
           <p className="mb-2 font-mono text-[10px] font-bold uppercase tracking-[0.35em] text-offwhite/40">
             {eyebrow}
           </p>
-          <h2 className="font-serif text-2xl leading-tight text-offwhite/90 md:text-3xl">
+          <h2 className="font-display text-2xl leading-tight text-offwhite/90 md:text-3xl">
             {title}
           </h2>
         </div>

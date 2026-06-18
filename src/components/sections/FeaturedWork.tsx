@@ -293,8 +293,8 @@ export default function FeaturedWork() {
           <h2
             className={
               variant === "cinematic"
-                ? "font-serif text-2xl tracking-tight md:text-3xl"
-                : "font-serif text-5xl tracking-tight md:text-7xl"
+                ? "font-display text-2xl tracking-tight md:text-3xl"
+                : "font-display text-5xl tracking-tight md:text-7xl"
             }
             style={{ color: ink, transition: `color ${CHROME_TRANSITION_MS}ms ease` }}
           >

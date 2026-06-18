@@ -14,7 +14,7 @@ export function CaseStudyFooter({ footer }: CaseStudyFooterProps) {
       {footer.note && (
         <p className="mb-6 max-w-xl text-sm leading-relaxed text-offwhite/45">{footer.note}</p>
       )}
-      <p className="font-serif text-lg italic text-offwhite/70 md:text-xl">{footer.cta}</p>
+      <p className="font-display text-lg italic text-offwhite/70 md:text-xl">{footer.cta}</p>
       <Link
         href="/#contact"
         className="mt-4 inline-flex items-center gap-2 rounded-full bg-warm px-6 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-charcoal transition-all hover:bg-warm/90"

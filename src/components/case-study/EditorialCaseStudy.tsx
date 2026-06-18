@@ -72,7 +72,7 @@ export function EditorialCaseStudy({ dict, slug, actions, schema }: EditorialCas
 
         <section className="reveal-fade mb-16 max-w-3xl md:mb-20">
           <Quote className="mb-4 h-8 w-8 text-warm/25" />
-          <blockquote className="font-serif text-2xl leading-snug text-offwhite/85 md:text-3xl">
+          <blockquote className="font-display text-2xl leading-snug text-offwhite/85 md:text-3xl">
             &ldquo;{dict.quote.text}
             <span className="text-warm italic">{dict.quote.bold}</span>
             {dict.quote.text2}&rdquo;
@@ -93,7 +93,7 @@ export function EditorialCaseStudy({ dict, slug, actions, schema }: EditorialCas
                 key={idx}
                 className="rounded-2xl border border-offwhite/[0.08] bg-offwhite/[0.02] p-6"
               >
-                <h3 className="mb-2 font-serif text-lg text-offwhite">{item.title}</h3>
+                <h3 className="mb-2 font-display text-lg text-offwhite">{item.title}</h3>
                 <p className="text-sm leading-relaxed text-offwhite/55">
                   {item.text1}
                   {item.bold1 && <span className="font-medium text-offwhite">{item.bold1}</span>}
@@ -129,7 +129,7 @@ export function EditorialCaseStudy({ dict, slug, actions, schema }: EditorialCas
                   <span className="mb-2 block font-mono text-[10px] uppercase tracking-widest text-warm/70">
                     {d.nav}
                   </span>
-                  <h3 className="font-serif text-xl text-offwhite">{d.title}</h3>
+                  <h3 className="font-display text-xl text-offwhite">{d.title}</h3>
                 </div>
                 <div className="flex flex-col justify-center gap-5 p-6 md:w-2/3 md:p-8">
                   <p className="text-sm leading-relaxed text-offwhite/60 md:text-base">
@@ -161,7 +161,7 @@ export function EditorialCaseStudy({ dict, slug, actions, schema }: EditorialCas
                 key={idx}
                 className="rounded-2xl border border-offwhite/[0.08] bg-offwhite/[0.02] p-6 md:p-7"
               >
-                <h3 className="mb-2 flex items-center gap-2 font-serif text-lg text-offwhite">
+                <h3 className="mb-2 flex items-center gap-2 font-display text-lg text-offwhite">
                   {l.title}
                   <AlertCircle className="text-red-400/70" size={16} />
                 </h3>

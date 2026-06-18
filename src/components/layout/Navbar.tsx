@@ -390,7 +390,7 @@ export default function Navbar() {
                       >
                         {/* Watermark number */}
                         <span
-                          className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 select-none font-serif text-6xl font-medium opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-300"
+                          className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 select-none font-display text-6xl font-medium opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-300"
                         >
                           0{i + 1}
                         </span>

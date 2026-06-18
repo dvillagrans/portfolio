@@ -229,7 +229,7 @@ export default function Stack() {
               {labels.eyebrow}
             </span>
           </div>
-          <h2 className="font-serif text-4xl tracking-tight text-offwhite md:text-5xl lg:text-6xl">
+          <h2 className="font-display text-4xl tracking-tight text-offwhite md:text-5xl lg:text-6xl">
             {labels.title}
           </h2>
           <p className="mt-4 max-w-xl font-sans text-sm text-offwhite/55 md:text-base">
@@ -347,7 +347,7 @@ export default function Stack() {
                   >
                     {activeBand.name}
                   </span>
-                  <h3 className="font-serif text-2xl tracking-tight text-offwhite md:text-3xl">
+                  <h3 className="font-display text-2xl tracking-tight text-offwhite md:text-3xl">
                     {activeTool.tool}
                   </h3>
                 </div>

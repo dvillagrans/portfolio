@@ -337,7 +337,7 @@ export default function Certifications() {
             </div>
           </div>
           <div>
-            <p className="text-xl md:text-2xl font-serif text-[var(--text-primary)] leading-snug">
+            <p className="text-xl md:text-2xl font-display text-[var(--text-primary)] leading-snug">
               {labels.title}
               <br />
               <span className="opacity-50">{labels.subtitle}</span>

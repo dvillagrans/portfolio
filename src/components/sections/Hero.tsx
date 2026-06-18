@@ -91,7 +91,7 @@ export default function Hero() {
           </span>
           <span
             ref={line2Ref}
-            className="mt-1 block font-serif italic text-offwhite/72"
+            className="mt-1 block font-display italic text-offwhite/72"
             style={{ opacity: reduced ? 1 : 0 }}
           >
             {labels.title2}

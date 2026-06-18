@@ -186,7 +186,7 @@ export default function Systems() {
                 <div className="mb-1.5 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/40">
                   {labels.labelCapability} {caseNumber}
                 </div>
-                <h3 className="font-serif text-xl tracking-tight text-offwhite md:text-2xl">
+                <h3 className="font-display text-xl tracking-tight text-offwhite md:text-2xl">
                   {cap.title}
                 </h3>
                 <p className="mt-1.5 font-sans text-sm leading-snug text-offwhite/55">
@@ -286,7 +286,7 @@ export default function Systems() {
               {labels.eyebrow}
             </span>
           </div>
-          <h2 className="font-serif text-4xl tracking-tight text-offwhite md:text-5xl lg:text-6xl">
+          <h2 className="font-display text-4xl tracking-tight text-offwhite md:text-5xl lg:text-6xl">
             {labels.title}
           </h2>
           <p className="mt-4 max-w-xl font-sans text-sm text-offwhite/55 md:text-base">

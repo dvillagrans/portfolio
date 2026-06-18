@@ -132,7 +132,7 @@ export default function Philosophy() {
               {labels.eyebrow}
             </span>
           </div>
-          <h2 className="font-serif text-4xl tracking-tight text-offwhite md:text-5xl lg:text-6xl">
+          <h2 className="font-display text-4xl tracking-tight text-offwhite md:text-5xl lg:text-6xl">
             {labels.title}
           </h2>
           <p className="mt-4 max-w-xl font-sans text-sm text-offwhite/55 md:text-base">
@@ -144,7 +144,7 @@ export default function Philosophy() {
         <div ref={triggerRef} className="mb-14 md:mb-20 max-w-4xl">
           <blockquote>
             <p
-              className="font-serif italic leading-[1.12] tracking-tight text-warm"
+              className="font-display italic leading-[1.12] tracking-tight text-warm"
               style={{ fontSize: "clamp(1.75rem, 4.5vw, 3.5rem)" }}
             >
               <span>&ldquo;{typed}</span>
@@ -208,7 +208,7 @@ export default function Philosophy() {
                     <p className="mb-1.5 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/38">
                       {labels.labelPrinciple} {caseNumber}
                     </p>
-                    <h3 className="font-serif text-xl tracking-tight text-offwhite md:text-2xl">
+                    <h3 className="font-display text-xl tracking-tight text-offwhite md:text-2xl">
                       {item.title}
                     </h3>
                     <p className="mt-2 font-sans text-sm leading-relaxed text-offwhite/58">
@@ -258,7 +258,7 @@ export default function Philosophy() {
 
         <p
           ref={closureRef}
-          className="mt-14 max-w-2xl border-t border-white/8 pt-8 font-serif text-lg italic text-offwhite/45 md:text-xl"
+          className="mt-14 max-w-2xl border-t border-white/8 pt-8 font-display text-lg italic text-offwhite/45 md:text-xl"
         >
           {labels.closure}
         </p>

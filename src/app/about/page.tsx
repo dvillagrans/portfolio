@@ -87,7 +87,7 @@ export default function About() {
     return about.intro.split(pattern).map((part, i) => {
       if (set.has(part)) {
         return (
-          <em key={i} className="font-serif italic font-medium text-warm">
+          <em key={i} className="font-display italic font-medium text-warm">
             {part}
           </em>
         );
@@ -169,7 +169,7 @@ export default function About() {
               <h1
                 style={{ viewTransitionName: "about-title" }}
                 ref={(el) => { elementsRef.current[0] = el; }}
-                className="font-serif text-6xl md:text-[7.5rem] leading-[0.92] tracking-tight text-[var(--text-primary)]"
+                className="font-display text-6xl md:text-[7.5rem] leading-[0.92] tracking-tight text-[var(--text-primary)]"
               >
                 {titleFirst}
                 {titleMid && (
@@ -237,11 +237,11 @@ export default function About() {
                 {/* Monogram — D + V overlapping */}
                 <div className="absolute inset-0 flex items-center justify-center select-none">
                   <div className="relative" aria-hidden>
-                    <span className="block font-serif text-[14rem] md:text-[18rem] leading-none text-[var(--text-primary)] font-medium tracking-tighter transition-transform duration-700 ease-out group-hover:-translate-x-3">
+                    <span className="block font-display text-[14rem] md:text-[18rem] leading-none text-[var(--text-primary)] font-medium tracking-tighter transition-transform duration-700 ease-out group-hover:-translate-x-3">
                       D
                     </span>
                     <span
-                      className="absolute font-serif italic text-[14rem] md:text-[18rem] leading-none text-warm tracking-tighter transition-transform duration-700 ease-out group-hover:translate-x-3"
+                      className="absolute font-display italic text-[14rem] md:text-[18rem] leading-none text-warm tracking-tighter transition-transform duration-700 ease-out group-hover:translate-x-3"
                       style={{ left: "52%", top: "18%" }}
                     >
                       V
@@ -274,7 +274,7 @@ export default function About() {
             {/* Giant decorative opening quote — hangs in the margin */}
             <span
               aria-hidden
-              className="pointer-events-none select-none absolute font-serif italic text-warm/20 leading-none -left-2 md:-left-16 -top-8 md:-top-16"
+              className="pointer-events-none select-none absolute font-display italic text-warm/20 leading-none -left-2 md:-left-16 -top-8 md:-top-16"
               style={{ fontSize: "clamp(7rem, 12vw, 14rem)" }}
             >
               &ldquo;
@@ -298,7 +298,7 @@ export default function About() {
                 <CountUpMetric
                   value={stat.value}
                   label={stat.label}
-                  className="font-serif text-3xl md:text-4xl italic text-[var(--text-primary)]"
+                  className="font-display text-3xl md:text-4xl italic text-[var(--text-primary)]"
                 />
                 <span className="font-sans text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] leading-tight">
                   {stat.label}
@@ -316,7 +316,7 @@ export default function About() {
             <h2 className="md:col-span-4 font-sans text-[10px] font-bold uppercase tracking-widest text-warm pt-2 border-t-2 border-warm/30 md:border-transparent md:pt-0">
               {sections.systems.title}
             </h2>
-            <div className="md:col-span-8 font-serif text-xl md:text-2xl leading-relaxed text-[var(--text-secondary)] drop-cap">
+            <div className="md:col-span-8 font-display text-xl md:text-2xl leading-relaxed text-[var(--text-secondary)] drop-cap">
               {sections.systems.content}
             </div>
           </section>
@@ -350,7 +350,7 @@ export default function About() {
             <div className="md:col-span-8 flex flex-col gap-12">
               {sections.decisions.items.map((item, idx) => (
                 <div key={idx} className="flex flex-col gap-4 border-l-2 border-warm/40 pl-6">
-                  <h3 className="font-serif text-2xl italic">{item.title}</h3>
+                  <h3 className="font-display text-2xl italic">{item.title}</h3>
                   <p className="font-sans text-sm leading-relaxed text-[var(--text-secondary)]">{item.desc}</p>
                 </div>
               ))}
@@ -398,7 +398,7 @@ export default function About() {
 
             {/* Giant opening quote glyph */}
             <span
-              className="block font-serif italic text-warm/35 leading-none mb-[-0.35em]"
+              className="block font-display italic text-warm/35 leading-none mb-[-0.35em]"
               style={{ fontSize: "clamp(8rem, 16vw, 16rem)" }}
               aria-hidden
             >
@@ -407,7 +407,7 @@ export default function About() {
 
             {/* Thesis — declarative serif */}
             <blockquote
-              className="font-serif font-medium leading-[1.15] tracking-tight text-[var(--text-primary)] text-balance"
+              className="font-display font-medium leading-[1.15] tracking-tight text-[var(--text-primary)] text-balance"
               style={{ fontSize: "clamp(2rem, 5.5vw, 5rem)" }}
             >
               {closureText}

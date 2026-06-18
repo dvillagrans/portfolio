@@ -44,7 +44,7 @@ export function CaseStudyHeader({
           {eyebrow}
         </p>
         <h1
-          className="font-serif italic tracking-tight text-offwhite"
+          className="font-display italic tracking-tight text-offwhite"
           style={{
             fontSize: "clamp(2.5rem, 7vw, 5rem)",
             lineHeight: 1.05,

@@ -259,7 +259,7 @@ export default function ProjectsPage() {
             {archive.eyebrow}
           </p>
           <h1
-            className="font-serif italic tracking-tight text-offwhite"
+            className="font-display italic tracking-tight text-offwhite"
             style={{
               fontSize: "clamp(2.5rem, 7vw, 5.5rem)",
               lineHeight: 1.05,
@@ -300,7 +300,7 @@ export default function ProjectsPage() {
                       <p className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-offwhite/40">
                         {project.domain.split("/")[0].trim()}
                       </p>
-                      <h3 className="mt-2 font-serif text-xl tracking-tight text-offwhite">
+                      <h3 className="mt-2 font-display text-xl tracking-tight text-offwhite">
                         {shortTitle(project.title)}
                       </h3>
                       <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-offwhite/55">
@@ -409,7 +409,7 @@ export default function ProjectsPage() {
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-offwhite/35">
                 {archive.emptyTitle}
               </span>
-              <p className="max-w-xl font-serif text-2xl italic leading-snug text-offwhite/55 md:text-3xl">
+              <p className="max-w-xl font-display text-2xl italic leading-snug text-offwhite/55 md:text-3xl">
                 {archive.emptyHint}
               </p>
               <button
@@ -428,7 +428,7 @@ export default function ProjectsPage() {
                   <div className="mb-6 flex items-end justify-between border-b border-offwhite/8 pb-4">
                     <h2
                       id={`year-${year}`}
-                      className="font-serif italic leading-none tracking-tight text-offwhite/85"
+                      className="font-display italic leading-none tracking-tight text-offwhite/85"
                       style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)" }}
                     >
                       {year}
@@ -474,7 +474,7 @@ export default function ProjectsPage() {
                                   </p>
                                 </div>
                                 <h3
-                                  className="mt-2 font-serif tracking-tight text-offwhite/95 transition-colors group-hover:text-white"
+                                  className="mt-2 font-display tracking-tight text-offwhite/95 transition-colors group-hover:text-white"
                                   style={{
                                     fontSize: "clamp(1.15rem, 2vw, 1.5rem)",
                                     lineHeight: 1.2,
@@ -514,7 +514,7 @@ export default function ProjectsPage() {
                             >
                               <div className="pb-8 pt-1">
                                 {project.description && (
-                                  <p className="mb-6 max-w-3xl font-serif text-base leading-relaxed text-offwhite/70 md:text-lg">
+                                  <p className="mb-6 max-w-3xl font-display text-base leading-relaxed text-offwhite/70 md:text-lg">
                                     {project.description}
                                   </p>
                                 )}
@@ -577,7 +577,7 @@ export default function ProjectsPage() {
         </div>
 
         <footer className="mt-24 flex flex-col items-start gap-4 border-t border-offwhite/8 pt-12 md:mt-32">
-          <p className="font-serif text-lg italic text-offwhite/70 md:text-xl">
+          <p className="font-display text-lg italic text-offwhite/70 md:text-xl">
             {archive.footerCta}
           </p>
           <Link

@@ -237,7 +237,7 @@ export default function CvBuilderPage() {
         {/* Title */}
         <section className="mb-12">
           <h1
-            className="font-serif text-4xl italic tracking-tight md:text-6xl mb-4"
+            className="font-display text-4xl italic tracking-tight md:text-6xl mb-4"
             style={{ color: "var(--text-primary)" }}
           >
             {dict.title}
@@ -563,7 +563,7 @@ export default function CvBuilderPage() {
         {/* ── Interview Prep Section ── */}
         <section className="mt-16 border-t pt-12" style={{ borderColor: "var(--border-color)" }}>
           <h2
-            className="font-serif text-2xl md:text-3xl mb-2"
+            className="font-display text-2xl md:text-3xl mb-2"
             style={{ color: "var(--text-primary)" }}
           >
             {dict.interviewTitle}

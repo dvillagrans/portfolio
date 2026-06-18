@@ -157,7 +157,7 @@ export default function Contact() {
             </span>
             <div className="h-px w-8 bg-offwhite/20" />
           </div>
-          <h2 className="font-serif text-4xl tracking-tight text-offwhite md:text-5xl lg:text-6xl">
+          <h2 className="font-display text-4xl tracking-tight text-offwhite md:text-5xl lg:text-6xl">
             {labels.title}
           </h2>
           <p className="mx-auto mt-4 max-w-lg font-sans text-sm text-offwhite/55 md:text-base">

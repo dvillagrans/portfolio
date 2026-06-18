@@ -181,7 +181,7 @@ export function Scene({
 
         <div>
           <h3
-            className="font-serif text-4xl leading-[1.02] tracking-tight md:text-5xl lg:text-[3.25rem]"
+            className="font-display text-4xl leading-[1.02] tracking-tight md:text-5xl lg:text-[3.25rem]"
             style={{ color: accent.ink }}
           >
             {project.title}

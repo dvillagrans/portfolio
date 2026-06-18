@@ -700,7 +700,7 @@ export const sharedEn = {
     footerText: "— Diego Villagran"
   },
   colophon: {
-    fontCredit: "Typography: EB Garamond — designed by Georg Duffner, Rodrigo Fuenzalida",
+    fontCredit: "Typography: Inter & EB Garamond — designed by Rasmus Andersson, Georg Duffner, Rodrigo Fuenzalida",
     deployLabel: "Last deploy",
     scoreLabel: "Lighthouse",
   },
@@ -1401,7 +1401,7 @@ export const sharedEs = {
     footerText: "— Diego Villagran"
   },
   colophon: {
-    fontCredit: "Tipografía: EB Garamond — diseñada por Georg Duffner, Rodrigo Fuenzalida",
+    fontCredit: "Tipografía: Inter & EB Garamond — diseñadas por Rasmus Andersson, Georg Duffner, Rodrigo Fuenzalida",
     deployLabel: "Último deploy",
     scoreLabel: "Lighthouse",
   },

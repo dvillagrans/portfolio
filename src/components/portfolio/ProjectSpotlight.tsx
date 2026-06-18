@@ -113,7 +113,7 @@ export default function ProjectSpotlight({ project, open, onClose }: ProjectSpot
             )}
           </div>
 
-          <h2 className="font-serif text-3xl md:text-4xl tracking-tight text-offwhite mb-2">
+          <h2 className="font-display text-3xl md:text-4xl tracking-tight text-offwhite mb-2">
             {project.title}
           </h2>
           <p className="font-sans text-sm text-offwhite/55 leading-relaxed mb-8">

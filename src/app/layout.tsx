@@ -8,13 +8,19 @@ import { CommandPaletteProvider } from '@/hooks/CommandPaletteContext';
 import { CustomCursor } from '@/components/ui/CustomCursor';
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Space_Grotesk, EB_Garamond, JetBrains_Mono } from "next/font/google";
+import { Inter, Space_Grotesk, EB_Garamond, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import { ThemeProvider } from "@/hooks/ThemeContext";
 import { ViewTransitions } from "next-view-transitions";
 import { HtmlLang } from "@/components/ui/HtmlLang";
 import { Analytics } from "@vercel/analytics/react";
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -156,7 +162,7 @@ export default function RootLayout({
         )}
       </head>
       <body
-        className={`${spaceGrotesk.variable} ${ebGaramond.variable} ${jetbrainsMono.variable} font-sans overflow-x-hidden selection:bg-accent selection:text-offwhite`}
+        className={`${inter.variable} ${spaceGrotesk.variable} ${ebGaramond.variable} ${jetbrainsMono.variable} font-sans overflow-x-hidden selection:bg-accent selection:text-offwhite`}
       >
         <a
           href="#main-content"

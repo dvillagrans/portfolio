@@ -55,7 +55,7 @@ export default function ScrollProgressRail() {
             />
             {/* Section label on hover/active */}
             <span
-              className={`ml-4 font-serif text-xs italic transition-all duration-500 whitespace-nowrap ${
+              className={`ml-4 font-display text-xs italic transition-all duration-500 whitespace-nowrap ${
                 idx === activeIdx
                   ? "text-warm opacity-100 translate-x-0"
                   : "text-offwhite/30 opacity-0 -translate-x-2"
