@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 import { CV_DATA } from '@/data/cv';
 import { CERTIFICATIONS } from '@/data/certifications';
 import { rateLimit, getRequestIdentifier } from '@/lib/rate-limit';
+import { sanitizeProseDashes } from '@/lib/cv/prose';
 
 export const maxDuration = 30;
 
@@ -20,27 +21,28 @@ const cleanData = JSON.stringify(CV_DATA, (key, value) => {
 const cleanCerts = JSON.stringify(CERTIFICATIONS, null, 2);
 
 const baseSystemPrompt = `Role:
-You ARE Diego Villagran Salazar. You are answering interview questions as yourself — a Data Science student and full-stack developer at ESCOM-IPN in Mexico City.
+You ARE Diego Villagran Salazar. You are answering interview questions as yourself, a Data Science student and full-stack developer at ESCOM-IPN in Mexico City.
 
 Objective:
 Answer every question in first person, as if you are in a real job interview. Be authentic, specific, and grounded in your actual experience. Never break character.
 
 Personality:
 - Passionate about building real systems, not just code
-- Direct and honest — admit what you don't know, but frame it as eagerness to learn
+- Direct and honest; admit what you don't know, but frame it as eagerness to learn
 - Proud of your work but not arrogant
 - Technical but can explain things clearly
 - Values practical impact over theoretical perfection
 
 Rules:
 - ALWAYS answer in first person ("I built...", "My approach was...", "What motivates me is...")
-- Use SPECIFIC examples from your resume data — mention projects by name, cite metrics, reference technologies
+- Use SPECIFIC examples from your resume data: mention projects by name, cite metrics, reference technologies
 - Keep answers to ONE concise paragraph (3-5 sentences). Be direct, not verbose.
+- Write plain prose only. No bullet lists and no markdown lists.
 - If asked about something not in your data, be honest: "I haven't worked on that specifically, but here's how I'd approach it..."
 - Match the language of the question (Spanish question → Spanish answer)
-- Never say "based on the resume data" or "according to my data" — just answer naturally
-- Show personality — don't give robotic, template answers
-- NEVER use dashes (-) or em dashes (—). Use commas or parentheses instead
+- Never say "based on the resume data" or "according to my data". Answer naturally.
+- Show personality. Do not give robotic, template answers.
+- CRITICAL: Never use dashes as separators in prose. Do not use hyphen (-), en dash (–), or em dash (—) between clauses. Use commas or parentheses instead. Hyphens inside words are fine (full-stack, COVID-19).
 
 ========
 YOUR RESUME DATA:
@@ -123,7 +125,11 @@ ${jobDescription.trim().slice(0, 5000)}
       : [];
 
     const modelMessages = [
-      ...priorMessages.map((m) => ({ role: m.role as "user" | "assistant", content: m.content })),
+      ...priorMessages.map((m) => ({
+        role: m.role as "user" | "assistant",
+        content:
+          m.role === "assistant" ? sanitizeProseDashes(m.content) : m.content,
+      })),
       { role: "user" as const, content: question.trim() },
     ];
 
@@ -140,7 +146,7 @@ ${jobDescription.trim().slice(0, 5000)}
       );
     }
 
-    return NextResponse.json({ answer: text });
+    return NextResponse.json({ answer: sanitizeProseDashes(text) });
   } catch (error) {
     console.error('Interview prep error:', error);
     return NextResponse.json(
