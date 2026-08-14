@@ -51,6 +51,7 @@ export function CaseStudyHeroMedia({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [lazyReady, setLazyReady] = useState(false);
   const [sceneVideoMounted, setSceneVideoMounted] = useState(false);
+  const [sceneInView, setSceneInView] = useState(false);
 
   const aspect = media.aspectRatio ?? "16/10";
   const frameClass = aspectClass[aspect];
@@ -81,12 +82,35 @@ export function CaseStudyHeroMedia({
     if (isActive) setSceneVideoMounted(true);
   }, [canUseVideo, playback, isActive]);
 
+  // For the embedded home "active-scene" playback, hold the video (and its
+  // poster fetch) until the frame is close to the viewport. The section sits
+  // below the fold, so this defers ~1.6 MB of media off the initial load.
+  useEffect(() => {
+    if (playback !== "active-scene") return;
+
+    const node = containerRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setSceneInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "300px 0px" }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [playback]);
+
   const videoEnabled =
     canUseVideo &&
     (playback === "lazy"
       ? lazyReady
       : playback === "active-scene"
-        ? sceneVideoMounted && isActive
+        ? sceneVideoMounted && sceneInView && isActive
         : false);
 
   const showPoster =
@@ -153,7 +177,7 @@ export function CaseStudyHeroMedia({
   );
 
   if (layout === "embedded") {
-    return <div className="absolute inset-0">{inner}</div>;
+    return <div ref={containerRef} className="absolute inset-0">{inner}</div>;
   }
 
   return (

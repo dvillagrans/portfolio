@@ -251,13 +251,18 @@ export default function FeaturedWork() {
 
   const renderHeader = (variant: "cinematic" | "static", inkOverride?: string, sceneIndex?: number) => {
     const ink = inkOverride ?? "#1c1c1e";
-    const inkSoft = `${ink}66`;
+    // inkSoft raised from 40% to 65% alpha so it clears WCAG AA (4.5:1) on the
+    // light paper background without flattening the header hierarchy.
+    const inkSoft = `${ink}A6`;
     const inkLine = `${ink}33`;
 
     if (variant === "cinematic" && sceneIndex !== undefined) {
       return (
         <header className="pointer-events-auto font-mono text-[9px] font-bold uppercase tracking-[0.32em]">
-          <span style={{ color: `${ink}40` }}>{t.work.title}</span>
+          {/* Section heading kept as a real h2 so the desktop heading order is h1 → h2 → h3 */}
+          <h2 className="inline font-mono text-[9px] font-bold uppercase tracking-[0.32em]" style={{ color: `${ink}40` }}>
+            {t.work.title}
+          </h2>
           <span style={{ color: `${ink}25` }}> · </span>
           <span style={{ color: `${ink}55` }}>
             {String(sceneIndex + 1).padStart(2, "0")}/{String(projects.length).padStart(2, "0")}
@@ -520,7 +525,7 @@ export default function FeaturedWork() {
               <p className="font-sans text-sm font-medium text-charcoal">
                 {language === "en" ? "More case studies in the archive" : "Más casos de estudio en el archivo"}
               </p>
-              <p className="font-sans text-xs text-charcoal/40">
+              <p className="font-sans text-xs text-charcoal/60">
                 {language === "en"
                   ? "12+ notebooks, experiments, and shipped systems."
                   : "12+ notebooks, experimentos y sistemas en producción."}

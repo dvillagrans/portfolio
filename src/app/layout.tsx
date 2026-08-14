@@ -3,11 +3,11 @@ import { ConsoleEasterEgg } from '@/components/ui/ConsoleEasterEgg';
 import { ViewTransitionDirector } from '@/components/ui/ViewTransitionDirector';
 import GridOverlay from '@/components/ui/GridOverlay';
 import { PersonSchema, WebSiteSchema } from '@/components/ui/SchemaOrg';
-import { CommandPalette } from '@/components/ui/CommandPalette';
+import { CommandPaletteLazy } from '@/components/ui/CommandPaletteLazy';
 import { CommandPaletteProvider } from '@/hooks/CommandPaletteContext';
 import { CustomCursor } from '@/components/ui/CustomCursor';
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk, EB_Garamond, JetBrains_Mono } from "next/font/google";
+import { Inter, EB_Garamond, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import { ThemeProvider } from "@/hooks/ThemeContext";
@@ -17,12 +17,6 @@ import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({
   variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-});
-
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
 });
@@ -157,7 +151,7 @@ export default function RootLayout({
         )}
       </head>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} ${ebGaramond.variable} ${jetbrainsMono.variable} font-sans overflow-x-hidden selection:bg-accent selection:text-offwhite`}
+        className={`${inter.variable} ${ebGaramond.variable} ${jetbrainsMono.variable} font-sans overflow-x-hidden selection:bg-accent selection:text-offwhite`}
       >
         <a
           href="#main-content"
@@ -178,7 +172,7 @@ export default function RootLayout({
               <div className="noise-overlay pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.03] mix-blend-overlay" aria-hidden="true"></div>
               {children}
               <ProjectChat />
-              <CommandPalette />
+              <CommandPaletteLazy />
               <CustomCursor />
             </CommandPaletteProvider>
           </LanguageProvider>

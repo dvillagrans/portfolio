@@ -56,7 +56,7 @@ export default function Marquee() {
               <span
                 key={`${dup}-${i}`}
                 className={`font-sans text-[10px] font-medium uppercase tracking-[0.22em] ${
-                  seg.warm ? "text-warm/75" : "text-offwhite/45"
+                  seg.warm ? "text-warm/75" : "text-offwhite/60"
                 }`}
               >
                 {seg.text}
