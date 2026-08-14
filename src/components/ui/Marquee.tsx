@@ -4,16 +4,18 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useCoarsePointer } from "@/hooks/useCoarsePointer";
 
 export default function Marquee() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const tweenRef = useRef<gsap.core.Tween | null>(null);
   const { t } = useLanguage();
   const reduced = useReducedMotion();
+  const coarse = useCoarsePointer();
   const segments = t.marquee.segments;
 
   useEffect(() => {
-    if (!scrollRef.current || reduced) return;
+    if (!scrollRef.current || reduced || coarse) return;
     const el = scrollRef.current;
 
     tweenRef.current = gsap.to(el, {
@@ -26,7 +28,7 @@ export default function Marquee() {
     return () => {
       tweenRef.current?.kill();
     };
-  }, [reduced]);
+  }, [reduced, coarse]);
 
   const setSpeed = (scale: number) => {
     if (tweenRef.current) {

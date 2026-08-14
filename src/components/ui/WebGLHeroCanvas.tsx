@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useCallback } from "react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useCoarsePointer } from "@/hooks/useCoarsePointer";
 
 const VERTEX_SHADER = `
   attribute vec2 a_position;
@@ -111,6 +112,7 @@ function createProgram(gl: WebGLRenderingContext, vs: WebGLShader, fs: WebGLShad
 export default function WebGLHeroCanvas({ className }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduced = useReducedMotion();
+  const coarse = useCoarsePointer();
   const rafRef = useRef<number>(0);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const lerpMouseRef = useRef({ x: 0.5, y: 0.5 });
@@ -124,7 +126,7 @@ export default function WebGLHeroCanvas({ className }: { className?: string }) {
   }, []);
 
   useEffect(() => {
-    if (reduced) return;
+    if (reduced || coarse) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -250,9 +252,9 @@ export default function WebGLHeroCanvas({ className }: { className?: string }) {
       }
       dispose?.();
     };
-  }, [reduced]);
+  }, [reduced, coarse]);
 
-  if (reduced) {
+  if (reduced || coarse) {
     return (
       <div
         data-webgl-fallback

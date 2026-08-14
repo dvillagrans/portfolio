@@ -6,7 +6,14 @@ vi.mock("@/hooks/useReducedMotion", () => ({
   useReducedMotion: () => false,
 }));
 
+const useCoarsePointerMock = vi.fn(() => false);
+
+vi.mock("@/hooks/useCoarsePointer", () => ({
+  useCoarsePointer: () => useCoarsePointerMock(),
+}));
+
 afterEach(() => {
+  useCoarsePointerMock.mockReturnValue(false);
   cleanup();
 });
 
@@ -41,5 +48,24 @@ describe("WebGLHeroCanvas", () => {
     expect(fallback).toBeInTheDocument();
 
     vi.doUnmock("@/hooks/useReducedMotion");
+  });
+
+  it("skips the canvas and shows the CSS fallback on mobile viewport", () => {
+    useCoarsePointerMock.mockReturnValue(true);
+    const getContext = vi.fn();
+    HTMLCanvasElement.prototype.getContext = getContext;
+
+    const { container } = render(<WebGLHeroCanvas />);
+    expect(container.querySelector("canvas")).not.toBeInTheDocument();
+    expect(container.querySelector("[data-webgl-fallback]")).toBeInTheDocument();
+    expect(getContext).not.toHaveBeenCalled();
+  });
+
+  it("still renders the canvas on desktop viewport", () => {
+    useCoarsePointerMock.mockReturnValue(false);
+    HTMLCanvasElement.prototype.getContext = vi.fn().mockReturnValue(null);
+
+    render(<WebGLHeroCanvas />);
+    expect(document.querySelector("canvas")).toBeInTheDocument();
   });
 });
