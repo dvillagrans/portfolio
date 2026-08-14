@@ -1,10 +1,10 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
+import gsap from "gsap";
 import Marquee from "./Marquee";
 
-afterEach(() => {
-  cleanup();
-});
+const useReducedMotionMock = vi.fn(() => false);
+const useCoarsePointerMock = vi.fn(() => false);
 
 vi.mock("gsap", () => ({
   default: {
@@ -14,7 +14,11 @@ vi.mock("gsap", () => ({
 }));
 
 vi.mock("@/hooks/useReducedMotion", () => ({
-  useReducedMotion: () => true,
+  useReducedMotion: () => useReducedMotionMock(),
+}));
+
+vi.mock("@/hooks/useCoarsePointer", () => ({
+  useCoarsePointer: () => useCoarsePointerMock(),
 }));
 
 vi.mock("@/i18n/LanguageContext", () => ({
@@ -32,6 +36,16 @@ vi.mock("@/i18n/LanguageContext", () => ({
 }));
 
 describe("Marquee", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    useReducedMotionMock.mockReturnValue(false);
+    useCoarsePointerMock.mockReturnValue(false);
+    cleanup();
+  });
+
   it("renders neutral segments at AA-safe opacity", () => {
     render(<Marquee />);
     const neutral = screen.getAllByText("Machine Learning");
@@ -52,5 +66,32 @@ describe("Marquee", () => {
   it("exposes an accessible name", () => {
     render(<Marquee />);
     expect(screen.getByRole("marquee")).toHaveAttribute("aria-label", "Tech marquee");
+  });
+
+  it("starts the loop tween on desktop", () => {
+    useReducedMotionMock.mockReturnValue(false);
+    useCoarsePointerMock.mockReturnValue(false);
+
+    render(<Marquee />);
+    expect(gsap.to).toHaveBeenCalledWith(
+      expect.any(HTMLElement),
+      expect.objectContaining({ repeat: -1, xPercent: -50 })
+    );
+  });
+
+  it("does not start the loop tween on mobile viewport", () => {
+    useReducedMotionMock.mockReturnValue(false);
+    useCoarsePointerMock.mockReturnValue(true);
+
+    render(<Marquee />);
+    expect(gsap.to).not.toHaveBeenCalled();
+  });
+
+  it("does not start the loop tween under reduced motion", () => {
+    useReducedMotionMock.mockReturnValue(true);
+    useCoarsePointerMock.mockReturnValue(false);
+
+    render(<Marquee />);
+    expect(gsap.to).not.toHaveBeenCalled();
   });
 });
