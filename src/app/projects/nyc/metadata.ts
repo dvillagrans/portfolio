@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE_URL = "https://www.dvillagrans.dev";
 
 export const metadata: Metadata = {
-  title: "NYC Ride-Hailing Analytics | Diego Villagran",
+  title: "NYC Ride-Hailing Analytics",
   description:
     "Streamlit dashboards and ML models for NYC Uber/Lyft patterns — fare prediction R² > 0.85 and 92% airport classification.",
   openGraph: {

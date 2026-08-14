@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE_URL = "https://www.dvillagrans.dev";
 
 export const metadata: Metadata = {
-  title: "About — Diego Villagran",
+  title: "About",
   description: "AI & Data Engineer · ML Systems Builder. Learn about Diego's background, systems philosophy, and technical expertise at ESCOM-IPN and EyeNet.",
   openGraph: {
     title: "About Diego Villagran | AI & Data Engineer",

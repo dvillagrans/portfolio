@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE_URL = "https://www.dvillagrans.dev";
 
 export const metadata: Metadata = {
-  title: "TimeUp — SaaS Time Tracking Platform | Diego Villagran",
+  title: "TimeUp — SaaS Time Tracking Platform",
   description: "Multi-tenant cloud platform for health & wellness sector. Biometric Passkeys, real-time WebSocket sync, and serverless architecture. MVP built in 10 weeks.",
   openGraph: {
     title: "TimeUp — SaaS Platform Case Study",

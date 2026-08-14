@@ -1,0 +1,23 @@
+# Diego Villagran — AI & Data Engineer
+
+> Portfolio of Diego Villagran Salazar, AI & Data Engineer building production ML pipelines, LLM automation, data engineering, and full-stack systems. Based in Mexico City. Site is English-first with Spanish alternates.
+
+## Key Pages
+
+- [Home](https://www.dvillagrans.dev): Overview, featured work, systems, and contact.
+- [About](https://www.dvillagrans.dev/about): Background, systems philosophy, and technical expertise.
+- [Projects](https://www.dvillagrans.dev/projects): Archive of data science, analytics, ML engineering, and full-stack projects.
+- [Now](https://www.dvillagrans.dev/now): Current focus and recent learnings (updated June 2025).
+
+## Projects
+
+- [EyeNet — AI & Automation Systems](https://www.dvillagrans.dev/projects/eyenet): Hybrid AI infrastructure with LLM pipelines, ETL/ELT, containerized microservices, and a private GPU cluster.
+- [COVID-19 Risk Profiles](https://www.dvillagrans.dev/projects/covid): Academic clustering of 30M+ open Mexican health records into 9 interpretable COVID-19 risk profiles with K-Means and Fuzzy C-Means.
+- [NYC Ride-Hailing Analytics](https://www.dvillagrans.dev/projects/nyc): Streamlit dashboards and ML models for NYC Uber/Lyft patterns; fare prediction R² > 0.85 and 92% airport classification.
+- [India Air Quality Intelligence](https://www.dvillagrans.dev/projects/india): Azure Databricks + PySpark ETL processing 2M+ daily IoT readings from 500+ sensors into public AQI indicators.
+- [Bouquet — Hospitality OS](https://www.dvillagrans.dev/projects/bouquet): Full-stack multi-tenant platform for restaurant chain management with Spark analytics and guest QR ordering.
+- [TimeUp — SaaS Time Tracking](https://www.dvillagrans.dev/projects/timeup): Multi-tenant cloud platform for the health & wellness sector with biometric Passkeys and real-time WebSocket sync.
+
+## Optional
+
+- This file is for AI agents. See [humans.txt](https://www.dvillagrans.dev/humans.txt) for team and site details for humans.
