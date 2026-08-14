@@ -1,26 +1,2 @@
-"use client";
-
-import { useLanguage } from "@/i18n/LanguageContext";
-import { nycEn, nycEs } from "@/i18n/dictionaries/nyc";
-import { EditorialCaseStudy } from "@/components/case-study/EditorialCaseStudy";
-import { CaseStudyExternalActions } from "@/components/case-study/CaseStudyExternalActions";
-
-export default function NycCaseStudyPage() {
-  const { language } = useLanguage();
-  const dict = language === "es" ? nycEs : nycEn;
-
-  return (
-    <EditorialCaseStudy
-      slug="nyc"
-      dict={dict}
-      actions={
-        <CaseStudyExternalActions
-          dashboardHref={dict.linkDashboard}
-          dashboardLabel={dict.links.dashboard}
-          repoHref={dict.linkRepo}
-          repoLabel={dict.links.repo}
-        />
-      }
-    />
-  );
-}
+export { default } from "./page-client";
+export { metadata } from "./metadata";

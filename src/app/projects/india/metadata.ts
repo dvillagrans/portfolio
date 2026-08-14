@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE_URL = "https://www.dvillagrans.dev";
 
 export const metadata: Metadata = {
-  title: "India Air Quality Intelligence | Diego Villagran",
+  title: "India Air Quality Intelligence",
   description:
     "Azure Databricks + PySpark ETL processing 2M+ daily IoT readings from 500+ sensors into public AQI indicators.",
   openGraph: {

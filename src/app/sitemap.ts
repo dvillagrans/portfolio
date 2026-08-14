@@ -67,12 +67,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     },
-    {
-      url: `${BASE_URL}/cv-builder`,
-      lastModified: LAST_MODIFIED,
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
   ];
 
   return staticRoutes;

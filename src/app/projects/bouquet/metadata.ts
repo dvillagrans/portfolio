@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE_URL = "https://www.dvillagrans.dev";
 
 export const metadata: Metadata = {
-  title: "Bouquet — Hospitality OS | Diego Villagran",
+  title: "Bouquet — Hospitality OS",
   description:
     "Full-stack multi-tenant platform for restaurant chain management. Role-based dashboards, Apache Spark analytics pipeline, and guest-facing QR ordering. Thesis project ESCOM-IPN 2026-B142.",
   openGraph: {

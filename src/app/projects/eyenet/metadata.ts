@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE_URL = "https://www.dvillagrans.dev";
 
 export const metadata: Metadata = {
-  title: "EyeNet — AI & Automation Systems | Diego Villagran",
+  title: "EyeNet — AI & Automation Systems",
   description: "Full AI infrastructure: LLM pipelines, ETL/ELT, containerized microservices, and production apps. 65% reduction in manual work, 300+ docs/week, 92% extraction accuracy.",
   openGraph: {
     title: "EyeNet — AI & Automation Systems Case Study",

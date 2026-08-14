@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE_URL = "https://www.dvillagrans.dev";
 
 export const metadata: Metadata = {
-  title: "COVID-19 Risk Profiles | Diego Villagran",
+  title: "COVID-19 Risk Profiles",
   description:
     "Clustering 30M+ open Mexican health records into 9 interpretable COVID-19 risk profiles with K-Means and Fuzzy C-Means.",
   openGraph: {

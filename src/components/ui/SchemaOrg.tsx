@@ -120,6 +120,81 @@ export function BouquetProjectSchema() {
   );
 }
 
+export function CovidProjectSchema() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "COVID-19 Risk Profiles",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    description:
+      "Clustering of 30M+ open Mexican health records into 9 interpretable COVID-19 risk profiles with K-Means and Fuzzy C-Means.",
+    url: "https://www.dvillagrans.dev/projects/covid",
+    author: {
+      "@type": "Person",
+      name: "Diego Villagran Salazar",
+    },
+  };
+
+  return (
+    <Script
+      id="schema-covid"
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
+export function NycProjectSchema() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "NYC Ride-Hailing Analytics",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    description:
+      "Streamlit dashboards and ML models for NYC Uber/Lyft trip patterns — fare prediction R² > 0.85 and 92% airport classification accuracy.",
+    url: "https://www.dvillagrans.dev/projects/nyc",
+    author: {
+      "@type": "Person",
+      name: "Diego Villagran Salazar",
+    },
+  };
+
+  return (
+    <Script
+      id="schema-nyc"
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
+export function IndiaProjectSchema() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "India Air Quality Intelligence",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    description:
+      "Azure Databricks + PySpark ETL pipeline consolidating 2M+ daily IoT readings from 500+ sensors into public air quality indicators.",
+    url: "https://www.dvillagrans.dev/projects/india",
+    author: {
+      "@type": "Person",
+      name: "Diego Villagran Salazar",
+    },
+  };
+
+  return (
+    <Script
+      id="schema-india"
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
 export function WebSiteSchema() {
   const jsonLd = {
     "@context": "https://schema.org",
