@@ -23,8 +23,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          # Node >=22.13 required by pnpm 11; satisfies Next.js 16.3 (>=20.9).
-          node-version: 22
+          # Node 24 is the supported Vercel runtime and satisfies Next.js 16.3.
+          node-version: 24
           cache: "pnpm"
 
       - name: Install dependencies

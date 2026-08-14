@@ -116,9 +116,10 @@ src/
 Deployed on [Vercel](https://vercel.com). Push to `main` for automatic deployment.
 
 > **Production checklist:**
-> 1. Verify your domain in [Resend](https://resend.com/domains) and update `from` in `src/app/api/contact/route.ts` from `onboarding@resend.dev` to your verified domain (e.g. `contacto@dvillagrans.dev`)
-> 2. Set `RESEND_API` and `DEEPSEEK_API_KEY` in Vercel Environment Variables
-> 3. The OG image is generated dynamically at `/og` — no static asset needed
+> 1. Set the Vercel Node.js runtime to `24.x` and enable `ENABLE_EXPERIMENTAL_COREPACK=1` so the pinned pnpm version is used.
+> 2. Verify your domain in [Resend](https://resend.com/domains) and set `RESEND_API`, `RESEND_FROM`, and `CONTACT_EMAIL` in Vercel Environment Variables.
+> 3. Set `DEEPSEEK_API_KEY` in Vercel Environment Variables.
+> 4. The OG image is generated dynamically at `/og` — no static asset needed
 
 ```bash
 pnpm run build
