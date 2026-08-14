@@ -193,7 +193,6 @@ export default function WebGLHeroCanvas({ className }: { className?: string }) {
     canvas.addEventListener("webglcontextrestored", handleContextRestored);
 
     // Render loop
-    let frame = 0;
     const renderLoop = () => {
       if (paused) {
         rafRef.current = requestAnimationFrame(renderLoop);
@@ -212,7 +211,6 @@ export default function WebGLHeroCanvas({ className }: { className?: string }) {
 
       gl.drawArrays(gl.TRIANGLES, 0, 6);
 
-      frame++;
       rafRef.current = requestAnimationFrame(renderLoop);
     };
     rafRef.current = requestAnimationFrame(renderLoop);

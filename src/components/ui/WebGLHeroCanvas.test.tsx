@@ -1,9 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import WebGLHeroCanvas from "./WebGLHeroCanvas";
-
-// Mock canvas getContext to simulate WebGL availability
-const mockGetContext = vi.fn();
 
 vi.mock("@/hooks/useReducedMotion", () => ({
   useReducedMotion: () => false,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useMemo } from "react";
 import {
   ReactFlow,
   Background,
@@ -8,7 +8,6 @@ import {
   useNodesState,
   useEdgesState,
   type NodeTypes,
-  type EdgeTypes,
   ReactFlowProvider,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";

@@ -7,7 +7,6 @@ import { CommandPalette } from '@/components/ui/CommandPalette';
 import { CommandPaletteProvider } from '@/hooks/CommandPaletteContext';
 import { CustomCursor } from '@/components/ui/CustomCursor';
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Inter, Space_Grotesk, EB_Garamond, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/i18n/LanguageContext";
@@ -92,10 +91,6 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: BASE_URL,
-    languages: {
-      "en-US": `${BASE_URL}/en`,
-      "es-MX": `${BASE_URL}/es`,
-    },
   },
   robots: {
     index: true,

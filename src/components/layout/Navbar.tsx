@@ -8,7 +8,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useTheme } from "@/hooks/ThemeContext";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
-import { Menu, X, Sun, Moon, FolderGit2, Cpu, User, Mail, Command } from "lucide-react";
+import { Sun, Moon, FolderGit2, Cpu, User, Mail, Command } from "lucide-react";
 import { useCommandPalette } from "@/hooks/CommandPaletteContext";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -28,6 +28,8 @@ export default function Navbar() {
   const menuItemsRef = useRef<HTMLUListElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const menuPanelRef = useRef<HTMLDivElement>(null);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
   const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const { setOpen: setCmdPaletteOpen } = useCommandPalette();
@@ -95,6 +97,45 @@ export default function Navbar() {
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
+  }, [mobileMenuOpen]);
+
+  /* Move focus into the menu when it opens and restore it to the trigger on close */
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      const active = document.activeElement;
+      lastFocusedRef.current =
+        active && active !== document.body ? (active as HTMLElement) : hamburgerRef.current;
+      menuItemsRef.current?.querySelector<HTMLElement>("a")?.focus();
+    } else {
+      (lastFocusedRef.current ?? hamburgerRef.current)?.focus?.();
+      lastFocusedRef.current = null;
+    }
+  }, [mobileMenuOpen]);
+
+  /* Trap focus within the menu while it is open */
+  useEffect(() => {
+    if (!mobileMenuOpen || !menuPanelRef.current) return;
+    const panel = menuPanelRef.current;
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      const focusable = Array.from(
+        panel.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    panel.addEventListener("keydown", handleTab);
+    return () => panel.removeEventListener("keydown", handleTab);
   }, [mobileMenuOpen]);
 
   /* GSAP entrance for mobile menu */
@@ -299,6 +340,7 @@ export default function Navbar() {
 
               {/* Mobile hamburger */}
               <button
+                ref={hamburgerRef}
                 type="button"
                 className="md:hidden min-w-[44px] min-h-[44px] flex items-center justify-center p-2 rounded-full transition-colors"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -361,6 +403,9 @@ export default function Navbar() {
           <div
             ref={menuPanelRef}
             id="nav-mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label={language === "en" ? "Menu" : "Menú"}
             className="fixed inset-x-0 top-0 z-40 md:hidden overflow-hidden"
             style={{
               paddingTop: "max(5.5rem, env(safe-area-inset-top) + 4.5rem)",

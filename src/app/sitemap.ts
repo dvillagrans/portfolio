@@ -2,61 +2,76 @@ import type { MetadataRoute } from 'next';
 
 const BASE_URL = 'https://www.dvillagrans.dev';
 
+// Stable last-modified date for static routes — avoid new Date() per build
+const LAST_MODIFIED = '2026-06-18';
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     {
       url: BASE_URL,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 1,
     },
     {
       url: `${BASE_URL}/about`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.9,
     },
     {
       url: `${BASE_URL}/projects`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'weekly' as const,
       priority: 0.9,
     },
     {
       url: `${BASE_URL}/projects/eyenet`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/projects/covid`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/projects/nyc`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/projects/india`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/projects/bouquet`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/projects/timeup`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/now`,
+      lastModified: LAST_MODIFIED,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/cv-builder`,
+      lastModified: LAST_MODIFIED,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
     },
   ];
 

@@ -3,7 +3,8 @@ import { streamText, convertToModelMessages } from 'ai';
 import { NextResponse } from 'next/server';
 import { CV_DATA } from '@/data/cv';
 import { CERTIFICATIONS } from '@/data/certifications';
-import { rateLimit, getRequestIdentifier } from '@/lib/rate-limit';
+import { rateLimit, getScopedRequestIdentifier } from '@/lib/rate-limit';
+import { readJsonBody } from '@/lib/api-body';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -11,6 +12,10 @@ export const maxDuration = 30;
 // Chat rate limit: 15 requests per minute per IP
 const CHAT_RATE_LIMIT = 15;
 const CHAT_WINDOW_MS = 60 * 1000;
+
+// Chat body limit: conversation history can grow, so allow generous but
+// bounded payloads (a few thousand tokens of message history).
+const CHAT_MAX_BODY_BYTES = 128 * 1024;
 
 // Filter out non-serializable fields (JSX nodes) before stringifying
 const cleanData = JSON.stringify(CV_DATA, (key, value) => {
@@ -70,7 +75,7 @@ ${cleanCerts}
 
 export async function POST(req: Request) {
   // Rate limit check
-  const identifier = getRequestIdentifier(req);
+  const identifier = getScopedRequestIdentifier(req, 'chat');
   const { allowed, remaining, resetAt, message } = rateLimit({
     limit: CHAT_RATE_LIMIT,
     windowMs: CHAT_WINDOW_MS,
@@ -91,8 +96,16 @@ export async function POST(req: Request) {
     );
   }
 
-  const { messages } = await req.json();
-  const modelMessages = await convertToModelMessages(messages);
+  const bodyResult = await readJsonBody<{ messages?: unknown[] }>(
+    req,
+    CHAT_MAX_BODY_BYTES
+  );
+  if (!bodyResult.ok) return bodyResult.response;
+
+  const { messages } = bodyResult.data;
+  const modelMessages = await convertToModelMessages(
+    (messages ?? []) as Parameters<typeof convertToModelMessages>[0]
+  );
 
   const result = streamText({
     model: deepseek('deepseek-chat'),

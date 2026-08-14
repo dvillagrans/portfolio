@@ -6,10 +6,12 @@ export function ConsoleEasterEgg() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     // Styled message in warm amber — matches the portfolio's warm accent
+    // eslint-disable-next-line no-console -- Intentional console easter egg message
     console.log(
       "%c👋 Hey there, developer.",
       "font-size:18px; font-weight:700; color:#c97d35; font-family: monospace;"
     );
+    // eslint-disable-next-line no-console -- Intentional console easter egg message
     console.log(
       "%cI see you're poking around.\nI appreciate curious minds. Let's build something together.\n→ dvillagrans@gmail.com",
       "font-size:13px; color:#888; line-height:1.8; font-family: sans-serif;"

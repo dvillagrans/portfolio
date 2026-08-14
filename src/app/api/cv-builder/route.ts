@@ -3,7 +3,8 @@ import { generateText } from 'ai';
 import { NextResponse } from 'next/server';
 import { CV_DATA } from '@/data/cv';
 import { CERTIFICATIONS } from '@/data/certifications';
-import { rateLimit, getRequestIdentifier } from '@/lib/rate-limit';
+import { rateLimit, getScopedRequestIdentifier } from '@/lib/rate-limit';
+import { readJsonBody } from '@/lib/api-body';
 import { selectCvContext } from '@/lib/cv/select';
 import { buildSelectedCvContext } from '@/lib/cv/build-context';
 import { renderCvMarkdown } from '@/lib/cv/render';
@@ -27,6 +28,9 @@ const CV_WINDOW_MS = 5 * 60 * 1000;
 
 const MIN_JD_LENGTH = 10;
 const MAX_JD_LENGTH = 10_000;
+
+// Body limit: job description max 10_000 chars plus JSON overhead and headroom.
+const CV_MAX_BODY_BYTES = 32 * 1024;
 
 function deduplicateParagraphs(text: string): string {
   const paragraphs = text.split(/\n\n+/);
@@ -149,7 +153,7 @@ async function resolveCvDocument(
 }
 
 export async function POST(req: Request) {
-  const identifier = getRequestIdentifier(req);
+  const identifier = getScopedRequestIdentifier(req, 'cv-builder');
   const { allowed, remaining, resetAt, message } = rateLimit({
     limit: CV_RATE_LIMIT,
     windowMs: CV_WINDOW_MS,
@@ -170,13 +174,12 @@ export async function POST(req: Request) {
     );
   }
 
-  let jobDescription: string;
-  try {
-    const body = await req.json();
-    jobDescription = body.jobDescription;
-  } catch {
-    return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
-  }
+  const bodyResult = await readJsonBody<{ jobDescription?: unknown }>(
+    req,
+    CV_MAX_BODY_BYTES
+  );
+  if (!bodyResult.ok) return bodyResult.response;
+  const jobDescription = bodyResult.data.jobDescription;
 
   if (typeof jobDescription !== 'string' || jobDescription.trim().length < MIN_JD_LENGTH) {
     return NextResponse.json(

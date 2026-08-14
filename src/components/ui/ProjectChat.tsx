@@ -19,7 +19,7 @@ type ChatMessage = {
   parts?: ChatMessagePart[];
 };
 
-export function ProjectChat({ context }: { context?: string }) {
+export function ProjectChat({ context: _context }: { context?: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [input, setInput] = useState('');

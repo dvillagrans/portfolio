@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { ArrowUpRight, Clock, Users, Zap, Shield, Database, LayoutTemplate, Activity, AlertCircle, Quote, ZoomIn } from "lucide-react";
+import { ArrowUpRight, Clock, Zap, Shield, Database, LayoutTemplate, Activity, AlertCircle, Quote, ZoomIn } from "lucide-react";
 import Image from "next/image";
 import Navbar from "@/components/layout/Navbar";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -66,7 +66,7 @@ export default function BouquetCaseStudy() {
 
       {/* Meta Grid */}
       <section className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 border-y border-white/10 py-8 reveal-fade font-mono text-xs">
-        {dict.meta.map((item: any, idx: number) => (
+        {dict.meta.map((item: { label: string; value: string }, idx: number) => (
           <div key={idx} className="flex flex-col gap-2">
             <span className="text-white/40 uppercase relative pl-3 before:content-[''] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1 before:h-1 before:bg-bouquet-rose before:rounded-full">{item.label}</span>
             <span className="text-white/90">{item.value}</span>

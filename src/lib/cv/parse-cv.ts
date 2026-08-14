@@ -161,7 +161,7 @@ export function padCvFromSource(
     summary = cv.profile.headline;
   }
 
-  let skills = normalizeSkills(partial.skills);
+  const skills = normalizeSkills(partial.skills);
   if (skills.length < 3) {
     const groups: [string, string[]][] = [
       ["Languages", cv.skills.languages],

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import type { Chart, ChartDataset, ScriptableContext, ScriptableScaleContext } from "chart.js";
 import { HOURS, UBER_FARES, LYFT_FARES, PEAK_INDICES } from "@/data/nycFares";
 
 function createBarGradient(ctx: CanvasRenderingContext2D, color: string, isPeak: boolean): CanvasGradient {
@@ -13,6 +14,8 @@ function createBarGradient(ctx: CanvasRenderingContext2D, color: string, isPeak:
 }
 
 let cachedGradients: { uber: CanvasGradient[]; lyft: CanvasGradient[] } | null = null;
+
+type FareDataset = ChartDataset<"bar", number[]> & { _gradients?: CanvasGradient[] };
 
 const sparkleParticles: { x: number; y: number; life: number; maxLife: number; radius: number; color: string }[] = [];
 const PEAK_HOUR_INDEX = 9;
@@ -34,9 +37,10 @@ let sparkleTimer = 0;
 
 const peakGlowPlugin = {
   id: "peakGlow",
-  beforeDraw(chart: any) {
+  beforeDraw(chart: Chart) {
     const ctx = chart.ctx;
-    if (!chart.data.datasets[0]?._gradients) return;
+    const datasets = chart.data.datasets as FareDataset[];
+    if (!datasets[0]?._gradients) return;
 
     const xScale = chart.scales.x;
     const yScale = chart.scales.y;
@@ -124,10 +128,9 @@ export function NYCFareViz() {
             {
               label: "Uber",
               data: UBER_FARES,
-              backgroundColor: (ctx: any) => {
+              backgroundColor: (ctx: ScriptableContext<"bar">) => {
                 const chart = ctx.chart;
                 if (!cachedGradients) {
-                  const temp = chart.ctx.createLinearGradient(0, 0, 0, chart.canvas?.height ?? 300);
                   cachedGradients = {
                     uber: ctx.dataIndex !== undefined
                       ? HOURS.map((_, i) => createBarGradient(chart.ctx, "#64748b", PEAK_INDICES.has(i)))
@@ -135,11 +138,12 @@ export function NYCFareViz() {
                     lyft: HOURS.map((_, i) => createBarGradient(chart.ctx, "#d97706", PEAK_INDICES.has(i)))
                   };
                 }
-                if (!chart.data.datasets[0]._gradients) {
-                  chart.data.datasets[0]._gradients = HOURS.map((_, i) => createBarGradient(chart.ctx, "#64748b", PEAK_INDICES.has(i)));
-                  chart.data.datasets[1]._gradients = HOURS.map((_, i) => createBarGradient(chart.ctx, "#d97706", PEAK_INDICES.has(i)));
+                const datasets = chart.data.datasets as FareDataset[];
+                if (!datasets[0]._gradients) {
+                  datasets[0]._gradients = HOURS.map((_, i) => createBarGradient(chart.ctx, "#64748b", PEAK_INDICES.has(i)));
+                  datasets[1]._gradients = HOURS.map((_, i) => createBarGradient(chart.ctx, "#d97706", PEAK_INDICES.has(i)));
                 }
-                return chart.data.datasets[0]._gradients[ctx.dataIndex];
+                return datasets[0]._gradients[ctx.dataIndex];
               },
               borderRadius: { topLeft: 4, topRight: 4 },
               borderSkipped: false,
@@ -150,10 +154,11 @@ export function NYCFareViz() {
             {
               label: "Lyft",
               data: LYFT_FARES,
-              backgroundColor: (ctx: any) => {
+              backgroundColor: (ctx: ScriptableContext<"bar">) => {
                 const chart = ctx.chart;
-                if (!chart.data.datasets[1]?._gradients) return "#d97706";
-                return chart.data.datasets[1]._gradients[ctx.dataIndex];
+                const datasets = chart.data.datasets as FareDataset[];
+                if (!datasets[1]?._gradients) return "#d97706";
+                return datasets[1]._gradients[ctx.dataIndex];
               },
               borderRadius: { topLeft: 4, topRight: 4 },
               borderSkipped: false,
@@ -203,7 +208,7 @@ export function NYCFareViz() {
             x: {
               ticks: {
                 font: { size: 8, family: "monospace" },
-                color: (ctx: any) =>
+                color: (ctx: ScriptableScaleContext) =>
                   PEAK_INDICES.has(ctx.index)
                     ? "rgba(251,191,36,0.9)"
                     : "rgba(255,255,255,0.2)",

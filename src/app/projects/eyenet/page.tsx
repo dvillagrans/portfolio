@@ -13,11 +13,9 @@ import { CaseStudyFooter } from "@/components/case-study/CaseStudyFooter";
 import { useCaseStudyReveal } from "@/components/case-study/useCaseStudyReveal";
 import {
   AlertCircle,
-  Zap,
   Database,
   Server,
   Brain,
-  LayoutTemplate,
   Activity,
   Quote,
   Lock,

@@ -127,7 +127,6 @@ export default function NotFound() {
     }, container);
 
     return () => ctx.revert();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduced]);
 
   const handleDigitClick = () => {

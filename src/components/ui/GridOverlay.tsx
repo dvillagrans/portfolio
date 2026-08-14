@@ -1,10 +1,6 @@
 "use client";
 
-import { useReducedMotion } from "@/hooks/useReducedMotion";
-
 export default function GridOverlay() {
-  const reduced = useReducedMotion();
-
   return (
     <div
       className="pointer-events-none fixed inset-0 z-0"

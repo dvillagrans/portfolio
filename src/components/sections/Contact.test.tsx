@@ -159,8 +159,112 @@ describe('Contact section', () => {
     expect(screen.queryByText('This field is required')).not.toBeInTheDocument();
   });
 
+  it('marks invalid fields with aria-invalid and links errors via aria-describedby', () => {
+    render(<Contact />);
+    fireEvent.click(screen.getByRole('button', { name: /send a message/i }));
+
+    const nameInput = screen.getByLabelText(/name/i);
+    const emailInput = screen.getByLabelText(/email/i);
+    const msgInput = screen.getByLabelText(/message/i);
+
+    expect(nameInput).not.toHaveAttribute('aria-invalid');
+    expect(nameInput).not.toHaveAttribute('aria-describedby');
+    expect(emailInput).not.toHaveAttribute('aria-invalid');
+    expect(msgInput).not.toHaveAttribute('aria-invalid');
+
+    fireEvent.change(nameInput, { target: { value: 'A' } });
+    fireEvent.blur(nameInput);
+
+    expect(nameInput).toHaveAttribute('aria-invalid', 'true');
+    expect(nameInput).toHaveAttribute('aria-describedby', 'name-error');
+    const error = screen.getByText('Name is too short');
+    expect(error).toHaveAttribute('id', 'name-error');
+    expect(error).toHaveAttribute('role', 'alert');
+  });
+
+  it('announces successful submission through a live status region', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true }));
+    render(<Contact />);
+    fireEvent.click(screen.getByRole('button', { name: /send a message/i }));
+
+    fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'Diego' } });
+    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'diego@example.com' } });
+    fireEvent.change(screen.getByLabelText(/message/i), {
+      target: { value: 'Hello, this message is long enough.' },
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: /send message/i }));
+
+    const status = await screen.findByRole('status');
+    expect(status).toHaveTextContent('Message sent successfully!');
+    vi.unstubAllGlobals();
+  });
+
+  it('sets aria-busy on the form while submitting', async () => {
+    let resolveFetch: (value: { ok: boolean }) => void = () => {};
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(
+        () =>
+          new Promise((resolve) => {
+            resolveFetch = resolve;
+          })
+      )
+    );
+    render(<Contact />);
+    fireEvent.click(screen.getByRole('button', { name: /send a message/i }));
+
+    fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'Diego' } });
+    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'diego@example.com' } });
+    fireEvent.change(screen.getByLabelText(/message/i), {
+      target: { value: 'Hello, this message is long enough.' },
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: /send message/i }));
+
+    const form = document.querySelector('form');
+    expect(form).toHaveAttribute('aria-busy', 'true');
+
+    resolveFetch({ ok: true });
+    await screen.findByRole('status');
+    expect(form).toHaveAttribute('aria-busy', 'false');
+    vi.unstubAllGlobals();
+  });
+
   it('renders the section title', () => {
     render(<Contact />);
     expect(screen.getByText("Let's work together")).toBeInTheDocument();
+  });
+
+  it('includes a hidden honeypot field that is never visible to users', () => {
+    render(<Contact />);
+    fireEvent.click(screen.getByRole('button', { name: /send a message/i }));
+
+    const container = document.querySelector('div[aria-hidden="true"]');
+    expect(container).not.toBeNull();
+    const honeypot = container?.querySelector('input[name="website"]');
+    expect(honeypot).not.toBeNull();
+    expect(honeypot).toHaveAttribute('tabindex', '-1');
+    expect(honeypot).toHaveAttribute('autocomplete', 'off');
+    expect(screen.queryByRole('textbox', { name: /website/i })).toBeNull();
+  });
+
+  it('submits an empty honeypot field for real users', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true });
+    vi.stubGlobal('fetch', fetchMock);
+    render(<Contact />);
+    fireEvent.click(screen.getByRole('button', { name: /send a message/i }));
+
+    fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'Diego' } });
+    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'diego@example.com' } });
+    fireEvent.change(screen.getByLabelText(/message/i), {
+      target: { value: 'Hello, this message is long enough.' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /send message/i }));
+
+    await screen.findByRole('status');
+    const [, init] = fetchMock.mock.calls[0];
+    expect(JSON.parse(init.body)).toMatchObject({ website: '' });
+    vi.unstubAllGlobals();
   });
 });

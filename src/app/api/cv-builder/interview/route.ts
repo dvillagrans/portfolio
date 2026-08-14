@@ -3,7 +3,8 @@ import { generateText } from 'ai';
 import { NextResponse } from 'next/server';
 import { CV_DATA } from '@/data/cv';
 import { CERTIFICATIONS } from '@/data/certifications';
-import { rateLimit, getRequestIdentifier } from '@/lib/rate-limit';
+import { rateLimit, getScopedRequestIdentifier } from '@/lib/rate-limit';
+import { readJsonBody } from '@/lib/api-body';
 import { sanitizeProseDashes } from '@/lib/cv/prose';
 
 export const maxDuration = 30;
@@ -11,6 +12,15 @@ export const maxDuration = 30;
 // Interview rate limit: 20 requests per 5 minutes per IP
 const INTERVIEW_RATE_LIMIT = 20;
 const INTERVIEW_WINDOW_MS = 5 * 60 * 1000;
+
+// Body limit: question + up to 10 history messages + JD (5k chars) with headroom.
+const INTERVIEW_MAX_BODY_BYTES = 64 * 1024;
+
+interface InterviewBody {
+  question?: string;
+  jobDescription?: string;
+  history?: { role: "user" | "assistant"; content: string }[];
+}
 
 // Filter out non-serializable fields (JSX nodes) before stringifying
 const cleanData = JSON.stringify(CV_DATA, (key, value) => {
@@ -55,7 +65,7 @@ ${cleanCerts}
 
 export async function POST(req: Request) {
   // Rate limit check
-  const identifier = getRequestIdentifier(req);
+  const identifier = getScopedRequestIdentifier(req, 'interview');
   const { allowed, remaining, resetAt, message } = rateLimit({
     limit: INTERVIEW_RATE_LIMIT,
     windowMs: INTERVIEW_WINDOW_MS,
@@ -76,21 +86,13 @@ export async function POST(req: Request) {
     );
   }
 
-  let body: {
-    question?: string;
-    jobDescription?: string;
-    history?: { role: "user" | "assistant"; content: string }[];
-  };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json(
-      { error: 'Invalid request body' },
-      { status: 400 }
-    );
-  }
+  const bodyResult = await readJsonBody<InterviewBody>(
+    req,
+    INTERVIEW_MAX_BODY_BYTES
+  );
+  if (!bodyResult.ok) return bodyResult.response;
 
-  const { question, jobDescription, history } = body;
+  const { question, jobDescription, history } = bodyResult.data;
 
   if (!question || typeof question !== 'string' || question.trim().length < 3) {
     return NextResponse.json(

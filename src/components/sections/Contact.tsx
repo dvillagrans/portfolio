@@ -22,6 +22,7 @@ export default function Contact() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [website, setWebsite] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [showForm, setShowForm] = useState(false);
   const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({});
@@ -119,7 +120,7 @@ export default function Contact() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message }),
+        body: JSON.stringify({ name, email, message, website: "" }),
       });
       if (!res.ok) throw new Error();
       setStatus("success");
@@ -239,9 +240,28 @@ export default function Contact() {
             <form
               onSubmit={handleSubmit}
               noValidate
+              aria-busy={status === "loading"}
               className={`flex flex-col gap-5 ${shakeForm ? "form-shake" : ""}`}
               onAnimationEnd={() => setShakeForm(false)}
             >
+              {/* Honeypot: hidden field real users never see or fill. Bots that
+                  autofill all inputs will populate it and get silently absorbed
+                  by the server (success without sending). */}
+              <div
+                aria-hidden="true"
+                className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden"
+              >
+                <label htmlFor="website">Website</label>
+                <input
+                  id="website"
+                  name="website"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={website}
+                  onChange={(e) => setWebsite(e.target.value)}
+                />
+              </div>
               <FieldInput
                 id="name"
                 label={labels.formName}
@@ -287,14 +307,14 @@ export default function Contact() {
               />
 
               {status === "success" && (
-                <div className="flex items-center gap-2 text-sm text-green-400/90 font-sans">
-                  <CheckCircle2 className="h-4 w-4 shrink-0" />
+                <div role="status" className="flex items-center gap-2 text-sm text-green-400/90 font-sans">
+                  <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />
                   {labels.formSuccess}
                 </div>
               )}
               {status === "error" && (
-                <div className="flex items-center gap-2 text-sm text-red-400/90 font-sans">
-                  <AlertCircle className="h-4 w-4 shrink-0" />
+                <div role="status" className="flex items-center gap-2 text-sm text-red-400/90 font-sans">
+                  <AlertCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
                   {labels.formError}
                 </div>
               )}
@@ -346,6 +366,7 @@ function FieldInput({
   onChange: (value: string) => void;
   onBlur: () => void;
 }) {
+  const errorId = `${id}-error`;
   return (
     <div>
       <label htmlFor={id} className="mb-1.5 block font-mono text-[9px] font-bold uppercase tracking-[0.24em] text-offwhite/40">
@@ -358,13 +379,15 @@ function FieldInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? errorId : undefined}
         className={`w-full rounded-lg border bg-white/[0.02] px-3 py-3 font-sans text-base text-offwhite transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-warm/40 ${
           error ? "border-red-400/50" : "border-offwhite/12 focus:border-offwhite/25"
         }`}
       />
       {error && (
-        <p className="mt-1.5 flex items-center gap-1.5 text-xs text-red-400/90 font-sans">
-          <AlertCircle className="h-3 w-3 shrink-0" />
+        <p id={errorId} role="alert" className="mt-1.5 flex items-center gap-1.5 text-xs text-red-400/90 font-sans">
+          <AlertCircle className="h-3 w-3 shrink-0" aria-hidden="true" />
           {error}
         </p>
       )}
@@ -387,6 +410,7 @@ function FieldTextarea({
   onChange: (value: string) => void;
   onBlur: () => void;
 }) {
+  const errorId = `${id}-error`;
   return (
     <div>
       <label htmlFor={id} className="mb-1.5 block font-mono text-[9px] font-bold uppercase tracking-[0.24em] text-offwhite/40">
@@ -399,13 +423,15 @@ function FieldTextarea({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? errorId : undefined}
         className={`w-full resize-none rounded-lg border bg-white/[0.02] px-3 py-3 font-sans text-base text-offwhite transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-warm/40 ${
           error ? "border-red-400/50" : "border-offwhite/12 focus:border-offwhite/25"
         }`}
       />
       {error && (
-        <p className="mt-1.5 flex items-center gap-1.5 text-xs text-red-400/90 font-sans">
-          <AlertCircle className="h-3 w-3 shrink-0" />
+        <p id={errorId} role="alert" className="mt-1.5 flex items-center gap-1.5 text-xs text-red-400/90 font-sans">
+          <AlertCircle className="h-3 w-3 shrink-0" aria-hidden="true" />
           {error}
         </p>
       )}

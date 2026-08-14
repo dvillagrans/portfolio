@@ -48,14 +48,14 @@ git clone https://github.com/dvillagrans/portfolio.git
 cd portfolio-v2
 
 # Install
-npm install
+pnpm install
 
 # Configure environment
 cp .env.example .env
 # Edit .env with your Resend and DeepSeek API keys
 
 # Run dev server
-npm run dev
+pnpm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
@@ -90,13 +90,13 @@ src/
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start development server (Turbopack) |
-| `npm run build` | Production build |
-| `npm run start` | Start production server |
-| `npm run lint` | Run ESLint |
-| `npm run typecheck` | TypeScript type checking |
-| `npm test` | Run Vitest test suite |
-| `npm run test:watch` | Vitest in watch mode |
+| `pnpm run dev` | Start development server (Turbopack) |
+| `pnpm run build` | Production build |
+| `pnpm run start` | Start production server |
+| `pnpm run lint` | Run ESLint |
+| `pnpm run typecheck` | TypeScript type checking |
+| `pnpm test` | Run Vitest test suite |
+| `pnpm run test:watch` | Vitest in watch mode |
 
 ---
 
@@ -121,7 +121,7 @@ Deployed on [Vercel](https://vercel.com). Push to `main` for automatic deploymen
 > 3. The OG image is generated dynamically at `/og` — no static asset needed
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 ---

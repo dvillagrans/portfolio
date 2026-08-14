@@ -14,7 +14,7 @@ interface CountUpMetricProps {
   delay?: number;
 }
 
-export default function CountUpMetric({ value, label, className, delay = 0 }: CountUpMetricProps) {
+export default function CountUpMetric({ value, className, delay = 0 }: CountUpMetricProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const hasAnimated = useRef(false);
   const reduced = useReducedMotion();

@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { GeoJsonProperties } from "geojson";
+import type { GeometryCollection, Topology } from "topojson-specification";
 import * as d3 from "d3";
 import * as topojson from "topojson-client";
 
@@ -49,6 +51,16 @@ const AQI_LEGEND = [
   { color: "#c084fc", label: "Severe" },
 ];
 
+interface PollutionParticle {
+  id: number;
+  cx: number;
+  cy: number;
+  life: number;
+  maxLife: number;
+  size: number;
+  color: string;
+}
+
 export function IndiaAQIViz() {
   const svgRef = useRef<SVGSVGElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -67,7 +79,7 @@ export function IndiaAQIViz() {
 
       const TOPO_URL = "/data/india.topo.json";
       
-      let topology: any;
+      let topology: Topology;
       try {
         const response = await fetch(TOPO_URL);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -113,12 +125,12 @@ export function IndiaAQIViz() {
       const topologyData = topology;
       const objectKey = Object.keys(topologyData.objects)[0];
       const topoObject = topologyData.objects[objectKey];
-      const geoData = topojson.feature(topologyData, topoObject as any) as any;
+      const geoData = topojson.feature(topologyData, topoObject as GeometryCollection<GeoJsonProperties>);
 
       // Filter islands for zoom fitting
       const mainland = {
         ...geoData,
-        features: geoData.features.filter((f: any) => {
+        features: geoData.features.filter((f) => {
           const name = f.properties?.name || "";
           return !name.includes("Andaman") && !name.includes("Lakshadweep");
         })
@@ -126,22 +138,22 @@ export function IndiaAQIViz() {
 
       // Zoom calculation: boost scale by focusing on mainland and adding "negative" padding
       const pad = 12;
-      const projection = d3.geoMercator().fitExtent([[pad - 15, pad - 15], [width - pad + 15, height - pad + 15]], mainland as any);
+      const projection = d3.geoMercator().fitExtent([[pad - 15, pad - 15], [width - pad + 15, height - pad + 15]], mainland);
       const path = d3.geoPath().projection(projection);
 
       const states = svg
-        .selectAll("path")
+        .selectAll<SVGPathElement, unknown>("path")
         .data(geoData.features)
-        .join("path")
-        .attr("d", (d: any) => path(d) ?? "")
-        .attr("fill", (d: any) => (STATE_AQI[d.properties?.name] ?? DEFAULT_AQI).color)
+        .join<SVGPathElement>("path")
+        .attr("d", (d) => path(d) ?? "")
+        .attr("fill", (d) => (STATE_AQI[d.properties?.name] ?? DEFAULT_AQI).color)
         .attr("fill-opacity", 0)
         .attr("stroke", "rgba(255,255,255,0.2)")
         .attr("stroke-width", 0.5)
-        .attr("class", (d: any) => `state-${(STATE_AQI[d.properties?.name] ?? DEFAULT_AQI).label.toLowerCase().replace(".", "")}`)
+        .attr("class", (d) => `state-${(STATE_AQI[d.properties?.name] ?? DEFAULT_AQI).label.toLowerCase().replace(".", "")}`)
         .style("cursor", "pointer")
         .style("transition", "fill-opacity 0.4s, stroke 0.4s, filter 0.3s")
-        .on("mouseenter", function (event: MouseEvent, d: any) {
+        .on("mouseenter", function (event: MouseEvent, d) {
           const name = d.properties?.name ?? "Estado";
           const data = STATE_AQI[name] ?? DEFAULT_AQI;
           
@@ -184,8 +196,8 @@ export function IndiaAQIViz() {
 
       // Drawing animation
       states
-        .attr("stroke-dasharray", function() { return (this as any).getTotalLength(); })
-        .attr("stroke-dashoffset", function() { return (this as any).getTotalLength(); })
+        .attr("stroke-dasharray", function() { return this.getTotalLength(); })
+        .attr("stroke-dashoffset", function() { return this.getTotalLength(); })
         .transition()
         .duration(1500)
         .delay((d, i) => i * 30)
@@ -196,7 +208,7 @@ export function IndiaAQIViz() {
         .attr("fill-opacity", 0.75);
 
       // Delhi floating label
-      const delhiFeature = geoData.features.find((f: any) => f.properties?.name === "Delhi");
+      const delhiFeature = geoData.features.find((f) => f.properties?.name === "Delhi");
       if (delhiFeature) {
         const centroid = path.centroid(delhiFeature);
         const labelGroup = svg.append("g").attr("transform", `translate(${centroid[0] + 6}, ${centroid[1] - 4})`).style("opacity", 0);
@@ -221,8 +233,8 @@ export function IndiaAQIViz() {
       // Pulse for critical states
       const pulse = () => {
         if (destroyed) return;
-        svg.selectAll("path")
-          .filter((d: any) => (STATE_AQI[d.properties?.name]?.aqi ?? 0) > CRITICAL_AQI_THRESHOLD)
+        svg.selectAll<SVGPathElement, (typeof geoData.features)[number]>("path")
+          .filter((d) => (STATE_AQI[d.properties?.name]?.aqi ?? 0) > CRITICAL_AQI_THRESHOLD)
           .transition()
           .duration(800)
           .attr("fill-opacity", 0.3)
@@ -235,12 +247,12 @@ export function IndiaAQIViz() {
 
       // Pollution particles over critical states
       const particlesGroup = svg.append("g").attr("filter", "url(#particle-glow)");
-      const criticalStates = geoData.features.filter((f: any) => {
+      const criticalStates = geoData.features.filter((f) => {
         const d = STATE_AQI[f.properties?.name];
         return d && d.aqi > CRITICAL_AQI_THRESHOLD;
       });
 
-      const pollutionParticles: { id: number; cx: number; cy: number; life: number; maxLife: number; size: number; color: string }[] = [];
+      const pollutionParticles: PollutionParticle[] = [];
 
       const addParticle = (cx: number, cy: number, color: string) => {
         pollutionParticles.push({
@@ -256,7 +268,7 @@ export function IndiaAQIViz() {
 
       const updateParticles = () => {
         if (destroyed) return;
-        criticalStates.forEach((f: any) => {
+        criticalStates.forEach((f) => {
           const centroid = path.centroid(f);
           const d = STATE_AQI[f.properties?.name];
           if (d && Math.random() < 0.25) {
@@ -264,27 +276,27 @@ export function IndiaAQIViz() {
           }
         });
 
-        const circles = particlesGroup.selectAll("circle").data(pollutionParticles, (d: any) => d.id);
+        const circles = particlesGroup.selectAll<SVGCircleElement, PollutionParticle>("circle").data(pollutionParticles, (d) => d.id);
 
         circles.join(
           (enter) =>
             enter
               .append("circle")
-              .attr("cx", (d: any) => d.cx)
-              .attr("cy", (d: any) => d.cy)
+              .attr("cx", (d) => d.cx)
+              .attr("cy", (d) => d.cy)
               .attr("r", 0)
-              .attr("fill", (d: any) => d.color)
+              .attr("fill", (d) => d.color)
               .attr("opacity", 0.6)
               .call((sel) =>
                 sel
                   .transition()
                   .duration(300)
-                  .attr("r", (d: any) => d.size)
+                  .attr("r", (d) => d.size)
               ),
           (update) =>
             update
-              .attr("cx", (d: any) => d.cx)
-              .attr("cy", (d: any) => d.cy),
+              .attr("cx", (d) => d.cx)
+              .attr("cy", (d) => d.cy),
           (exit) =>
             exit
               .transition()

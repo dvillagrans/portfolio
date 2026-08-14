@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
+import type { Chart, ChartDataset, ScriptableContext } from "chart.js";
 import { CLUSTER_DEFS } from "@/data/covidClusters";
 
 function gaussian(mean: number, std: number, min = 2, max = 98): number {
@@ -16,6 +17,10 @@ interface ClusterPoint {
   y: number;
 }
 
+type ClusterDataset = ChartDataset<"scatter", ClusterPoint[]> & {
+  _clusterDef?: (typeof CLUSTER_DEFS)[number];
+};
+
 const riskColors: Record<string, string> = {
   K1: "ALTO", K2: "MODERADO", K3: "CRÍTICO",
   K4: "ALTO", K5: "ALTO", K6: "MODERADO",
@@ -24,7 +29,7 @@ const riskColors: Record<string, string> = {
 
 const radarGridPlugin = {
   id: "radarGrid",
-  beforeDraw(chart: any) {
+  beforeDraw(chart: Chart) {
     const ctx = chart.ctx;
     const { width, height } = chart;
     const cx = width / 2;
@@ -56,7 +61,7 @@ const radarGridPlugin = {
 
 const criticalPulsePlugin = {
   id: "criticalPulse",
-  afterDatasetsDraw(chart: any) {
+  afterDatasetsDraw(chart: Chart) {
     const ctx = chart.ctx;
     const criticalClusterIds = CLUSTER_DEFS.filter(c => ["K3", "K7"].includes(c.id)).map(c => CLUSTER_DEFS.indexOf(c));
     const meta = chart.getDatasetMeta(0);
@@ -114,13 +119,13 @@ export function CovidClusterViz() {
 
       if (destroyed || !canvasRef.current) return;
 
-      const datasets = CLUSTER_DEFS.map((c, idx) => ({
+      const datasets = CLUSTER_DEFS.map((c, _idx) => ({
         label: c.label,
         data: generateClusterPoints(c),
         backgroundColor: c.color + "88",
         borderColor: c.color,
         borderWidth: 0.5,
-        pointRadius: (ctx: any) => {
+        pointRadius: (_ctx: ScriptableContext<"scatter">) => {
           const isCrit = ["K3", "K7"].includes(c.id);
           return isCrit ? 4.5 : 3.5;
         },
@@ -144,16 +149,13 @@ export function CovidClusterViz() {
             tooltip: {
               callbacks: {
                 title: (items) => {
-                  const ds = items[0]?.dataset as any;
-                  const c = ds?._clusterDef;
+                  const c = (items[0]?.dataset as ClusterDataset | undefined)?._clusterDef;
                   return c?.label ?? "";
                 },
                 label: (item) => {
-                  const ds = (item.dataset as any);
-                  const c = ds?._clusterDef;
+                  const c = (item.dataset as ClusterDataset)._clusterDef;
                   if (!c) return "";
                   const risk = riskColors[c.id];
-                  const riskColor = risk === "CRÍTICO" ? "#ef4444" : risk === "ALTO" ? "#f97316" : risk === "MODERADO" ? "#facc15" : "#4ade80";
                   return [`Riesgo: ${risk}`, `  Puntos: ${c.n} pacientes`];
                 },
               },

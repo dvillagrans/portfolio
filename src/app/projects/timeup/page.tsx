@@ -65,7 +65,7 @@ export default function TimeUpCaseStudy() {
 
       {/* Meta Grid */}
       <section className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 border-y border-white/10 py-8 reveal-fade font-mono text-xs">
-        {dict.meta.map((item: any, idx: number) => (
+        {dict.meta.map((item: { label: string; value: string }, idx: number) => (
           <div key={idx} className="flex flex-col gap-2">
             <span className="text-white/40 uppercase relative pl-3 before:content-[''] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1 before:h-1 before:bg-timeup-cyan before:rounded-full">{item.label}</span>
             <span className="text-white/90">{item.value}</span>

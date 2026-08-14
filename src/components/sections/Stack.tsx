@@ -52,7 +52,7 @@ const CATEGORY_SETS = {
 function normalize(s: string): string {
   return s
     .toLowerCase()
-    .replace(/[\s\/.-]+/g, "")
+    .replace(/[\s/.-]+/g, "")
     .replace(/(api|css|js)$/, "");
 }
 

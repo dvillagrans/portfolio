@@ -442,7 +442,7 @@ export default function ProjectsPage() {
                   </div>
 
                   <div className="flex flex-col">
-                    {byYear[year].map((project, pidx) => {
+                    {byYear[year].map((project, _pidx) => {
                       const globalIdx = archive.projects.indexOf(project);
                       const key = projectKey(project, globalIdx);
                       const isOpen = expanded === key;
