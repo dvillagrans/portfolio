@@ -68,7 +68,7 @@ vi.mock("./Scene", () => ({
   Scene: ({ project }: { project: ProjectItem }) => <h3>{project.title}</h3>,
   getAccent: () => ({ fg: "#6db88a", bg: "#101210", ink: "#ece8e0" }),
   accentAlpha: (_c: string, a: number) => `rgba(0,0,0,${a})`,
-  mutedInk: (ink: string) => `${ink}86`,
+  mutedInk: (ink: string) => `${ink}92`,
 }));
 
 function stubMatchMedia(matches: boolean) {
@@ -130,7 +130,7 @@ describe("FeaturedWork", () => {
     render(<FeaturedWork />);
 
     const h2 = await screen.findByRole("heading", { level: 2, name: /Selected work/i });
-    expect(h2.getAttribute("style")).toContain("rgba(236, 232, 224, 0.525)");
+    expect(h2.getAttribute("style")).toContain("rgba(236, 232, 224, 0.573)");
   });
 
   it("renders the cinematic scroll hint at AA-safe muted ink", async () => {
@@ -139,7 +139,7 @@ describe("FeaturedWork", () => {
 
     await screen.findByRole("heading", { level: 2, name: /Selected work/i });
     const hint = screen.getByText("Scroll for next project");
-    expect(hint.getAttribute("style")).toContain("rgba(236, 232, 224, 0.525)");
+    expect(hint.getAttribute("style")).toContain("rgba(236, 232, 224, 0.573)");
   });
 
   it("names nav buttons with their full visible label (no aria-label override)", async () => {

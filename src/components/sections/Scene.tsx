@@ -86,12 +86,14 @@ export function hexLuminance(hex: string): number {
 /**
  * Minimum AA-safe muted alpha suffixes for accent ink on each scene family.
  * Light ink over dark scene backgrounds (00/01) clears 4.5:1 from ~0.53, dark
- * ink over light scene backgrounds (02–04) from ~0.63. These hex suffixes land
- * at ≈4.6–4.9:1 — the lowest alpha that clears WCAG AA on every scene — while
- * staying visibly quieter than full ink so the primary/secondary hierarchy holds.
+ * ink over light scene backgrounds (02–04) from ~0.63. The dark suffix was
+ * raised from 86 to 92 after Lighthouse measured 4.39:1 on desktop during the
+ * scene cross-fade (bg blends to ≈#27292c); 92 lands at ≈4.9:1 even on that
+ * blended background while staying visibly quieter than full ink so the
+ * primary/secondary hierarchy holds.
  */
 export const MUTED_INK_ALPHA: Record<"dark" | "light", string> = {
-  dark: "86",
+  dark: "92",
   light: "A0",
 };
 

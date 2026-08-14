@@ -298,10 +298,10 @@ export function EyeNetPipelineFlow({
   const pipeline = (
     <>
       <div className="flex items-center justify-between gap-2 px-1">
-        <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-white/35">
+        <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-white/55">
           {isEn ? "Document pipeline" : "Pipeline documental"}
         </span>
-        <span className="flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-widest text-white/25">
+        <span className="flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-widest text-white/50">
           <span
             className="h-1 w-1 rounded-full bg-emerald-400"
             style={reduced ? undefined : { animation: "pulse 2s ease-in-out infinite" }}

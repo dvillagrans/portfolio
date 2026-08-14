@@ -112,4 +112,30 @@ describe("mutedInk", () => {
     expect(mutedInk("#ece8e0")).toBe(`#ece8e0${MUTED_INK_ALPHA.dark.toLowerCase()}`);
     expect(mutedInk("#1c1c1e")).toBe(`#1c1c1e${MUTED_INK_ALPHA.light.toLowerCase()}`);
   });
+
+  it("keeps dark-scene muted ink AA-safe on the desktop cross-fade blend (Lighthouse 4.39)", () => {
+    const muted = mutedInk("#ece8e0");
+    const blendedBg = "#27292c";
+    expect(compositeContrast(muted, blendedBg)).toBeGreaterThanOrEqual(
+      WCAG_AA_MIN
+    );
+  });
+});
+
+describe("EyeNet pipeline header contrast on the #0d1117 evidence frame", () => {
+  const frameBg = "#0d1117";
+
+  it("keeps the 'Document pipeline' label (text-white/55) AA-safe", () => {
+    const label = "#ffffff8c";
+    expect(compositeContrast(label, frameBg)).toBeGreaterThanOrEqual(
+      WCAG_AA_MIN
+    );
+  });
+
+  it("keeps the 'LIVE · 5 nodes' badge (text-white/50) AA-safe", () => {
+    const badge = "#ffffff80";
+    expect(compositeContrast(badge, frameBg)).toBeGreaterThanOrEqual(
+      WCAG_AA_MIN
+    );
+  });
 });
