@@ -194,6 +194,22 @@ html.no-transition * {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
 }
 
+/* ─── Hero critical text — paint first, animate after ───
+   The hero copy must be visible in the initial HTML so mobile LCP can
+   fire at first contentful paint. The entrance animation (gsap) only
+   applies on fine-pointer desktop, where the text is kept hidden until
+   the reveal so there is no flash. Mirrors useCoarsePointer's query:
+   coarse = (hover: none) or (max-width: 767px). */
+.hero-reveal {
+  opacity: 1;
+}
+
+@media (hover: hover) and (min-width: 768px) {
+  .hero-reveal {
+    opacity: 0;
+  }
+}
+
 /* ─── Warm accent underline — for editorial emphasis ─── */
 .accent-underline {
   text-decoration-line: underline;

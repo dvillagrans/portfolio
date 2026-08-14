@@ -60,4 +60,18 @@ describe("useCoarsePointer", () => {
     act(() => listeners[0]?.({ matches: false }));
     expect(result.current).toBe(false);
   });
+
+  it("reads the coarse state synchronously on mount (no effect round-trip)", () => {
+    const { matchMediaMock } = stubMatchMedia(true);
+    const { result } = renderHook(() => useCoarsePointer());
+    expect(result.current).toBe(true);
+    expect(matchMediaMock).toHaveBeenCalled();
+  });
+
+  it("resolves to false synchronously on desktop viewports", () => {
+    const { matchMediaMock } = stubMatchMedia(false);
+    const { result } = renderHook(() => useCoarsePointer());
+    expect(result.current).toBe(false);
+    expect(matchMediaMock).toHaveBeenCalled();
+  });
 });

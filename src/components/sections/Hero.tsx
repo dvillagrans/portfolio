@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useCoarsePointer } from "@/hooks/useCoarsePointer";
 import { ArrowDownToLine, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
@@ -25,6 +26,7 @@ export default function Hero() {
   const { t } = useLanguage();
   const labels = t.hero;
   const reduced = useReducedMotion();
+  const coarse = useCoarsePointer();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -38,7 +40,7 @@ export default function Hero() {
         scrollHintRef.current,
       ].filter(Boolean);
 
-      if (reduced) {
+      if (reduced || coarse) {
         gsap.set(targets, { opacity: 1, y: 0 });
         return;
       }
@@ -58,7 +60,7 @@ export default function Hero() {
     }, container);
 
     return () => ctx.revert();
-  }, [reduced]);
+  }, [reduced, coarse]);
 
   return (
     <section
@@ -76,8 +78,7 @@ export default function Hero() {
       <div className="relative z-10 max-w-3xl">
         <p
           ref={eyebrowRef}
-          className="mb-5 font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-offwhite/45"
-          style={{ opacity: reduced ? 1 : 0 }}
+          className="hero-reveal mb-5 font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-offwhite/45"
         >
           {labels.eyebrow}
         </p>
@@ -86,13 +87,12 @@ export default function Hero() {
           className="font-sans font-medium tracking-tight text-offwhite leading-[1.04]"
           style={{ fontSize: "clamp(2.35rem, 5.5vw, 4.5rem)", textWrap: "balance" }}
         >
-          <span ref={line1Ref} className="block" style={{ opacity: reduced ? 1 : 0 }}>
+          <span ref={line1Ref} className="hero-reveal block">
             {labels.title1}
           </span>
           <span
             ref={line2Ref}
-            className="mt-1 block font-display italic text-offwhite/72"
-            style={{ opacity: reduced ? 1 : 0 }}
+            className="hero-reveal mt-1 block font-display italic text-offwhite/72"
           >
             {labels.title2}
           </span>
@@ -100,24 +100,21 @@ export default function Hero() {
 
         <p
           ref={sublineRef}
-          className="mt-6 max-w-xl font-sans text-base leading-relaxed text-offwhite/58 md:mt-8 md:text-[17px]"
-          style={{ opacity: reduced ? 1 : 0 }}
+          className="hero-reveal mt-6 max-w-xl font-sans text-base leading-relaxed text-offwhite/58 md:mt-8 md:text-[17px]"
         >
           {labels.subtitle}
         </p>
 
         <p
           ref={focusRef}
-          className="mt-4 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/35"
-          style={{ opacity: reduced ? 1 : 0 }}
+          className="hero-reveal mt-4 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/35"
         >
           {labels.focusLine}
         </p>
 
         <div
           ref={actionRef}
-          className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center md:mt-12"
-          style={{ opacity: reduced ? 1 : 0 }}
+          className="hero-reveal mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center md:mt-12"
         >
           <Link
             href="#projects"
@@ -140,8 +137,7 @@ export default function Hero() {
       <a
         ref={scrollHintRef}
         href="#projects"
-        className="relative z-10 mt-14 flex flex-col items-start gap-2 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/30 transition-colors hover:text-offwhite/50 md:mt-16"
-        style={{ opacity: reduced ? 1 : 0 }}
+        className="hero-reveal relative z-10 mt-14 flex flex-col items-start gap-2 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/30 transition-colors hover:text-offwhite/50 md:mt-16"
       >
         <span>{labels.scrollHint}</span>
         <span className="h-8 w-px bg-offwhite/20" aria-hidden="true" />
