@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen, within, cleanup } from "@testing-library/react";
 import FeaturedWork from "./FeaturedWork";
 import type { ProjectItem } from "@/i18n/types";
 
@@ -68,6 +68,7 @@ vi.mock("./Scene", () => ({
   Scene: ({ project }: { project: ProjectItem }) => <h3>{project.title}</h3>,
   getAccent: () => ({ fg: "#6db88a", bg: "#101210", ink: "#ece8e0" }),
   accentAlpha: (_c: string, a: number) => `rgba(0,0,0,${a})`,
+  mutedInk: (ink: string) => `${ink}86`,
 }));
 
 function stubMatchMedia(matches: boolean) {
@@ -122,5 +123,34 @@ describe("FeaturedWork", () => {
     expect(
       h2.compareDocumentPosition(firstH3 as Node) & Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy();
+  });
+
+  it("renders the cinematic chapter heading at AA-safe muted ink", async () => {
+    stubMatchMedia(true);
+    render(<FeaturedWork />);
+
+    const h2 = await screen.findByRole("heading", { level: 2, name: /Selected work/i });
+    expect(h2.getAttribute("style")).toContain("rgba(236, 232, 224, 0.525)");
+  });
+
+  it("renders the cinematic scroll hint at AA-safe muted ink", async () => {
+    stubMatchMedia(true);
+    render(<FeaturedWork />);
+
+    await screen.findByRole("heading", { level: 2, name: /Selected work/i });
+    const hint = screen.getByText("Scroll for next project");
+    expect(hint.getAttribute("style")).toContain("rgba(236, 232, 224, 0.525)");
+  });
+
+  it("names nav buttons with their full visible label (no aria-label override)", async () => {
+    stubMatchMedia(true);
+    render(<FeaturedWork />);
+
+    const nav = await screen.findByRole("navigation", { name: /Project navigation/i });
+    const button = within(nav).getByRole("button", { name: /01/i });
+    expect(button).not.toHaveAttribute("aria-label");
+    expect(button).toHaveTextContent("01");
+    expect(button).toHaveTextContent("EyeNet");
+    expect(button).toHaveTextContent("Client project");
   });
 });

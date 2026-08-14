@@ -71,6 +71,37 @@ export function accentAlpha(color: string, alpha: number): string {
   return color;
 }
 
+/** Relative luminance of a hex color (WCAG 2.x, sRGB → linear). */
+export function hexLuminance(hex: string): number {
+  const match = /^#?([0-9a-f]{6})$/i.exec(hex);
+  if (!match) return 0;
+  const linear = (c: number) => {
+    const s = c / 255;
+    return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  };
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(match[1].slice(i, i + 2), 16));
+  return 0.2126 * linear(r) + 0.7152 * linear(g) + 0.0722 * linear(b);
+}
+
+/**
+ * Minimum AA-safe muted alpha suffixes for accent ink on each scene family.
+ * Light ink over dark scene backgrounds (00/01) clears 4.5:1 from ~0.53, dark
+ * ink over light scene backgrounds (02–04) from ~0.63. These hex suffixes land
+ * at ≈4.6–4.9:1 — the lowest alpha that clears WCAG AA on every scene — while
+ * staying visibly quieter than full ink so the primary/secondary hierarchy holds.
+ */
+export const MUTED_INK_ALPHA: Record<"dark" | "light", string> = {
+  dark: "86",
+  light: "A0",
+};
+
+/** Accent ink with the AA-safe muted alpha for its scene background. */
+export function mutedInk(ink: string): string {
+  const alpha =
+    hexLuminance(ink) > 0.5 ? MUTED_INK_ALPHA.dark : MUTED_INK_ALPHA.light;
+  return accentAlpha(ink, parseInt(alpha, 16) / 255);
+}
+
 const VISIBLE_TAGS = 5;
 
 function resolveImageSrc(image: string): string {
@@ -95,6 +126,7 @@ function ProjectEvidence({
   const src = resolveImageSrc(project.image);
   const isExternal = project.href.startsWith("http");
   const usePipelineEvidence = isEyeNetProject(project);
+  const muted = mutedInk(accent.ink);
   const media = registryMedia
     ? { ...registryMedia, alt: project.title }
     : null;
@@ -142,7 +174,7 @@ function ProjectEvidence({
     <figure className="flex flex-col gap-2">
       <figcaption
         className="font-mono text-[9px] font-bold uppercase tracking-[0.28em]"
-        style={{ color: `${accent.ink}45` }}
+        style={{ color: muted }}
       >
         {evidenceLabel}
       </figcaption>
@@ -186,6 +218,7 @@ export function Scene({
   const caseNumber = String(index + 1).padStart(2, "0");
   const visibleTags = project.tags.slice(0, VISIBLE_TAGS);
   const hiddenTagCount = Math.max(0, project.tags.length - VISIBLE_TAGS);
+  const muted = mutedInk(accent.ink);
 
   useEffect(() => {
     if (isActive) setActiveKey((k) => k + 1);
@@ -202,12 +235,12 @@ export function Scene({
           <span style={{ color: accent.fg }}>
             {isEn ? "Case" : "Caso"} {caseNumber}
           </span>
-          <span style={{ color: `${accent.ink}22` }}>·</span>
-          <span style={{ color: `${accent.ink}50` }}>{project.context}</span>
+          <span aria-hidden="true" style={{ color: `${accent.ink}22` }}>·</span>
+          <span style={{ color: muted }}>{project.context}</span>
           {project.date && (
             <>
-              <span style={{ color: `${accent.ink}22` }}>·</span>
-              <span style={{ color: `${accent.ink}40` }}>{project.date}</span>
+              <span aria-hidden="true" style={{ color: `${accent.ink}22` }}>·</span>
+              <span style={{ color: muted }}>{project.date}</span>
             </>
           )}
         </div>
@@ -221,7 +254,7 @@ export function Scene({
           </h3>
           <p
             className="mt-3 max-w-md font-sans text-[15px] leading-relaxed md:text-base"
-            style={{ color: `${accent.ink}62` }}
+            style={{ color: muted }}
           >
             {project.subtitle}
           </p>
@@ -242,7 +275,7 @@ export function Scene({
                 />
                 <span
                   className="font-mono text-[8px] font-bold uppercase leading-tight tracking-wider"
-                  style={{ color: `${accent.ink}45` }}
+                  style={{ color: muted }}
                 >
                   {m.label}
                 </span>
@@ -253,7 +286,7 @@ export function Scene({
 
         <p
           className="max-w-md font-sans text-sm leading-relaxed"
-          style={{ color: `${accent.ink}55` }}
+          style={{ color: muted }}
         >
           {project.role}
         </p>
@@ -264,13 +297,13 @@ export function Scene({
               <span
                 key={tag}
                 className="rounded px-1.5 py-0.5 font-mono text-[8px] font-medium uppercase tracking-wider"
-                style={{ color: `${accent.ink}50`, background: `${accent.ink}05` }}
+                style={{ color: muted, background: `${accent.ink}05` }}
               >
                 {tag}
               </span>
             ))}
             {hiddenTagCount > 0 && (
-              <span className="font-mono text-[8px]" style={{ color: `${accent.ink}35` }}>
+              <span className="font-mono text-[8px]" style={{ color: muted }}>
                 +{hiddenTagCount}
               </span>
             )}
@@ -290,7 +323,7 @@ export function Scene({
             type="button"
             onClick={() => onOpenSpotlight(project)}
             className="font-sans text-xs font-medium underline-offset-4 transition-colors hover:underline"
-            style={{ color: `${accent.ink}45` }}
+            style={{ color: muted }}
           >
             {labels.inspect}
           </button>

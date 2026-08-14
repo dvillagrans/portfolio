@@ -20,7 +20,7 @@ import {
   getIncomingFadeDelay,
   CHROME_TRANSITION_MS,
 } from "@/lib/featuredWorkScrollConfig";
-import { Scene, getAccent, accentAlpha } from "./Scene";
+import { Scene, getAccent, accentAlpha, mutedInk } from "./Scene";
 
 const ProjectSpotlight = dynamic(
   () => import("../portfolio/ProjectSpotlight"),
@@ -257,14 +257,15 @@ export default function FeaturedWork() {
     const inkLine = `${ink}33`;
 
     if (variant === "cinematic" && sceneIndex !== undefined) {
+      const muted = mutedInk(ink);
       return (
         <header className="pointer-events-auto font-mono text-[9px] font-bold uppercase tracking-[0.32em]">
           {/* Section heading kept as a real h2 so the desktop heading order is h1 → h2 → h3 */}
-          <h2 className="inline font-mono text-[9px] font-bold uppercase tracking-[0.32em]" style={{ color: `${ink}40` }}>
+          <h2 className="inline font-mono text-[9px] font-bold uppercase tracking-[0.32em]" style={{ color: muted }}>
             {t.work.title}
           </h2>
-          <span style={{ color: `${ink}25` }}> · </span>
-          <span style={{ color: `${ink}55` }}>
+          <span aria-hidden="true" style={{ color: `${ink}25` }}> · </span>
+          <span style={{ color: muted }}>
             {String(sceneIndex + 1).padStart(2, "0")}/{String(projects.length).padStart(2, "0")}
           </span>
         </header>
@@ -373,6 +374,7 @@ export default function FeaturedWork() {
                 const projectAccent = getAccent(p.id);
                 const sceneAccent = getAccent(projects[activeScene]?.id ?? "00");
                 const isOn = i === activeScene;
+                const muted = mutedInk(sceneAccent.ink);
                 return (
                   <button
                     key={p.id}
@@ -398,12 +400,11 @@ export default function FeaturedWork() {
                       boxShadow: isOn ? `0 0 0 1px ${accentAlpha(projectAccent.fg, 0.2)}` : undefined,
                     }}
                     aria-current={isOn ? "true" : undefined}
-                    aria-label={`${projectNavLabel(p.title)} — ${p.context}`}
                   >
                     <span
                       className="font-mono text-[9px] font-bold tabular-nums"
                       style={{
-                        color: isOn ? projectAccent.fg : accentAlpha(sceneAccent.ink, 0.5),
+                        color: isOn ? projectAccent.fg : muted,
                       }}
                     >
                       {String(i + 1).padStart(2, "0")}
@@ -417,7 +418,7 @@ export default function FeaturedWork() {
                       </span>
                       <span
                         className="hidden font-mono text-[8px] uppercase tracking-wider sm:block"
-                        style={{ color: accentAlpha(sceneAccent.ink, 0.48) }}
+                        style={{ color: muted }}
                       >
                         {p.context}
                       </span>
@@ -463,7 +464,7 @@ export default function FeaturedWork() {
               <span
                 className="font-mono text-[9px] font-bold uppercase tracking-[0.3em]"
                 style={{
-                  color: `${getAccent(projects[0]?.id ?? "00").ink}50`,
+                  color: mutedInk(getAccent(projects[0]?.id ?? "00").ink),
                   transition: "color 0.6s ease",
                 }}
               >
