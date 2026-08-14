@@ -197,7 +197,6 @@ export default function Philosophy() {
                 role="button"
                 tabIndex={0}
                 aria-expanded={isActive}
-                aria-label={item.title}
                 className="group rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-5 transition-all duration-500 hover:border-white/16 focus:outline-none focus-visible:ring-2 focus-visible:ring-warm/35 md:px-8 md:py-6"
                 style={{
                   boxShadow: isActive ? `0 0 0 1px ${accentAlpha(accent, 0.2)} inset` : undefined,
@@ -205,7 +204,7 @@ export default function Philosophy() {
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0 flex-1">
-                    <p className="mb-1.5 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/38">
+                    <p className="mb-1.5 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/50">
                       {labels.labelPrinciple} {caseNumber}
                     </p>
                     <h3 className="font-display text-xl tracking-tight text-offwhite md:text-2xl">
@@ -252,7 +251,7 @@ export default function Philosophy() {
           })}
         </div>
 
-        <p className="mt-8 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/28">
+        <p className="mt-8 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/50">
           {isCoarse ? labels.hintTap : labels.hintHover}
         </p>
 

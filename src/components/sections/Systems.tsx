@@ -147,7 +147,6 @@ export default function Systems() {
         role="button"
         tabIndex={0}
         aria-expanded={isActive}
-        aria-label={cap.title}
         className="layer-panel group relative cursor-pointer rounded-2xl border border-white/10 bg-white/[0.03] transition-all duration-700 ease-out hover:border-white/18 focus:outline-none focus-visible:ring-2 focus-visible:ring-warm/40 focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal"
         style={{
           transform: computeLayerTransform(idx),

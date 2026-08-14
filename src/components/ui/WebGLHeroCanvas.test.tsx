@@ -1,10 +1,14 @@
-import { describe, it, expect, vi } from "vitest";
-import { render } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { cleanup, render } from "@testing-library/react";
 import WebGLHeroCanvas from "./WebGLHeroCanvas";
 
 vi.mock("@/hooks/useReducedMotion", () => ({
   useReducedMotion: () => false,
 }));
+
+afterEach(() => {
+  cleanup();
+});
 
 describe("WebGLHeroCanvas", () => {
   it("renders a canvas element", () => {

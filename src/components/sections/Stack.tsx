@@ -254,7 +254,7 @@ export default function Stack() {
                   />
                   <span
                     className="font-mono text-[9px] font-bold uppercase tracking-[0.28em] transition-colors duration-500"
-                    style={{ color: isFocusedBand ? config.accent : "rgba(240,234,216,0.42)" }}
+                    style={{ color: isFocusedBand ? config.accent : "rgba(240,234,216,0.6)" }}
                   >
                     {config.name}
                   </span>
@@ -326,7 +326,7 @@ export default function Stack() {
           })}
         </div>
 
-        <p className="mt-8 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/28">
+        <p className="mt-8 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/50">
           {isCoarse ? labels.hintTap : labels.hintHover}
         </p>
 
@@ -354,7 +354,7 @@ export default function Stack() {
 
                 {activeProjects.length > 0 ? (
                   <>
-                    <p className="mb-4 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/38">
+                    <p className="mb-4 font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/50">
                       {labels.labelUsedIn} · {projectCountLabel}
                     </p>
                     <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2">
@@ -367,7 +367,7 @@ export default function Stack() {
                           className="group flex items-center justify-between gap-3 rounded-xl border border-offwhite/8 bg-offwhite/[0.02] px-4 py-3 transition-all hover:border-offwhite/16 hover:bg-offwhite/[0.04]"
                         >
                           <div className="min-w-0">
-                            <div className="font-mono text-[8px] font-bold uppercase tracking-[0.24em] text-offwhite/38">
+                            <div className="font-mono text-[8px] font-bold uppercase tracking-[0.24em] text-offwhite/50">
                               {project.context}
                             </div>
                             <div className="mt-0.5 font-sans text-sm font-medium text-offwhite/85 group-hover:text-white">
@@ -381,7 +381,7 @@ export default function Stack() {
                   </>
                 ) : (
                   <div className="flex flex-col gap-2">
-                    <p className="font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/38">
+                    <p className="font-mono text-[9px] font-bold uppercase tracking-[0.28em] text-offwhite/50">
                       {labels.labelExploration}
                     </p>
                     <p className="max-w-xl font-sans text-sm leading-relaxed text-offwhite/58 md:text-[15px]">
@@ -393,7 +393,7 @@ export default function Stack() {
             ) : (
               <div className="flex min-h-[120px] flex-col justify-center gap-2">
                 <p className="font-sans text-sm font-medium text-offwhite/50">{labels.emptyTitle}</p>
-                <p className="max-w-lg font-sans text-sm text-offwhite/38">{labels.emptyHint}</p>
+                <p className="max-w-lg font-sans text-sm text-offwhite/55">{labels.emptyHint}</p>
               </div>
             )}
           </div>

@@ -129,102 +129,126 @@ export default function WebGLHeroCanvas({ className }: { className?: string }) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const gl = canvas.getContext("webgl", { alpha: false, antialias: false });
-    if (!gl) return;
+    let cancelled = false;
+    let dispose: (() => void) | undefined;
 
-    // Compile shaders
-    const vs = createShader(gl, gl.VERTEX_SHADER, VERTEX_SHADER);
-    const fs = createShader(gl, gl.FRAGMENT_SHADER, FRAGMENT_SHADER);
-    if (!vs || !fs) return;
+    const init = () => {
+      if (cancelled) return;
 
-    const program = createProgram(gl, vs, fs);
-    if (!program) return;
+      const gl = canvas.getContext("webgl", { alpha: false, antialias: false });
+      if (!gl) return;
 
-    gl.useProgram(program);
+      // Compile shaders
+      const vs = createShader(gl, gl.VERTEX_SHADER, VERTEX_SHADER);
+      const fs = createShader(gl, gl.FRAGMENT_SHADER, FRAGMENT_SHADER);
+      if (!vs || !fs) return;
 
-    // Full-screen quad
-    const buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-      -1, -1, 1, -1, -1, 1,
-      -1, 1, 1, -1, 1, 1,
-    ]), gl.STATIC_DRAW);
+      const program = createProgram(gl, vs, fs);
+      if (!program) return;
 
-    const posLoc = gl.getAttribLocation(program, "a_position");
-    gl.enableVertexAttribArray(posLoc);
-    gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+      gl.useProgram(program);
 
-    // Uniforms
-    const uTime = gl.getUniformLocation(program, "u_time");
-    const uMouse = gl.getUniformLocation(program, "u_mouse");
-    const uResolution = gl.getUniformLocation(program, "u_resolution");
+      // Full-screen quad
+      const buffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+        -1, -1, 1, -1, -1, 1,
+        -1, 1, 1, -1, 1, 1,
+      ]), gl.STATIC_DRAW);
 
-    // Resize handler
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio, 2);
-      const w = canvas.clientWidth;
-      const h = canvas.clientHeight;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      gl.viewport(0, 0, canvas.width, canvas.height);
-    };
-    resize();
-    window.addEventListener("resize", resize);
+      const posLoc = gl.getAttribLocation(program, "a_position");
+      gl.enableVertexAttribArray(posLoc);
+      gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
 
-    // Visibility change — pause when tab inactive
-    let startTime = performance.now();
-    let paused = false;
-    const handleVisibility = () => {
-      paused = document.hidden;
-      if (!paused) startTime = performance.now() - (rafRef.current * 16);
-    };
-    document.addEventListener("visibilitychange", handleVisibility);
+      // Uniforms
+      const uTime = gl.getUniformLocation(program, "u_time");
+      const uMouse = gl.getUniformLocation(program, "u_mouse");
+      const uResolution = gl.getUniformLocation(program, "u_resolution");
 
-    // Context lost/restore
-    const handleContextLost = (e: Event) => {
-      e.preventDefault();
-      cancelAnimationFrame(rafRef.current);
-    };
-    const handleContextRestored = () => {
-      // Re-init would happen here; for simplicity, just restart loop
-      startTime = performance.now();
-    };
-    canvas.addEventListener("webglcontextlost", handleContextLost);
-    canvas.addEventListener("webglcontextrestored", handleContextRestored);
+      // Resize handler
+      const resize = () => {
+        const dpr = Math.min(window.devicePixelRatio, 2);
+        const w = canvas.clientWidth;
+        const h = canvas.clientHeight;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+      };
+      resize();
+      window.addEventListener("resize", resize);
 
-    // Render loop
-    const renderLoop = () => {
-      if (paused) {
+      // Visibility change — pause when tab inactive
+      let startTime = performance.now();
+      let paused = false;
+      const handleVisibility = () => {
+        paused = document.hidden;
+        if (!paused) startTime = performance.now() - (rafRef.current * 16);
+      };
+      document.addEventListener("visibilitychange", handleVisibility);
+
+      // Context lost/restore
+      const handleContextLost = (e: Event) => {
+        e.preventDefault();
+        cancelAnimationFrame(rafRef.current);
+      };
+      const handleContextRestored = () => {
+        // Re-init would happen here; for simplicity, just restart loop
+        startTime = performance.now();
+      };
+      canvas.addEventListener("webglcontextlost", handleContextLost);
+      canvas.addEventListener("webglcontextrestored", handleContextRestored);
+
+      // Render loop
+      const renderLoop = () => {
+        if (paused) {
+          rafRef.current = requestAnimationFrame(renderLoop);
+          return;
+        }
+
+        const time = (performance.now() - startTime) / 1000;
+
+        // Lerp mouse for smoothness
+        lerpMouseRef.current.x += (mouseRef.current.x - lerpMouseRef.current.x) * 0.05;
+        lerpMouseRef.current.y += (mouseRef.current.y - lerpMouseRef.current.y) * 0.05;
+
+        gl.uniform1f(uTime, time);
+        gl.uniform2f(uMouse, lerpMouseRef.current.x, lerpMouseRef.current.y);
+        gl.uniform2f(uResolution, canvas.width, canvas.height);
+
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+
         rafRef.current = requestAnimationFrame(renderLoop);
-        return;
-      }
-
-      const time = (performance.now() - startTime) / 1000;
-
-      // Lerp mouse for smoothness
-      lerpMouseRef.current.x += (mouseRef.current.x - lerpMouseRef.current.x) * 0.05;
-      lerpMouseRef.current.y += (mouseRef.current.y - lerpMouseRef.current.y) * 0.05;
-
-      gl.uniform1f(uTime, time);
-      gl.uniform2f(uMouse, lerpMouseRef.current.x, lerpMouseRef.current.y);
-      gl.uniform2f(uResolution, canvas.width, canvas.height);
-
-      gl.drawArrays(gl.TRIANGLES, 0, 6);
-
+      };
       rafRef.current = requestAnimationFrame(renderLoop);
+
+      dispose = () => {
+        cancelAnimationFrame(rafRef.current);
+        window.removeEventListener("resize", resize);
+        document.removeEventListener("visibilitychange", handleVisibility);
+        canvas.removeEventListener("webglcontextlost", handleContextLost);
+        canvas.removeEventListener("webglcontextrestored", handleContextRestored);
+        gl.deleteProgram(program);
+        gl.deleteShader(vs);
+        gl.deleteShader(fs);
+        gl.deleteBuffer(buffer);
+      };
     };
-    rafRef.current = requestAnimationFrame(renderLoop);
+
+    // The canvas is decorative and sits behind the hero text. Starting the
+    // shader compile + render loop on idle keeps the LCP/TBT window clear.
+    const canDefer = typeof window.requestIdleCallback === "function";
+    const requestIdle = canDefer
+      ? window.requestIdleCallback(init, { timeout: 2000 })
+      : window.setTimeout(init, 2000);
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("resize", resize);
-      document.removeEventListener("visibilitychange", handleVisibility);
-      canvas.removeEventListener("webglcontextlost", handleContextLost);
-      canvas.removeEventListener("webglcontextrestored", handleContextRestored);
-      gl.deleteProgram(program);
-      gl.deleteShader(vs);
-      gl.deleteShader(fs);
-      gl.deleteBuffer(buffer);
+      cancelled = true;
+      if (canDefer) {
+        window.cancelIdleCallback(requestIdle);
+      } else {
+        window.clearTimeout(requestIdle);
+      }
+      dispose?.();
     };
   }, [reduced]);
 
